@@ -1,0 +1,60 @@
+.borderles {
+    margin: 20px 0;
+    box-shadow: 1px 1px 1px 1px #e7e7e7, -1px 0 1px 1px rgb(231 231 231 / 50%);
+    border-radius: 6px;
+    overflow: hidden;
+    padding: 10px;
+    color: #57657f;
+    border-top: 2px solid #989898;
+}
+
+.top-row {
+    background: #f6f8fa;
+    position: relative;
+    border-radius: 6px;
+    padding: 13.5px 15px 13.5px 50px;
+    overflow: hidden;
+}
+
+.icon-helper {
+    position: absolute;
+    background: #e7ecf1;
+    height: 100%;
+    width: 52px;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ticket-user {
+    margin-left: 20px;
+    font-size: 17px;
+}
+
+.ticket-date {
+    float: right;
+    color: #000;
+}
+
+.message {
+    padding: 25px 10px 15px;
+}
+
+.summery {
+    padding: 5px 10px 15px;
+}
+
+.attachments {
+    padding: 2px 10px 15px;
+}
+
+.attachment {
+    padding-right: 1rem;
+}
+
+.department-reply {
+    border-top: 2px solid #85b200;
+    box-shadow: 1px 1px 1px 1px #85bd20, -1px 0 1px 1px rgb(133 189 32 / 50%);
+}

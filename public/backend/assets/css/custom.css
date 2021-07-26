@@ -1,0 +1,217 @@
+@media (max-width: 480px) {
+    .app-header__logo {
+        margin-right: 65px;
+    }
+}
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+table.TableNoPadding th, table.TableNoPadding td {
+    padding: 0.10rem;
+}
+
+table.Table30Padding th, table.Table30Padding td {
+    padding: 0.30rem;
+}
+
+table.Table20Padding th, table.Table20Padding td {
+    padding: 0.20rem;
+}
+
+#AgencyCard .static {
+    width: 180px;
+}
+
+.InfoCard .static {
+    width: 180px;
+}
+
+@media (max-width: 991px) {
+    .app-header .app-header__logo {
+        display: flex;
+    }
+
+    #burger-icon {
+        display: none;
+    }
+}
+
+.fake-link {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+@media (max-width: 1249px) {
+    .app-header__logo {
+        padding-left: 10px !important;
+    }
+
+    img#main-logo {
+        width: 9.5rem !important;
+        position: relative;
+        left: 39%;
+    }
+}
+
+.logo-width-type {
+    width: 10rem !important;
+}
+
+@media (max-width: 400px) {
+    #first-profile-avatar {
+        margin-top: 8px !important;
+    }
+}
+
+#panelMlAuto {
+    display: none;
+}
+
+@media (min-width: 992px) {
+    /* Ultra Big Modal*/
+    .ultra-big-modal {
+        max-width: calc(100% - 20px) !important;
+    }
+}
+
+@media (min-width: 992px) {
+    /* Ultra Big Modal*/
+    .niko-modal-xxl {
+        max-width: calc(100% - 100px) !important;
+    }
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.border-box {
+}
+
+.form-control {
+    border-radius: 0px !important;
+}
+
+.form-control:focus {
+    border-color: unset;
+    box-shadow: none;
+    outline: 0 none;
+}
+
+.select2-selection {
+    -webkit-box-shadow: 0;
+    box-shadow: 0;
+    background-color: #fff;
+    border: 0;
+    border-radius: 0;
+    color: #555555;
+    font-size: 14px;
+    outline: 0;
+    min-height: 48px;
+    text-align: left;
+}
+
+.select2-selection__rendered {
+    margin: 10px;
+}
+
+.select2-selection__arrow {
+    margin: 10px;
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/*Thead and Tfoot fixex START*/
+.table-scroll {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    margin: auto;
+    overflow: auto;
+    height: 350px;
+}
+
+.table-scroll table {
+    width: 100%;
+    min-width: 1280px;
+    margin: auto;
+}
+
+.table-wrap {
+    position: relative;
+}
+
+.table-scroll th,
+.table-scroll td {
+    vertical-align: top;
+}
+
+.table-scroll thead th {
+    background: #f7f7f7;
+    color: #000;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
+/* safari and ios need the tfoot itself to be position:sticky also */
+.table-scroll tfoot,
+.table-scroll tfoot th,
+.table-scroll tfoot td {
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
+    background: #f7f7f7;
+    color: #000;
+    z-index: 4;
+}
+
+/*Thead and Tfoot fixex END*/
+
+
+/*NoSpin => remove input type number arrows*/
+.no-spin::-webkit-inner-spin-button, .no-spin::-webkit-outer-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+
+.no-spin {
+    -moz-appearance: textfield !important;
+}
+
+/*NoSpin => remove input type number arrows*/
+
+
+/* Custom Scrollbar START*/
+.mostly-customized-scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 8px;
+    background-color: #aaa;
+}
+
+.mostly-customized-scrollbar::-webkit-scrollbar-thumb {
+    background: #0a66b7;
+}
+
+/* Custom Scrollbar END*/
+
+.bg-ck {
+    background-image: linear-gradient(to right top, #ce1115, #c9004b, #ad0075, #7c2f91, #33429a);
+    color: white;
+}
+
+@media (min-width: 768px) {
+    .modal-xxl {
+        width: 90%;
+        max-width: 1200px;
+    }
+}
