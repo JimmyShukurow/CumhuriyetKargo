@@ -522,7 +522,6 @@ class SenderCurrentController extends Controller
 
     public function getCurrents(Request $request)
     {
-
         $record = $request->record;
         $status = $request->status;
         $agency = $request->agency;

@@ -47,7 +47,6 @@
                     </div>
                 </div>
 
-
             </div>
         </div>
 
@@ -163,8 +162,19 @@
                                     <label for="cariKod">Kargo İçeriği:</label>
                                 </div>
                                 <div class="input-group mb-1">
-                                        <textarea name="" id="cargoIcerigi" class="form-control form-control-sm"
-                                                  cols="30" rows="3"></textarea>
+{{--                                        <textarea name="" id="cargoIcerigi" class="form-control form-control-sm"--}}
+{{--                                                  cols="30" rows="3"></textarea>--}}
+                                    <select name="cargoIcerigi" id="cargoIcerigi"  class="form-control" id="">
+                                        <option value="">Seçiniz</option>
+                                        <option value="Varil">Varil</option>
+                                        <option value="Çuval">Çuval</option>
+                                        <option value="Kırılacak Eşya">Kırılacak Eşya</option>
+                                        <option value="ikinci El Eşya">ikinci El Eşya</option>
+                                        <option value="Bozulabilir Eşya">Bozulabilir Eşya</option>
+                                        <option value="Elektronik Eşya">Elektronik Eşya</option>
+                                        <option value="Sıvı Eşya">Sıvı Eşya</option>
+                                        <option value="Dökülebilir Eşya">Dökülebilir Eşya</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

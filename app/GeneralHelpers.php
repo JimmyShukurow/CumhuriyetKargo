@@ -547,6 +547,13 @@ function CreateCargoTrackingNo($agencyCode)
     return $ctn;
 }
 
+function TrackingNumberDesign($tracking_no)
+{
+    $new_no = substr($tracking_no, 0, 5) . ' ' . substr($tracking_no, 5, 5) . ' ' . substr($tracking_no, 10, 5);
+
+    return $new_no;
+}
+
 
 
 

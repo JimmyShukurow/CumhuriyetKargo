@@ -22,19 +22,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class MainCargoController extends Controller
 {
     public function index()
     {
-        $data['additional_service'] = AdditionalServices::all();
-        $data['cities'] = Cities::all();
+        $data['agencies'] = Agencies::all();
+        $data['gm_users'] = DB::table('users')
+            ->where('agency_code', 1)
+            ->get();
 
         ## get agency district
         $agency = Agencies::where('id', Auth::user()->agency_code)->first();
         $data['districts'] = DB::table('view_city_districts')
             ->where('city_name', $agency->city)
             ->get();
+
         $data['user_district'] = $agency->district;
         $data['user_city'] = $agency->city;
 
@@ -1264,8 +1268,10 @@ class MainCargoController extends Controller
 
                     $currentPrices = CurrentPrices::where('current_code', $current->current_code)->first();
 
-                    if ($price <= 200)
+                    if ($price > 0 && $price <= 200)
                         $interruption = $currentPrices->collect_price;
+                    else if ($price == 0)
+                        $interruption = 0;
                     else {
                         $interruptionPercent = $currentPrices->collect_amount_of_increase;
                         $interruption = ($price * $interruptionPercent) / 100;
@@ -1274,14 +1280,13 @@ class MainCargoController extends Controller
                     return response()
                         ->json(['status' => 1, 'interruption' => '₺ ' . $interruption, 'to_be_paid' => '₺ ' . ($price - $interruption)], 200);
 
-                    return $interruption;
-                    dd($currentPrices);
+//                    return $interruption;
+//                    dd($currentPrices);
 
 
                 } else
                     return response()
                         ->json(['status' => -1, 'message' => 'Göndericinin anlaşması yok, tahsilatlı kargo çıkaramazsınız!'], 200);
-
 
                 return $request->all();
 
@@ -1293,6 +1298,77 @@ class MainCargoController extends Controller
 
         }
         return 0;
+    }
+
+    public function getMainCargoes(Request $request)
+    {
+        $record = $request->record;
+        $status = $request->status;
+        $agency = $request->agency;
+        $name = $request->name;
+        $currentCode = str_replace([' ', '_'], '', $request->currentCode);
+        $creatorUser = $request->creatorUser;
+        $category = $request->category != -1 ? $request->category : '';
+        $confirmed = $request->confirmed;
+
+        $cargoes = DB::table('cargoes')
+            ->join('users', 'users.id', '=', 'cargoes.creator_user_id')
+            ->select(['cargoes.*', 'users.name_surname']);
+//            ->join('users', 'currents.created_by_user_id', '=', 'users.id')
+//            ->select(['currents.*', 'agencies.agency_name', 'users.name_surname'])
+//            ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
+//            ->whereRaw($agency ? 'agency=' . $agency : '1 > 0')
+//            ->whereRaw($creatorUser ? 'created_by_user_id=' . $creatorUser : '1 > 0')
+//            ->whereRaw($status ? "currents.`status`='" . $status . "'" : '1 > 0')
+//            ->whereRaw($category ? "currents.`category`='" . $category . "'" : '1 > 0')
+//            ->whereRaw($request->filled('confirmed') ? "confirmed='" . $confirmed . "'" : '1 > 0')
+//            ->whereRaw($name ? "name like '%" . $name . "%'" : '1 > 0')
+//            ->whereRaw($record == '1' ? 'currents.deleted_at is null' : 'currents.deleted_at is not null')
+//            ->where('current_type', 'Gönderici');
+
+        return datatables()->of($cargoes)
+            ->setRowId(function ($cargoes) {
+                return "cargo-item-" . $cargoes->id;
+            })
+            ->editColumn('tracking_no', function ($cargoes) {
+                return TrackingNumberDesign($cargoes->tracking_no);
+            })
+            ->editColumn('payment_type', function ($cargoes) {
+                return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . $cargoes->payment_type . '</b>' : '<b class="text-dark">' . $cargoes->payment_type . '</b>';
+            })
+            ->editColumn('receiver_address', function ($cargoes) {
+                return substr($cargoes->receiver_address, 0, 30);
+            })
+            ->editColumn('sender_name', function ($cargoes) {
+                return substr($cargoes->sender_name, 0, 30);
+            })
+            ->editColumn('receiver_name', function ($cargoes) {
+                return substr($cargoes->receiver_name, 0, 30);
+            })
+            ->editColumn('collectible', function ($cargoes) {
+                return $cargoes->collectible == '1' ? '<b class="text-success">Evet</b>' : '<b class="text-danger">Hayır</b>';
+            })
+            ->editColumn('total_price', function ($cargoes) {
+                return '<b class="text-primary">' . $cargoes->total_price . '₺' . '</b>';
+            })
+            ->editColumn('collection_fee', function ($cargoes) {
+                return '<b class="text-primary">' . $cargoes->collection_fee . '₺' . '</b>';
+            })
+            ->editColumn('status', function ($cargoes) {
+                return '<b class="text-dark">' . $cargoes->status . '</b>';
+            })
+            ->editColumn('name_surname', function ($cargoes) {
+                return '<b class="text-dark">' . $cargoes->name_surname . '</b>';
+            })
+            ->editColumn('created_at', function ($cargoes) {
+                return '<b class="text-dark">' . $cargoes->created_at . '</b>';
+            })
+            ->editColumn('status_for_human', function ($cargoes) {
+                return '<b class="text-success">' . $cargoes->status_for_human . '</b>';
+            })
+            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
+            ->rawColumns(['edit', 'status_for_human', 'total_price', 'collectible', 'payment_type', 'collection_fee', 'status', 'name_surname', 'created_at'])
+            ->make(true);
     }
 }
 
