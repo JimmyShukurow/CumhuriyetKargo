@@ -155,16 +155,13 @@
                             </div>
                         </div>
 
-
                         <div class="form-row">
                             <div class="col-md-12">
                                 <div class="position-relative ">
                                     <label for="cariKod">Kargo İçeriği:</label>
                                 </div>
                                 <div class="input-group mb-1">
-{{--                                        <textarea name="" id="cargoIcerigi" class="form-control form-control-sm"--}}
-{{--                                                  cols="30" rows="3"></textarea>--}}
-                                    <select name="cargoIcerigi" id="cargoIcerigi"  class="form-control" id="">
+                                    <select name="cargoIcerigi" id="cargoIcerigi" class="form-control" id="">
                                         <option value="">Seçiniz</option>
                                         <option value="Varil">Varil</option>
                                         <option value="Çuval">Çuval</option>
@@ -177,7 +174,17 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="col-md-12">
+                                <div class="position-relative ">
+                                    <label for="cariKod">Açıklama:</label>
+                                </div>
+                                <div class="input-group mb-1">
+                                    <textarea name="" id="explantion" class="form-control" cols="30" rows="2"></textarea>
+                                </div>
+                            </div>
                         </div>
+
 
                         <div class="form-group row mt-3">
                             <label for="colFormLabelSm"

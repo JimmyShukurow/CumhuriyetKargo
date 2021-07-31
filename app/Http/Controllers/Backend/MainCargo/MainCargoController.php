@@ -17,6 +17,7 @@ use App\Models\FilePrice;
 use App\Models\Receivers;
 use App\Models\Settings;
 use App\Models\SmsContent;
+use App\Models\User;
 use Faker\Provider\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +42,21 @@ class MainCargoController extends Controller
 
         $data['user_district'] = $agency->district;
         $data['user_city'] = $agency->city;
+        $data['status'] = $status = DB::table('cargoes')
+            ->select('status')->groupBy('status')->get();
+        $data['status_for_human'] = $status = DB::table('cargoes')
+            ->select('status_for_human')->groupBy('status_for_human')->get();
+        $data['transporters'] = $status = DB::table('cargoes')
+            ->select('transporter')->groupBy('transporter')->get();
+        $data['systems'] = $status = DB::table('cargoes')
+            ->select('system')->groupBy('system')->get();
+        $data['cargo_contents'] = $status = DB::table('cargoes')
+            ->select('cargo_content')->groupBy('cargo_content')->get();
+        $data['cargo_types'] = $status = DB::table('cargoes')
+            ->select('cargo_type')->groupBy('cargo_type')->get();
+        $data['agency_users'] = User::where('agency_code', Auth::user()->agency_code)->get();
+        $data['cities'] = Cities::all();
+
 
         return view('backend.main_cargo.index', compact(['data']));
     }
@@ -86,7 +102,6 @@ class MainCargoController extends Controller
 
         return view('backend.main_cargo.create', compact(['data', 'fee']));
     }
-
 
     public function ajaxTransacrtions(Request $request, $transaction)
     {
@@ -753,6 +768,7 @@ class MainCargoController extends Controller
 
                 $receiverType = $receiver->current_type;
                 $receiverCategory = $receiver->category;
+                $mesafe = str_replace(',', '', $request->mesafe);
 
                 $desi = $request->desi;
                 $cargoType = $request->gonderiTuru;
@@ -781,12 +797,15 @@ class MainCargoController extends Controller
                     return response()
                         ->json(['status' => -1, 'message' => 'Alıcı hatalı!' . $receiverState['result']], 200);
 
+
                 # control distance and price
                 $distance = calcDistance($current->city, $receiver->city);
                 $distancePrice = calcDistancePrice($distance);
-                if ($request->mesafe != $distance || $request->mesafeUcreti != $distancePrice)
+
+                if ($mesafe != $distance || $request->mesafeUcreti != $distancePrice)
                     return response()
                         ->json(['status' => -1, 'message' => 'Mesafeler eşleşmiyor, lütfen göndericiyi ve alıcıyı güncelleyiniz'], 200);
+
 
                 # control additional services
                 $addServicePrice = 0;
@@ -1302,29 +1321,50 @@ class MainCargoController extends Controller
 
     public function getMainCargoes(Request $request)
     {
+        $finishDate = $request->finishDate;
+        $startDate = $request->startDate;
+        $cargoType = $request->cargoType;
+        $trackingNo = str_replace([' ', '_'], [''], $request->trackingNo);
+        $cargoContent = $request->cargoContent;
+        $collectible = $request->collectible;
+        $currentCity = $request->currentCity;
+        $currentCode = str_replace([' ', '_'], ['', ''], $request->currentCode);
+        $receiverCode = str_replace([' ', '_'], ['', ''], $request->receiverCode);
+        $cargoType = $request->cargoType;
+        $currentName = $request->currentName;
+        $paymentType = $request->paymentType;
+        $receiverCity = $request->receiverCity;
+        $receiverName = $request->receiverName;
         $record = $request->record;
         $status = $request->status;
-        $agency = $request->agency;
-        $name = $request->name;
-        $currentCode = str_replace([' ', '_'], '', $request->currentCode);
-        $creatorUser = $request->creatorUser;
+        $statusForHuman = $request->statusForHuman;
+        $system = $request->system;
+        $transporter = $request->transporter;
+
         $category = $request->category != -1 ? $request->category : '';
-        $confirmed = $request->confirmed;
 
         $cargoes = DB::table('cargoes')
             ->join('users', 'users.id', '=', 'cargoes.creator_user_id')
-            ->select(['cargoes.*', 'users.name_surname']);
-//            ->join('users', 'currents.created_by_user_id', '=', 'users.id')
-//            ->select(['currents.*', 'agencies.agency_name', 'users.name_surname'])
-//            ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
-//            ->whereRaw($agency ? 'agency=' . $agency : '1 > 0')
-//            ->whereRaw($creatorUser ? 'created_by_user_id=' . $creatorUser : '1 > 0')
-//            ->whereRaw($status ? "currents.`status`='" . $status . "'" : '1 > 0')
-//            ->whereRaw($category ? "currents.`category`='" . $category . "'" : '1 > 0')
-//            ->whereRaw($request->filled('confirmed') ? "confirmed='" . $confirmed . "'" : '1 > 0')
-//            ->whereRaw($name ? "name like '%" . $name . "%'" : '1 > 0')
-//            ->whereRaw($record == '1' ? 'currents.deleted_at is null' : 'currents.deleted_at is not null')
-//            ->where('current_type', 'Gönderici');
+            ->join('currents', 'currents.id', '=', 'cargoes.sender_id')
+//            ->join('currents', 'currents.id', '=', 'cargoes.receiver_id')
+            ->select(['cargoes.*', 'users.name_surname'])
+            ->whereRaw($cargoType ? "cargo_type='" . $cargoType . "'" : '1 > 0')
+            ->whereRaw($cargoContent ? "cargo_content='" . $cargoContent . "'" : '1 > 0')
+            ->whereRaw($collectible ? "collectible='" . $collectible . "'" : '1 > 0')
+            ->whereRaw($currentCity ? "sender_city='" . $currentCity . "'" : '1 > 0')
+            ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
+            ->whereRaw($receiverCode ? 'current_code=' . $receiverCode : '1 > 0')
+            ->whereRaw($trackingNo ? 'tracking_no=' . $trackingNo : '1 > 0')
+            ->whereRaw($currentName ? "sender_name='" . $currentName . "'" : '1 > 0')
+            ->whereRaw($paymentType ? "payment_type='" . $paymentType . "'" : '1 > 0')
+            ->whereRaw($receiverCity ? "receiver_city='" . $receiverCity . "'" : '1 > 0')
+            ->whereRaw($receiverName ? "receiver_name='" . $receiverName . "'" : '1 > 0')
+            ->whereRaw($status ? "cargoes.status='" . $status . "'" : '1 > 0')
+            ->whereRaw($statusForHuman ? "cargoes.status_for_human='" . $statusForHuman . "'" : '1 > 0')
+            ->whereRaw($system ? "system='" . $system . "'" : '1 > 0')
+            ->whereRaw($record == 1 ? "cargoes.deleted_at is null" : 'cargoes.deleted_at is not null')
+            ->whereRaw("cargoes.created_at between '" . $startDate . "'  and '" . $finishDate . "'")
+            ->whereRaw($transporter ? "transporter='" . $transporter . "'" : '1 > 0');
 
         return datatables()->of($cargoes)
             ->setRowId(function ($cargoes) {
@@ -1361,7 +1401,7 @@ class MainCargoController extends Controller
                 return '<b class="text-dark">' . $cargoes->name_surname . '</b>';
             })
             ->editColumn('created_at', function ($cargoes) {
-                return '<b class="text-dark">' . $cargoes->created_at . '</b>';
+                return '<b class="text-primary">' . $cargoes->created_at . '</b>';
             })
             ->editColumn('status_for_human', function ($cargoes) {
                 return '<b class="text-success">' . $cargoes->status_for_human . '</b>';

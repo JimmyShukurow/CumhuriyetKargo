@@ -21,6 +21,7 @@ use App\Http\Controllers\Backend\ServiceFee\AdditionalServicesController;
 use App\Http\Controllers\Backend\ServiceFee\DesiListController;
 use App\Http\Controllers\Backend\MainCargo\MainCargoController;
 use App\Http\Controllers\Backend\Marketing\SenderCurrentController;
+use App\Http\Controllers\Backend\Operation\LocalLocationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,15 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('', [MainCargoController::class, 'index'])->name('index');
         Route::get('GetCargoes', [MainCargoController::class, 'getMainCargoes'])->name('getCargoes');
         Route::post('AjaxTransactions/{transaction}', [MainCargoController::class, 'ajaxTransacrtions']);
+    });
+
+
+    Route::group(['prefix' => 'Operation'], function () {
+//        Route::get('LocalLocation', )
+        Route::resource('LocalLocation', LocalLocationController::class);
+        Route::get('GetLocations', [LocalLocationController::class, 'getLocation'])->name('operation.getLocation');
+
+
     });
 
     # ==> Services Fee Transaction
