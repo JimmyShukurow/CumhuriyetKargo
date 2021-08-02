@@ -136,6 +136,5 @@ class LocalLocationController extends Controller
             ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
             ->rawColumns(['edit'])
             ->make(true);
-
     }
 }

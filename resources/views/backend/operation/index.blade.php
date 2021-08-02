@@ -64,6 +64,7 @@
             <div class="card-body">
                 <form method="POST" id="search-form">
                     <div class="row">
+
                         <div class="col-md-3">
                             <div class="position-relative form-control-sm form-group">
                                 <label for="link" class="">İl:</label>
@@ -89,16 +90,6 @@
                         </div>
 
                         <div class="col-md-3">
-                            <div class="position-relative form-group">
-                                <label for="neighborhood" class="">Mahalle*</label>
-                                <select name="neighborhood" id="neighborhood" required
-                                        class="form-control niko-select-filter form-control-sm ">
-                                    <option value="">Mahalle Seçiniz</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
                             <label for="agency">Acente</label>
                             <select name="agency"
                                     class="form-control form-control-sm niko-select-filter">
@@ -108,6 +99,13 @@
                                         value="{{$key->id}}">{{ $key->city . '/' . $key->district . '-' . $key->agency_name}}</option>
                                 @endforeach
                             </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <button style="width: 100%;" id="btnGiveNeighborhood"
+                                    class="mt-4 btn-icon btn-shadow btn-outline-2x btn btn-outline-light">
+                                <i class="lnr-plus-circle btn-icon-wrapper"></i>Bölgeye Bağlanacak İlçeleri Seçin
+                            </button>
                         </div>
 
                     </div>
@@ -126,7 +124,7 @@
                         <th>İl</th>
                         <th>İlçe</th>
                         <th>Mahalle</th>
-                        <th>Mesafe</th>
+                        <th>Dağıtan</th>
                         <th>İşlem</th>
                     </tr>
                     </thead>
@@ -138,7 +136,7 @@
                         <th>İl</th>
                         <th>İlçe</th>
                         <th>Mahalle</th>
-                        <th>Mesafe</th>
+                        <th>Dağıtan</th>
                         <th>İşlem</th>
                     </tr>
                     </tfoot>
