@@ -11,7 +11,11 @@ $(document).on('click', '.trash', function () {
     } else if (from == "current") {
         url = "SenderCurrents/" + destroy_id;
         object = "Gönderici Cari";
+    } else if (from == "various_car") {
+        url = "VariousCars/" + destroy_id;
+        object = "Muhtelif Araç";
     }
+
 
     swal({
         title: "Silme İşlemini Onaylayın!",
@@ -57,6 +61,7 @@ $(document).on('click', '.trash', function () {
 
 
 $('.trash').click(function () {
+
 
     var from = $(this).attr("from");
     var object;
