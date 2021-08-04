@@ -76,10 +76,11 @@ class VariousController extends Controller
             'city' => $request->where_car,
         ]);
 
-        if ($insert)
+        if ($insert) {
+            GeneralLog($request->plaque . ' plakalı muhtelif araç eklendi!');
             return back()
                 ->with('success', 'İşlem başarılı, araç eklendi!');
-        else
+        } else
             return back()
                 ->with('error', 'İşlem başarısız, lütfen daha sonra tekrar deneyin!');
     }
@@ -134,7 +135,7 @@ class VariousController extends Controller
         ]);
 
 
-        $my_various_car = Various::where('id', $id)->first();
+        $my_various_car = Various::find($id)->first();
         $my_various_car->brand = $request->arac_marka;
         $my_various_car->model = $request->model;
         $my_various_car->plaque = tr_strtoupper(str_replace(' ', '', $request->plaque));
@@ -145,6 +146,9 @@ class VariousController extends Controller
         $my_various_car->driver_name = tr_strtoupper($request->driver_name);
         $my_various_car->city = $request->where_car;
         $my_various_car->save();
+
+
+        GeneralLog('Muhtelif ' . $request->arac_marka . ' plakalı araç güncellendi!');
 
 
         return back()
@@ -160,6 +164,10 @@ class VariousController extends Controller
      */
     public function destroy($id)
     {
+        $destroy = Various::find($id);
+        GeneralLog($destroy->plaque . ' plakalı muhtelif araç silindi!');
+
+
         $destroy = Various::find($id)->delete();
         if ($destroy) {
             return 1;

@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="/backend/assets/css/app-main-block.css">
 @endpush()
 
-@section('title', 'Acenteler')
+@section('title', 'Muhtelif Araçlar')
 
 @section('content')
 

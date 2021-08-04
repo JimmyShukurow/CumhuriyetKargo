@@ -1,6 +1,6 @@
 @extends('backend.layout')
 
-@section('title', 'Yeni Acente Girişi')
+@section('title', 'Muhtelif Araç Düzenle')
 
 @section('content')
 
