@@ -22,6 +22,8 @@ use App\Http\Controllers\Backend\ServiceFee\DesiListController;
 use App\Http\Controllers\Backend\MainCargo\MainCargoController;
 use App\Http\Controllers\Backend\Marketing\SenderCurrentController;
 use App\Http\Controllers\Backend\Operation\LocalLocationController;
+use App\Http\Controllers\Backend\Operation\VariousController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +56,11 @@ Route::get('Logout', [DefaultController::class, 'logout'])->name('admin.Logout')
 Route::get('CloseTheVirtualLogin/{id}', [DefaultController::class, 'closeTheVirtualLogin'])->name('closeTheVirtualLogin');
 
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
+
+
+    Route::resource('VariousCars', VariousController::class);
+    Route::get('VariousCarsGetCars', [VariousController::class, 'getCars'])->name('VariousCars.getCars');
+
 
     # Main Routes
     Route::get('/SystemUpdates', [ModuleController::class, 'systemUpdateView']);
