@@ -96,7 +96,33 @@ function printWindow(selector, title) {
     }
 }
 
-function roundLikePHP(num, dec){
+function roundLikePHP(num, dec) {
     var num_sign = num >= 0 ? 1 : -1;
     return parseFloat((Math.round((num * Math.pow(10, dec)) + (num_sign * 0.0001)) / Math.pow(10, dec)).toFixed(dec));
+}
+
+function adresMaker(city, district, neighborhood, street, street2, building_no, door_no, floor, address_note) {
+
+    let cityX = city + "/",
+        districtX = district + " ",
+        neighborhoodX = neighborhood + " ",
+        streetX = street != '' && street != null ? street + " CAD. " : "",
+        street2X = street2 != '' && street2 != null ? street2 + " SK. " : "",
+        buildingNoX = "NO:" + building_no + " ",
+        doorX = "D:" + door_no + " ",
+        floorX = "KAT:" + floor + " ",
+        addressNoteX = "(" + address_note + ")";
+
+    let fullAddress = cityX + districtX + neighborhoodX + streetX + street2X + buildingNoX + floorX + doorX + addressNoteX;
+    return fullAddress;
+}
+
+function arrangeCargoTrackingNumber(detay) {
+    // 34021 23428 95925
+    let part1 = detay.substring(0, 5);
+    let part2 = detay.substring(5, 10);
+    let part3 = detay.substring(10, 15);
+
+    let fullKTNO = part1 + " " + part2 + " " + part3;
+    return fullKTNO;
 }

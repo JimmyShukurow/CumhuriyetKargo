@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Marketing;
 
 use App\Http\Controllers\Controller;
 use App\Models\Agencies;
+use App\Models\Cargoes;
 use App\Models\Cities;
 use App\Models\CurrentPrices;
 use App\Models\Currents;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Current;
 use Spatie\Activitylog\Models\Activity;
 use function GuzzleHttp\Promise\all;
 
@@ -562,6 +564,76 @@ class SenderCurrentController extends Controller
             ->rawColumns(['edit'])
             ->make(true);
     }
+
+    public function customersIndex()
+    {
+
+        $data['users'] = DB::table('view_users_general_info')->get();
+        $data['agencies'] = Agencies::all();
+        $data['tc'] = TransshipmentCenters::all();
+        $data['roles'] = Roles::all();
+        $data['cities'] = Cities::all();
+
+
+        GeneralLog('GM Kullanıcılar sayfası görüntülendi.');
+        return view('backend.customers.agency.index', compact(['data']));
+    }
+
+
+    public function getAllCustomers(Request $request)
+    {
+        $category = $request->category;
+        $city = $request->city;
+        $currentCode = str_replace([' ', '_'], ['', ''], $request->currentCode);
+        $customer_name_surname = $request->customer_name_surname;
+        $customer_type = $request->customer_type;
+        $phone = $request->phone;
+
+
+        $data = DB::table('currents')
+            ->select('currents.*', 'users.name_surname')
+            ->join('users', 'users.id', '=', 'currents.created_by_user_id')
+            ->join('agencies', 'agencies.id', '=', 'users.agency_code')
+            ->whereRaw($category ? 'category=' . $category : '1 > 0')
+            ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
+            ->whereRaw($city ? "city='" . $city . "'" : '1 > 0')
+            ->whereRaw($customer_name_surname ? "name='" . $customer_name_surname . "'" : '1 > 0')
+            ->whereRaw($customer_type ? "current_type='" . $customer_type . "'" : '1 > 0')
+            ->whereRaw($phone ? "gsm='" . $phone . "'" : '1 > 0');
+
+        return datatables()->of($data)
+            ->editColumn('current_code', function ($current) {
+                return $current->current_code;
+            })
+            ->addColumn('edit', 'backend.customers.agency.columns.edit')
+            ->rawColumns(['edit'])
+            ->make(true);
+    }
+
+    public function getCustomerById(Request $request)
+    {
+        $id = $request->user;
+        $data = DB::select("SELECT currents.*, agencies.city as agencies_city , agencies.district as agencies_district, agencies.agency_name FROM currents
+            INNER JOIN users ON users.id = currents.created_by_user_id
+            INNER JOIN agencies ON agencies.id = users.agency_code
+             WHERE currents.id = $id");
+
+
+        if ($data[0]->current_type == 'Gönderici') {
+            $cargo = Cargoes::where('sender_id', $id)
+                ->orderBy('id', 'desc')
+                ->limit(10)
+                ->get();
+        } else if ($data[0]->current_type == 'Alıcı')
+            $cargo = Cargoes::where('receiver_id', $id)
+                ->orderBy('id', 'desc')
+                ->limit(10)
+                ->get();
+
+        return response()->json(['data' => $data, 'cargo' => $cargo]);
+    }
+
+
 }
 
 

@@ -499,7 +499,6 @@ function CurrentControl($currentCode)
     }
 
     return $array = ['status' => 1];
-
 }
 
 function compareFloatEquality($a, $b)
@@ -546,6 +545,7 @@ function CreateCargoTrackingNo($agencyCode)
     }
     return $ctn;
 }
+
 
 function TrackingNumberDesign($tracking_no)
 {
