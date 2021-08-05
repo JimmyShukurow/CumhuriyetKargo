@@ -83,6 +83,8 @@ class VariousController extends Controller
         } else
             return back()
                 ->with('error', 'İşlem başarısız, lütfen daha sonra tekrar deneyin!');
+
+
     }
 
     /**

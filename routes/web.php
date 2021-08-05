@@ -58,6 +58,11 @@ Route::get('CloseTheVirtualLogin/{id}', [DefaultController::class, 'closeTheVirt
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
 
+    #GM ALL currents
+    Route::get('Customers/GetAllCustomers',[SenderCurrentController::class,'getAllCustomers'])->name('customer.gm.getAllCustomers');
+
+    Route::get('Customers', [SenderCurrentController::class, 'customersIndex'])->name('customers.index');
+
     Route::resource('VariousCars', VariousController::class);
     Route::get('VariousCarsGetCars', [VariousController::class, 'getCars'])->name('VariousCars.getCars');
 
@@ -141,6 +146,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('/', [ThemeController::class, 'index'])->name('theme.Index');
     });
 
+
     Route::group(['prefix' => '/Users', 'middleware' => ['GmUsersMid'], 'as' => 'user.gm.'], (function () {
         ## ==> General Managment Transactions <== ##
         Route::get('/', [UserController::class, 'index'])->name('Index');
@@ -158,6 +164,9 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('GetUserInfo', [UserController::class, 'userInfo']);
         ## Ajax ==> Save Status Info
         Route::post('ChangeStatus', [UserController::class, 'changeStatus']);
+
+        Route::post('GetCustomerInfo',[SenderCurrentController::class,'getCustomerById']);
+
     }));
 
     # Agency Users Transaction

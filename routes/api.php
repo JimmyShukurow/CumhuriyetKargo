@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\Marketing\SenderCurrentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +36,7 @@ Route::get('TCUsers/GetUserLogs', [UserTCController::class, 'getUserLogs'])->nam
 
 # GM All Users
 Route::get('Users/GetAllUsers', [UserController::class, 'getAllUsers'])->name('user.gm.getAllUsers');
+
 
 # Perosonel Last Logs
 Route::get('Personel/GetLastLogs', [PersonelController::class, 'getUserLastLogs'])->name('personel.GetLastLogs');

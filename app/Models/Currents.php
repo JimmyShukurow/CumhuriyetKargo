@@ -98,5 +98,8 @@ class Currents extends Model
         $eventName = getLocalEventName($eventName);
         return "Cari $eventName.";
     }
+    public function getUserById(){
+        return User::find($this->created_by_user_id)->name_surname;
+    }
 
 }
