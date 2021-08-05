@@ -1531,7 +1531,8 @@ function createCargo() {
             hizmetUcreti: $('#serviceFee').text(),
             genelToplam: $('#totalPrice').text(),
             totalHacim: $('#hPartsTotalM3').text(),
-            kargoIcerigi: $('#cargoIcerigi').val()
+            kargoIcerigi: $('#cargoIcerigi').val(),
+            kargoIcerigiAciklama: $('#explantion').val()
         }
     }).done(function (response) {
 
