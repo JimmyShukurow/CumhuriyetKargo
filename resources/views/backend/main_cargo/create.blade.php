@@ -118,7 +118,6 @@
                             </div>
                         </div>
 
-
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="position-relative ">
@@ -199,7 +198,6 @@
                                        data-off="Koli" data-onstyle="alternate" data-offstyle="primary">
                             </div>
                         </div>
-
 
                         <input style="display: none;" type="button" id="fakeButton">
 

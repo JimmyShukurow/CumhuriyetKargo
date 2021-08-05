@@ -583,6 +583,8 @@ class MainCargoController extends Controller
 
             case 'GetPriceForCustomers':
 
+
+
                 $desi = $request->desi;
                 $cargoType = $request->cargoType;
                 $currentCode = str_replace(' ', '', $request->currentCode);
@@ -721,6 +723,7 @@ class MainCargoController extends Controller
                 break;
 
             case 'CreateCargo':
+
 
                 $rules = [
                     'gondericiCariKodu' => 'required',
@@ -1079,6 +1082,8 @@ class MainCargoController extends Controller
                     'number_of_pieces' => $cargoType == 'Koli' ? $partQuantity : 1,
                     'cargo_type' => $cargoType,
                     'cargo_content' => tr_strtoupper($request->kargoIcerigi),
+                    'cargo_content_ex' => tr_strtoupper($request->kargoIcerigiAciklama),
+
                     'tracking_no' => $ctn,
                     'arrival_city' => $receiver->city,
                     'arrival_district' => $receiver->district,
@@ -1111,7 +1116,6 @@ class MainCargoController extends Controller
                     'transporter' => 'CK',
                     'system' => 'CKG-Sis',
                 ]);
-
 
                 if ($CreateCargo) {
 

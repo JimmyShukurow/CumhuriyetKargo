@@ -272,6 +272,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('DestroyModuleOfRole', [ModuleController::class, 'destroySubModuleOfRole']);
     }));
 
+    
     Route::group(['prefix' => '/RegionalDirectorates', 'middleware' => 'RegionalDirectoratesMid', 'as' => 'rd.'], function () {
 
         Route::get('/', [RDController::class, 'index'])->name('Index');
@@ -294,7 +295,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('DestroyRDDistrict', [RDController::class, 'destroyRdDistrict']);
     });
 
+
 });
 
-
 Route::get('not.yet', [DefaultController::class, 'notyet'])->name('not.yet');
+Route::get('notx.yet', [DefaultController::class, 'notyet'])->name('customers.index');

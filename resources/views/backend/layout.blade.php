@@ -62,8 +62,6 @@
     {{--PWA END--}}
     <script src="/backend/assets/scripts/service-worker.js"></script>
 
-
-
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {
@@ -71,10 +69,7 @@
             });
         }
     </script>
-
-
     @stack('css')
-
 </head>
 
 <body>
@@ -118,6 +113,7 @@
                     </button>
                 </span>
         </div>
+
         <div class="app-header__content">
             <div class="app-header-left">
                 <div class="search-wrapper">

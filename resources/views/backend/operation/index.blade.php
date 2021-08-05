@@ -6,7 +6,6 @@
     <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
 @endpush
 
-
 @section('title', 'Mahalli Lokasyon')
 
 @section('content')
@@ -89,6 +88,7 @@
                             </div>
                         </div>
 
+
                         <div class="col-md-3">
                             <label for="agency">Acente</label>
                             <select name="agency"
@@ -96,7 +96,7 @@
                                 <option value="">Seçiniz</option>
                                 @foreach($data['agencies'] as $key)
                                     <option
-                                        value="{{$key->id}}">{{ $key->city . '/' . $key->district . '-' . $key->agency_name}}</option>
+                                        value="{{$key->id}}">{{$key->agency_name}}</option>
                                 @endforeach
                             </select>
                         </div>
