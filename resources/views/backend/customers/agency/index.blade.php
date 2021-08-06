@@ -125,6 +125,7 @@
                         <th>Cari Kodu</th>
                         <th>Müşteri Tipi</th>
                         <th>Ad</th>
+                        <th>Kategori</th>
                         <th>City</th>
                         <th>District</th>
                         <th>Neighborhood</th>
@@ -143,6 +144,7 @@
                         <th>Cari Kodu</th>
                         <th>Müşteri Tipi</th>
                         <th>Ad</th>
+                        <th>Kategori</th>
                         <th>City</th>
                         <th>District</th>
                         <th>Neighborhood</th>
@@ -185,7 +187,7 @@
                     ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
                 ],
                 order: [
-                    9, 'desc'
+                    10, 'desc'
                 ],
                 language: {
                     "sDecimal": ",",
@@ -263,6 +265,7 @@
                     {data: 'current_code', name: 'current_code'},
                     {data: 'current_type', name: 'current_type'},
                     {data: 'name', name: 'name'},
+                    {data: 'category', name: 'category'},
                     {data: 'city', name: 'current_type'},
                     {data: 'district', name: 'current_type'},
                     {data: 'neighborhood', name: 'current_type'},
@@ -294,17 +297,16 @@
 
         function fillCargo(tbodyId, cargo) {
             var mytbodyId = "#" + tbodyId;
-            console.log(mytbodyId);
             $.each(cargo, function (index, value) {
                     $(mytbodyId).append(
                         '<tr>' +
-                            '<td>' + arrangeCargoTrackingNumber(String(value.tracking_no ))+ '</td>' +
-                            '<td class="font-weight-bold">' + value.sender_name + '</td>' +
-                            '<td class="font-weight-bold">' + value.receiver_name + '</td>' +
-                            '<td class="font-weight-bold text-success">' + value.status + '</td>' +
-                            '<td class="text-primary">' + value.cargo_type + '</td>' +
-                            '<td class="font-weight-bold text-primary">' + value.total_price + '₺' + '</td>' +
-                            '<td>' + '<button type="button" class="btn btn-sm btn-primary">Detay</button>' + '</td>' +
+                        '<td>' + arrangeCargoTrackingNumber(String(value.tracking_no)) + '</td>' +
+                        '<td class="font-weight-bold">' + value.sender_name + '</td>' +
+                        '<td class="font-weight-bold">' + value.receiver_name + '</td>' +
+                        '<td class="font-weight-bold text-success">' + value.status + '</td>' +
+                        '<td class="text-primary">' + value.cargo_type + '</td>' +
+                        '<td class="font-weight-bold text-primary">' + value.total_price + '₺' + '</td>' +
+                        '<td>' + '<button type="button" class="btn btn-sm btn-primary">Detay</button>' + '</td>' +
                         '</tr>'
                     )
                 }
@@ -313,7 +315,6 @@
 
 
         $(document).on('click', '.user-detail', function () {
-            console.log(arrangeCargoTrackingNumber('340212342895925'));
             ToastMessage('warning', '', 'Yükleniyor');
             detailsID = $(this).prop('id');
             userInfo(detailsID);
@@ -331,13 +332,12 @@
                 cache: false
             }).done(function (response) {
 
+
                 var current = response.data[0];
                 var category = current.category;
                 var current_type = current.current_type;
                 let addressNote = adresMaker(current.city, current.district, current.neighborhood, current.street, current.street2, current.building_no, current.door_no, current.floor, current.address_note);
                 let branch_office = current.agencies_city + " / " + current.agencies_district + " / " + current.agency_name + " Acente";
-
-                console.log(response.cargo)
                 let cargo = response.cargo;
 
                 if (current_type == 'Gönderici' && category == 'Bireysel') {
@@ -363,6 +363,7 @@
                     $('#senderPersonalCustomerType').html(current_type);
 
                 } else if (current_type == 'Gönderici' && category == 'Kurumsal') {
+                    console.log(current);
 
                     fillCargo('tbodyUserTopTenSenderCorporate', cargo);
 
@@ -408,26 +409,25 @@
                     $('#senderCustomerVkn').html(current.vkn);
 
                     $('#senderCustomerName').html(current.name);
-                    $('#senderCustomerType').html(current_type);
+                    $('#senderCustomerType-1').html(category);
 
                 } else if (current_type == 'Alıcı') {
+
                     fillCargo('tbodyUserTopTen', cargo);
-
                     $('#ModalUserDetail').modal();
+                    $('#tcknTaker').html(current.tckn)
+                    $('#nameSurnameTaker').html(current.name);
+                    $('#emailTaker').html(current.email);
 
-                    $('#tckn').html(current.tckn)
-                    $('#nameSurname').html(current.name);
-                    $('#email').html(current.email);
+                    $('#cityTaker').html(current.city);
+                    $('#districtTaker').html(current.district);
+                    $('#neighborhoodTaker').html(current.neighborhood);
 
-                    $('#city').html(current.city);
-                    $('#district').html(current.district);
-                    $('#neighborhood').html(current.neighborhood);
+                    $('#phoneTaker').html(current.phone);
+                    $('#phone-2-taker').html(current.phone2);
+                    $('#adressTaker').html(addressNote);
 
-                    $('#phone').html(current.phone);
-                    $('#phone-2').html(current.phone2);
-                    $('#adress').html(addressNote);
-
-                    $('#vkn').html(current.vkn);
+                    $('#vknTaker').html(current.vkn);
 
                     $('#customerName').html(current.name);
                     $('#customerType').html(current_type);
@@ -512,53 +512,53 @@
 
                                                 <tr>
                                                     <td class="static">TCKN</td>
-                                                    <td id="tckn"></td>
+                                                    <td id="tcknTaker"></td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="static">Ad Soyad</td>
-                                                    <td id="nameSurname"></td>
+                                                    <td id="nameSurnameTaker"></td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="static">Email</td>
-                                                    <td id="email"></td>
+                                                    <td id="emailTaker"></td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="static">İlçe</td>
-                                                    <td id="district"></td>
+                                                    <td id="districtTaker"></td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="static">İl</td>
-                                                    <td id="city"></td>
+                                                    <td id="cityTaker"></td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="static">Mahalle</td>
-                                                    <td id="neighborhood"></td>
+                                                    <td id="neighborhoodTaker"></td>
                                                 </tr>
 
 
                                                 <tr>
                                                     <td class="static">Telefon</td>
-                                                    <td id="phone">Aktif</td>
+                                                    <td id="phoneTaker">Aktif</td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="static">Cep Telefonu</td>
-                                                    <td id="phone-2">Aktif</td>
+                                                    <td id="phone-2-taker">Aktif</td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="static">Adres</td>
-                                                    <td id="adress"></td>
+                                                    <td id="adressTaker"></td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="static">VKN</td>
-                                                    <td id="vkn"></td>
+                                                    <td id="vknTaker"></td>
                                                 </tr>
 
 
@@ -586,28 +586,27 @@
 
                                                 </tbody>
                                             </table>
-                                            <ul class="list-group list-group-flush">
-                                                <li class="p-0 list-group-item">
-                                                    <div class="grid-menu grid-menu-2col">
-                                                        <div class="no-gutters row">
-                                                            <div class="col-sm-12">
-                                                                <div class="p-1">
-                                                                    <button
-                                                                        id="passwordResetBtn"
-                                                                        class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
-                                                                        <i class="lnr-redo text-dark opacity-7 btn-icon-wrapper mb-2"></i>
-                                                                        Tümünü Gör
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-
                                         </div>
 
                                     </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="p-0 list-group-item">
+                                            <div class="grid-menu grid-menu-2col">
+                                                <div class="no-gutters row">
+                                                    <div class="col-sm-12">
+                                                        <div class="p-1">
+                                                            <button
+                                                                id="passwordResetBtn"
+                                                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
+                                                                <i class="lnr-redo text-dark opacity-7 btn-icon-wrapper mb-2"></i>
+                                                                Tümünü Gör
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </li>
 
                             </ul>
@@ -676,59 +675,139 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-
+                                                <tr>
+                                                    <td class="static">Category</td>
+                                                    <td id="senderCustomerType-1" class="text-success"></td>
+                                                </tr>
                                                 <tr>
                                                     <td class="static">TCKN</td>
-                                                    <td id="tckn"></td>
+                                                    <td id="senderCustomerTckn"></td>
                                                 </tr>
+
 
                                                 <tr>
                                                     <td class="static">Ad Soyad</td>
-                                                    <td id="nameSurname"></td>
+                                                    <td id="senderCustomerNameSurname"></td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="static">Email</td>
-                                                    <td id="email"></td>
+                                                    <td id="senderCustomerEmail"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">İl</td>
+                                                    <td id="senderCustomerCity"></td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="static">İlçe</td>
-                                                    <td id="district"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">İl</td>
-                                                    <td id="city"></td>
+                                                    <td id="senderCustomerDistrict"></td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="static">Mahalle</td>
-                                                    <td id="neighborhood"></td>
+                                                    <td id="senderCustomerNeighborhood"></td>
                                                 </tr>
-
+                                                <tr>
+                                                    <td class="static">Cadde</td>
+                                                    <td id="senderCustomerStreet"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Sokak</td>
+                                                    <td id="senderCustomerStreet2"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Bina No</td>
+                                                    <td id="senderCustomerBuildingNo"></td>
+                                                </tr>
 
                                                 <tr>
-                                                    <td class="static">Telefon</td>
-                                                    <td id="phone">Aktif</td>
+                                                    <td class="static">Kat</td>
+                                                    <td id="senderCustomerFloor"></td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="static">Cep Telefonu</td>
-                                                    <td id="phone-2">Aktif</td>
+                                                    <td class="static">Daire No</td>
+                                                    <td id="senderCustomerDaireNo"></td>
                                                 </tr>
+
+                                                <tr>
+                                                    <td class="static">Adres Not</td>
+                                                    <td id="senderCustomerAdressNote"></td>
+                                                </tr>
+
 
                                                 <tr>
                                                     <td class="static">Adres</td>
-                                                    <td id="adress"></td>
+                                                    <td id="senderCustomerAdress"></td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="static">VKN</td>
-                                                    <td id="vkn"></td>
+                                                    <td class="static">Telefon</td>
+                                                    <td id="senderCustomerPhone"></td>
                                                 </tr>
 
+                                                <tr>
+                                                    <td class="static">Telefon 2</td>
+                                                    <td id="senderCustomer-phone-2"></td>
+                                                </tr>
 
+                                                <tr>
+                                                    <td class="static">Gsm</td>
+                                                    <td id="senderCustomerGsm"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Gsm 2</td>
+                                                    <td id="senderCustomerGsm-2"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Web Sitesi</td>
+                                                    <td id="senderCustomerWebSite"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Bağlı Olduğu İl</td>
+                                                    <td id="senderCustomerDispatchCity"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Bağlı Olduğu İlçe</td>
+                                                    <td id="senderCustomerDispatchDistrict"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Bağlı Olduğu Adres</td>
+                                                    <td id="senderCustomerDispatchAdress"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Vergi Dairesi</td>
+                                                    <td id="senderCustomerTaxAdmin"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Sevk Posta Codu</td>
+                                                    <td id="senderCustomerDispatchPastCode"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Bağlı Olduğu Şube</td>
+                                                    <td id="senderCustomerBranchOffice"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">İskonto</td>
+                                                    <td id="senderCustomerDiscount"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Sözleşme Başlangıç Tarihi</td>
+                                                    <td id="senderCustomerCotractStart"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Sözleşme Bitiş Tarihi</td>
+                                                    <td id="senderCustomerContractEnd"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Referans</td>
+                                                    <td id="senderCustomerRefference"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">VKN</td>
+                                                    <td id="senderCustomerVkn"></td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -753,30 +832,27 @@
 
                                                 </tbody>
                                             </table>
-                                            <ul class="list-group list-group-flush">
-                                                <li class="p-0 list-group-item">
-                                                    <div class="grid-menu grid-menu-2col">
-                                                        <div class="no-gutters row">
-                                                            <div class="col-sm-12">
-                                                                <div class="p-1">
-                                                                    <button
-                                                                        id="passwordResetBtn"
-                                                                        class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
-                                                                        <i class="lnr-redo text-dark opacity-7 btn-icon-wrapper mb-2"></i>
-                                                                        Tümünü Gör
-                                                                    </button>
-                                                                </div>
-                                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="p-0 list-group-item">
+                                            <div class="grid-menu grid-menu-2col">
+                                                <div class="no-gutters row">
+                                                    <div class="col-sm-12">
+                                                        <div class="p-1">
+                                                            <button
+                                                                id="passwordResetBtn"
+                                                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
+                                                                <i class="lnr-redo text-dark opacity-7 btn-icon-wrapper mb-2"></i>
+                                                                Tümünü Gör
+                                                            </button>
                                                         </div>
                                                     </div>
-                                                </li>
-                                            </ul>
-
-                                        </div>
-
-                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </li>
-
                             </ul>
                         </div>
                     </div>
@@ -924,31 +1000,27 @@
 
                                                 </tbody>
                                             </table>
-
-                                            <ul class="list-group list-group-flush">
-                                                <li class="p-0 list-group-item">
-                                                    <div class="grid-menu grid-menu-2col">
-                                                        <div class="no-gutters row">
-                                                            <div class="col-sm-12">
-                                                                <div class="p-1">
-                                                                    <button
-                                                                        id="passwordResetBtn"
-                                                                        class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
-                                                                        <i class="lnr-redo text-dark opacity-7 btn-icon-wrapper mb-2"></i>
-                                                                        Tümünü Gör
-                                                                    </button>
-                                                                </div>
-                                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="p-0 list-group-item">
+                                            <div class="grid-menu grid-menu-2col">
+                                                <div class="no-gutters row">
+                                                    <div class="col-sm-12">
+                                                        <div class="p-1">
+                                                            <button
+                                                                id="passwordResetBtn"
+                                                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
+                                                                <i class="lnr-redo text-dark opacity-7 btn-icon-wrapper mb-2"></i>
+                                                                Tümünü Gör
+                                                            </button>
                                                         </div>
                                                     </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-
-                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </li>
-
-
                             </ul>
                         </div>
                     </div>
