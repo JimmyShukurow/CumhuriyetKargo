@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\DefaultController;
 use App\Http\Controllers\Backend\RegionalDirectorate\RDController;
+use App\Http\Controllers\TransferCarsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Agency\AgencyController;
 use App\Http\Controllers\Backend\User\UserGM\UserController;
@@ -65,8 +66,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::get('SearchGlobalCargo',[MainCargoController::class,'getGlobalCargoes'])->name('mainCargo.getGlobalCargoes');
 
 
-
     Route::resource('VariousCars', VariousController::class);
+    Route::resource('TransferCars', TransferCarsController::class);
     Route::get('VariousCarsGetCars', [VariousController::class, 'getCars'])->name('VariousCars.getCars');
 
 
