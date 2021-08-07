@@ -59,9 +59,12 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
 
     #GM ALL currents
-    Route::get('Customers/GetAllCustomers',[SenderCurrentController::class,'getAllCustomers'])->name('customer.gm.getAllCustomers');
-
     Route::get('Customers', [SenderCurrentController::class, 'customersIndex'])->name('customers.index');
+    Route::get('Customers/GetAllCustomers',[SenderCurrentController::class,'getAllCustomers'])->name('customer.gm.getAllCustomers');
+    Route::get('SearchCargo',[MainCargoController::class,'searchCargo'])->name('mainCargo.search');
+    Route::get('SearchGlobalCargo',[MainCargoController::class,'getGlobalCargoes'])->name('mainCargo.getGlobalCargoes');
+
+
 
     Route::resource('VariousCars', VariousController::class);
     Route::get('VariousCarsGetCars', [VariousController::class, 'getCars'])->name('VariousCars.getCars');
@@ -281,7 +284,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('DestroyModuleOfRole', [ModuleController::class, 'destroySubModuleOfRole']);
     }));
 
-    
+
     Route::group(['prefix' => '/RegionalDirectorates', 'middleware' => 'RegionalDirectoratesMid', 'as' => 'rd.'], function () {
 
         Route::get('/', [RDController::class, 'index'])->name('Index');
@@ -308,4 +311,3 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 });
 
 Route::get('not.yet', [DefaultController::class, 'notyet'])->name('not.yet');
-Route::get('notx.yet', [DefaultController::class, 'notyet'])->name('customers.index');

@@ -15,42 +15,11 @@
 @section('content')
 
     <div class="app-main__inner">
-        <div class="app-page-title">
-            <div class="page-title-wrapper">
-                <div class="page-title-heading">
-                    <div class="page-title-icon">
-                        <i class="pe-7s-car icon-gradient bg-amy-crisp">
-                        </i>
-                    </div>
-                    <div> Muhtelif Araçlar
-                        <div class="page-title-subheading">Bu modül üzerinden sistemdeki tüm muhtelif araçları
-                            listleyebilir, işlem yapablirsiniz.
-                        </div>
-                    </div>
-                </div>
-                <div class="page-title-actions">
-                    <div class="d-inline-block dropdown">
-                        <a href="{{ route('VariousCars.create') }}">
-                            <button type="button" aria-haspopup="true" aria-expanded="false"
-                                    class="btn-shadow btn btn-info">
-                                <span class="btn-icon-wrapper pr-2 opacity-7">
-                                    <i class="fa fa-plus fa-w-20"></i>
-                                </span>
-                                Yeni Muhtelif Araç Ekle
-                            </button>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="card mb-3">
+        <div class="card mt-3">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                        class="header-icon pe-7s-car mr-3 text-muted opacity-6"> </i>Tüm Muhtelif Araçlar
+                        class="header-icon pe-7s-box2 mr-3 text-muted opacity-6"> </i>Kestiğiniz Kargolar
                 </div>
-
                 <div class="btn-actions-pane-right actions-icon-btn">
                     <div class="btn-group dropdown">
                         <button type="button" data-toggle="dropdown" aria-haspopup="true"
@@ -67,133 +36,204 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
             <div class="card-body">
                 <form method="POST" id="search-form">
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="brandCar">Marka:</label>
-                            <input type="text" id="brandCar"
-                                   class="form-control niko-filter form-control-sm niko-select-filter">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="modelCar">Model:</label>
-                            <input type="text" id="modelCar"
-                                   class="form-control niko-filter form-control-sm niko-select-filter">
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="plaqueCar">Plaka:</label>
-                            <input type="text" id="plaqueCar"
-                                   class="form-control niko-filter form-control-sm niko-select-filter">
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="tonnageCar">Tonaj (Kg):</label>
-                            <input type="text" id="tonnageCar"
-                                   class="form-control niko-filter form-control-sm niko-select-filter">
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="caseType">Kasa Türü:</label>
-                            <select id="caseType"
-                                    class="form-control form-control-sm niko-select-filter">
-                                <option value="">Seçiniz</option>
-                                <option value="Açık">Açık</option>
-                                <option value="Kapalı">Kapalı</option>
-                                <option value="Panelvan">Panelvan</option>
-                                <option value="Tente">Tente</option>
-                                <option value="Branda">Branda</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="modelYear">Model Yılı:</label>
-                            <input type="text" id="modelYear"
-                                   class="form-control niko-filter form-control-sm niko-select-filter">
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="driverName">Şöför Adı:</label>
-                            <input type="text" id="driverName"
-                                   class="form-control niko-filter form-control-sm niko-select-filter">
-                        </div>
-
-
-                        <div class="col-md-3">
-                            <label for="phoneInfo">İletişim:</label>
-                            <input type="text" data-inputmask="'mask': '538 069 22 99'"
-                                   placeholder="___ ___ __ __" type="text" id="phoneInfo"
+                            <label for="receiverCode">Kargo Takip No:</label>
+                            <input type="text" data-inputmask="'mask': '99999 99999 99999'"
+                                   placeholder="_____ _____ _____" type="text" id="trackingNo"
                                    class="form-control input-mask-trigger form-control-sm niko-filter">
                         </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="addPerson">Ekleyen:</label>
-                            <input type="text" id="addPerson"
-                                   class="form-control niko-filter form-control-sm niko-select-filter">
+                        <div class="col-md-3">
+                            <label for="receiverCity">Kargo Tipi:</label>
+                            <select id="cargoType"
+                                    class="form-control form-control-sm niko-select-filter">
+                                <option value="">Seçiniz</option>
+                                <option value="Koli">Koli</option>
+                                <option value="Dosya">Dosya</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="startDate">Başlangıç Tarih:</label>
+                            <input type="datetime-local" id="startDate" value="{{ date('Y-m-d') }}T00:00"
+                                   class="form-control form-control-sm  niko-select-filter">
                         </div>
 
-                        <div class="col-md-6">
-                            <label for="searchCity">İl:</label>
-                            <select id="searchCity"
+                        <div class="col-md-3">
+                            <label for="finishDate">Bitiş Tarihi:</label>
+                            <input type="datetime-local" id="finishDate" value="{{ date('Y-m-d') }}T23:59"
+                                   class="form-control form-control-sm  niko-select-filter">
+                        </div>
+                    </div>
+
+
+                    <div class="row pt-2">
+
+                        {{--                        <div class="col-md-2">--}}
+                        {{--                            <label for="receiverCurrentCode">Alıcı Cari Kod:</label>--}}
+                        {{--                            <input type="text" data-inputmask="'mask': '999 999 999'"--}}
+                        {{--                                   placeholder="___ ___ ___" type="text" id="receiverCurrentCode"--}}
+                        {{--                                   class="form-control input-mask-trigger form-control-sm niko-filter">--}}
+                        {{--                        </div>--}}
+
+                        <div class="col-md-3">
+                            <label for="receiverName">Alıcı Adı:</label>
+                            <input type="text" id="receiverName" class="form-control niko-filter form-control-sm">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="receiverCity">Alıcı İl:</label>
+                            <select id="receiverCity"
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
                                 @foreach($data['cities'] as $key)
-                                    <option value="{{$key->city_name}}" data="{{$key->city_name}}">{{$key->city_name}}</option>
+                                    <option data="{{$key->city_name}}" value="{{$key->id}}">{{$key->city_name}}</option>
                                 @endforeach
                             </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="receiverDistrict">Alıcı İlçe:</label>
+                            <select id="receiverDistrict"
+                                    class="form-control form-control-sm niko-select-filter">
+                                <option value="">Seçiniz</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="position-relative form-group">
+                                <label for="receiverPhone" class="">Alıcı Telefon (Cep):</label>
+                                <input name="receiverPhone" id="receiverPhone" required
+                                       data-inputmask="'mask': '(999) 999 99 99'"
+                                       placeholder="(___) ___ __ __" type="text"
+                                       value="{{ old('phone') }}"
+                                       class="form-control form-control-sm input-mask-trigger niko-filter">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row pt-2">
+
+                        {{--                        <div class="col-md-2">--}}
+                        {{--                            <label for="senderCurrentCode">Gönderici Cari Kod:</label>--}}
+                        {{--                            <input type="text" data-inputmask="'mask': '999 999 999'"--}}
+                        {{--                                   placeholder="___ ___ ___" type="text" id="senderCurrentCode"--}}
+                        {{--                                   class="form-control input-mask-trigger form-control-sm niko-filter">--}}
+                        {{--                        </div>--}}
+
+                        <div class="col-md-3">
+                            <label for="senderName">Gönderici Adı:</label>
+                            <input type="text" id="senderName"
+                                   class="form-control niko-filter form-control-sm niko-select-filter">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="senderCity">Gönderici İl:</label>
+                            <select id="senderCity"
+                                    class="form-control form-control-sm niko-select-filter">
+                                <option value="">Seçiniz</option>
+                                @foreach($data['cities'] as $key)
+                                    <option value="{{$key->id}}" data="{{$key->city_name}}">{{$key->city_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="senderDistrict">Gönderici İlçe:</label>
+                            <select id="senderDistrict"
+                                    class="form-control form-control-sm niko-select-filter">
+                                <option value="">Seçiniz</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="position-relative form-group">
+                                <label for="senderPhone" class="">Gönderici Telefon (Cep):</label>
+                                <input name="senderPhone" id="senderPhone" required
+                                       data-inputmask="'mask': '(999) 999 99 99'"
+                                       placeholder="(___) ___ __ __" type="text"
+                                       value="{{ old('phone') }}"
+                                       class="form-control form-control-sm input-mask-trigger niko-filter">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row pt-2">
+                        <div class="col">
+                            <label for="filterByDate">Tarihe göre ara</label>
+                            <input type="checkbox" id="filterByDate" name="filterByDate" class="niko-filter">
                         </div>
                     </div>
                 </form>
             </div>
+        </div>
 
+        <div class="card mb-3">
             <div class="card-body">
-                <table id="AgenciesTable"
-                       class="align-middle mb-0 table Table30Padding table-borderless table-striped NikolasDataTable">
+
+                <table style="white-space: nowrap;" id="AgenciesTable"
+                       class="align-middle mb-0 table Table20Padding table-bordered table-striped table-hover NikolasDataTable">
                     <thead>
                     <tr>
-                        <th>Marka</th>
-                        <th>Model</th>
-                        <th>Plaka</th>
-                        <th>Tonaj</th>
-                        <th>Kasa Türü</th>
-                        <th>Model Yıl</th>
-                        <th>Şöför Adı</th>
-                        <th>İletişim</th>
-                        <th>İl</th>
-                        <th>Ekleyen Kullanıcı</th>
+                        <th>KTNO</th>
+                        <th>Gönderici Adı</th>
+                        <th>Gönderici İl</th>
+                        <th>Alıcı Adı</th>
+                        <th>Alıcı İl</th>
+                        <th>Alıcı İlçe</th>
+                        <th>Alıcı Adres</th>
+                        <th>Kargo Tipi</th>
+                        <th>Ödeme Tipi</th>
+                        <th>Ücret</th>
+                        <th>Tahsilat Tipi</th>
+                        <th>Tahilatlı</th>
+                        <th>Fatura Tutarı</th>
+                        <th>Statü</th>
+                        <th>Durum</th>
+                        <th>Taşıyan</th>
+                        <th>Sistem</th>
+                        <th>Oluşturan Acente</th>
                         <th>Kayıt Tarihi</th>
-                        <th width="10" class="text-center"></th>
+                        <th>İşlem</th>
                     </tr>
                     </thead>
-
                     <tbody>
-                    </tbody>
 
+                    </tbody>
                     <tfoot>
                     <tr>
-                        <th>Marka</th>
-                        <th>Model</th>
-                        <th>Plaka</th>
-                        <th>Tonaj</th>
-                        <th>Kasa Türü</th>
-                        <th>Model Yıl</th>
-                        <th>Şöför Adı</th>
-                        <th>İletişim</th>
-                        <th>İl</th>
-                        <th>Ekleyen Kullanıcı</th>
+                        <th>KTNO</th>
+                        <th>Gönderici Adı</th>
+                        <th>Gönderici İl</th>
+                        <th>Alıcı Adı</th>
+                        <th>Alıcı İl</th>
+                        <th>Alıcı İlçe</th>
+                        <th>Alıcı Adres</th>
+                        <th>Kargo Tipi</th>
+                        <th>Ödeme Tipi</th>
+                        <th>Ücret</th>
+                        <th>Tahsilat Tipi</th>
+                        <th>Tahilatlı</th>
+                        <th>Fatura Tutarı</th>
+                        <th>Statü</th>
+                        <th>Durum</th>
+                        <th>Taşıyan</th>
+                        <th>Sistem</th>
+                        <th>Oluşturan Acente</th>
                         <th>Kayıt Tarihi</th>
-                        <th width="10" class="text-center"></th>
+                        <th>İşlem</th>
                     </tr>
                     </tfoot>
                 </table>
 
             </div>
+        </div>
+
+
+        {{--Statistics--}}
+        <div>
         </div>
     </div>
 @endsection
@@ -233,7 +273,7 @@
                     [10, 25, 50, 100, 250, 500, -1],
                     ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
                 ],
-                order: [10, 'desc'],
+                order: [17, 'desc'],
                 language: {
                     "sDecimal": ",",
                     "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
@@ -295,19 +335,23 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '{!! route('VariousCars.getCars') !!}',
+                    url: '{!! route('mainCargo.getGlobalCargoes') !!}',
                     data: function (d) {
-                        d.branchCar=$('#brandCar').val();
-                        d.modelCar=$('#modelCar').val();
-                        d.plaqueCar=$('#plaqueCar').val();
-                        d.tonnageCar=$('#tonnageCar').val();
-                        d.caseType=$('option:selected', '#caseType').attr('value');
-                        d.modelYear=$('#modelYear').val();
-                        d.driverName=$('#driverName').val();
-                        d.phoneInfo=$('#phoneInfo').val();
-                        d.searchCity=$('option:selected', '#searchCity').attr('value');
-                        d.recordDate=$('#recordDate').val();
-                        d.addPerson=$('#addPerson').val();
+                        d.trackingNo = $('#trackingNo').val();
+                        d.cargoType = $('#cargoType').val();
+                        d.receiverCurrentCode = $('#receiverCurrentCode').val();
+                        d.senderCurrentCode = $('#senderCurrentCode').val();
+                        d.startDate = $('#startDate').val();
+                        d.finishDate = $('#finishDate').val();
+                        d.receiverName = $('#receiverName').val();
+                        d.receiverCity = $('option:selected', '#receiverCity').attr('data') == undefined ? '' : $('option:selected', '#receiverCity').attr('data');
+                        d.receiverDistrict = $('#receiverDistrict').val();
+                        d.receiverPhone = $('#receiverPhone').val();
+                        d.senderName = $('#senderName').val();
+                        d.senderCity = $('option:selected', '#senderCity').attr('data') == undefined ? '' : $('option:selected', '#senderCity').attr('data');
+                        d.senderDistrict = $('#senderDistrict').val();
+                        d.senderPhone = $('#senderPhone').val();
+                        d.filterByDAte = $('#filterByDate').prop('checked');
                     },
                     error: function (xhr, error, code) {
 
@@ -322,16 +366,24 @@
                     }
                 },
                 columns: [
-                    {data: 'brand', name: 'brand'},
-                    {data: 'model', name: 'model'},
-                    {data: 'plaque', name: 'plaque'},
-                    {data: 'tonnage', name: 'tonnage'},
-                    {data: 'case_type', name: 'case_type'},
-                    {data: 'model_year', name: 'model_year'},
-                    {data: 'driver_name', name: 'driver_name'},
-                    {data: 'phone', name: 'phone'},
-                    {data: 'city', name: 'city'},
-                    {data: 'name_surname', name: 'name_surname'},
+                    {data: 'tracking_no', name: 'tracking_no'},
+                    {data: 'sender_name', name: 'sender_name'},
+                    {data: 'sender_city', name: 'sender_city'},
+                    {data: 'receiver_name', name: 'receiver_name'},
+                    {data: 'receiver_city', name: 'receiver_city'},
+                    {data: 'receiver_district', name: 'receiver_district'},
+                    {data: 'receiver_address', name: 'receiver_address'},
+                    {data: 'cargo_type', name: 'cargo_type'},
+                    {data: 'payment_type', name: 'payment_type'},
+                    {data: 'total_price', name: 'total_price'},
+                    {data: 'collectible', name: 'collectible'},
+                    {data: 'collectible', name: 'collectible'},
+                    {data: 'collection_fee', name: 'collection_fee'},
+                    {data: 'status', name: 'status'},
+                    {data: 'status_for_human', name: 'status_for_human'},
+                    {data: 'transporter', name: 'transporter'},
+                    {data: 'system', name: 'system'},
+                    {data: 'agency_name', name: 'agency_name'},
                     {data: 'created_at', name: 'created_at'},
                     {data: 'edit', name: 'edit'},
                 ],
