@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Operation;
 use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\Cities;
+use App\Models\Districts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -24,7 +25,7 @@ class LocalLocationController extends Controller
             ->get();
         $data['cities'] = Cities::all();
 
-        return view('backend.operation.index', compact('data'));
+        return view('backend.operation.local_location.index', compact('data'));
     }
 
     /**
@@ -91,6 +92,18 @@ class LocalLocationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getNeighborhoodsOfAgency(Request $request)
+    {
+
+        $district = Districts::find($request->district);
+        $district = $district->district_name;
+
+        $city = Cities::find($request->city);
+        $city = $city->city_name;
+
+        return $request->all();
     }
 
     public function getLocation(Request $request)

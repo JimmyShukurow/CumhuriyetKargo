@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCargoContentsTable extends Migration
+class CreateLocalLocationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateCargoContentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('cargo_contents', function (Blueprint $table) {
+        Schema::create('local_locations', function (Blueprint $table) {
             $table->id();
-            $table->string('');
+            $table->string('city');
+            $table->string('district');
+            $table->string('neighborhood');
+            $table->string('agency_code');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateCargoContentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cargo_contents');
+        Schema::dropIfExists('local_locations');
     }
 }

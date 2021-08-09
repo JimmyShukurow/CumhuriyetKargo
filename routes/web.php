@@ -59,7 +59,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
 
     #GM ALL currents
-    Route::get('Customers/GetAllCustomers',[SenderCurrentController::class,'getAllCustomers'])->name('customer.gm.getAllCustomers');
+    Route::get('Customers/GetAllCustomers', [SenderCurrentController::class, 'getAllCustomers'])->name('customer.gm.getAllCustomers');
 
     Route::get('Customers', [SenderCurrentController::class, 'customersIndex'])->name('customers.index');
 
@@ -83,7 +83,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 //        Route::get('LocalLocation', )
         Route::resource('LocalLocation', LocalLocationController::class);
         Route::get('GetLocations', [LocalLocationController::class, 'getLocation'])->name('operation.getLocation');
-
+        Route::post('GetNeighborhoodsOfAgency', [LocalLocationController::class, 'getNeighborhoodsOfAgency']);
 
     });
 
@@ -164,9 +164,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('GetUserInfo', [UserController::class, 'userInfo']);
         ## Ajax ==> Save Status Info
         Route::post('ChangeStatus', [UserController::class, 'changeStatus']);
-
-        Route::post('GetCustomerInfo',[SenderCurrentController::class,'getCustomerById']);
-
+        Route::post('GetCustomerInfo', [SenderCurrentController::class, 'getCustomerById']);
     }));
 
     # Agency Users Transaction
@@ -224,6 +222,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
             Route::post('CityToDistrict', [AjaxController::class, 'cityToDistrict'])->name('city.to.district');
             Route::post('DistrictToNeighborhood', [AjaxController::class, 'districtToNeighborhood'])->name('district.to.neighborhood');
             Route::get('/SystemUpdatesShow/{id}', [ModuleController::class, 'systemUpdateShow']);
+            Route::post('GetAgency', [AjaxController::class, 'getAgency']);
         });
     });
 
@@ -281,7 +280,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('DestroyModuleOfRole', [ModuleController::class, 'destroySubModuleOfRole']);
     }));
 
-    
+
     Route::group(['prefix' => '/RegionalDirectorates', 'middleware' => 'RegionalDirectoratesMid', 'as' => 'rd.'], function () {
 
         Route::get('/', [RDController::class, 'index'])->name('Index');
@@ -303,9 +302,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('ListIdleAgenciesTC', [RDController::class, 'listIdleAgenciesTc'])->name('ListIdleAgenciesTC');
         Route::post('DestroyRDDistrict', [RDController::class, 'destroyRdDistrict']);
     });
-
-
 });
 
 Route::get('not.yet', [DefaultController::class, 'notyet'])->name('not.yet');
-Route::get('notx.yet', [DefaultController::class, 'notyet'])->name('customers.index');
+//Route::get('nxot.yet', [DefaultController::class, 'notyet'])->name('mainCargo.search');
+//Route::get('nyot.yet', [DefaultController::class, 'notyet'])->name('TransferCars.index');

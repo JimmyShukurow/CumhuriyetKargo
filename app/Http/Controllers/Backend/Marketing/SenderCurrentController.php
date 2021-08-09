@@ -567,18 +567,15 @@ class SenderCurrentController extends Controller
 
     public function customersIndex()
     {
-
         $data['users'] = DB::table('view_users_general_info')->get();
         $data['agencies'] = Agencies::all();
         $data['tc'] = TransshipmentCenters::all();
         $data['roles'] = Roles::all();
         $data['cities'] = Cities::all();
 
-
         GeneralLog('GM Kullanıcılar sayfası görüntülendi.');
         return view('backend.customers.agency.index', compact(['data']));
     }
-
 
     public function getAllCustomers(Request $request)
     {
@@ -589,12 +586,11 @@ class SenderCurrentController extends Controller
         $customer_type = $request->customer_type;
         $phone = $request->phone;
 
-
         $data = DB::table('currents')
             ->select('currents.*', 'users.name_surname')
             ->join('users', 'users.id', '=', 'currents.created_by_user_id')
             ->join('agencies', 'agencies.id', '=', 'users.agency_code')
-            ->whereRaw($category ? 'category=' . $category : '1 > 0')
+            ->whereRaw($category ? "category='" . $category . "'" : '1 > 0')
             ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
             ->whereRaw($city ? "city='" . $city . "'" : '1 > 0')
             ->whereRaw($customer_name_surname ? "name='" . $customer_name_surname . "'" : '1 > 0')
@@ -610,6 +606,7 @@ class SenderCurrentController extends Controller
             ->make(true);
     }
 
+
     public function getCustomerById(Request $request)
     {
         $id = $request->user;
@@ -617,7 +614,6 @@ class SenderCurrentController extends Controller
             INNER JOIN users ON users.id = currents.created_by_user_id
             INNER JOIN agencies ON agencies.id = users.agency_code
              WHERE currents.id = $id");
-
 
         if ($data[0]->current_type == 'Gönderici') {
             $cargo = Cargoes::where('sender_id', $id)
@@ -633,7 +629,4 @@ class SenderCurrentController extends Controller
         return response()->json(['data' => $data, 'cargo' => $cargo]);
     }
 
-
 }
-
-

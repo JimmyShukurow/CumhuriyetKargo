@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\User\UserGM\UserController;
 use App\Http\Controllers\Backend\Personel\PersonelController;
 use App\Http\Controllers\Backend\User\UserAgency\UserAgencyController;
 use App\Http\Controllers\Backend\User\UserTC\UserTCController;
+use App\Http\Controllers\CKG_Mobile\DefaultController;
 
 
 /*
@@ -37,13 +38,20 @@ Route::get('TCUsers/GetUserLogs', [UserTCController::class, 'getUserLogs'])->nam
 # GM All Users
 Route::get('Users/GetAllUsers', [UserController::class, 'getAllUsers'])->name('user.gm.getAllUsers');
 
-
 # Perosonel Last Logs
 Route::get('Personel/GetLastLogs', [PersonelController::class, 'getUserLastLogs'])->name('personel.GetLastLogs');
 
 ## Ajax ==> Email There Is Check <== Ajax ##
 Route::post('Users/CheckEmail', [UserController::class, 'checkEmail']);
 
+Route::post('login', [DefaultController::class, 'login']);
+
+Route::middleware('auth:api')->group(function (){
+
+    Route::post('/logout', [DefaultController::class, 'logout']);
+    Route::post('/user', [DefaultController::class, 'user']);
+
+});
 
 
 

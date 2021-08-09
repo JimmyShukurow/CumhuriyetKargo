@@ -82,6 +82,8 @@
                                     <option value=""> Seçiniz</option>
                                     <option {{old('case_type') == 'Açık' ? 'selected' : ''}} value="Açık">Açık</option>
                                     <option {{old('case_type') == 'Kapalı' ? 'selected' : ''}} value="Kapalı">Kapalı
+                                    <option {{old('case_type') == 'Panelvan' ? 'selected' : ''}} value="Panelvan">
+                                        Panelvan
                                     </option>
                                 </select>
                             </div>
