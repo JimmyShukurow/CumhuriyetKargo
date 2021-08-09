@@ -10,7 +10,7 @@
             role="menu" aria-hidden="true" class="dropdown-menu" x-placement="bottom-start">
 
             <a class="dropdown-item"
-               href="{{ route('VariousCars.edit',$id) }}">
+               href="{{ route('TransferCars.edit',$id) }}">
                 Düzenle
             </a>
             <button type="button" id="{{$id}}" tabindex="0" from="various_car"

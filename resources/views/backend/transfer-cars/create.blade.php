@@ -314,7 +314,7 @@
                                         <div class="input-group-prepend"><span
                                                 class="input-group-text">₺</span></div>
                                         <input name="monthRentPrice" id="monthRentPrice" required
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
                                                type="text" value="{{ old('monthRentPrice') }}"
                                                class="form-control input-mask-trigger form-control-sm calculat-for-hakedisPlusMazot text-center">
                                     </div>
@@ -328,7 +328,7 @@
                                         <div class="input-group-prepend"><span
                                                 class="input-group-text">₺</span></div>
                                         <input name="kdvHaricHakedis" id="kdvHaricHakedis" required readonly
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
                                                type="text" value="{{ old('kdvHaricHakedis') }}"
                                                class="form-control input-mask-trigger form-control-sm text-center">
                                     </div>
@@ -341,9 +341,9 @@
                                         <div class="input-group-prepend"><span
                                                 class="input-group-text">₺</span></div>
                                         <input name="oneRentPrice" id="oneRentPrice" required readonly
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
                                                type="text" value="{{ old('oneRentPrice') }}"
-                                               class="form-control input-mask-trigger form-control-sm for-calculate-oneFlueJourneyPrice calculate-for-SeferPlusMaliyet text-center">
+                                               class="form-control input-mask-trigger form-control-sm  calculate-for-SeferPlusMaliyet text-center">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -354,7 +354,7 @@
                                         <div class="input-group-prepend"><span
                                                 class="input-group-text">%</span></div>
                                         <input name="flueRate" id="flueRate" required
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'prefix': '%', 'placeholder': '0'"
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
                                                type="text" value="{{ old('flueRate') }}"
                                                class="form-control input-mask-trigger form-control-sm for-calculate-oneFlueJourneyPrice text-center">
                                     </div>
@@ -369,7 +369,7 @@
                                         <input name="turKm" id="turKm" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
                                                type="text" value="{{ old('turKm') }}"
-                                               class="form-control input-mask-trigger form-control-sm calculate-for-SeferPlusMaliyet text-center">
+                                               class="form-control input-mask-trigger form-control-sm calculate-for-SeferPlusMaliyet text-center for-calculate-oneFlueJourneyPrice">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -393,7 +393,7 @@
                                         <div class="input-group-prepend"><span
                                                 class="input-group-text">₺</span></div>
                                         <input name="oneFlueJourneyPrice" id="oneFlueJourneyPrice" required readonly
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
                                                type="text" value="{{ old('oneFlueJourneyPrice') }}"
                                                class="form-control input-mask-trigger form-control-sm text-center">
                                     </div>
@@ -406,7 +406,7 @@
                                         <div class="input-group-prepend"><span
                                                 class="input-group-text">₺</span></div>
                                         <input name="monthFlue" id="monthFlue" required
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
                                                type="text" value="{{ old('monthFlue') }}"
                                                class="form-control input-mask-trigger form-control-sm calculat-for-hakedisPlusMazot text-center">
                                     </div>
@@ -419,7 +419,7 @@
                                         <div class="input-group-prepend"><span
                                                 class="input-group-text">₺</span></div>
                                         <input name="seferPlusMaliyet" id="seferPlusMaliyet" required readonly
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
                                                type="text" value="{{ old('monthFlue') }}"
                                                class="form-control input-mask-trigger form-control-sm text-center">
                                     </div>
@@ -674,8 +674,9 @@
             });
 
         });
-        $('#monthRentPrice').keyup(function (){
-            var monthRentPrice=parseFloat($(this).val().substring(2));
+
+        $('#monthRentPrice').keyup(function (){//tamam
+            var monthRentPrice=$('#monthRentPrice').val().replaceAll(',','');
             var kdvHaricHakedis=monthRentPrice/1.18;
             var birSeferKiraMaliyeti=monthRentPrice/26;
              $('#kdvHaricHakedis').val(kdvHaricHakedis);
@@ -683,34 +684,30 @@
         });
 
 
-        $('.for-calculate-oneFlueJourneyPrice').keyup(function (){
-            var oneRentPrice=$('#oneRentPrice').val().replaceAll(',','');
-            oneRentPrice=parseFloat(oneRentPrice.substring(2));
 
 
-            var flueRate=$('#flueRate').val().replaceAll(',','');
-            flueRate= parseFloat(flueRate.substring(1))
+        $('.for-calculate-oneFlueJourneyPrice').keyup(function (){//tamam
+            var flueRate=parseFloat($('#flueRate').val().replaceAll(',',''));
 
-            $('#oneFlueJourneyPrice').val(oneRentPrice*flueRate*6.7);
+            var turKm=parseFloat($('#turKm').val().replaceAll(',',''));
+            $('#oneFlueJourneyPrice').val((turKm*flueRate*6.7)/100);
         });
+
 
 
         $('.calculate-for-SeferPlusMaliyet').keyup(function (){
-            var turKm=$('#turKm').val().replaceAll(',','');
-            turKm=parseFloat(turKm);
+            var oneFlueJourneyPrice=parseFloat($('#oneFlueJourneyPrice').val().replaceAll(',',''));
 
-            var oneRentPrice=$('#oneRentPrice').val().replaceAll(',','');
-            oneRentPrice=parseFloat(oneRentPrice.substring(2));
+            var oneRentPrice=parseFloat($('#oneRentPrice').val().replaceAll(',',''));
+            console.log(oneRentPrice);
 
-            $('#seferPlusMaliyet').val((oneRentPrice + turKm));
+            $('#seferPlusMaliyet').val((oneRentPrice + oneFlueJourneyPrice));
         });
 
         $('.calculat-for-hakedisPlusMazot').keyup(function (){
-            var monthRentPrice=$('#monthRentPrice').val().replaceAll(',','');
-            monthRentPrice=parseFloat(monthRentPrice.substring(2));
+            var monthRentPrice=parseFloat($('#monthRentPrice').val().replaceAll(',',''));
 
-            var monthFlue=$('#monthFlue').val().replaceAll(',','');
-            monthFlue=parseFloat(monthFlue.substring(2));
+            var monthFlue=parseFloat($('#monthFlue').val().replaceAll(',',''));
 
             $('#hakedisPlusMazot').val(monthRentPrice + monthFlue);
 

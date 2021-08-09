@@ -157,18 +157,12 @@
                        class="align-middle mb-0 table Table30Padding table-borderless table-striped NikolasDataTable">
                     <thead>
                     <tr>
-                        <th>Marka</th>
-                        <th>Model</th>
+                        <th>Araç Marka</th>
+                        <th>Araç Model</th>
                         <th>Plaka</th>
-                        <th>Tonaj</th>
-                        <th>Kasa Türü</th>
-                        <th>Model Yıl</th>
-                        <th>Şöför Adı</th>
-                        <th>İletişim</th>
-                        <th>İl</th>
-                        <th>Ekleyen Kullanıcı</th>
-                        <th>Kayıt Tarihi</th>
-                        <th width="10" class="text-center"></th>
+                        <th>Şoför Adı</th>
+                        <th>Şoför İletişim</th>
+                        <th width="10" class="text-center">İşlem</th>
                     </tr>
                     </thead>
 
@@ -177,18 +171,12 @@
 
                     <tfoot>
                     <tr>
-                        <th>Marka</th>
-                        <th>Model</th>
+                        <th>Araç Marka</th>
+                        <th>Araç Model</th>
                         <th>Plaka</th>
-                        <th>Tonaj</th>
-                        <th>Kasa Türü</th>
-                        <th>Model Yıl</th>
-                        <th>Şöför Adı</th>
-                        <th>İletişim</th>
-                        <th>İl</th>
-                        <th>Ekleyen Kullanıcı</th>
-                        <th>Kayıt Tarihi</th>
-                        <th width="10" class="text-center"></th>
+                        <th>Şoför Adı</th>
+                        <th>Şoför İletişim</th>
+                        <th width="10" class="text-center">İşlem</th>
                     </tr>
                     </tfoot>
                 </table>
@@ -233,7 +221,6 @@
                     [10, 25, 50, 100, 250, 500, -1],
                     ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
                 ],
-                order: [10, 'desc'],
                 language: {
                     "sDecimal": ",",
                     "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
@@ -295,19 +282,22 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '{!! route('VariousCars.getCars') !!}',
+                    url: '{!! route('transfer.car.all') !!}',
                     data: function (d) {
-                        d.branchCar=$('#brandCar').val();
-                        d.modelCar=$('#modelCar').val();
-                        d.plaqueCar=$('#plaqueCar').val();
-                        d.tonnageCar=$('#tonnageCar').val();
-                        d.caseType=$('option:selected', '#caseType').attr('value');
-                        d.modelYear=$('#modelYear').val();
-                        d.driverName=$('#driverName').val();
-                        d.phoneInfo=$('#phoneInfo').val();
-                        d.searchCity=$('option:selected', '#searchCity').attr('value');
-                        d.recordDate=$('#recordDate').val();
-                        d.addPerson=$('#addPerson').val();
+
+                        //filterda kullandığın değerler
+
+                        // d.branchCar=$('#brandCar').val();
+                        // d.modelCar=$('#modelCar').val();
+                        // d.plaqueCar=$('#plaqueCar').val();
+                        // d.tonnageCar=$('#tonnageCar').val();
+                        // d.caseType=$('option:selected', '#caseType').attr('value');
+                        // d.modelYear=$('#modelYear').val();
+                        // d.driverName=$('#driverName').val();
+                        // d.phoneInfo=$('#phoneInfo').val();
+                        // d.searchCity=$('option:selected', '#searchCity').attr('value');
+                        // d.recordDate=$('#recordDate').val();
+                        // d.addPerson=$('#addPerson').val();
                     },
                     error: function (xhr, error, code) {
 
@@ -322,17 +312,11 @@
                     }
                 },
                 columns: [
-                    {data: 'brand', name: 'brand'},
-                    {data: 'model', name: 'model'},
+                    {data: 'arac_marka', name: 'arac_marka'},
+                    {data: 'arac_model', name: 'arac_model'},
                     {data: 'plaque', name: 'plaque'},
-                    {data: 'tonnage', name: 'tonnage'},
-                    {data: 'case_type', name: 'case_type'},
-                    {data: 'model_year', name: 'model_year'},
                     {data: 'driver_name', name: 'driver_name'},
-                    {data: 'phone', name: 'phone'},
-                    {data: 'city', name: 'city'},
-                    {data: 'name_surname', name: 'name_surname'},
-                    {data: 'created_at', name: 'created_at'},
+                    {data: 'driver_phone', name: 'driver_phone'},
                     {data: 'edit', name: 'edit'},
                 ],
 

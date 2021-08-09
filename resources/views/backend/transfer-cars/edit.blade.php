@@ -1,9 +1,8 @@
 @extends('backend.layout')
 
-@section('title', 'Muhtelif Araç Düzenle')
+@section('title', 'Yeni Muhtelif Araç Girişi')
 
 @section('content')
-
     <div class="app-main__inner">
         <div class="app-page-title">
             <div class="page-title-wrapper">
@@ -12,20 +11,20 @@
                         <i class="pe-7s-car icon-gradient bg-amy-crisp">
                         </i>
                     </div>
-                    <div>Muhtelif Araç Düzenle
-                        <div class="page-title-subheading">Bu sayfa üzerinden muhtelif araç düzenlenebilir.
+                    <div>Yeni Aktarma Araç Oluştur
+                        <div class="page-title-subheading">Bu sayfa üzerinden aktarma aracı oluşturabilirsiniz.
                         </div>
                     </div>
                 </div>
                 <div class="page-title-actions">
                     <div class="d-inline-block dropdown">
-                        <a href="{{ route('VariousCars.index') }}">
+                        <a href="{{ route('TransferCars.index') }}">
                             <button type="button" aria-haspopup="true" aria-expanded="false"
                                     class="btn-shadow btn btn-info">
                                 <span class="btn-icon-wrapper pr-2 opacity-7">
                                     <i class="fa fa-step-backward fa-w-20"></i>
                                 </span>
-                                Tüm Muhtelif Araçları Listele
+                                Tüm AKtarama Araçları Listele
                             </button>
                         </a>
                     </div>
@@ -35,123 +34,799 @@
 
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <h5 class="card-title">ARAÇ DÜZENLE</h5>
-                <form id="agencyForm" method="post"
-                      action="{{ route('VariousCars.update',$data['various_car']->id) }} ">
-                    @method('PUT')
+                <form id="agencyForm" method="POST" action="{{ route('TransferCars.update',$data['myTransferCar']->id )}}">
+
+                    @method('PATCH')
                     @csrf
-                    <div class="form-row">
-                        <div class="col-md-4">
-                            <div class="position-relative form-group">
-                                <label for="arac_marka" class="">Araç Marka</label>
-                                <input name="arac_marka" required id="arac_marka"
-                                       placeholder="Aracın markasını giriniz."
-                                       type="text"
-                                       value="{{  $data['various_car']->brand }}" class="form-control">
+                    <div class="row">
+                        <div class="col-md-6" id="container-general-info">
+                            <h6 class="text-dark text-center font-weight-bold">Araç Bilgiler</h6>
+                            <div class="divider"></div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="position-relative form-group">
+                                        <label for="branchCars" class="font-weight-bold">Araç Marka:</label>
+                                        <input name="branchCars" required id="branchCars"
+                                               placeholder="Aracın markasını giriniz."
+                                               type="text"
+                                               value="{{$data['myTransferCar']->arac_marka}}"
+                                               class="form-control form-control-sm">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="modelCars" class="font-weight-bold">Araç Model</label>
+                                        <input name="modelCars" required id="modelCars"
+                                               placeholder="Aracın markasını giriniz."
+                                               type="text"
+                                               value="{{$data['myTransferCar']->arac_model }}"
+                                               class="form-control form-control-sm">
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="modelYear" class="font-weight-bold">Araç Model Yılı</label>
+                                        <input name="modelYear" required id="modelYear"
+                                               placeholder="Aracın markasını giriniz."
+                                               type="text"
+                                               value="{{$data['myTransferCar']->arac_yılı }}"
+                                               class="form-control form-control form-control-sm">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="position-relative form-group">
+                                        <label for="plaqueCar" class="font-weight-bold">Plaka:</label>
+                                        <input name="plaqueCar" required id="plaqueCar"
+                                               placeholder="Aracın markasını giriniz."
+                                               type="text"
+                                               value="{{ $data['myTransferCar']->plaque }}"
+                                               class="form-control form-control-sm">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="capacityCar" class="font-weight-bold">Araç Kapasitesi</label>
+                                        <select name="capacityCar" required id="capacityCar"
+                                                class="form-control form-control-sm">
+                                            <option value=""> Seçiniz</option>
+                                            <option
+                                                {{$data['myTransferCar']->arac_kapasitesi == 'Panelvan' ? 'selected' : ''}} value="Panelvan">
+                                                Panelvan
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->arac_kapasitesi == 'Kamyonet' ? 'selected' : ''}} value="Kamyonet">
+                                                Kamyonet
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->arac_kapasitesi == '6 Teker Kamyonet' ? 'selected' : ''}} value="6 Teker Kamyonet">
+                                                6 Teker Kamyonet
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->arac_kapasitesi == '10 Teker Kamyonet' ? 'selected' : ''}} value="10 Teker Kamyon">
+                                                10 Teker Kamyon
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->arac_kapasitesi == '40 Ayak Kamyon' ? 'selected' : ''}} value="40 Ayak Kamyon">
+                                                40 Ayak Kamyon
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->arac_kapasitesi== 'Tır' ? 'selected' : ''}} value="Tır">
+                                                Takılı
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="tonnage" class="font-weight-bold">Tonaj (Kg)</label>
+                                        <input name="tonnage" required id="tonnage"
+                                               placeholder="Tonaj"
+                                               type="text"
+                                               value="{{$data['myTransferCar']->tonnage}}"
+                                               class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="desiCapacity" class="font-weight-bold">Desi</label>
+                                        <input name="desiCapacity" required id="desiCapacity"
+                                               placeholder="Desi"
+                                               type="text"
+                                               value="{{ $data['myTransferCar']->desi }}"
+                                               class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="atsInfo" class="font-weight-bold">ATS (Araç Takip Sistemi):</label>
+                                        <select name="atsInfo" required id="atsInfo"
+                                                class="form-control form-control-sm">
+                                            <option value=""> Seçiniz</option>
+                                            <option
+                                                {{$data['myTransferCar']->ats == 'Takılı' ? 'selected' : ''}} value="Takılı">
+                                                Takılı
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->ats == 'Takılı Değil' ? 'selected' : ''}} value="Takılı Değil">
+                                                Takılı Değil
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->ats == 'Gönderildi' ? 'selected' : ''}} value="Gönderildi">
+                                                Gönderildi
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->ats== 'Gönderilmedi' ? 'selected' : ''}} value="Gönderilmedi">
+                                                Gönderilmedi
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-row">
+                                        <div class="col-md-3">
+                                            <div class="position-relative form-group">
+                                                <label for="line" class="font-weight-bold">Hat</label>
+                                                <select name="line" required id="line"
+                                                        class="form-control form-control-sm">
+                                                    <option value=""> Seçiniz</option>
+                                                    @foreach($data['transshipment_centers'] as $trasferCars)
+                                                        <option
+                                                            {{$data['myTransferCar']->hat == $trasferCars->tc_name ? 'selected' : ''}} value="{{$trasferCars->tc_name}}">{{$trasferCars->tc_name.' TM'}} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative form-group">
+                                                <label for="exitTransfer" class="font-weight-bold">Çıkış
+                                                    Aktarma </label>
+                                                <select name="exitTransfer" required id="exitTransfer"
+                                                        class="form-control form-control-sm">
+                                                    <option value=""> Seçiniz</option>
+                                                    @foreach($data['transshipment_centers'] as $trasferCars)
+                                                        <option
+                                                            {{$data['myTransferCar']->cıkıs_aktarma == $trasferCars->tc_name ? 'selected' : ''}} value="{{$trasferCars->tc_name}}">{{$trasferCars->tc_name.' TM'}} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="position-relative form-group">
+                                                <label for="arriveTransfer" class="font-weight-bold">Varış
+                                                    Aktarma</label>
+                                                <select name="arriveTransfer" required id="arriveTransfer"
+                                                        class="form-control form-control-sm ">
+                                                    <option value=""> Seçiniz</option>
+                                                    @foreach($data['transshipment_centers'] as $trasferCars)
+                                                        <option
+                                                            {{$data['myTransferCar']->varıs_aktarma == $trasferCars->tc_name ? 'selected' : ''}} value="{{$trasferCars->tc_name}}">{{$trasferCars->tc_name.' TM'}} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative form-group">
+                                                <label for="stopTransfer" class="font-weight-bold">Uğradığı
+                                                    Aktarmalar</label>
+                                                <select name="stopTransfer[]" multiple="multiple" required
+                                                        id="stopTransfer"
+                                                        class="form-control form-control-sm">
+                                                    <option value=""> Seçiniz</option>
+                                                    @foreach($data['transshipment_centers'] as $trasferCars)
+                                                        <option
+                                                            {{$data['myTransferCar']->ugradığı_aktarma == $trasferCars->tc_name ? 'selected' : ''}} value="{{$trasferCars->tc_name}}">{{$trasferCars->tc_name.' TM'}} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6" id="container-communication-info">
+                            <h6 class="text-dark text-center  font-weight-bold">Şöför İletişim Bilgileri</h6>
+                            <div class="divider"></div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="driverName" class="font-weight-bold">Şoför Adı</label>
+                                        <input name="driverName" required id="driverName"
+                                               placeholder="Aracın markasını giriniz."
+                                               type="text"
+                                               value="{{ $data['myTransferCar']->driver_name }}"
+                                               class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="position-relative form-group">
+                                        <label for="driverPhone" class="font-weight-bold">Şoför İletişim *</label>
+                                        <input name="driverPhone" id="driverPhone" required
+                                               data-inputmask="'mask': '(999) 999 99 99'"
+                                               placeholder="(_) _ _ _" type="text"
+                                               value="{{ $data['myTransferCar']->driver_phone }}"
+                                               class="form-control form-control-sm input-mask-trigger">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="position-relative form-group">
+                                        <label for="driverAdress" class="font-weight-bold">Şoför Adresi</label>
+                                        <textarea name="driverAdress" id="driverAdress"
+                                                  class="form-control form-control-sm" maxlength="500"
+                                                  required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="carOwner" class="font-weight-bold">Araç Sahibi Ad Soyad</label>
+                                        <input name="carOwner" required id="carOwner"
+                                               placeholder="Araç sahibi adı."
+                                               type="text"
+                                               value="{{$data['myTransferCar']->arac_sahibi_ad }}"
+                                               class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="position-relative form-group">
+                                        <label for="carOwnerPhone" class="font-weight-bold">Araç Sahibi
+                                            İletişim </label>
+                                        <input name="carOwnerPhone" id="carOwnerPhone" required
+                                               data-inputmask="'mask': '(999) 999 99 99'"
+                                               placeholder="(_) _ _ _" type="text"
+                                               value="{{ $data['myTransferCar']->arac_sahibi_phone }}"
+                                               class="form-control form-control-sm input-mask-trigger">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="carOwnerRelative" class="font-weight-bold">Araç Sahibi Yakını Ad
+                                            Soyad</label>
+                                        <input name="carOwnerRelative" required id="carOwnerRelative"
+                                               placeholder="Araç sahibi yakını ad soyad"
+                                               type="text"
+                                               value="{{ $data['myTransferCar']->arac_sahibi_yakını_adı }}"
+                                               class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="position-relative form-group">
+                                        <label for="carOwnerRelativePhone" class="font-weight-bold">Araç Sahibi Yakını
+                                            İletişim </label>
+                                        <input name="carOwnerRelativePhone" id="carOwnerRelativePhone" required
+                                               data-inputmask="'mask': '(999) 999 99 99'"
+                                               placeholder="(_) _ _ _" type="text"
+                                               value="{{$data['myTransferCar']->arac_sahibi_yakını_phone }}"
+                                               class="form-control form-control-sm input-mask-trigger">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="carOwnerAdress" class="font-weight-bold">Araç Sahibi Adres</label>
+                                        <textarea name="carOwnerAdress" id="carOwnerAdress"
+                                                  class="form-control form-control-sm" maxlength="500"
+                                                  required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="carOwnerRelativeAdress" class="font-weight-bold">Araç Sahibi Yakını
+                                            Adres</label>
+                                        <textarea name="carOwnerRelativeAdress" id="carOwnerRelativeAdress"
+                                                  class="form-control form-control-sm" maxlength="500"
+                                                  required></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                            <h6 class="text-dark text-center font-weight-bold">Hesaplamalar</h6>
+                            <div class="divider"></div>
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                    <div class="position-relative">
+                                        <label for="monthRentPrice" class="font-weight-bold">Aylık Kira Bedeli:</label>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-1">
+                                        <div class="input-group-prepend"><span
+                                                class="input-group-text">₺</span></div>
+                                        <input name="monthRentPrice" id="monthRentPrice" required
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
+                                               type="text" value="{{$data['myTransferCar']->aylık_kira_bedeli }}"
+                                               class="form-control input-mask-trigger form-control-sm calculat-for-hakedisPlusMazot text-center"
+                                        >
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="position-relative">
+                                        <label for="kdvHaricHakedis" class="font-weight-bold">KDV Hariç Hakediş:</label>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-1">
+                                        <div class="input-group-prepend"><span
+                                                class="input-group-text">₺</span></div>
+                                        <input name="kdvHaricHakedis" id="kdvHaricHakedis" required readonly
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
+                                               type="text" value="{{  $data['myTransferCar']->kdv_haric_hakedis }}"
+                                               class="form-control input-mask-trigger form-control-sm text-center"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative">
+                                        <label for="oneRentPrice" class="font-weight-bold">1 Sefer Kira
+                                            Maliyeti:</label>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-1">
+                                        <div class="input-group-prepend"><span
+                                                class="input-group-text">₺</span></div>
+                                        <input name="oneRentPrice" id="oneRentPrice" required readonly
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
+                                               type="text" value="{{ $data['myTransferCar']->bir_sefer_yakıt_maliyeti}}"
+                                               class="form-control input-mask-trigger form-control-sm  calculate-for-SeferPlusMaliyet text-center">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative">
+                                        <label for="flueRate" class="font-weight-bold">Yakıt Oranı:</label>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-1">
+                                        <div class="input-group-prepend"><span
+                                                class="input-group-text">%</span></div>
+                                        <input name="flueRate" id="flueRate" required
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
+                                               type="text" value="{{  $data['myTransferCar']->yakıt_oranı }}"
+                                               class="form-control input-mask-trigger form-control-sm for-calculate-oneFlueJourneyPrice text-center">
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative">
+                                        <label for="turKm" class="font-weight-bold">Tur KM:</label>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-1">
+                                        <div class="input-group-prepend"><span
+                                                class="input-group-text">KM</span></div>
+                                        <input name="turKm" id="turKm" required
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
+                                               type="text" value="{{  $data['myTransferCar']->tur_km }}"
+                                               class="form-control input-mask-trigger form-control-sm calculate-for-SeferPlusMaliyet text-center for-calculate-oneFlueJourneyPrice"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative">
+                                        <label for="journeyKm" class="font-weight-bold">Sefer KM:</label>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-1">
+                                        <div class="input-group-prepend"><span
+                                                class="input-group-text">KM</span></div>
+                                        <input name="journeyKm" id="journeyKm" required
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
+                                               type="text" value="{{ $data['myTransferCar']->sefer_km }}"
+                                               class="form-control input-mask-trigger form-control-sm text-center" >
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative">
+                                        <label for="oneFlueJourneyPrice" class="font-weight-bold">1 Sefer Yakıt
+                                            Maliyeti:</label>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-1">
+                                        <div class="input-group-prepend"><span
+                                                class="input-group-text">₺</span></div>
+                                        <input name="oneFlueJourneyPrice" id="oneFlueJourneyPrice" required readonly
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
+                                               type="text"
+                                               value="{{ $data['myTransferCar']->bir_sefer_yakıt_maliyeti }}"
+                                               class="form-control input-mask-trigger form-control-sm text-center">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative">
+                                        <label for="monthFlue" class="font-weight-bold">Aylık Yakıt:</label>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-1">
+                                        <div class="input-group-prepend"><span
+                                                class="input-group-text">₺</span></div>
+                                        <input name="monthFlue" id="monthFlue" required
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
+                                               type="text" value="{{ $data['myTransferCar']->aylık_yakıt }}"
+                                               class="form-control input-mask-trigger form-control-sm calculat-for-hakedisPlusMazot text-center">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative">
+                                        <label for="monthFlue" class="font-weight-bold">Sefer Maliyeti:</label>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-1">
+                                        <div class="input-group-prepend"><span
+                                                class="input-group-text">₺</span></div>
+                                        <input name="seferPlusMaliyet" id="seferPlusMaliyet" required readonly
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
+                                               type="text" value="{{  $data['myTransferCar']->sefer_maliyeti}}"
+                                               class="form-control input-mask-trigger form-control-sm text-center">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative">
+                                        <label for="monthFlue" class="font-weight-bold">Hakedis+ Mazot:</label>
+                                    </div>
+                                    <div class="input-group input-group-sm mb-1">
+                                        <div class="input-group-prepend"><span
+                                                class="input-group-text">₺</span></div>
+                                        <input name="hakedisPlusMazot" id="hakedisPlusMazot" required readonly
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'"
+                                               type="text" value="{{  $data['myTransferCar']->hakedis_plus_mazot }}"
+                                               class="form-control input-mask-trigger form-control-sm text-center">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="position-relative form-group">
-                                <label for="model" class="">Model</label>
-                                <input name="model" required id="model"
-                                       placeholder="Aracın modelini giriniz."
-                                       type="text"
-                                       value="{{  $data['various_car']->model }}" class="form-control">
+
+                        <div class="col-md-12">
+                            <h6 class="text-dark text-center font-weight-bold">Araçta Olması Gereken Malzemeler</h6>
+                            <div class="divider"></div>
+                            <div class="form-row">
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="stepne" class="font-weight-bold">Stepne</label>
+                                        <select name="stepne" required id="stepne" class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->stepne == 0 ? 'selected' : ''}} value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->stepne == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="crick" class="font-weight-bold">Kriko</label>
+                                        <select name="crick" required id="crick" class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->kiriko == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->kiriko == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="chain" class="font-weight-bold">Zincir</label>
+                                        <select name="chain" required id="chain" class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->zincir == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->zincir == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="tireIron" class="font-weight-bold">Bijon Anahtarı</label>
+                                        <select name="tireIron" required id="tireIron"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->bijon_anahtarı == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->bijon_anahtarı == 1 ? 'selected' : ''}}  value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="reflektor" class="font-weight-bold">Reflektör</label>
+                                        <select name="reflektor" required id="reflektor"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->stepne == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->stepne == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="fireTube" class="font-weight-bold">Yangın Tüpü</label>
+                                        <select name="fireTube" required id="fireTube"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->yangın_tüpü == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->yangın_tüpü == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="firstAidKid" class="font-weight-bold">İlk Yardım Çantası</label>
+                                        <select name="firstAidKid" required id="firstAidKid"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->ilk_yardım_çantası == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->ilk_yardım_çantası == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="travelerLamp" class="font-weight-bold">Seyyar Lamba</label>
+                                        <select name="travelerLamp" required id="travelerLamp"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->seyyar_lamba == 0 ? 'selected' : ''}} value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->seyyar_lamba == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="towingline" class="font-weight-bold">Çekme Halatı</label>
+                                        <select name="towingline" required id="towingline"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->çekme_halatı == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->çekme_halatı == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="giydirmeKorNoktaUyarısı" class="font-weight-bold">Giydirme Kör Nokta
+                                            Uyarısı</label>
+                                        <select name="giydirmeKorNoktaUyarısı" required id="giydirmeKorNoktaUyarısı"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->giydirme_kör_nokta_uarısı == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->giydirme_kör_nokta_uarısı == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="hataBildirimHattı" class="font-weight-bold">Hata Bildirim
+                                            Hattı</label>
+                                        <select name="hataBildirimHattı" required id="hataBildirimHattı"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->hata_bildirim_hattı == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->hata_bildirim_hattı == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="position-relative form-group">
-                                <label for="link" class="">Plaka:</label>
-                                <input type="text" placeholder="Araç plakasını giriniz." name="plaque" required
-                                       id="plaque" value="{{ $data['various_car']->plaque}}" class="form-control">
+
+                        <div class="col-md-12">
+                            <h6 class="text-dark text-center font-weight-bold">Araçlarda Olması Gereken Evraklar </h6>
+                            <div class="divider"></div>
+                            <div class="form-row">
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="muayneEvrağı" class="font-weight-bold">Muayene Evrağı</label>
+                                        <select name="muayneEvrağı" required id="muayneEvrağı"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->muayne_eğrağı == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->sigorta_belgesi == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="sigortaBelgesi" class="font-weight-bold">Sigorta Belgesi</label>
+                                        <select name="sigortaBelgesi" required id="sigortaBelgesi"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->şoför_ehliyeti == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->şoför_ehliyeti == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="soforEhliyet" class="font-weight-bold">Şoför Ehliyet</label>
+                                        <select name="soforEhliyet" required id="soforEhliyet"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->src_belgesi == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->src_belgesi == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="srcBelgesi" class="font-weight-bold">Src Belgesi</label>
+                                        <select name="srcBelgesi" required id="srcBelgesi"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->ruhsat_ekpertiz_raporu == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->ruhsat_ekpertiz_raporu == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="ruhsatEkpertizRaporu" class="font-weight-bold">Ruhsat Ekspertiz
+                                            Raporu</label>
+                                        <select name="ruhsatEkpertizRaporu" required id="ruhsatEkpertizRaporu"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->stepne == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->stepne == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="tasimaBelgesi" class="font-weight-bold">Taşıma Belgesi</label>
+                                        <select name="tasimaBelgesi" required id="tasimaBelgesi"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->taşıma_belgesi == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->taşıma_belgesi == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="soferAdliSicilBelgesi" class="font-weight-bold">Şoför Adli Sicil
+                                            Kaydı</label>
+                                        <select name="soferAdliSicilBelgesi" required id="soferAdliSicilBelgesi"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->şoför_adli_sicil_kaydi == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->şoför_adli_sicil_kaydi == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="aracSahibiSicilKaydi" class="font-weight-bold">Arac Sahibi Sici
+                                            Kaydı</label>
+                                        <select name="aracSahibiSicilKaydi" required id="aracSahibiSicilKaydi"
+                                                class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->arac_sahibi_sicil_kaydı == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->arac_sahibi_sicil_kaydı == 1 ? 'selected' : ''}} value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="soferYakiniIkametgahBelgesi" class="font-weight-bold">Şoför Yakını
+                                            İkamet Belgesi</label>
+                                        <select name="soferYakiniIkametgahBelgesi" required
+                                                id="soferYakiniIkametgahBelgesi" class="form-control form-control-sm">
+                                            <option
+                                                {{$data['myTransferCar']->şoför_yakını_ikametgah_belgesi == 0 ? 'selected' : ''}}  value="Hayır">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{$data['myTransferCar']->şoför_yakını_ikametgah_belgesi == 1 ? 'selected' : ''}}  value="Evet">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+
                     </div>
-
-                    <div class="form-row">
-                        <div class="col-md-4">
-                            <div class="position-relative form-group">
-                                <label for="link" class="">Tonaj (KG):</label>
-                                <input type="text" placeholder="Tonaj bilgisini giriniz(kg)." name="tonnage" required
-                                       id="tonnage" value="{{ $data['various_car']->tonnage}}" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="position-relative form-group">
-                                <label for="case_type" class="">Kasa Türü</label>
-                                <select name="case_type" id="case_type" class="form-control">
-                                    <option value=""> Seçiniz</option>
-                                    <option value="Açık" {{ $data['various_car']->case_type == 'Açık'? 'selected': ''}}>
-                                        Açık
-                                    </option>
-                                    <option
-                                        value="Kapalı" {{ $data['various_car']->case_type == 'Kapalı' ? 'selected' :''}}>
-                                        Kapalı
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4 col-sm-6 col-xs-12">
-                            <div class="position-relative form-group">
-                                <label for="link" class="">Telefon (Araç Sahibi)*</label>
-                                <input name="phone" id="phone" required data-inputmask="'mask': '(999) 999 99 99'"
-                                       placeholder="(___) ___ __ __" type="text"
-                                       value="{{  $data['various_car']->phone }}"
-                                       class="form-control input-mask-trigger">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="col-md-4">
-                            <div class="position-relative form-group">
-                                <label for="link" class="">Araç Model Yıl:</label>
-                                <input type="text" placeholder="Araç model yılını giriniz." name="model_year" required
-                                       id="model_year" value="{{  $data['various_car']->model_year}}"
-                                       class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="position-relative form-group">
-                                <label for="link" class="">Şöför Adı:</label>
-                                <input type="text" placeholder="Şöförün adını giriniz" name="driver_name" required
-                                       id="driver_name" value="{{ $data['various_car']->driver_name}}"
-                                       class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="position-relative form-group">
-                                <label for="link" class="">Aracın Bulunduğu Şehir:</label>
-                                <select name="where_car" id="where_car" class="form-control">
-                                    <option value=""> Seçiniz</option>
-                                    @foreach($data['cities'] as $city)
-                                        <option
-                                            value="{{$city['city_name']}}" {{ $data['various_car']->city == $city['city_name'] ? 'selected' :''}}>{{$city['city_name']}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                    </div>
-
                     <button type="submit" class="ladda-button mb-2 mr-2 btn btn-gradient-primary"
                             data-style="slide-right">
-                        <span class="ladda-label">Aracı Düzenle</span>
+                        <span class="ladda-label">Aracı Kaydet</span>
                         <span class="ladda-spinner"></span>
                         <div class="ladda-progress" style="width: 0px;"></div>
                     </button>
                 </form>
-
             </div>
         </div>
     </div>
 @endsection
 
-
-
 @section('js')
+    <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
     <script>
         $(document).ready(() => {
@@ -176,5 +851,39 @@
 
         });
 
+        $('#monthRentPrice').keyup(function () {//tamam
+            var monthRentPrice = $('#monthRentPrice').val().replaceAll(',', '');
+            var kdvHaricHakedis = monthRentPrice / 1.18;
+            var birSeferKiraMaliyeti = monthRentPrice / 26;
+            $('#kdvHaricHakedis').val(kdvHaricHakedis);
+            $('#oneRentPrice').val(birSeferKiraMaliyeti);
+        });
+
+
+        $('.for-calculate-oneFlueJourneyPrice').keyup(function () {//tamam
+            var flueRate = parseFloat($('#flueRate').val().replaceAll(',', ''));
+
+            var turKm = parseFloat($('#turKm').val().replaceAll(',', ''));
+            $('#oneFlueJourneyPrice').val((turKm * flueRate * 6.7) / 100);
+        });
+
+
+        $('.calculate-for-SeferPlusMaliyet').keyup(function () {
+            var oneFlueJourneyPrice = parseFloat($('#oneFlueJourneyPrice').val().replaceAll(',', ''));
+
+            var oneRentPrice = parseFloat($('#oneRentPrice').val().replaceAll(',', ''));
+            console.log(oneRentPrice);
+
+            $('#seferPlusMaliyet').val((oneRentPrice + oneFlueJourneyPrice));
+        });
+
+        $('.calculat-for-hakedisPlusMazot').keyup(function () {
+            var monthRentPrice = parseFloat($('#monthRentPrice').val().replaceAll(',', ''));
+
+            var monthFlue = parseFloat($('#monthFlue').val().replaceAll(',', ''));
+
+            $('#hakedisPlusMazot').val(monthRentPrice + monthFlue);
+
+        });
     </script>
 @endsection
