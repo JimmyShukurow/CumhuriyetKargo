@@ -25,6 +25,7 @@ class VariousController extends Controller
     public function index()
     {
         $data['agencies'] = Various::all();
+        $data['cities'] = Cities::all();
         GeneralLog('Various sayfası görüntülendi.');
         return view('backend.operation.various_cars.index', compact('data'));
     }
@@ -177,11 +178,34 @@ class VariousController extends Controller
         return 0;
     }
 
-    public function getCars()
+    public function getCars(Request $request)
     {
+        $brand = $request->branchCar;
+        $modelCar = $request->modelCar;
+        $modelYear = $request->modelYear;
+        $caseType = $request->caseType;
+        $driverName = $request->driverName;
+        $phoneInfo = $request->phoneInfo;
+        $plaqueCar = $request->plaqueCar;
+        $addPerson = $request->addPerson;
+        $searchCity = $request->searchCity;
+        $tonnageCar = $request->tonnageCar;
+
+
         $cars = DB::table('variouses')
             ->select(['variouses.*', 'users.name_surname'])
-            ->join('users', 'variouses.creator_id', '=', 'users.id');
+            ->join('users', 'variouses.creator_id', '=', 'users.id')
+//            ->join('cities','cities.city_name','=','variouses.city')
+            ->whereRaw($brand ? "brand='" . $brand . "'" : '1 > 0')
+            ->whereRaw($plaqueCar ? "plaque='" . $plaqueCar . "'" : '1 > 0')
+            ->whereRaw($modelCar ? "model_year='" . $modelCar . "'" : '1 > 0')
+            ->whereRaw($modelYear ? "model='" . $modelYear . "'" : '1 > 0')
+            ->whereRaw($caseType ? "case_type='" . $caseType . "'" : '1 > 0')
+            ->whereRaw($driverName ? "driver_name like '%" . $driverName . "%'" : '1 > 0')
+            ->whereRaw($addPerson ? "name_surname like '%" . $addPerson . "%'" : '1 > 0')
+            ->whereRaw($phoneInfo ? "phone='" . $phoneInfo . "'" : '1 > 0')
+            ->whereRaw($searchCity ? "city='" . $searchCity . "'" : '1 > 0')
+            ->whereRaw($tonnageCar ? "tonnage='" . $tonnageCar . "'" : '1 > 0');
 
         return DataTables::of($cars)
             ->setRowId(function ($cars) {
@@ -192,40 +216,5 @@ class VariousController extends Controller
             ->make(true);
 
 
-//        $agencies = Agencies::orderBy('created_at', 'desc')->get();
-//        $agencies = DB::select('CALL proc_agency_region()');
-
-        /*
-         *
-             * SELECT variouses.*, users.name_surname FROM variouses
-        INNER JOIN users ON users.id = variouses.creator_id
-
-         * */
-//        $query = DB::table('')
-
-//
-//        return DataTables::of($agencies)
-//            ->setRowClass(function ($agency) {
-//                return 'agency-item-' . $agency->id;
-//            })
-//            ->setRowId(function ($agency) {
-//                return 'agency-item-' . $agency->id;
-//            })
-////            ->addColumn('intro', 'Hi {{$name_surname}}')
-//            ->addColumn('regional_directorates', function ($agency) {
-//                return $agency->regional_directorates != '' ? "$agency->regional_directorates  B.M." : "";
-//            })
-//            ->addColumn('tc_name', function ($agency) {
-//                return $agency->tc_name != '' ? "$agency->tc_name  T.M." : "";
-//            })
-//            ->addColumn('edit', 'backend.agencies.column')
-//            ->rawColumns(['edit'])
-//            ->editColumn('city', function ($agency) {
-//                return $agency->city . '/' . $agency->district;
-//            })
-//            ->editColumn('created_at', function ($agency) {
-//                return Carbon::parse($agency->created_at)->format('Y-m-d H:i:s');
-//            })
-//            ->make(true);
     }
 }
