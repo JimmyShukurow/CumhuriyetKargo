@@ -101,7 +101,6 @@
                     </div>
 
                     <script>
-
                         $(document).ready(function () {
                             $('#district').prop('disabled', true);
                             $('#neighborhood').prop('disabled', true);

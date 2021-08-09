@@ -85,9 +85,11 @@
                                     <option value="Açık" {{ $data['various_car']->case_type == 'Açık'? 'selected': ''}}>
                                         Açık
                                     </option>
-                                    <option
-                                        value="Kapalı" {{ $data['various_car']->case_type == 'Kapalı' ? 'selected' :''}}>
+                                    <option  value="Kapalı" {{ $data['various_car']->case_type == 'Kapalı' ? 'selected' :''}}>
                                         Kapalı
+                                    </option>
+                                    <option  value="Panelvan" {{ $data['various_car']->case_type == 'Panelvan' ? 'selected' :''}}>
+                                        Panelvan
                                     </option>
                                 </select>
                             </div>
