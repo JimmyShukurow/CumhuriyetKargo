@@ -22,15 +22,15 @@
                         <i class="pe-7s-car icon-gradient bg-amy-crisp">
                         </i>
                     </div>
-                    <div> Muhtelif Araçlar
-                        <div class="page-title-subheading">Bu modül üzerinden sistemdeki tüm muhtelif araçları
+                    <div> Aktarma Araçlar
+                        <div class="page-title-subheading">Bu modül üzerinden sistemdeki tüm aktarma araçları
                             listleyebilir, işlem yapablirsiniz.
                         </div>
                     </div>
                 </div>
                 <div class="page-title-actions">
                     <div class="d-inline-block dropdown">
-                        <a href="{{ route('VariousCars.create') }}">
+                        <a href="{{ route('TransferCars.create') }}">
                             <button type="button" aria-haspopup="true" aria-expanded="false"
                                     class="btn-shadow btn btn-info">
                                 <span class="btn-icon-wrapper pr-2 opacity-7">
