@@ -73,8 +73,6 @@ class CreateTrasferCarsTable extends Migration
             $table->enum('şoför_adli_sicil_kaydi',['1','0'])->default(0);
             $table->enum('arac_sahibi_sicil_kaydı',['1','0'])->default(0);
             $table->enum('şoför_yakını_ikametgah_belgesi',['1','0'])->default(0);
-
-
             $table->timestamps();
         });
     }
