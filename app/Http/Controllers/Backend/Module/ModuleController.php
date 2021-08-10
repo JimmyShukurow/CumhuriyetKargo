@@ -29,6 +29,7 @@ class ModuleController extends Controller
             ->join('modules', 'sub_modules.module_id', '=', 'modules.id')
             ->orderBy('module_must')
             ->get();
+
         $data['module_groups'] = ModuleGroups::all();
 
         $data['modules'] = DB::table('modules')

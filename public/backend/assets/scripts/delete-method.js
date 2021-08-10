@@ -14,8 +14,10 @@ $(document).on('click', '.trash', function () {
     } else if (from == "various_car") {
         url = "VariousCars/" + destroy_id;
         object = "Muhtelif Araç";
+    } else if (from == "location") {
+        url = "LocalLocation/" + destroy_id;
+        object = "Mahalli lokasyon";
     }
-
 
     swal({
         title: "Silme İşlemini Onaylayın!",

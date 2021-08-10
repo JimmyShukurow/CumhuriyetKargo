@@ -11,20 +11,18 @@ class DefaultController extends Controller
 {
     public function login(Request $request)
     {
-        $email = $request->email;
-        $password = $request->password;
+        $data = $request->all();
+        $email = $data['email'];
+        $password = $data['password'];
 
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
 
             $user = Auth::user();
             $success['token'] = $user->createToken("CKG_Mobile_Login")->accessToken;
 
-            $user = DB::table('view_users_general_info')
-                ->where('id', Auth::user()->id)
-                ->first();
 
             return response()
-                ->json(['status' => 1, 'role' => $user->display_name], 200);
+                ->json(['status' => 1, 'role' => Auth::user()->role_id, 'token' => $success['token']], 200);
         }
 
         return response()
@@ -42,7 +40,6 @@ class DefaultController extends Controller
             ->json($user, 200);
     }
 
-
     public function logout(Request $request)
     {
         if (Auth::check()) {
@@ -51,6 +48,7 @@ class DefaultController extends Controller
             return response()
                 ->json(['status' => 1, 'message' => 'İşlem başarılı, çıkış yapıldı!'], 200);
         }
-
     }
+
+
 }

@@ -32,13 +32,11 @@ class AjaxController extends Controller
 
     public function getAgency(Request $request)
     {
-
         $city = $request->city;
         $district = $request->district;
 
-
         $agency = DB::table('agencies')
-            ->whereRaw($city ? "city='" . $city . "'" : '1 > 0')
+            ->whereRaw($city && $city != '' ? "city='" . $city . "'" : '1 > 0')
             ->whereRaw($district ? "district='" . $district . "'" : '1 > 0')
             ->whereRaw('deleted_at is null')
             ->get();
