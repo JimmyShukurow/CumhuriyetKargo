@@ -69,7 +69,7 @@
                             <div class="position-relative form-control-sm form-group">
                                 <label for="link" class="">İl:</label>
                                 <select name="city" id="city"
-                                        class="form-control form-control-sm">
+                                        class="form-control niko-select-filter form-control-sm">
                                     <option value="">İl Seçiniz</option>
                                     @foreach($data['cities'] as $city)
                                         <option id="{{$city->id}}" data="{{$city->city_name}}"
@@ -83,7 +83,7 @@
                             <div class="position-relative form-group">
                                 <label for="district" class="">İlçe*</label>
                                 <select name="district" id="district"
-                                        class="form-control form-control-sm">
+                                        class="form-control form-control-sm niko-select-filter">
                                     <option value="">İlçe Seçiniz</option>
                                 </select>
                             </div>
@@ -103,7 +103,7 @@
 
                         <div class="col-md-3">
                             <button type="button" style="width: 100%;" id="btnGiveNeighborhood"
-                                    class="mt-4 btn-icon btn-shadow btn-outline-2x btn btn-outline-light">
+                                    class="mt-4 btn-icon btn-shadow btn-outline-2x btn btn-outline-alternate">
                                 <i class="lnr-plus-circle btn-icon-wrapper"></i>Acenteye Bağlanacak Mahalleler
                             </button>
                         </div>
@@ -118,7 +118,7 @@
             <div class="card-body">
 
                 <table style="white-space: nowrap;" id="AgenciesTable"
-                       class="align-middle mb-0 table Table20Padding table-borderless table-striped table-hover NikolasDataTable">
+                       class="align-middle mb-0 table Table20Padding table-bordered table-hover NikolasDataTable">
                     <thead>
                     <tr>
                         <th>İl</th>
@@ -156,12 +156,74 @@
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
 
     <script>
-
         $(document).on('change', '#cityX', function () {
             getDistricts('#cityX', '#districtX');
+            $('#TbodyNeighborhoods').html('');
         });
 
+        $(document).on('change', '.select-all-cb', function () {
+            $('input:checkbox:not(:disabled)').prop('checked', this.checked);
+        });
+
+
+        $(document).on('click', '#SaveBtn', function () {
+
+            $('#SaveBtn').prop('disabled', true);
+
+            var NeighborhoodArray = [];
+            $("input.check-give-district-to-region[type=checkbox]:checked:not(:disabled)").each(function () {
+                NeighborhoodArray.push($(this).val());
+            });
+
+            $.ajax('{{ route('LocalLocation.store') }}', {
+                method: 'POST',
+                data: {
+                    _token: token,
+                    city_id: $('#cityX').val(),
+                    district_id: $('#districtX').val(),
+                    agency_code: $('#selectAgency').val(),
+                    neighborhood_array: NeighborhoodArray,
+                }
+            }).done(function (response) {
+
+                if (response.status == 1) {
+                    ToastMessage('success', 'Mahalleler tanımlandı!', 'İşlem Başarılı!');
+                    $('#ModalCityDistrictNeighborhoods').modal('hide');
+                    $('#districtX').val('');
+                    $('#city').val('');
+                    $('#TbodyNeighborhoods').html('');
+                } else {
+                    ToastMessage('error', response.message, 'Hata!');
+                }
+
+                $('#TbodyRegionalDistricts').html('');
+                $('.select-all-cb').prop('checked', false);
+
+                $('#SaveBtn').prop('disabled', false);
+
+
+            }).always(function () {
+                $('#SaveBtn').prop('disabled', false);
+            }).error(function (jqXHR, exception) {
+                ajaxError(jqXHR.status)
+            });
+
+        });
+
+
         $(document).on('change', '#districtX', function () {
+
+            $('#modalBodyTCDistricts.modal-body').block({
+                message: $('<div class="loader mx-auto">\n' +
+                    '                            <div class="ball-pulse-sync">\n' +
+                    '                                <div class="bg-warning"></div>\n' +
+                    '                                <div class="bg-warning"></div>\n' +
+                    '                                <div class="bg-warning"></div>\n' +
+                    '                            </div>\n' +
+                    '                        </div>')
+            });
+            $('.blockUI.blockMsg.blockElement').css('border', '0px');
+            $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
             $.ajax('/Operation/GetNeighborhoodsOfAgency', {
                 method: 'POST',
@@ -171,12 +233,40 @@
                     city: $('#cityX').val(),
                     district: $('#districtX').val(),
                 }
+            }).done(function (response) {
+
+                $('#TbodyNeighborhoods').html('');
+
+                $.each(response, function (key, value) {
+                    $('#TbodyNeighborhoods').append(
+                        '<tr>' +
+
+                        '<td width="10"> <input style="width: 20px" value="' + (
+                            value['neighborhood_id']) +
+                        '" type="checkbox" ' +
+                        (value['count'] != '0' ? 'checked disabled' : '') +
+                        ' class="form-control check-give-district-to-region  ck-' +
+                        (value['neighborhood_id']) +
+                        '">' + '</td>' +
+
+                        '<td>' + ($('#districtX option:selected').text()) + '-' + (value['neighborhood_name']) + '</td>' +
+
+                        '</tr>'
+                    );
+                });
+
+                $('.select-all-cb').prop('checked', false);
+
+                $('#modalBodyTCDistricts.modal-body').unblock();
+
+
             });
         });
 
         $(document).ready(function () {
 
-            $('#district').prop('disabled', true);
+            $('#district').prop('disabled', true)
+            $('#selectAgency').val('');
 
             $('#city').change(function () {
 
@@ -259,9 +349,7 @@
         });
     </script>
 
-
     <script>
-
         var oTable;
         var detailsID = null;
         // and The Last Part: NikoStyle
@@ -312,9 +400,9 @@
                     {
                         extend: 'excelHtml5',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6]
+                            columns: [0, 1, 2, 3]
                         },
-                        title: "CK - Gönderici Cariler"
+                        title: "CK - Mahalli Lokasyon"
                     },
                     {
                         text: 'Yenile',
@@ -335,8 +423,7 @@
                     data: function (d) {
                         d.city = $('#city').val();
                         d.district = $('#district').val();
-                        d.neighborhood = $('#neighborhood').val();
-                        d.agency = $('#agency').val();
+                        d.agency = $('#selectAgency').val();
                     },
                     error: function (xhr, error, code) {
                         ajaxError(xhr.status);
@@ -346,10 +433,10 @@
                     }
                 },
                 columns: [
-                    {data: 'current_code', name: 'current_code'},
-                    {data: 'category', name: 'category'},
-                    {data: 'name', name: 'name'},
                     {data: 'city', name: 'city'},
+                    {data: 'district', name: 'district'},
+                    {data: 'neighborhood', name: 'neighborhood'},
+                    {data: 'agency_name', name: 'agency_name'},
                     {data: 'edit', name: 'edit'}
                 ],
                 scrollY: "400px",
@@ -382,8 +469,6 @@
             else {
                 $('#ModalCityDistrictNeighborhoods').modal();
             }
-
-
         }, 450));
 
 
@@ -427,6 +512,7 @@
                         </div>
                     </div>
 
+
                     <table style="margin-bottom:  0;" class="table table-striped">
                         <thead>
                         <th style="width: 50px;padding:0">
@@ -444,7 +530,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">İptal Et</button>
-                    <button type="button" class="btn btn-primary" id="SaveBtn" data-dismiss="modal">Kaydet</button>
+                    <button type="button" class="btn btn-primary" id="SaveBtn">Kaydet</button>
                 </div>
             </div>
         </div>

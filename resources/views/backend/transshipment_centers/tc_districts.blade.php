@@ -125,7 +125,6 @@
 @endsection
 
 
-
 @section('js')
     <script src="/backend/assets/scripts/backend-modules.js"></script>
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
