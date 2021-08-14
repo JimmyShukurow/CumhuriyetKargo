@@ -3,9 +3,16 @@
 namespace App\Http\Controllers\CKG_Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Models\Departments;
+use App\Models\RegioanalDirectorates;
+use App\Models\TicketDetails;
+use App\Models\Tickets;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class DefaultController extends Controller
 {
@@ -31,13 +38,22 @@ class DefaultController extends Controller
 
     public function user()
     {
-        $user = DB::table('view_users_general_info')
-            ->select(['id', 'name_surname', 'email', 'phone', 'created_at', 'display_name', 'agency_name', 'city', 'district', 'tc_city', 'tc_name'])
+        $data['general_info'] = DB::table('view_users_all_info')
+            ->select(['id', 'name_surname', 'email', 'phone', 'created_at', 'user_type', 'display_name', 'agency_code', 'tc_code', 'branch_city', 'branch_district', 'branch_district', 'branch_name'])
             ->where('id', Auth::user()->id)
             ->first();
 
+        $data['regional_directorates'] = DB::table('regional_districts')
+            ->where('city', $data['general_info']->branch_city)
+            ->where('district', $data['general_info']->branch_district)
+            ->first();
+
+        $data['regional_directorates'] = DB::table('regional_directorates')
+            ->select(['name', 'phone', 'city', 'district', 'neighborhood', 'adress'])
+            ->first();
+
         return response()
-            ->json($user, 200);
+            ->json($data, 200);
     }
 
     public function logout(Request $request)
@@ -50,5 +66,237 @@ class DefaultController extends Controller
         }
     }
 
+    public function getDefaultData($val = '', Request $request)
+    {
+        switch ($val) {
+            case 'Departments':
+                $data['departments'] = Departments::all();
+                break;
+
+            case 'GetNotifications':
+                $array = array();
+                $notifications = DB::table('notifications')
+                    ->where('notifiable_id', Auth::id())
+                    ->orderBy('created_at', 'desc')
+                    ->limit(30)
+                    ->get();
+
+                foreach ($notifications as $key) {
+
+                    $xData = json_decode($key->data);
+
+                    $array[] = [
+                        'id' => $key->id,
+                        "notifiable_id" => $key->notifiable_id,
+                        'data' => ['notification' => $xData->notification, 'link' => $xData->link],
+                        'read_at' => $key->read_at,
+                        'created_at' => $key->created_at,
+                    ];
+                }
+
+                $data['notifications'] = $array;
+                break;
+
+            case 'GetTickets':
+                $data['tickets'] = DB::table('tickets')
+                    ->where('user_id', Auth::id())
+                    ->limit(30)
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+                break;
+
+            default:
+                $data = 'no-case';
+                break;
+        }
+
+        return response()
+            ->json($data, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+
+    }
+
+    public function defaultTransaction($val = '', Request $request)
+    {
+        switch ($val) {
+
+            case 'ChangePassword':
+
+                $rules = [
+                    'password' => 'required',
+                    'passwordNew' => 'required|regex:/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/u',
+                    'passwordNewAgain' => 'required|same:passwordNew'
+                ];
+                $validator = Validator::make($request->all(), $rules);
+
+                if ($validator->fails())
+                    return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
+
+
+                $password_check = User::where('id', Auth::id())
+                    ->where("password", Hash::make($request->password))
+                    ->first();
+
+                if (Hash::check($request->password, Auth::user()->password)) {
+
+                    $update = User::find(Auth::id())
+                        ->update([
+                            'password' => Hash::make($request->passwordNew)
+                        ]);
+
+                    if ($update) {
+                        GeneralLog('Şifre değişikliği yapıldı.');
+                        $data = ['status' => 1, 'message' => 'Şifreniz başarıyla değiştirildi!'];
+                    } else
+                        $data = ['status' => 0, 'message' => 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!'];
+
+                } else
+                    $data = ['status' => 0, 'message' => 'Eski şifreniz hatalı!'];
+                break;
+
+            case 'GetTicketDetails':
+
+                $ticket_id = $request->ticket_id;
+
+                if ($ticket_id == '')
+                    $data = ['status' => 0, 'message' => 'ticket id is missing!'];
+                else
+                    $data['ticket_details'] = DB::table('ticket_details')
+                        ->select(['ticket_details.*', 'view_users_all_info.name_surname', 'view_users_all_info.email', 'view_users_all_info.user_type', 'view_users_all_info.display_name', 'view_users_all_info.branch_city', 'view_users_all_info.branch_district', 'view_users_all_info.branch_name'])
+                        ->join('view_users_all_info', 'view_users_all_info.id', '=', 'ticket_details.user_id')
+                        ->where('ticket_id', $ticket_id)
+                        ->orderBy('ticket_details.created_at', 'desc')
+                        ->limit(50)
+                        ->get();
+                break;
+
+            case 'ReplyTicket':
+
+                $rules = [
+                    'ticket_id' => 'required',
+                    'message' => 'required',
+                    'file1' => 'nullable|mimes:jpg,gif,jpeg,png,doc,xls,pdf,txt,docx,xlsx|max:4096',
+                ];
+                $validator = Validator::make($request->all(), $rules);
+
+                if ($validator->fails())
+                    return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
+
+
+                # token => ticked_id
+                $ticket_id = $request->ticket_id;
+
+                $ticket = Tickets::where('id', $ticket_id)->first();
+                if ($ticket->user_id != Auth::id())
+                    $data = ['result' => 'Ticket Not Found!'];
+                else {
+
+
+                    global $file1, $file2, $file3, $file4;
+
+                    if ($request->hasFile('file1')) {
+                        $file1 = $request->file('file1')->getClientOriginalName() . '_' . uniqid() . '.' . $request->file1->getClientOriginalExtension();
+                        $request->file1->move(public_path('backend/assets/ticket_files'), $file1);
+                    }
+
+                    $insert = TicketDetails::create([
+                        'ticket_id' => $ticket_id,
+                        'user_id' => Auth::id(),
+                        'message' => $request->message . '<br> <br> <br> <i><b class="text-dark"> Sent From CKG-Mobile. </b></i>',
+                        'file1' => $file1,
+                        'status' => 'AÇIK'
+                    ]);
+
+                    if ($insert) {
+
+                        updateTicketTime($ticket_id);
+
+                        #update ticket Status to Opened
+                        $update = Tickets::find($ticket_id)
+                            ->update([
+                                'status' => 'AÇIK'
+                            ]);
+
+                        $ticket = Tickets::where('id', $ticket_id)->first();
+                        $properties = [
+                            'Başlık' => $ticket->title,
+                            'Yanıt' => $request->message,
+                            'Bağlantı' => route('systemSupport.TicketDetails', ['TicketID' => $ticket_id])
+                        ];
+
+                        activity()
+                            ->performedOn($ticket)
+                            ->withProperties($properties)
+                            ->inLog('Ticket Reply')
+                            ->log('Destek talebi yanıtlandı');
+
+                        $data = ['status' => 1, 'message' => 'Yanıt başarıyla gönderildi.'];
+
+                    } else
+                        $data = ['status' => 0, 'message' => 'Bir hata oluştu, Lütfen daha sonra tekrar deneyin.'];
+                }
+
+                break;
+
+            case 'CreateTicket':
+
+                $rules = [
+                    'department' => 'required',
+                    'title' => 'required|max:75',
+                    'priority' => 'required|max:10',
+                    'message' => 'required',
+                    'file1' => 'nullable|mimes:jpg,gif,jpeg,png,doc,xls,pdf,txt,docx,xlsx|max:4096',
+                ];
+                $validator = Validator::make($request->all(), $rules);
+
+                if ($validator->fails())
+                    return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
+
+                global $file1;
+
+                if ($request->hasFile('file1')) {
+                    $file1 = $request->file('file1')->getClientOriginalName() . '_' . uniqid() . '.' . $request->file1->getClientOriginalExtension();
+                    $request->file1->move(public_path('backend/assets/ticket_files'), $file1);
+                }
+
+                $insert = Tickets::create([
+                    'user_id' => Auth::id(),
+                    'title' => $request->title,
+                    'department_id' => $request->department,
+                    'priority' => $request->priority,
+                    'message' => $request->message,
+                    'file1' => $file1,
+                    'status' => 'AÇIK'
+                ]);
+
+                if ($insert) {
+
+                    $department = Departments::where('id', $request->department)->first();
+                    $properties = [
+                        'Başlık' => $request->title,
+                        'Departman' => $department->department_name,
+                        'Bağlantı' => route('systemSupport.TicketDetails', ['TicketID' => $insert->id])
+                    ];
+
+                    GeneralLog('Destek talebi oluşturuldu.', $properties);
+
+
+                    return response()
+                        ->json(['status' => 1, 'Destek talebiniz oluşturuldu, ilgili departman en kısa süre içerisinde mesajınıza dönüş yapacaktır.'], 200);
+
+                } else
+                    return response()
+                        ->json(['status' => 0, 'Bir hata oluştu, Lütfen daha sonra tekrar deneyin'], 200);
+
+                break;
+
+            default:
+                $data = 'no-case';
+                break;
+        }
+
+        return response()
+            ->json($data, 200);
+
+    }
 
 }

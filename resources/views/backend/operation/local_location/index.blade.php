@@ -192,6 +192,7 @@
                     $('#districtX').val('');
                     $('#city').val('');
                     $('#TbodyNeighborhoods').html('');
+                    $('#AgenciesTable').DataTable().ajax.reload();
                 } else {
                     ToastMessage('error', response.message, 'Hata!');
                 }
@@ -429,7 +430,7 @@
                         ajaxError(xhr.status);
                     },
                     complete: function () {
-                        ToastMessage('info', 'Tamamlandı!', 'Bilgi');
+
                     }
                 },
                 columns: [

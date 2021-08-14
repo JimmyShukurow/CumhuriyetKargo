@@ -424,19 +424,19 @@ class AdminSystemSupportController extends Controller
             updateTicketTime($ticket_id);
 
             ## send mail to ticket user
-            $user = DB::table('tickets')
-                ->join('users', 'tickets.user_id', '=', 'users.id')
-                ->select('users.name_surname', 'users.email')
-                ->where('tickets.id', $ticket_id)
-                ->first();
-
-            $data['title'] = 'Destek Talebiniz Yanıtlandı!';
-            $data['body'] = 'Sayın <b>' . $user->name_surname . '</b>, <b>' . $ticket->title . '</b> başlıklı destek talebiniz <b>yanıtlanmıştır</b>. Detayları görmek için lütfen portalı ziyaret edin!';
-            $data['link'] = \route('systemSupport.TicketDetails', $ticket->id);
-            $data['reading_time'] = '2';
-
-            Mail::to($user->email)
-                ->send(new SendMail($data));
+//            $user = DB::table('tickets')
+//                ->join('users', 'tickets.user_id', '=', 'users.id')
+//                ->select('users.name_surname', 'users.email')
+//                ->where('tickets.id', $ticket_id)
+//                ->first();
+            
+//            $data['title'] = 'Destek Talebiniz Yanıtlandı!';
+//            $data['body'] = 'Sayın <b>' . $user->name_surname . '</b>, <b>' . $ticket->title . '</b> başlıklı destek talebiniz <b>yanıtlanmıştır</b>. Detayları görmek için lütfen portalı ziyaret edin!';
+//            $data['link'] = \route('systemSupport.TicketDetails', $ticket->id);
+//            $data['reading_time'] = '2';
+//
+//            Mail::to($user->email)
+//                ->send(new SendMail($data));
 
             # Notification
             User::find($ticket->user_id)

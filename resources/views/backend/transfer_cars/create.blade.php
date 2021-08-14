@@ -44,50 +44,50 @@
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <div class="position-relative form-group">
-                                        <label for="branchCars" class="font-weight-bold">Araç Marka:</label>
-                                        <input name="branchCars" required id="branchCars"
+                                        <label for="marka" class="font-weight-bold">Araç Marka:</label>
+                                        <input name="marka" required id="marka"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"
-                                               value="{{ old('arac_marka') }}" class="form-control form-control-sm">
+                                               value="{{ old('marka') }}" class="form-control form-control-sm">
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="position-relative form-group">
-                                        <label for="modelCars" class="font-weight-bold">Araç Model</label>
-                                        <input name="modelCars" required id="modelCars"
+                                        <label for="model" class="font-weight-bold">Araç Model</label>
+                                        <input name="model" required id="model"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"
-                                               value="{{ old('arac_marka') }}" class="form-control form-control-sm">
+                                               value="{{ old('model') }}" class="form-control form-control-sm">
                                     </div>
                                 </div>
 
 
                                 <div class="col-md-6">
                                     <div class="position-relative form-group">
-                                        <label for="modelYear" class="font-weight-bold">Araç Model Yılı</label>
-                                        <input name="modelYear" required id="modelYear"
+                                        <label for="model_yili" class="font-weight-bold">Araç Model Yılı</label>
+                                        <input name="model_yili" required id="model_yili"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"
-                                               value="{{ old('arac_marka') }}"
+                                               value="{{ old('model_yili') }}"
                                                class="form-control form-control form-control-sm">
                                     </div>
                                 </div>
 
                                 <div class="col-md-12">
                                     <div class="position-relative form-group">
-                                        <label for="plaqueCar" class="font-weight-bold">Plaka:</label>
-                                        <input name="plaqueCar" required id="plaqueCar"
+                                        <label for="plaka" class="font-weight-bold">Plaka:</label>
+                                        <input name="plaka" required id="plaka"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"
-                                               value="{{ old('arac_marka') }}" class="form-control form-control-sm">
+                                               value="{{ old('plaka') }}" class="form-control form-control-sm">
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="position-relative form-group">
-                                        <label for="capacityCar" class="font-weight-bold">Araç Kapasitesi</label>
-                                        <select name="capacityCar" required id="capacityCar"
+                                        <label for="arac_kapasitesi" class="font-weight-bold">Araç Kapasitesi</label>
+                                        <select name="arac_kapasitesi" required id="arac_kapasitesi"
                                                 class="form-control form-control-sm">
                                             <option value=""> Seçiniz</option>
                                             <option
@@ -110,27 +110,23 @@
                                                 {{old('stopTransfer') == '40 Ayak Kamyon' ? 'selected' : ''}} value="40 Ayak Kamyon">
                                                 40 Ayak Kamyon
                                             </option>
-                                            <option {{old('stopTransfer') == 'Tır' ? 'selected' : ''}} value="Tır">
-                                                Takılı
-                                            </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="position-relative form-group">
-                                        <label for="tonnage" class="font-weight-bold">Tonaj (Kg)</label>
-                                        <input name="tonnage" required id="tonnage"
+                                        <label for="tonaj" class="font-weight-bold">Tonaj (Kg)</label>
+                                        <input name="tonaj" required id="tonaj"
                                                placeholder="Tonaj"
                                                type="text"
-                                               value="{{ old('tonnage') }}" class="form-control form-control-sm">
+                                               value="{{ old('tonaj') }}" class="form-control form-control-sm">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="position-relative form-group">
                                         <label for="desiCapacity" class="font-weight-bold">Desi</label>
                                         <input name="desiCapacity" required id="desiCapacity"
-                                               placeholder="Desi"
-                                               type="text"
+                                               placeholder="Desi" type="text"
                                                value="{{ old('desiCapacity') }}" class="form-control form-control-sm">
                                     </div>
                                 </div>
@@ -163,22 +159,26 @@
                                         <div class="col-md-3">
                                             <div class="position-relative form-group">
                                                 <label for="line" class="font-weight-bold">Hat</label>
-                                                <select name="line" required id="line" class="form-control form-control-sm">
+                                                <select name="line" required id="line"
+                                                        class="form-control form-control-sm">
                                                     <option value=""> Seçiniz</option>
                                                     @foreach($data['transshipment_centers'] as $trasferCars)
-                                                        <option value="{{$trasferCars->tc_name}}">{{$trasferCars->tc_name.' TM'}} </option>
+                                                        <option
+                                                            value="{{$trasferCars->tc_name}}">{{$trasferCars->tc_name.' TM'}} </option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative form-group">
-                                                <label for="exitTransfer" class="font-weight-bold">Çıkış Aktarma </label>
+                                                <label for="exitTransfer" class="font-weight-bold">Çıkış
+                                                    Aktarma </label>
                                                 <select name="exitTransfer" required id="exitTransfer"
                                                         class="form-control form-control-sm">
                                                     <option value=""> Seçiniz</option>
                                                     @foreach($data['transshipment_centers'] as $trasferCars)
-                                                        <option value="{{$trasferCars->tc_name}}">{{$trasferCars->tc_name.' TM'}} </option>
+                                                        <option
+                                                            value="{{$trasferCars->tc_name}}">{{$trasferCars->tc_name.' TM'}} </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -186,24 +186,30 @@
 
                                         <div class="col-md-3">
                                             <div class="position-relative form-group">
-                                                <label for="arriveTransfer" class="font-weight-bold">Varış Aktarma</label>
+                                                <label for="arriveTransfer" class="font-weight-bold">Varış
+                                                    Aktarma</label>
                                                 <select name="arriveTransfer" required id="arriveTransfer"
                                                         class="form-control form-control-sm ">
                                                     <option value=""> Seçiniz</option>
                                                     @foreach($data['transshipment_centers'] as $trasferCars)
-                                                        <option value="{{$trasferCars->tc_name}}">{{$trasferCars->tc_name.' TM'}} </option>
+                                                        <option
+                                                            value="{{$trasferCars->tc_name}}">{{$trasferCars->tc_name.' TM'}} </option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
+
                                         <div class="col-md-3">
                                             <div class="position-relative form-group">
-                                                <label for="stopTransfer" class="font-weight-bold">Uğradığı Aktarmalar</label>
-                                                <select name="stopTransfer[]" multiple="multiple" required id="stopTransfer"
+                                                <label for="stopTransfer" class="font-weight-bold">Uğradığı
+                                                    Aktarmalar</label>
+                                                <select name="stopTransfer[]" multiple="multiple" required
+                                                        id="stopTransfer"
                                                         class="form-control form-control-sm">
                                                     <option value=""> Seçiniz</option>
                                                     @foreach($data['transshipment_centers'] as $trasferCars)
-                                                        <option value="{{$trasferCars->tc_name}}">{{$trasferCars->tc_name.' TM'}} </option>
+                                                        <option
+                                                            value="{{$trasferCars->tc_name}}">{{$trasferCars->tc_name.' TM'}} </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -242,7 +248,8 @@
                                     <div class="position-relative form-group">
                                         <label for="driverAdress" class="font-weight-bold">Şoför Adresi</label>
                                         <textarea name="driverAdress" id="driverAdress"
-                                                  class="form-control form-control-sm" maxlength="500" required></textarea>
+                                                  class="form-control form-control-sm" maxlength="500"
+                                                  required></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -256,26 +263,30 @@
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="position-relative form-group">
-                                        <label for="carOwnerPhone" class="font-weight-bold">Araç Sahibi İletişim </label>
+                                        <label for="carOwnerPhone" class="font-weight-bold">Araç Sahibi
+                                            İletişim </label>
                                         <input name="carOwnerPhone" id="carOwnerPhone" required
                                                data-inputmask="'mask': '(999) 999 99 99'"
                                                placeholder="(_) _ _ _" type="text"
                                                value="{{ old('carOwnerPhone') }}"
-                                               class="form-control form-control-sm input-mask-trigger" >
+                                               class="form-control form-control-sm input-mask-trigger">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="position-relative form-group">
-                                        <label for="carOwnerRelative" class="font-weight-bold">Araç Sahibi Yakını Ad Soyad</label>
+                                        <label for="carOwnerRelative" class="font-weight-bold">Araç Sahibi Yakını Ad
+                                            Soyad</label>
                                         <input name="carOwnerRelative" required id="carOwnerRelative"
                                                placeholder="Araç sahibi yakını ad soyad"
                                                type="text"
-                                               value="{{ old('carOwnerRelative') }}" class="form-control form-control-sm">
+                                               value="{{ old('carOwnerRelative') }}"
+                                               class="form-control form-control-sm">
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="position-relative form-group">
-                                        <label for="carOwnerRelativePhone" class="font-weight-bold">Araç Sahibi Yakını İletişim </label>
+                                        <label for="carOwnerRelativePhone" class="font-weight-bold">Araç Sahibi Yakını
+                                            İletişim </label>
                                         <input name="carOwnerRelativePhone" id="carOwnerRelativePhone" required
                                                data-inputmask="'mask': '(999) 999 99 99'"
                                                placeholder="(_) _ _ _" type="text"
@@ -287,14 +298,17 @@
                                     <div class="position-relative form-group">
                                         <label for="carOwnerAdress" class="font-weight-bold">Araç Sahibi Adres</label>
                                         <textarea name="carOwnerAdress" id="carOwnerAdress"
-                                                  class="form-control form-control-sm" maxlength="500" required></textarea>
+                                                  class="form-control form-control-sm" maxlength="500"
+                                                  required></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="position-relative form-group">
-                                        <label for="carOwnerRelativeAdress" class="font-weight-bold">Araç Sahibi Yakını Adres</label>
+                                        <label for="carOwnerRelativeAdress" class="font-weight-bold">Araç Sahibi Yakını
+                                            Adres</label>
                                         <textarea name="carOwnerRelativeAdress" id="carOwnerRelativeAdress"
-                                                  class="form-control form-control-sm" maxlength="500" required></textarea>
+                                                  class="form-control form-control-sm" maxlength="500"
+                                                  required></textarea>
                                     </div>
                                 </div>
 
@@ -335,7 +349,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="position-relative">
-                                        <label for="oneRentPrice" class="font-weight-bold">1 Sefer Kira Maliyeti:</label>
+                                        <label for="oneRentPrice" class="font-weight-bold">1 Sefer Kira
+                                            Maliyeti:</label>
                                     </div>
                                     <div class="input-group input-group-sm mb-1">
                                         <div class="input-group-prepend"><span
@@ -387,7 +402,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="position-relative">
-                                        <label for="oneFlueJourneyPrice" class="font-weight-bold">1 Sefer Yakıt Maliyeti:</label>
+                                        <label for="oneFlueJourneyPrice" class="font-weight-bold">1 Sefer Yakıt
+                                            Maliyeti:</label>
                                     </div>
                                     <div class="input-group input-group-sm mb-1">
                                         <div class="input-group-prepend"><span
@@ -474,7 +490,8 @@
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="tireIron" class="font-weight-bold">Bijon Anahtarı</label>
-                                        <select name="tireIron" required id="tireIron" class="form-control form-control-sm">
+                                        <select name="tireIron" required id="tireIron"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -483,7 +500,8 @@
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="reflektor" class="font-weight-bold">Reflektör</label>
-                                        <select name="reflektor" required id="reflektor" class="form-control form-control-sm">
+                                        <select name="reflektor" required id="reflektor"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -492,7 +510,8 @@
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="fireTube" class="font-weight-bold">Yangın Tüpü</label>
-                                        <select name="fireTube" required id="fireTube" class="form-control form-control-sm">
+                                        <select name="fireTube" required id="fireTube"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -501,7 +520,8 @@
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="firstAidKid" class="font-weight-bold">İlk Yardım Çantası</label>
-                                        <select name="firstAidKid" required id="firstAidKid" class="form-control form-control-sm">
+                                        <select name="firstAidKid" required id="firstAidKid"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -510,7 +530,8 @@
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="travelerLamp" class="font-weight-bold">Seyyar Lamba</label>
-                                        <select name="travelerLamp" required id="travelerLamp" class="form-control form-control-sm">
+                                        <select name="travelerLamp" required id="travelerLamp"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -519,7 +540,8 @@
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="towingline" class="font-weight-bold">Çekme Halatı</label>
-                                        <select name="towingline" required id="towingline" class="form-control form-control-sm">
+                                        <select name="towingline" required id="towingline"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -527,8 +549,10 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
-                                        <label for="giydirmeKorNoktaUyarısı" class="font-weight-bold">Giydirme Kör Nokta Uyarısı</label>
-                                        <select name="giydirmeKorNoktaUyarısı" required id="giydirmeKorNoktaUyarısı" class="form-control form-control-sm">
+                                        <label for="giydirmeKorNoktaUyarısı" class="font-weight-bold">Giydirme Kör Nokta
+                                            Uyarısı</label>
+                                        <select name="giydirmeKorNoktaUyarısı" required id="giydirmeKorNoktaUyarısı"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -536,8 +560,10 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
-                                        <label for="hataBildirimHattı" class="font-weight-bold">Hata Bildirim Hattı</label>
-                                        <select name="hataBildirimHattı" required id="hataBildirimHattı" class="form-control form-control-sm">
+                                        <label for="hataBildirimHattı" class="font-weight-bold">Hata Bildirim
+                                            Hattı</label>
+                                        <select name="hataBildirimHattı" required id="hataBildirimHattı"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -553,7 +579,8 @@
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="muayneEvrağı" class="font-weight-bold">Muayene Evrağı</label>
-                                        <select name="muayneEvrağı" required id="muayneEvrağı" class="form-control form-control-sm">
+                                        <select name="muayneEvrağı" required id="muayneEvrağı"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -562,7 +589,8 @@
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="sigortaBelgesi" class="font-weight-bold">Sigorta Belgesi</label>
-                                        <select name="sigortaBelgesi" required id="sigortaBelgesi" class="form-control form-control-sm">
+                                        <select name="sigortaBelgesi" required id="sigortaBelgesi"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -571,7 +599,8 @@
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="soforEhliyet" class="font-weight-bold">Şoför Ehliyet</label>
-                                        <select name="soforEhliyet" required id="soforEhliyet" class="form-control form-control-sm">
+                                        <select name="soforEhliyet" required id="soforEhliyet"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -580,7 +609,8 @@
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="srcBelgesi" class="font-weight-bold">Src Belgesi</label>
-                                        <select name="srcBelgesi" required id="srcBelgesi" class="form-control form-control-sm">
+                                        <select name="srcBelgesi" required id="srcBelgesi"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -588,8 +618,10 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
-                                        <label for="ruhsatEkpertizRaporu" class="font-weight-bold">Ruhsat Ekspertiz Raporu</label>
-                                        <select name="ruhsatEkpertizRaporu" required id="ruhsatEkpertizRaporu" class="form-control form-control-sm">
+                                        <label for="ruhsatEkpertizRaporu" class="font-weight-bold">Ruhsat Ekspertiz
+                                            Raporu</label>
+                                        <select name="ruhsatEkpertizRaporu" required id="ruhsatEkpertizRaporu"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -598,7 +630,8 @@
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="tasimaBelgesi" class="font-weight-bold">Taşıma Belgesi</label>
-                                        <select name="tasimaBelgesi" required id="tasimaBelgesi" class="form-control form-control-sm">
+                                        <select name="tasimaBelgesi" required id="tasimaBelgesi"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -606,8 +639,10 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
-                                        <label for="soferAdliSicilBelgesi" class="font-weight-bold">Şoför Adli Sicil Kaydı</label>
-                                        <select name="soferAdliSicilBelgesi" required id="soferAdliSicilBelgesi" class="form-control form-control-sm">
+                                        <label for="soferAdliSicilBelgesi" class="font-weight-bold">Şoför Adli Sicil
+                                            Kaydı</label>
+                                        <select name="soferAdliSicilBelgesi" required id="soferAdliSicilBelgesi"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -615,8 +650,10 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
-                                        <label for="aracSahibiSicilKaydi" class="font-weight-bold">Arac Sahibi Sici Kaydı</label>
-                                        <select name="aracSahibiSicilKaydi" required id="aracSahibiSicilKaydi" class="form-control form-control-sm">
+                                        <label for="aracSahibiSicilKaydi" class="font-weight-bold">Arac Sahibi Sici
+                                            Kaydı</label>
+                                        <select name="aracSahibiSicilKaydi" required id="aracSahibiSicilKaydi"
+                                                class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -624,8 +661,10 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
-                                        <label for="soferYakiniIkametgahBelgesi" class="font-weight-bold">Şoför Yakını İkamet Belgesi</label>
-                                        <select name="soferYakiniIkametgahBelgesi" required id="soferYakiniIkametgahBelgesi" class="form-control form-control-sm">
+                                        <label for="soferYakiniIkametgahBelgesi" class="font-weight-bold">Şoför Yakını
+                                            İkamet Belgesi</label>
+                                        <select name="soferYakiniIkametgahBelgesi" required
+                                                id="soferYakiniIkametgahBelgesi" class="form-control form-control-sm">
                                             <option value="Hayır">Hayır</option>
                                             <option value="Evet">Evet</option>
                                         </select>
@@ -633,7 +672,6 @@
                                 </div>
                             </div>
                         </div>
-
 
 
                     </div>
@@ -675,39 +713,36 @@
 
         });
 
-        $('#monthRentPrice').keyup(function (){//tamam
-            var monthRentPrice=$('#monthRentPrice').val().replaceAll(',','');
-            var kdvHaricHakedis=monthRentPrice/1.18;
-            var birSeferKiraMaliyeti=monthRentPrice/26;
-             $('#kdvHaricHakedis').val(kdvHaricHakedis);
-             $('#oneRentPrice').val(birSeferKiraMaliyeti);
+        $('#monthRentPrice').keyup(function () {//tamam
+            var monthRentPrice = $('#monthRentPrice').val().replaceAll(',', '');
+            var kdvHaricHakedis = monthRentPrice / 1.18;
+            var birSeferKiraMaliyeti = monthRentPrice / 26;
+            $('#kdvHaricHakedis').val(kdvHaricHakedis);
+            $('#oneRentPrice').val(birSeferKiraMaliyeti);
         });
 
 
+        $('.for-calculate-oneFlueJourneyPrice').keyup(function () {//tamam
+            var flueRate = parseFloat($('#flueRate').val().replaceAll(',', ''));
 
-
-        $('.for-calculate-oneFlueJourneyPrice').keyup(function (){//tamam
-            var flueRate=parseFloat($('#flueRate').val().replaceAll(',',''));
-
-            var turKm=parseFloat($('#turKm').val().replaceAll(',',''));
-            $('#oneFlueJourneyPrice').val((turKm*flueRate*6.7)/100);
+            var turKm = parseFloat($('#turKm').val().replaceAll(',', ''));
+            $('#oneFlueJourneyPrice').val((turKm * flueRate * 6.7) / 100);
         });
 
 
+        $('.calculate-for-SeferPlusMaliyet').keyup(function () {
+            var oneFlueJourneyPrice = parseFloat($('#oneFlueJourneyPrice').val().replaceAll(',', ''));
 
-        $('.calculate-for-SeferPlusMaliyet').keyup(function (){
-            var oneFlueJourneyPrice=parseFloat($('#oneFlueJourneyPrice').val().replaceAll(',',''));
-
-            var oneRentPrice=parseFloat($('#oneRentPrice').val().replaceAll(',',''));
+            var oneRentPrice = parseFloat($('#oneRentPrice').val().replaceAll(',', ''));
             console.log(oneRentPrice);
 
             $('#seferPlusMaliyet').val((oneRentPrice + oneFlueJourneyPrice));
         });
 
-        $('.calculat-for-hakedisPlusMazot').keyup(function (){
-            var monthRentPrice=parseFloat($('#monthRentPrice').val().replaceAll(',',''));
+        $('.calculat-for-hakedisPlusMazot').keyup(function () {
+            var monthRentPrice = parseFloat($('#monthRentPrice').val().replaceAll(',', ''));
 
-            var monthFlue=parseFloat($('#monthFlue').val().replaceAll(',',''));
+            var monthFlue = parseFloat($('#monthFlue').val().replaceAll(',', ''));
 
             $('#hakedisPlusMazot').val(monthRentPrice + monthFlue);
 

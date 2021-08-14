@@ -729,8 +729,6 @@ class MainCargoController extends Controller
                 break;
 
             case 'CreateCargo':
-
-
                 $rules = [
                     'gondericiCariKodu' => 'required',
                     'aliciCariKodu' => 'required',

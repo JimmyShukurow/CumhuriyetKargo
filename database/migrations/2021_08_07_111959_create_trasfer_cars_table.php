@@ -15,7 +15,6 @@ class CreateTrasferCarsTable extends Migration
     {
         Schema::create('trasfer_cars', function (Blueprint $table) {
             $table->id();
-            $table->string('arac_marka');
             $table->string('arac_model');
             $table->string('arac_yılı');
             $table->string('plaque');
@@ -27,7 +26,6 @@ class CreateTrasferCarsTable extends Migration
             $table->string('cıkıs_aktarma');
             $table->string('varıs_aktarma');
             $table->string('ugradığı_aktarma');
-
             $table->string('driver_name');
             $table->string('driver_phone');
             $table->string('driver_adress');
@@ -37,8 +35,6 @@ class CreateTrasferCarsTable extends Migration
             $table->string('arac_sahibi_yakını_phone');
             $table->string('arac_sahibi_adress');
             $table->string('arac_sahibi_yakını_adress');
-
-
 
             $table->float('aylık_kira_bedeli');
             $table->float('kdv_haric_hakedis');
@@ -50,7 +46,6 @@ class CreateTrasferCarsTable extends Migration
             $table->float('aylık_yakıt');
             $table->float('sefer_maliyeti');
             $table->float('hakedis_plus_mazot');
-
 
             $table->enum('stepne',['1','0'])->default(0);
             $table->enum('kiriko',['1','0'])->default(0);

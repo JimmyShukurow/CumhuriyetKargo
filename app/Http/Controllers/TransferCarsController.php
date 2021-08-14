@@ -22,7 +22,7 @@ class TransferCarsController extends Controller
         $data['agencies'] = Various::all();
         $data['cities'] = Cities::all();
         GeneralLog('Various sayfası görüntülendi.');
-        return view('backend.transfer-cars.index', compact('data'));
+        return view('backend.transfer_cars.index', compact('data'));
     }
 
     /**
@@ -35,7 +35,7 @@ class TransferCarsController extends Controller
         $data['transshipment_centers'] = TransshipmentCenters::all();
         $data['cities'] = Cities::all();
         GeneralLog('Acente oluştur sayfası görüntülendi.');
-        return view('backend.transfer-cars.create', compact(['data']));
+        return view('backend.transfer_cars.create', compact(['data']));
     }
     public function allData(){
         $transferCars = DB::table('trasfer_cars')
@@ -46,7 +46,7 @@ class TransferCarsController extends Controller
             ->setRowId(function ($transferCars) {
                 return 'car-item-' . $transferCars->id;
             })
-            ->addColumn('edit', 'backend.transfer-cars.column')
+            ->addColumn('edit', 'backend.transfer_cars.column')
             ->rawColumns(['edit'])
             ->make(true);
     }
@@ -85,7 +85,7 @@ class TransferCarsController extends Controller
         $data['transshipment_centers'] = TransshipmentCenters::all();
         $data['cities'] = Cities::all();
         $data['myTransferCar']=TrasferCars::find($id);
-        return view('backend.transfer-cars.edit', compact(['data']));
+        return view('backend.transfer_cars.edit', compact(['data']));
     }
 
     /**
