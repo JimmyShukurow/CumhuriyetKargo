@@ -457,7 +457,6 @@ function getSystemVersion()
     return $latestVersion->version;
 }
 
-
 function CatchDesiInterval($desi)
 {
     if ($desi > 0 && $desi <= 5)

@@ -71,7 +71,6 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::get('AllTransferCarsData',[TransferCarsController::class,'allData'])->name('transfer.car.all');
     Route::get('VariousCarsGetCars', [VariousController::class, 'getCars'])->name('VariousCars.getCars');
 
-
     # Main Routes
     Route::get('/SystemUpdates', [ModuleController::class, 'systemUpdateView']);
 

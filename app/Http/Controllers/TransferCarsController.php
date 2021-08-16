@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cities;
+use App\Models\TcCars;
 use App\Models\TransshipmentCenters;
 use App\Models\TrasferCars;
 use App\Models\Various;
+use App\Rules\StartDateFinishDate;
+use App\Rules\TcArrayControl;
+use App\Rules\TcControl;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
@@ -22,7 +28,7 @@ class TransferCarsController extends Controller
         $data['agencies'] = Various::all();
         $data['cities'] = Cities::all();
         GeneralLog('Various sayfası görüntülendi.');
-        return view('backend.transfer_cars.index', compact('data'));
+        return view('backend.operation.transfer_cars.index', compact('data'));
     }
 
     /**
@@ -34,38 +40,197 @@ class TransferCarsController extends Controller
     {
         $data['transshipment_centers'] = TransshipmentCenters::all();
         $data['cities'] = Cities::all();
-        GeneralLog('Acente oluştur sayfası görüntülendi.');
-        return view('backend.transfer_cars.create', compact(['data']));
+        GeneralLog('Aktarma aracı oluştur sayfası görüntülendi.');
+        return view('backend.operation.transfer_cars.create', compact(['data']));
     }
-    public function allData(){
-        $transferCars = DB::table('trasfer_cars')
-            ->select(['trasfer_cars.*']);
 
+    public function allData()
+    {
+        $cars = DB::table('tc_cars_all_data');
 
-        return DataTables::of($transferCars)
-            ->setRowId(function ($transferCars) {
-                return 'car-item-' . $transferCars->id;
+        return DataTables::of($cars)
+            ->setRowId(function ($cars) {
+                return 'car-item-' . $cars->id;
             })
-            ->addColumn('edit', 'backend.transfer_cars.column')
-            ->rawColumns(['edit'])
+            ->editColumn('aylik_kira_bedeli', function ($cars) {
+                return '<b class="text-primary">₺' . getDotter($cars->aylik_kira_bedeli) . '</b>';
+            })
+            ->editColumn('kdv_haric_hakedis', function ($cars) {
+                return '<b class="text-primary">₺' . getDotter($cars->kdv_haric_hakedis) . '</b>';
+            })
+            ->editColumn('bir_sefer_kira_maliyeti', function ($cars) {
+                return '<b class="text-primary">₺' . getDotter($cars->bir_sefer_kira_maliyeti) . '</b>';
+            })
+            ->editColumn('yakit_orani', function ($cars) {
+                return '<b class="text-alternate">%' . getDotter($cars->yakit_orani) . '</b>';
+            })
+            ->editColumn('tur_km', function ($cars) {
+                return '<b class="text-dark">' . getDotter($cars->tur_km) . '</b>';
+            })
+            ->editColumn('sefer_km', function ($cars) {
+                return '<b class="text-dark">' . getDotter($cars->sefer_km) . '</b>';
+            })
+            ->editColumn('bir_sefer_yakit_maliyeti', function ($cars) {
+                return '<b class="text-primary">₺' . getDotter($cars->bir_sefer_yakit_maliyeti) . '</b>';
+            })
+            ->editColumn('aylik_yakit', function ($cars) {
+                return '<b class="text-primary">₺' . getDotter($cars->aylik_yakit) . '</b>';
+            })
+            ->editColumn('bir_sefer_yakit_maliyeti', function ($cars) {
+                return '<b class="text-primary">₺' . getDotter($cars->bir_sefer_yakit_maliyeti) . '</b>';
+            })
+            ->editColumn('hakedis_arti_mazot', function ($cars) {
+                return '<b class="text-primary">₺' . getDotter($cars->hakedis_arti_mazot) . '</b>';
+            })
+            ->editColumn('cikis_aktarma', function ($cars) {
+                return '<b class="text-danger">' . $cars->cikis_akt . '</b>';
+            })
+            ->editColumn('varis_aktarma', function ($cars) {
+                return '<b class="text-success">' . $cars->varis_akt . '</b>';
+            })
+            ->addColumn('edit', 'backend.operation.transfer_cars.column')
+            ->rawColumns(['edit', 'aylik_kira_bedeli', 'varis_aktarma', 'cikis_aktarma', 'kdv_haric_hakedis', 'yakit_orani', 'bir_sefer_kira_maliyeti', 'hakedis_arti_mazot', 'aylik_yakit', 'sefer_km', 'tur_km', 'bir_sefer_yakit_maliyeti'])
             ->make(true);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'plaka' => 'required|unique:tc_cars',
+            'marka' => 'required',
+            'model' => 'required',
+            'model_yili' => 'required',
+            'arac_kapasitesi' => 'required',
+            'tonaj' => 'required',
+            'desi_kapasitesi' => 'required|numeric',
+            'arac_takip_sistemi' => 'required',
+            'hat' => 'required',
+            'cikis_aktarma' => ['required', 'numeric', new TcControl],
+            'varis_aktarma' => ['required', 'numeric', new TcControl],
+            'ugradigi_aktarmalar' => ['required', new TcArrayControl],
+            'muayene_baslangic_tarihi' => 'required',
+            'muayene_bitis_tarihi' => ['required', new StartDateFinishDate($request->muayene_baslangic_tarihi)],
+            'trafik_sigortasi_baslangic_tarihi' => 'required',
+            'trafik_sigortasi_bitis_tarihi' => ['required', new StartDateFinishDate($request->trafik_sigortasi_baslangic_tarihi)],
+            'sofor_ad' => 'required',
+            'sofor_telefon' => 'required',
+            'sofor_adres' => 'required',
+            'arac_sahibi_ad' => 'required',
+            'arac_sahibi_telefon' => 'required',
+            'arac_sahibi_adres' => 'required',
+            'arac_sahibi_yakini_ad' => 'required',
+            'arac_sahibi_yakini_telefon' => 'required',
+            'arac_sahibi_yakini_adres' => 'required',
+            'aylik_kira_bedeli' => 'required',
+            'kdv_haric_hakedis' => 'required',
+            'bir_sefer_kira_maliyeti' => 'required',
+            'yakit_orani' => 'required',
+            'tur_km' => 'required',
+            'sefer_km' => 'required',
+            'bir_sefer_yakit_maliyeti' => 'required',
+            'aylik_yakit' => 'required',
+            'sefer_maliyeti' => 'required',
+            'hakedis_arti_mazot' => 'required',
+            'stepne' => 'required|in:0,1',
+            'kriko' => 'required|in:0,1',
+            'zincir' => 'required|in:0,1',
+            'bijon_anahtari' => 'required|in:0,1',
+            'reflektor' => 'required|in:0,1',
+            'yangin_tupu' => 'required|in:0,1',
+            'ilk_yardim_cantasi' => 'required|in:0,1',
+            'seyyar_lamba' => 'required|in:0,1',
+            'cekme_halati' => 'required|in:0,1',
+            'giydirme_kor_nokta_uyarisi' => 'required|in:0,1',
+            'hata_bildirim_hatti' => 'required|in:0,1',
+            'muayene_evragi' => 'required|in:0,1',
+            'sigorta_belgesi' => 'required|in:0,1',
+            'sofor_ehliyet' => 'required|in:0,1',
+            'src_belgesi' => 'required|in:0,1',
+            'ruhsat_ekspertiz_raporu' => 'required|in:0,1',
+            'tasima_belgesi' => 'required|in:0,1',
+            'sofor_adli_sicil_kaydi' => 'required|in:0,1',
+            'arac_sahibi_sicil_kaydi' => 'required|in:0,1',
+            'sofor_yakini_ikametgah_belgesi' => 'required|in:0,1',
+        ]);
+
+        $create = TcCars::create([
+            'plaka' => tr_strtoupper(str_replace(' ', '', $request->plaka)),
+            'marka' => tr_strtoupper($request->marka),
+            'model' => tr_strtoupper($request->model),
+            'model_yili' => $request->model_yili,
+            'arac_kapasitesi' => $request->arac_kapasitesi,
+            'tonaj' => $request->tonaj,
+            'desi_kapasitesi' => $request->desi_kapasitesi,
+            'arac_takip_sistemi' => $request->arac_takip_sistemi,
+            'hat' => $request->hat,
+            'cikis_aktarma' => $request->cikis_aktarma,
+            'varis_aktarma' => $request->varis_aktarma,
+            'ugradigi_aktarmalar' => $request->ugradigi_aktarmalar,
+            'muayene_baslangic_tarihi' => $request->muayene_baslangic_tarihi,
+            'muayene_bitis_tarihi' => $request->muayene_bitis_tarihi,
+            'trafik_sigortasi_baslangic_tarihi' => $request->trafik_sigortasi_baslangic_tarihi,
+            'trafik_sigortasi_bitis_tarihi' => $request->trafik_sigortasi_bitis_tarihi,
+            'sofor_ad' => tr_strtoupper($request->sofor_ad),
+            'sofor_telefon' => tr_strtoupper($request->sofor_telefon),
+            'sofor_adres' => tr_strtoupper($request->sofor_adres),
+            'arac_sahibi_ad' => tr_strtoupper($request->arac_sahibi_ad),
+            'arac_sahibi_telefon' => $request->arac_sahibi_telefon,
+            'arac_sahibi_adres' => tr_strtoupper($request->arac_sahibi_adres),
+            'arac_sahibi_yakini_ad' => tr_strtoupper($request->arac_sahibi_yakini_ad),
+            'arac_sahibi_yakini_telefon' => $request->arac_sahibi_yakini_telefon,
+            'arac_sahibi_yakini_adres' => tr_strtoupper($request->arac_sahibi_yakini_adres),
+            'aylik_kira_bedeli' => getDoubleValue($request->aylik_kira_bedeli),
+            'kdv_haric_hakedis' => getDoubleValue($request->kdv_haric_hakedis),
+            'bir_sefer_kira_maliyeti' => getDoubleValue($request->bir_sefer_kira_maliyeti),
+            'yakit_orani' => getDoubleValue($request->yakit_orani),
+            'tur_km' => getDoubleValue($request->tur_km),
+            'sefer_km' => getDoubleValue($request->sefer_km),
+            'bir_sefer_yakit_maliyeti' => getDoubleValue($request->bir_sefer_yakit_maliyeti),
+            'aylik_yakit' => getDoubleValue($request->aylik_yakit),
+            'sefer_maliyeti' => getDoubleValue($request->sefer_maliyeti),
+            'hakedis_arti_mazot' => getDoubleValue($request->hakedis_arti_mazot),
+            'stepne' => $request->stepne,
+            'kriko' => $request->kriko,
+            'zincir' => $request->zincir,
+            'bijon_anahtari' => $request->bijon_anahtari,
+            'reflektor' => $request->reflektor,
+            'yangin_tupu' => $request->yangin_tupu,
+            'ilk_yardim_cantasi' => $request->ilk_yardim_cantasi,
+            'seyyar_lamba' => $request->seyyar_lamba,
+            'cekme_halati' => $request->cekme_halati,
+            'giydirme_kor_nokta_uyarisi' => $request->giydirme_kor_nokta_uyarisi,
+            'hata_bildirim_hatti' => $request->hata_bildirim_hatti,
+            'muayene_evragi' => $request->muayene_evragi,
+            'sigorta_belgesi' => $request->sigorta_belgesi,
+            'sofor_ehliyet' => $request->sofor_ehliyet,
+            'src_belgesi' => $request->src_belgesi,
+            'ruhsat_ekspertiz_raporu' => $request->ruhsat_ekspertiz_raporu,
+            'tasima_belgesi' => $request->tasima_belgesi,
+            'sofor_adli_sicil_kaydi' => $request->sofor_adli_sicil_kaydi,
+            'arac_sahibi_sicil_kaydi' => $request->arac_sahibi_sicil_kaydi,
+            'sofor_yakini_ikametgah_belgesi' => $request->sofor_yakini_ikametgah_belgesi,
+            'creator_id' => Auth::id()
+        ]);
+
+        if ($create)
+            return back()
+                ->with('success', 'Aktarma aracı başarıyla kaydedildi!');
+        else
+            return back()
+                ->with('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!');
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -76,114 +241,113 @@ class TransferCarsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-
         $data['transshipment_centers'] = TransshipmentCenters::all();
         $data['cities'] = Cities::all();
-        $data['myTransferCar']=TrasferCars::find($id);
+        $data['myTransferCar'] = TrasferCars::find($id);
         return view('backend.transfer_cars.edit', compact(['data']));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $myData=TrasferCars::find($id);
-        $stepne=$request->stepne == 'Evet' ? 1:0;
-        $crick=$request->crick == 'Evet' ? 1:0;
-        $chain=$request->chain == 'Evet' ? 1:0;
-        $tireIron=$request->tireIron == 'Evet' ? 1:0;
-        $reflektor=$request->reflektor == 'Evet' ? 1:0;
-        $fireTube=$request->fireTube == 'Evet' ? 1:0;
-        $firstAidKid=$request->firstAidKid == 'Evet' ? 1:0;
-        $travelerLamp=$request->travelerLamp == 'Evet' ? 1:0;
-        $towingline=$request->towingline == 'Evet' ? 1:0;
+        $myData = TrasferCars::find($id);
+        $stepne = $request->stepne == 'Evet' ? 1 : 0;
+        $crick = $request->crick == 'Evet' ? 1 : 0;
+        $chain = $request->chain == 'Evet' ? 1 : 0;
+        $tireIron = $request->tireIron == 'Evet' ? 1 : 0;
+        $reflektor = $request->reflektor == 'Evet' ? 1 : 0;
+        $fireTube = $request->fireTube == 'Evet' ? 1 : 0;
+        $firstAidKid = $request->firstAidKid == 'Evet' ? 1 : 0;
+        $travelerLamp = $request->travelerLamp == 'Evet' ? 1 : 0;
+        $towingline = $request->towingline == 'Evet' ? 1 : 0;
 
-        $giydirmeKorNoktaUyarısı=$request->giydirmeKorNoktaUyarısı == 'Evet' ? 1:0;
-        $hataBildirimHattı=$request->hataBildirimHattı == 'Evet' ? 1:0;
-        $muayneEvrağı=$request->muayneEvrağı == 'Evet' ? 1:0;
-        $sigortaBelgesi=$request->sigortaBelgesi == 'Evet' ? 1:0;
-        $soforEhliyet=$request->soforEhliyet == 'Evet' ? 1:0;
-        $srcBelgesi=$request->srcBelgesi == 'Evet' ? 1:0;
-        $ruhsatEkpertizRaporu=$request->ruhsatEkpertizRaporu == 'Evet' ? 1:0;
-        $tasimaBelgesi=$request->tasimaBelgesi == 'Evet' ? 1:0;
-        $soferAdliSicilBelgesi=$request->soferAdliSicilBelgesi == 'Evet' ? 1:0;
-        $aracSahibiSicilKaydi=$request->aracSahibiSicilKaydi == 'Evet' ? 1:0;
-        $soferYakiniIkametgahBelgesi=$request->soferYakiniIkametgahBelgesi == 'Evet' ? 1:0;
+        $giydirmeKorNoktaUyarısı = $request->giydirmeKorNoktaUyarısı == 'Evet' ? 1 : 0;
+        $hataBildirimHattı = $request->hataBildirimHattı == 'Evet' ? 1 : 0;
+        $muayneEvrağı = $request->muayneEvrağı == 'Evet' ? 1 : 0;
+        $sigortaBelgesi = $request->sigortaBelgesi == 'Evet' ? 1 : 0;
+        $soforEhliyet = $request->soforEhliyet == 'Evet' ? 1 : 0;
+        $srcBelgesi = $request->srcBelgesi == 'Evet' ? 1 : 0;
+        $ruhsatEkpertizRaporu = $request->ruhsatEkpertizRaporu == 'Evet' ? 1 : 0;
+        $tasimaBelgesi = $request->tasimaBelgesi == 'Evet' ? 1 : 0;
+        $soferAdliSicilBelgesi = $request->soferAdliSicilBelgesi == 'Evet' ? 1 : 0;
+        $aracSahibiSicilKaydi = $request->aracSahibiSicilKaydi == 'Evet' ? 1 : 0;
+        $soferYakiniIkametgahBelgesi = $request->soferYakiniIkametgahBelgesi == 'Evet' ? 1 : 0;
 
 
         $stopTransfer = '';
-        foreach ($request->stopTransfer  as $key => $value){
-            $stopTransfer .= $value .',';
+        foreach ($request->stopTransfer as $key => $value) {
+            $stopTransfer .= $value . ',';
         }
 
 
         $myData->update([
-            'arac_marka'=>$request->branchCars,
-            'arac_model'=>$request->modelCars,
-            'arac_yılı'=>$request->modelYear,
-            'plaque'=>$request->plaqueCar,
-            'arac_kapasitesi'=>$request->capacityCar,
-            'tonnage'=>$request->tonnage,
-            'desi'=>$request->desiCapacity,
-            'ats'=>$request->atsInfo,
-            'hat'=>$request->line,
-            'cıkıs_aktarma'=>$request->exitTransfer,
-            'ugradığı_aktarma'=>$stopTransfer,
-            'driver_name'=>$request->driverName,
-            'driver_phone'=>$request->driverPhone,
-            'driver_adress'=>$request->driverAdress,
-            'arac_sahibi_ad'=>$request->carOwner,
-            'arac_sahibi_phone'=>$request->carOwnerPhone,
-            'arac_sahibi_yakını_adı'=>$request->carOwnerRelative,
-            'arac_sahibi_yakını_phone'=>$request->carOwnerRelativePhone,
-            'arac_sahibi_adress'=>$request->carOwnerAdress,
-            'arac_sahibi_yakını_adress'=>$request->carOwnerRelativeAdress,
-            'aylık_kira_bedeli'=>$request->monthRentPrice,
-            'kdv_haric_hakedis'=>$request->kdvHaricHakedis,
-            'bir_sefer_kira_maliyeti'=>$request->oneRentPrice,
-            'yakıt_oranı'=>$request->flueRate,
-            'tur_km'=>$request->turKm,
-            'sefer_km'=>$request->journeyKm,
-            'bir_sefer_yakıt_maliyeti'=>$request->oneFlueJourneyPrice,
+            'arac_marka' => $request->branchCars,
+            'arac_model' => $request->modelCars,
+            'arac_yılı' => $request->modelYear,
+            'plaque' => $request->plaqueCar,
+            'arac_kapasitesi' => $request->capacityCar,
+            'tonnage' => $request->tonnage,
+            'desi' => $request->desiCapacity,
+            'ats' => $request->atsInfo,
+            'hat' => $request->line,
+            'cıkıs_aktarma' => $request->exitTransfer,
+            'ugradığı_aktarma' => $stopTransfer,
+            'driver_name' => $request->driverName,
+            'driver_phone' => $request->driverPhone,
+            'driver_adress' => $request->driverAdress,
+            'arac_sahibi_ad' => $request->carOwner,
+            'arac_sahibi_phone' => $request->carOwnerPhone,
+            'arac_sahibi_yakını_adı' => $request->carOwnerRelative,
+            'arac_sahibi_yakını_phone' => $request->carOwnerRelativePhone,
+            'arac_sahibi_adress' => $request->carOwnerAdress,
+            'arac_sahibi_yakını_adress' => $request->carOwnerRelativeAdress,
+            'aylık_kira_bedeli' => $request->monthRentPrice,
+            'kdv_haric_hakedis' => $request->kdvHaricHakedis,
+            'bir_sefer_kira_maliyeti' => $request->oneRentPrice,
+            'yakıt_oranı' => $request->flueRate,
+            'tur_km' => $request->turKm,
+            'sefer_km' => $request->journeyKm,
+            'bir_sefer_yakıt_maliyeti' => $request->oneFlueJourneyPrice,
 //            'sefer_maliyeti'=>
-            'hakedis_plus_mazot1'=>$request->hakedisPlusMazot,
-            'aylık_yakıt'=>$request->monthFlue,
-            'stepne'=>$stepne,
-            'kiriko'=>$crick,
-            'zincir'=>$chain,
-            'bijon_anahtarı'=>$tireIron,
-            'reflektör'=>$reflektor,
-            'yangın_tüpü'=>$fireTube,
-            'ilk_yardım_çantası'=>$firstAidKid,
-            'seyyar_lamba'=>$travelerLamp,
-            'çekme_halatı'=>$towingline,
-            'giydirme_kör_nokta_uarısı'=>$giydirmeKorNoktaUyarısı,
-            'hata_bildirim_hattı'=>$hataBildirimHattı,
-            'muayne_eğrağı'=>$muayneEvrağı,
-            'sigorta_belgesi'=>$sigortaBelgesi,
-            'src_belgesi'=>$srcBelgesi,
-            'ruhsat_ekpertiz_raporu'=>$ruhsatEkpertizRaporu,
-            'taşıma_belgesi'=>$tasimaBelgesi,
-            'şoför_adli_sicil_kaydi'=>$soferAdliSicilBelgesi,
-            'arac_sahibi_sicil_kaydı'=>$aracSahibiSicilKaydi,
-            'şoför_yakını_ikametgah_belgesi'=>$soferYakiniIkametgahBelgesi,
+            'hakedis_plus_mazot1' => $request->hakedisPlusMazot,
+            'aylık_yakıt' => $request->monthFlue,
+            'stepne' => $stepne,
+            'kiriko' => $crick,
+            'zincir' => $chain,
+            'bijon_anahtarı' => $tireIron,
+            'reflektör' => $reflektor,
+            'yangın_tüpü' => $fireTube,
+            'ilk_yardım_çantası' => $firstAidKid,
+            'seyyar_lamba' => $travelerLamp,
+            'çekme_halatı' => $towingline,
+            'giydirme_kör_nokta_uarısı' => $giydirmeKorNoktaUyarısı,
+            'hata_bildirim_hattı' => $hataBildirimHattı,
+            'muayne_eğrağı' => $muayneEvrağı,
+            'sigorta_belgesi' => $sigortaBelgesi,
+            'src_belgesi' => $srcBelgesi,
+            'ruhsat_ekpertiz_raporu' => $ruhsatEkpertizRaporu,
+            'taşıma_belgesi' => $tasimaBelgesi,
+            'şoför_adli_sicil_kaydi' => $soferAdliSicilBelgesi,
+            'arac_sahibi_sicil_kaydı' => $aracSahibiSicilKaydi,
+            'şoför_yakını_ikametgah_belgesi' => $soferYakiniIkametgahBelgesi,
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

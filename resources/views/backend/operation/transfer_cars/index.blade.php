@@ -22,7 +22,7 @@
                         <i class="pe-7s-car icon-gradient bg-amy-crisp">
                         </i>
                     </div>
-                    <div> Aktarma Araçlar
+                    <div> Aktarma Araçları
                         <div class="page-title-subheading">Bu modül üzerinden sistemdeki tüm aktarma araçları
                             listleyebilir, işlem yapablirsiniz.
                         </div>
@@ -36,7 +36,7 @@
                                 <span class="btn-icon-wrapper pr-2 opacity-7">
                                     <i class="fa fa-plus fa-w-20"></i>
                                 </span>
-                                Yeni Muhtelif Araç Ekle
+                                Yeni Aktarma Aracı Ekle
                             </button>
                         </a>
                     </div>
@@ -48,7 +48,7 @@
         <div class="card mb-3">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                        class="header-icon pe-7s-car mr-3 text-muted opacity-6"> </i>Tüm Muhtelif Araçlar
+                        class="header-icon pe-7s-car mr-3 text-muted opacity-6"> </i>Tüm Aktarma Araçları
                 </div>
 
                 <div class="btn-actions-pane-right actions-icon-btn">
@@ -157,11 +157,26 @@
                        class="align-middle mb-0 table Table30Padding table-borderless table-striped NikolasDataTable">
                     <thead>
                     <tr>
-                        <th>Araç Marka</th>
-                        <th>Araç Model</th>
+                        <th>Marka</th>
+                        <th>Model</th>
                         <th>Plaka</th>
+                        <th>Hat</th>
+                        <th>Kapasite (KG)</th>
+                        <th>Desi Taşıma Kapasitesi</th>
+                        <th>Çıkış Akt.</th>
+                        <th>Varış Akt.</th>
+                        <th>Aylık Kira Bedeli (KDV Dahil)</th>
+                        <th>KDV Hariç Hakediş</th>
+                        <th>1 Sefer Kira Maliyeti</th>
+                        <th>Yakıt Oranı</th>
+                        <th>Tur KM</th>
+                        <th>Sefer KM</th>
+                        <th>1 Sefer Yakıt Maliyeti</th>
+                        <th>Sefer Maliyeti (Yakıt+Kira)</th>
+                        <th>Aylık Yakıt Maliyeti</th>
                         <th>Şoför Adı</th>
                         <th>Şoför İletişim</th>
+                        <th>Oluşturan</th>
                         <th width="10" class="text-center">İşlem</th>
                     </tr>
                     </thead>
@@ -171,11 +186,26 @@
 
                     <tfoot>
                     <tr>
-                        <th>Araç Marka</th>
-                        <th>Araç Model</th>
+                        <th>Marka</th>
+                        <th>Model</th>
                         <th>Plaka</th>
+                        <th>Hat</th>
+                        <th>Araç Kapasitesi</th>
+                        <th>Desi Taşıma Kapasitesi</th>
+                        <th>Çıkış Akt.</th>
+                        <th>Varış Akt.</th>
+                        <th>Aylık Kira Bedeli (KDV Dahil)</th>
+                        <th>KDV Hariç Hakediş</th>
+                        <th>1 Sefer Kira Maliyeti</th>
+                        <th>Yakıt Oranı</th>
+                        <th>Tur KM</th>
+                        <th>Sefer KM</th>
+                        <th>1 Sefer Yakıt Maliyeti</th>
+                        <th>Sefer Maliyeti (Yakıt+Kira)</th>
+                        <th>Aylık Yakıt Maliyeti</th>
                         <th>Şoför Adı</th>
                         <th>Şoför İletişim</th>
+                        <th>Oluşturan</th>
                         <th width="10" class="text-center">İşlem</th>
                     </tr>
                     </tfoot>
@@ -312,14 +342,28 @@
                     }
                 },
                 columns: [
-                    {data: 'arac_marka', name: 'arac_marka'},
-                    {data: 'arac_model', name: 'arac_model'},
-                    {data: 'plaque', name: 'plaque'},
-                    {data: 'driver_name', name: 'driver_name'},
-                    {data: 'driver_phone', name: 'driver_phone'},
+                    {data: 'marka', name: 'marka'},
+                    {data: 'model', name: 'model'},
+                    {data: 'plaka', name: 'plaka'},
+                    {data: 'hat', name: 'hat'},
+                    {data: 'arac_kapasitesi', name: 'arac_kapasitesi'},
+                    {data: 'desi_kapasitesi', name: 'desi_kapasitesi'},
+                    {data: 'cikis_aktarma', name: 'cikis_aktarma'},
+                    {data: 'varis_aktarma', name: 'varis_aktarma'},
+                    {data: 'aylik_kira_bedeli', name: 'aylik_kira_bedeli'},
+                    {data: 'kdv_haric_hakedis', name: 'kdv_haric_hakedis'},
+                    {data: 'bir_sefer_kira_maliyeti', name: 'bir_sefer_kira_maliyeti'},
+                    {data: 'yakit_orani', name: 'yakit_orani'},
+                    {data: 'tur_km', name: 'tur_km'},
+                    {data: 'sefer_km', name: 'sefer_km'},
+                    {data: 'bir_sefer_yakit_maliyeti', name: 'bir_sefer_yakit_maliyeti'},
+                    {data: 'hakedis_arti_mazot', name: 'hakedis_arti_mazot'},
+                    {data: 'aylik_yakit', name: 'aylik_yakit'},
+                    {data: 'sofor_ad', name: 'sofor_ad'},
+                    {data: 'sofor_telefon', name: 'sofor_telefon'},
+                    {data: 'name_surname', name: 'name_surname'},
                     {data: 'edit', name: 'edit'},
                 ],
-
             });
         });
 
