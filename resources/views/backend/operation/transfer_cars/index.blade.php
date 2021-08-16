@@ -274,20 +274,10 @@
                         "sSortAscending": ": artan sütun sıralamasını aktifleştir",
                         "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
                     },
-                    "select": {
-                        "rows": {
-                            "_": "%d kayıt seçildi",
-                            "0": "",
-                            "1": "1 kayıt seçildi"
-                        }
-                    }
+
                 },
                 dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
 
-                select: {
-                    style: 'multi',
-                    selector: 'td:nth-child(2)'
-                },
                 buttons: [
                     'print',
                     {
