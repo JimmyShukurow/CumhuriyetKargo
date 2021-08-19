@@ -8,10 +8,14 @@
             top: 6px;
             left: 5px;
         }
+
+        .modal-data {
+            font-weight: bold;
+        }
     </style>
 @endpush
 
-@section('title', 'Ana Menü')
+@section('title', 'Aktarma Araçları')
 @section('content')
 
     <div class="app-main__inner">
@@ -67,87 +71,79 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
+
             <div class="card-body">
                 <form method="POST" id="search-form">
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="brandCar">Marka:</label>
-                            <input type="text" id="brandCar"
+                            <label for="filter_marka">Marka:</label>
+                            <input type="text" id="filter_marka"
                                    class="form-control niko-filter form-control-sm niko-select-filter">
                         </div>
                         <div class="col-md-3">
-                            <label for="modelCar">Model:</label>
-                            <input type="text" id="modelCar"
-                                   class="form-control niko-filter form-control-sm niko-select-filter">
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="plaqueCar">Plaka:</label>
-                            <input type="text" id="plaqueCar"
+                            <label for="filter_model">Model:</label>
+                            <input type="text" id="filter_model"
                                    class="form-control niko-filter form-control-sm niko-select-filter">
                         </div>
 
                         <div class="col-md-3">
-                            <label for="tonnageCar">Tonaj (Kg):</label>
-                            <input type="text" id="tonnageCar"
+                            <label for="filter_plaka">Plaka:</label>
+                            <input type="text" id="filter_plaka"
                                    class="form-control niko-filter form-control-sm niko-select-filter">
                         </div>
 
                         <div class="col-md-3">
-                            <label for="caseType">Kasa Türü:</label>
-                            <select id="caseType"
-                                    class="form-control form-control-sm niko-select-filter">
+                            <label for="filter_hat">Hat:</label>
+                            <select name="" id="filter_hat" class="form-control niko-select-filter form-control-sm">
                                 <option value="">Seçiniz</option>
-                                <option value="Açık">Açık</option>
-                                <option value="Kapalı">Kapalı</option>
-                                <option value="Panelvan">Panelvan</option>
-                                <option value="Tente">Tente</option>
-                                <option value="Branda">Branda</option>
+                                <option value="Anahat">Anahat</option>
+                                <option value="Arahat">Arahat</option>
                             </select>
                         </div>
 
                         <div class="col-md-3">
-                            <label for="modelYear">Model Yılı:</label>
-                            <input type="text" id="modelYear"
-                                   class="form-control niko-filter form-control-sm niko-select-filter">
+                            <label for="filter_arac_kapasitesi">Araç Kapasitesi:</label>
+                            <select name="filter_arac_kapasitesi" required="" id="filter_arac_kapasitesi"
+                                    class="form-control niko-select-filter form-control-sm">
+                                <option value=""> Seçiniz</option>
+                                <option value="Panelvan">Panelvan</option>
+                                <option value="Kamyonet">Kamyonet</option>
+                                <option value="6 Teker Kamyonet">6 Teker Kamyonet</option>
+                                <option value="10 Teker Kamyon">10 Teker Kamyon</option>
+                                <option value="40 Ayak Kamyon">40 Ayak Kamyon</option>
+                            </select>
                         </div>
 
                         <div class="col-md-3">
-                            <label for="driverName">Şöför Adı:</label>
-                            <input type="text" id="driverName"
-                                   class="form-control niko-filter form-control-sm niko-select-filter">
-                        </div>
-
-
-                        <div class="col-md-3">
-                            <label for="phoneInfo">İletişim:</label>
-                            <input type="text" data-inputmask="'mask': '538 069 22 99'"
-                                   placeholder="___ ___ __ __" type="text" id="phoneInfo"
-                                   class="form-control input-mask-trigger form-control-sm niko-filter">
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="addPerson">Ekleyen:</label>
-                            <input type="text" id="addPerson"
-                                   class="form-control niko-filter form-control-sm niko-select-filter">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label for="searchCity">İl:</label>
-                            <select id="searchCity"
+                            <label for="filter_cikisAktarma">Çıkış Aktarma:</label>
+                            <select id="filter_cikisAktarma"
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
-                                @foreach($data['cities'] as $key)
-                                    <option value="{{$key->city_name}}" data="{{$key->city_name}}">{{$key->city_name}}</option>
+                                @foreach($data['transshipment_centers'] as $key)
+                                    <option value="{{$key->id}}">{{$key->tc_name . ' ('.$key->type.') T.M.'}}</option>
                                 @endforeach
                             </select>
                         </div>
+
+                        <div class="col-md-3">
+                            <label for="filter_varisAktarma">Varış Aktarma:</label>
+                            <select id="filter_varisAktarma"
+                                    class="form-control form-control-sm niko-select-filter">
+                                <option value="">Seçiniz</option>
+                                @foreach($data['transshipment_centers'] as $key)
+                                    <option value="{{$key->id}}">{{$key->tc_name . ' ('.$key->type.') T.M.'}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="filter_soforIletisim">Şoför İletişim:</label>
+                            <input type="text" data-inputmask="'mask': '(999) 999 99 99'"
+                                   placeholder="___ ___ __ __" type="text" id="filter_soforIletisim"
+                                   class="form-control input-mask-trigger form-control-sm niko-filter">
+                        </div>
+
                     </div>
                 </form>
             </div>
@@ -162,9 +158,10 @@
                         <th>Plaka</th>
                         <th>Hat</th>
                         <th>Kapasite (KG)</th>
-                        <th>Desi Taşıma Kapasitesi</th>
                         <th>Çıkış Akt.</th>
                         <th>Varış Akt.</th>
+                        <th>Muayene Kalan Gün</th>
+                        <th>Sigorta Kalan Gün</th>
                         <th>Aylık Kira Bedeli (KDV Dahil)</th>
                         <th>KDV Hariç Hakediş</th>
                         <th>1 Sefer Kira Maliyeti</th>
@@ -177,11 +174,13 @@
                         <th>Şoför Adı</th>
                         <th>Şoför İletişim</th>
                         <th>Oluşturan</th>
-                        <th width="10" class="text-center">İşlem</th>
+                        <th>Kayıt Tarihi</th>
+                        <th class="text-center">İşlem</th>
                     </tr>
                     </thead>
 
                     <tbody>
+
                     </tbody>
 
                     <tfoot>
@@ -190,10 +189,11 @@
                         <th>Model</th>
                         <th>Plaka</th>
                         <th>Hat</th>
-                        <th>Araç Kapasitesi</th>
-                        <th>Desi Taşıma Kapasitesi</th>
+                        <th>Kapasite (KG)</th>
                         <th>Çıkış Akt.</th>
                         <th>Varış Akt.</th>
+                        <th>Muayene Kalan Gün</th>
+                        <th>Sigorta Kalan Gün</th>
                         <th>Aylık Kira Bedeli (KDV Dahil)</th>
                         <th>KDV Hariç Hakediş</th>
                         <th>1 Sefer Kira Maliyeti</th>
@@ -206,7 +206,8 @@
                         <th>Şoför Adı</th>
                         <th>Şoför İletişim</th>
                         <th>Oluşturan</th>
-                        <th width="10" class="text-center">İşlem</th>
+                        <th>Kayıt Tarihi</th>
+                        <th class="text-center">İşlem</th>
                     </tr>
                     </tfoot>
                 </table>
@@ -251,6 +252,9 @@
                     [10, 25, 50, 100, 250, 500, -1],
                     ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
                 ],
+                order: [
+                    [20, 'desc']
+                ],
                 language: {
                     "sDecimal": ",",
                     "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
@@ -285,7 +289,7 @@
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
                         },
-                        title: "CK - Kesilen Kargolar"
+                        title: "CK - Aktarma Araçları"
                     },
                     {
                         text: 'Yenile',
@@ -304,20 +308,14 @@
                 ajax: {
                     url: '{!! route('transfer.car.all') !!}',
                     data: function (d) {
-
-                        //filterda kullandığın değerler
-
-                        // d.branchCar=$('#brandCar').val();
-                        // d.modelCar=$('#modelCar').val();
-                        // d.plaqueCar=$('#plaqueCar').val();
-                        // d.tonnageCar=$('#tonnageCar').val();
-                        // d.caseType=$('option:selected', '#caseType').attr('value');
-                        // d.modelYear=$('#modelYear').val();
-                        // d.driverName=$('#driverName').val();
-                        // d.phoneInfo=$('#phoneInfo').val();
-                        // d.searchCity=$('option:selected', '#searchCity').attr('value');
-                        // d.recordDate=$('#recordDate').val();
-                        // d.addPerson=$('#addPerson').val();
+                        d.marka = $('#filter_marka').val();
+                        d.model = $('#filter_model').val();
+                        d.plaka = $('#filter_plaka').val();
+                        d.hat = $('#filter_hat').val();
+                        d.aracKapasitesi = $('#filter_arac_kapasitesi').val();
+                        d.cikisAktarma = $('#filter_cikisAktarma').val();
+                        d.varisAktarma = $('#filter_varisAktarma').val();
+                        d.soforIletisim = $('#filter_soforIletisim').val();
                     },
                     error: function (xhr, error, code) {
 
@@ -337,9 +335,12 @@
                     {data: 'plaka', name: 'plaka'},
                     {data: 'hat', name: 'hat'},
                     {data: 'arac_kapasitesi', name: 'arac_kapasitesi'},
-                    {data: 'desi_kapasitesi', name: 'desi_kapasitesi'},
                     {data: 'cikis_aktarma', name: 'cikis_aktarma'},
                     {data: 'varis_aktarma', name: 'varis_aktarma'},
+
+                    {data: 'muayene_kalan_sure', name: 'muayene_kalan_sure'},
+                    {data: 'sigorta_kalan_sure', name: 'sigorta_kalan_sure'},
+
                     {data: 'aylik_kira_bedeli', name: 'aylik_kira_bedeli'},
                     {data: 'kdv_haric_hakedis', name: 'kdv_haric_hakedis'},
                     {data: 'bir_sefer_kira_maliyeti', name: 'bir_sefer_kira_maliyeti'},
@@ -352,6 +353,7 @@
                     {data: 'sofor_ad', name: 'sofor_ad'},
                     {data: 'sofor_telefon', name: 'sofor_telefon'},
                     {data: 'name_surname', name: 'name_surname'},
+                    {data: 'created_at', name: 'created_at'},
                     {data: 'edit', name: 'edit'},
                 ],
             });
@@ -376,19 +378,17 @@
             drawDT();
         });
 
-        // parse a date in yyyy-mm-dd format
-        function dateFormat(date) {
-            date = String(date);
-            let text = date.substring(0, 10);
-            let time = date.substring(19, 8);
-            time = time.substring(3, 11);
-            let datetime = text + " " + time;
-            return datetime;
-        }
 
+        $(document).on('click', '.btn_car_details', function () {
+            detailsID = $(this).prop('id');
+            carInfo($(this).prop('id'));
+        });
 
-        $(document).on('click', '.user-detail', function () {
-            $('#ModalUserDetail').modal();
+        var array = new Array();
+
+        function carInfo(id) {
+
+            $('#ModalCarDetails').modal();
 
             $('#ModalBodyUserDetail.modal-body').block({
                 message: $('<div class="loader mx-auto">\n' +
@@ -409,88 +409,77 @@
             $('.blockUI.blockMsg.blockElement').css('border', '0px');
             $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
-            detailsID = $(this).prop('id');
-            userInfo($(this).prop('id'));
-        });
-
-        var array = new Array();
-
-        function userInfo(user) {
-            $.ajax('/SenderCurrents/AjaxTransaction/GetCurrentInfo', {
+            $.ajax('{{route('getTransferCars')}}', {
                 method: 'POST',
                 data: {
                     _token: token,
-                    currentID: user
+                    carID: id
                 },
                 cache: false
             }).done(function (response) {
-                let currentStatus, currentConfirmed;
-                let creatorDisplayName = '<span class="text-primary font-weight-bold">(' + response.current.creator_display_name + ')</span>';
 
-                if (response.current.status == "1")
-                    currentStatus = '<span class="text-success">(Aktif Hesap)</span>';
-                else
-                    currentStatus = '<span class="text-danger">(Pasif Hesap)</span>';
+                let cars = response.cars;
 
-                if (response.current.confirmed == "1") {
-                    currentConfirmed = '<span class="text-success font-weight-bold">Onaylandı</span>';
-                    $('#divConfirmCurrent').hide();
-                } else {
-                    currentConfirmed = '<span class="text-danger font-weight-bold">Onay Bekliyor</span>';
-                    $('#divConfirmCurrent').show();
-                }
+                $('#tdPlaka').html(cars.plaka);
+                $('#marka').html(cars.marka);
+                $('#model').html(cars.model);
+                $('#modelYili').html(cars.model_yili);
+                $('#aracKapasitesi').html(cars.arac_kapasitesi);
+                $('#tonaj').html(cars.tonaj);
+                $('#aracTakipSistemi').html(cars.arac_takip_sistemi);
+                $('#hat').html(cars.hat);
+                $('#cikisAktarma').html(cars.cikis_akt + " T.M.");
+                $('#varisAktarma').html(cars.varis_akt + " T.M.");
+                $('#ugradigiAktarmalar').html(response.aktarmalar);
+                $('#muayeneBaslangicBitisTarihi').html(cars.muayene_baslangic_tarihi + " - " + cars.muayene_bitis_tarihi);
+                $('#muayeneBitimiKalanGun').html(cars.muayene_kalan_sure);
+                $('#sigortaBaslangicBitisTarihi').html(cars.trafik_sigortasi_baslangic_tarihi + " - " + cars.trafik_sigortasi_bitis_tarihi);
+                $('#sigortaBitimiKalanGun').html(cars.sigorta_kalan_sure);
+                $('#kayitTarihi').html(cars.created_at);
 
-                let city = response.current.city + "/",
-                    district = response.current.district + " ",
-                    neighborhood = response.current.neighborhood + " ",
-                    street = response.current.street != '' && response.current.street != null ? response.current.street + " CAD. " : "",
-                    street2 = response.current.street2 != '' && response.current.street2 != null ? response.current.street2 + " SK. " : "",
-                    buildingNo = "NO:" + response.current.building_no + " ",
-                    door = "D:" + response.current.door_no + " ",
-                    floor = "KAT:" + response.current.floor + " ",
-                    addressNote = "(" + response.current.address_note + ")";
+                $('#aylikKiraBedeli').html("₺" + getDotter(cars.aylik_kira_bedeli));
+                $('#yakitOrani').html("%" + cars.yakit_orani);
+                $('#turKm').html(getDotter(cars.tur_km));
+                $('#seferKM').html(cars.sefer_km);
+                $('#aylikYakit').html("₺" + getDotter(cars.aylik_yakit));
+                $('#kdvHaricHakedis').html("₺" + getDotter(cars.kdv_haric_hakedis));
+                $('#birSeferKiraMaliyeti').html("₺" + getDotter(cars.bir_sefer_kira_maliyeti));
+                $('#birSeferYakitMaliyeti').html("₺" + getDotter(cars.bir_sefer_yakit_maliyeti));
+                $('#hakedisArtiMazot').html("₺" + getDotter(cars.hakedis_arti_mazot));
+                $('#seferMaliyeti').html("₺" + getDotter(cars.sefer_maliyeti));
 
-                let fullAddress = neighborhood + street + street2 + buildingNo + floor + door + addressNote;
+                $('#soforAdi').html(cars.sofor_ad);
+                $('#soforIletisim').html(cars.sofor_telefon);
+                $('#soforAders').html(cars.sofor_adres);
+                $('#aracSahibiAdi').html(cars.arac_sahibi_ad);
+                $('#aracSahibiIletisim').html(cars.arac_sahibi_telefon);
+                $('#aracSahibiAders').html(cars.arac_sahibi_adres);
+                $('#aracSahibiYakiniAdi').html(cars.arac_sahibi_yakini_ad);
+                $('#aracSahibiYakiniIletisim').html(cars.arac_sahibi_yakini_telefon);
+                $('#aracSahibiYakiniAders').html(cars.arac_sahibi_yakini_adres);
 
+                $('#stepne').html(cars.stepne);
+                $('#kriko').html(cars.kriko);
+                $('#Zincir').html(cars.zincir);
+                $('#bijonAnahtari').html(cars.bijon_anahtari);
+                $('#reflektor').html(cars.reflektor);
+                $('#yanginTupu').html(cars.yangin_tupu);
+                $('#ilkYardimCantasi').html(cars.ilk_yardim_cantasi);
+                $('#seyyarLamba').html(cars.seyyar_lamba);
+                $('#cekmeHalati').html(cars.cekme_halati);
+                $('#giydirme').html(cars.giydirme);
+                $('#korNoktaUyarisi').html(cars.kor_nokta_uyarisi);
+                $('#hataBildirimHatti').html(cars.hata_bildirim_hatti);
 
-                $('#agencyName').html(response.current.name);
-                $('#agencyCityDistrict').html(response.current.agency_city + "/" + response.current.agency_district + " - " + response.current.agency_name + " Acente " + "(" + response.current.agency_code + ")");
-                $('#titleBranch').html(response.current.name + ' - ÖZET ' + currentStatus);
-
-                $('#currentCategory').html(response.current.category);
-                $('#modalCurrentCode').html(response.current.current_code);
-                $('#nameSurnameCompany').html(response.current.name);
-                $('#currentAgency').html(response.current.agency_city + "/" + response.current.agency_district + " - " + response.current.agency_name + " Acente " + "(" + response.current.agency_code + ")");
-                $('#taxOffice').html(response.current.tax_administration);
-                $('#tcknVkn').html(response.current.tckn);
-                $('#phone').html(response.current.phone);
-                $('#cityDistrict').html(response.current.city + "/" + response.current.district);
-                $('#address').html(fullAddress);
-                $('#gsm').html(response.current.gsm);
-                $('#gsm2').html(response.current.gsm2);
-                $('#phone2').html(response.current.phone2);
-                $('#email').html(response.current.email);
-                $('#website').html(response.current.website);
-                $('#regDate').html(response.current.created_at);
-                $('#dispatchCityDistrict').html(response.current.dispatch_city + "/" + response.current.dispatch_district);
-                $('#dispatchAddress').html(response.current.dispatch_adress);
-                $('#iban').html(response.current.iban);
-                $('#bankOwner').html(response.current.bank_owner_name);
-                $('#contractStartDate').html(response.current.contract_start_date);
-                $('#contractEndDate').html(response.current.contract_end_date);
-                $('#reference').html(response.current.reference);
-                $('#currentCreatorUser').html(response.current.creator_user_name + " " + creatorDisplayName);
-                $('#currentFilePrice').html(response.price.file_price + "₺");
-                $('#current1_5Desi').html(response.price.d_1_5 + "₺");
-                $('#current6_10Desi').html(response.price.d_6_10 + "₺");
-                $('#current11_15Desi').html(response.price.d_11_15 + "₺");
-                $('#current16_20Desi').html(response.price.d_16_20 + "₺");
-                $('#current21_25Desi').html(response.price.d_21_25 + "₺");
-                $('#current26_30Desi').html(response.price.d_26_30 + "₺");
-                $('#currentAmountOfIncrease').html(response.price.amount_of_increase + "₺");
-                $('#currentCollectPrice').html(response.price.collect_price + "₺");
-                $('#collectAmountOfIncrease').html("%" + response.price.collect_amount_of_increase);
-                $('#currentConfirmed').html(currentConfirmed);
+                $('#muayeneEvragi').html(cars.sigorta_belgesi);
+                $('#sigortaBelgesi').html(cars.sigorta_belgesi);
+                $('#soforEhliyet').html(cars.sofor_ehliyet);
+                $('#srcBelgesi').html(cars.src_belgesi);
+                $('#ruhsatEkspertizRaporu').html(cars.ruhsat_ekspertiz_raporu);
+                $('#tasimaBelgesi').html(cars.tasima_belgesi);
+                $('#soforAdliSicilKaydi').html(cars.sofor_adli_sicil_kaydi);
+                $('#aracSahibiSicilKaydi').html(cars.arac_sahibi_sicil_kaydi);
+                $('#soforYakiniIkametgahBelgesi').html(cars.sofor_yakini_ikametgah_belgesi);
 
                 $('.modal-body').unblock();
                 return false;
@@ -518,7 +507,6 @@
                     $('#divConfirmCurrent').hide();
                 }
 
-
                 $('.modalEnabledDisabled.modal-body').unblock();
             }).error(function (jqXHR, response) {
                 ToastMessage('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!', 'Hata!');
@@ -528,100 +516,336 @@
 
         });
 
-        $(document).on('click', '#btnEnabledDisabled', function () {
-            // alert(detailsID);
-            $('#modalEnabledDisabled').modal();
-
-            $('#modalBodyEnabledDisabled.modalEnabledDisabled.modal-body').block({
-                message: $('<div class="loader mx-auto">\n' +
-                    '                            <div class="ball-pulse-sync">\n' +
-                    '                                <div class="bg-warning"></div>\n' +
-                    '                                <div class="bg-warning"></div>\n' +
-                    '                                <div class="bg-warning"></div>\n' +
-                    '                            </div>\n' +
-                    '                        </div>')
-            });
-            $('.blockUI.blockMsg.blockElement').css('width', '100%');
-            $('.blockUI.blockMsg.blockElement').css('border', '0px');
-            $('.blockUI.blockMsg.blockElement').css('background-color', '');
-
-
-            $.ajax('/SenderCurrents/AjaxTransaction/GetCurrentInfo', {
-                method: 'POST',
-                data: {
-                    _token: token,
-                    currentID: detailsID
-                }
-            }).done(function (response) {
-
-                $('#userNameSurname').val(response.current.name);
-                $('#accountStatus').val(response.current.status);
-
-                $('.modalEnabledDisabled.modal-body').unblock();
-            });
-        });
-
-        $(document).on('click', '#btnSaveStatus', function () {
-
-            ToastMessage('warning', 'İstek alındı, lütfen bekleyiniz.', 'Dikkat!');
-            $.ajax('/SenderCurrents/AjaxTransaction/ChangeStatus', {
-                method: 'POST',
-                data: {
-                    _token: token,
-                    currentID: detailsID,
-                    status: $('#accountStatus').val(),
-                }
-            }).done(function (response) {
-                if (response.status == 1) {
-
-                    $('#ModalBodyUserDetail.modal-body').block({
-                        message: $('<div class="loader mx-auto">\n' +
-                            '                            <div class="ball-grid-pulse">\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                            </div>\n' +
-                            '                        </div>')
-                    });
-                    $('.blockUI.blockMsg.blockElement').css('width', '100%');
-                    $('.blockUI.blockMsg.blockElement').css('border', '0px');
-                    $('.blockUI.blockMsg.blockElement').css('background-color', '');
-
-                    userInfo(detailsID);
-                    ToastMessage('success', 'Değişiklikler başarıyla kaydedildi.', 'İşlem Başarılı!');
-                    $('#modalEnabledDisabled').modal('toggle');
-                } else if (response.status == 0) {
-                    ToastMessage('error', response.description, 'Hata!');
-                } else if (response.status == -1) {
-                    response.errors.status.forEach(key =>
-                        ToastMessage('error', key, 'Hata!')
-                    );
-                }
-
-                return false;
-            }).error(function (jqXHR, response) {
-
-                ToastMessage('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!', 'Hata!');
-            });
-        });
-        $(document).on('click', '#btnCurrentPerformanceReport', function () {
-            ToastMessage('warning', 'Cari performans raporu çok yakında!', 'Bilgi');
-        });
 
         $(document).on('click', '#btnPrintModal', function () {
-            printWindow('#ModalBodyUserDetail', "CK - " + $('#agencyName').text());
+            printWindow('#ModalBodyUserDetail', "CKG-Sis - Aktarma Araçları");
         });
 
     </script>
 @endsection
 
-
 @section('modals')
+    <!-- Large modal -->
+    <div class="modal fade bd-example-modal-lg" id="ModalCarDetails" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalGiveRolePermissionLabel">Araç Detayları</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div style="overflow-y: auto; max-height: 75vh;" id="ModalBodyUserDetail" class="modal-body">
 
+                    {{-- CARD START --}}
+                    <div class="col-md-12">
+                        <div class="mb-3 profile-responsive card">
+                            <div class="dropdown-menu-header">
+                                <div class="dropdown-menu-header-inner bg-dark">
+                                    <div class="menu-header-image "
+                                         style="background-image: url('/backend/assets/images/dropdown-header/abstract10.jpg');">
+                                    </div>
+                                    <div class="menu-header-content">
+                                        <h5 id="plaka" class="menu-header-title text-center">34HV4186</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="list-group list-group-flush">
+
+                                <li class="list-group-item">
+                                    <div class="widget-content pt-4 pb-4 pr-1 pl-1">
+
+                                        <div style="overflow-x: auto" class="cont">
+
+                                            {{-- ARAÇ DETAYLARI --}}
+                                            <table style="white-space: nowrap;" id="AgencyCard"
+                                                   class="TableNoPadding table table-bordered table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th class="text-center" id="titleBranch" colspan="4">Araç
+                                                        Detayları
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                <tr>
+                                                    <td class="static">Plaka:</td>
+                                                    <td class="modal-data" id="tdPlaka"></td>
+                                                    <td class="static">Marka:</td>
+                                                    <td class="modal-data" id="marka"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Model</td>
+                                                    <td class="modal-data" id="model"></td>
+                                                    <td class="static">Model Yılı</td>
+                                                    <td class="modal-data" id="modelYili"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Araç Kapasitesi</td>
+                                                    <td class="modal-data" id="aracKapasitesi"></td>
+                                                    <td class="static">Tonaj</td>
+                                                    <td class="modal-data" id="tonaj"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Araç Takip Sistemi</td>
+                                                    <td class="modal-data" id="aracTakipSistemi"></td>
+                                                    <td class="static">hat</td>
+                                                    <td class="modal-data" id="hat"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Çıkış Aktarma</td>
+                                                    <td class="modal-data" id="cikisAktarma"></td>
+                                                    <td class="static">Varış Aktarma</td>
+                                                    <td class="modal-data" id="varisAktarma"></td>
+                                                </tr>
+                                                <tr aria-rowspan="2">
+                                                    <td class="static">Uğradığı Aktarmalar</td>
+                                                    <td class="modal-data" colspan="3" id="ugradigiAktarmalar"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Muayene Baş.-Bit. Tarhi</td>
+                                                    <td class="modal-data" id="muayeneBaslangicBitisTarihi"></td>
+                                                    <td class="static">Muayene Bitimi Kalan Gün</td>
+                                                    <td class="modal-data" id="muayeneBitimiKalanGun"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Sigorta Baş.-Bit. Tarhi</td>
+                                                    <td class="modal-data" id="sigortaBaslangicBitisTarihi"></td>
+                                                    <td class="static">Sigorta Bitimi Kalan Gün</td>
+                                                    <td class="modal-data" id="sigortaBitimiKalanGun"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Kayıt Tarihi</td>
+                                                    <td class="modal-data" id="kayitTarihi"></td>
+                                                    <td class="static"></td>
+                                                    <td id=""></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                            {{-- HESAPLAMALAR --}}
+                                            <table style="white-space: nowrap" id="AgencyCard"
+                                                   class="TableNoPadding table mt-4 table-bordered table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th class="text-center" id="titleBranch" colspan="4">Hesaplamalar
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                <tr>
+                                                    <td class="static">Aylık Kira Bedeli</td>
+                                                    <td class="modal-data" id="aylikKiraBedeli"></td>
+                                                    <td class="static">Yakıt Oranı</td>
+                                                    <td class="modal-data" id="yakitOrani"></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="static">Tur KM</td>
+                                                    <td class="modal-data" id="turKm"></td>
+                                                    <td class="static">Sefer KM</td>
+                                                    <td class="modal-data" id="seferKM"></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="static">Aylık Yakıt</td>
+                                                    <td class="modal-data" id="aylikYakit"></td>
+                                                    <td class="static">KDV Hariç Hakediş</td>
+                                                    <td class="modal-data" id="kdvHaricHakedis"></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="static">1 Sefer Kira Maliyeti</td>
+                                                    <td class="modal-data" id="birSeferKiraMaliyeti"></td>
+                                                    <td class="static">1 Sefer Yakıt Maliyeti</td>
+                                                    <td class="modal-data" id="birSeferYakitMaliyeti"></td>
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td class="static">Sefer Maliyeti</td>
+                                                    <td class="modal-data" id="seferMaliyeti"></td>
+                                                    <td class="static">Hakediş + Mazot</td>
+                                                    <td class="modal-data" id="hakedisArtiMazot"></td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+
+                                            {{-- ŞOFÖR İLETİŞİM --}}
+                                            <table style="white-space: nowrap" id="AgencyCard"
+                                                   class="TableNoPadding table mt-4 table-bordered table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th class="text-center" id="titleBranch" colspan="4">Şoför
+                                                        İletişim
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                <tr>
+                                                    <td class="static">Şoför Adı</td>
+                                                    <td class="modal-data" id="soforAdi"></td>
+                                                    <td class="static">Şoför İletişim</td>
+                                                    <td class="modal-data" id="soforIletisim"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Şoför Adres</td>
+                                                    <td class="modal-data" colspan="3" id="soforAders"></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="static">Araç Sahibi Adı</td>
+                                                    <td class="modal-data" id="aracSahibiAdi"></td>
+                                                    <td class="static">Araç Sahibi İletişim</td>
+                                                    <td class="modal-data" id="aracSahibiIletisim"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Araç Sahibi Adres</td>
+                                                    <td class="modal-data" colspan="3" id="aracSahibiAders"></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="static">Araç Sahibi Yakını Adı</td>
+                                                    <td class="modal-data" id="aracSahibiYakiniAdi"></td>
+                                                    <td class="static">Araç Sahibi Yakını İletişim</td>
+                                                    <td class="modal-data" id="aracSahibiYakiniIletisim"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Araç Sahibi Yakını Adres</td>
+                                                    <td class="modal-data" colspan="3" id="aracSahibiYakiniAders"></td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+
+                                            {{-- TRAFİK SETİ --}}
+                                            <table style="white-space: nowrap" id="AgencyCard"
+                                                   class="TableNoPadding table mt-4 table-bordered table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th class="text-center" id="titleBranch" colspan="6">Trafik Seti
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                <tr>
+                                                    <td class="static">Stepne</td>
+                                                    <td class="modal-data" id="stepne"></td>
+                                                    <td class="static">Kriko</td>
+                                                    <td class="modal-data" id="kriko"></td>
+                                                    <td class="static">Zincir</td>
+                                                    <td class="modal-data" id="Zincir"></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="static">Bijon Anahtarı</td>
+                                                    <td class="modal-data" id="bijonAnahtari"></td>
+                                                    <td class="static">Reflektör</td>
+                                                    <td class="modal-data" id="reflektor"></td>
+                                                    <td class="static">Yangın Tüpü</td>
+                                                    <td class="modal-data" id="yanginTupu"></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="static">İlk Yardım Çantası</td>
+                                                    <td class="modal-data" id="ilkYardimCantasi"></td>
+                                                    <td class="static">Seyyar Lamba</td>
+                                                    <td class="modal-data" id="seyyarLamba"></td>
+                                                    <td class="static">Çekme Halatı</td>
+                                                    <td class="modal-data" id="cekmeHalati"></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="static">Giydirme</td>
+                                                    <td class="modal-data" id="giydirme"></td>
+                                                    <td class="static">Kör Nokta Uyarısı</td>
+                                                    <td class="modal-data" id="korNoktaUyarisi"></td>
+                                                    <td class="static">Hata Bildirim Hattı</td>
+                                                    <td class="modal-data" id="hataBildirimHatti"></td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+
+                                            {{-- EVRAKLAR --}}
+                                            <table style="white-space: nowrap" id="AgencyCard"
+                                                   class="TableNoPadding table mt-4 table-bordered table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th class="text-center" id="titleBranch" colspan="6">Evraklar</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                <tr>
+                                                    <td class="static">Muayene Evrağı</td>
+                                                    <td class="modal-data" id="muayeneEvragi"></td>
+                                                    <td class="static">Sigorta Belgesi</td>
+                                                    <td class="modal-data" id="sigortaBelgesi"></td>
+                                                    <td class="static">Şoför Ehliyet</td>
+                                                    <td class="modal-data" id="soforEhliyet"></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="static">Src Belgesi</td>
+                                                    <td class="modal-data" id="srcBelgesi"></td>
+                                                    <td class="static">Ruhsat Ekspertiz Raporu</td>
+                                                    <td class="modal-data" id="ruhsatEkspertizRaporu"></td>
+                                                    <td class="static">Taşıma Belgesi</td>
+                                                    <td class="modal-data" id="tasimaBelgesi"></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="static">Şoför Adli Sicil Kaydı</td>
+                                                    <td class="modal-data" id="soforAdliSicilKaydi"></td>
+                                                    <td class="static">Araç Sahibi Sicil Kaydi</td>
+                                                    <td class="modal-data" id="aracSahibiSicilKaydi"></td>
+                                                    <td class="static">Şoför Yakını İkametgah Belgesi</td>
+                                                    <td class="modal-data" id="soforYakiniIkametgahBelgesi"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <ul class="list-group list-group-flush">
+                                    <li class="p-0 list-group-item">
+                                        <div class="grid-menu grid-menu-2col">
+                                            <div class="no-gutters row">
+
+                                                <div class="col-sm-12">
+                                                    <div class="p-1">
+                                                        <button id="btnPrintModal"
+                                                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-primary">
+                                                            <i class="lnr-printer text-primary opacity-7 btn-icon-wrapper mb-2">
+                                                            </i>
+                                                            Yazdır
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                            </ul>
+
+                        </div>
+                    </div>
+                    {{-- CARD END --}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

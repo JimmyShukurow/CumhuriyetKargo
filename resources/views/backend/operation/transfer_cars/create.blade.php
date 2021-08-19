@@ -640,11 +640,10 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
-                                        <label for="giydirme_kor_nokta_uyarisi" class="font-weight-bold">Giydirme Kör
-                                            Nokta
-                                            Uyarısı</label>
-                                        <select name="giydirme_kor_nokta_uyarisi" required
-                                                id="giydirme_kor_nokta_uyarisi"
+                                        <label for="giydirme"
+                                               class="font-weight-bold">Giydirme </label>
+                                        <select name="giydirme" required
+                                                id="giydirme"
                                                 class="form-control form-control-sm">
                                             <option
                                                 {{old('giydirme_kor_nokta_uyarisi') == '0' ? 'selected' : ''}} value="0">
@@ -657,6 +656,25 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="kor_nokta_uyarisi" class="font-weight-bold">Kör Nokta
+                                            Uyarısı</label>
+                                        <select name="kor_nokta_uyarisi" required
+                                                id="kor_nokta_uyarisi"
+                                                class="form-control form-control-sm">
+                                            <option {{old('kor_nokta_uyarisi') == '0' ? 'selected' : ''}} value="0">
+                                                Hayır
+                                            </option>
+                                            <option
+                                                {{old('kor_nokta_uyarisi') == '1' ? 'selected' : ''}} value="1">
+                                                Evet
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="hata_bildirim_hatti" class="font-weight-bold">Hata Bildirim

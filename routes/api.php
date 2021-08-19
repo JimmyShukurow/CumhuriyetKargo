@@ -47,7 +47,7 @@ Route::post('Users/CheckEmail', [UserController::class, 'checkEmail']);
 Route::post('login', [DefaultController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
-    
+
     Route::post('/logout', [DefaultController::class, 'logout']);
     Route::get('/user', [DefaultController::class, 'user']);
     Route::get('/GetDefaultData/{val?}', [DefaultController::class, 'getDefaultData']);

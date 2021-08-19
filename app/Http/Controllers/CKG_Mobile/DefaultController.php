@@ -27,7 +27,6 @@ class DefaultController extends Controller
             $user = Auth::user();
             $success['token'] = $user->createToken("CKG_Mobile_Login")->accessToken;
 
-
             return response()
                 ->json(['status' => 1, 'role' => Auth::user()->role_id, 'token' => $success['token']], 200);
         }
@@ -120,7 +119,6 @@ class DefaultController extends Controller
         switch ($val) {
 
             case 'ChangePassword':
-
                 $rules = [
                     'password' => 'required',
                     'passwordNew' => 'required|regex:/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/u',
@@ -130,7 +128,6 @@ class DefaultController extends Controller
 
                 if ($validator->fails())
                     return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
-
 
                 $password_check = User::where('id', Auth::id())
                     ->where("password", Hash::make($request->password))
@@ -154,7 +151,6 @@ class DefaultController extends Controller
                 break;
 
             case 'GetTicketDetails':
-
                 $ticket_id = $request->ticket_id;
 
                 if ($ticket_id == '')
@@ -167,6 +163,7 @@ class DefaultController extends Controller
                         ->orderBy('ticket_details.created_at', 'desc')
                         ->limit(50)
                         ->get();
+
                 break;
 
             case 'ReplyTicket':
@@ -279,14 +276,12 @@ class DefaultController extends Controller
 
                     GeneralLog('Destek talebi oluşturuldu.', $properties);
 
-
                     return response()
                         ->json(['status' => 1, 'Destek talebiniz oluşturuldu, ilgili departman en kısa süre içerisinde mesajınıza dönüş yapacaktır.'], 200);
 
                 } else
                     return response()
                         ->json(['status' => 0, 'Bir hata oluştu, Lütfen daha sonra tekrar deneyin'], 200);
-
                 break;
 
             default:

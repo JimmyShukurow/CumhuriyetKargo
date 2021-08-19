@@ -67,8 +67,16 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
 
     Route::resource('VariousCars', VariousController::class);
-    Route::resource('TransferCars', TransferCarsController::class);
-    Route::get('AllTransferCarsData',[TransferCarsController::class,'allData'])->name('transfer.car.all');
+
+    Route::resource('TransferCars', TransferCarsController::class)
+        ->middleware();
+
+    Route::group(['middleware' => ''], function () {
+        Route::get('AllTransferCarsData', [TransferCarsController::class, 'allData'])->name('transfer.car.all');
+        Route::post('GetTransferCar', [TransferCarsController::class, 'getTransferCar'])->name('getTransferCars');
+    });
+
+
     Route::get('VariousCarsGetCars', [VariousController::class, 'getCars'])->name('VariousCars.getCars');
 
     # Main Routes

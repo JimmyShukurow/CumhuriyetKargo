@@ -101,6 +101,11 @@ function roundLikePHP(num, dec) {
     return parseFloat((Math.round((num * Math.pow(10, dec)) + (num_sign * 0.0001)) / Math.pow(10, dec)).toFixed(dec));
 }
 
+function getDotter(x) {
+    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
 function adresMaker(city, district, neighborhood, street, street2, building_no, door_no, floor, address_note) {
 
     let cityX = city + "/",

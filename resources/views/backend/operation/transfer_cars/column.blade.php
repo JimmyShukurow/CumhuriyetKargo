@@ -9,14 +9,16 @@
             style="min-width: 1rem; max-width: 140px !important; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 29px, 0px);"
             role="menu" aria-hidden="true" class="dropdown-menu" x-placement="bottom-start">
 
+            <button type="button" id="{{$id}}" tabindex="0" from="various_car"
+                    class="dropdown-item btn_car_details">Detay</button>
+
             <a class="dropdown-item"
                href="{{ route('TransferCars.edit',$id) }}">
                 Düzenle
             </a>
-            <button type="button" id="{{$id}}" tabindex="0" from="various_car"
-                    class="dropdown-item trash">
-                Sil
-            </button>
+
+            <button type="button" id="{{$id}}" tabindex="0" from="transfer_car"
+                    class="dropdown-item trash">Sil</button>
         </div>
     </div>
 

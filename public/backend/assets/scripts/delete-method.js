@@ -17,6 +17,9 @@ $(document).on('click', '.trash', function () {
     } else if (from == "location") {
         url = "LocalLocation/" + destroy_id;
         object = "Mahalli lokasyon";
+    } else if (from == "transfer_car") {
+        url = "TransferCars/" + destroy_id;
+        object = "Aktarma aracı"
     }
 
     swal({

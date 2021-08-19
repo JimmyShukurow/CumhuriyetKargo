@@ -26,7 +26,7 @@ class VariousController extends Controller
     {
         $data['agencies'] = Various::all();
         $data['cities'] = Cities::all();
-        GeneralLog('Various sayfası görüntülendi.');
+        GeneralLog('Muhtelif araçlar sayfası görüntülendi.');
         return view('backend.operation.various_cars.index', compact('data'));
     }
 
@@ -39,7 +39,7 @@ class VariousController extends Controller
     {
         $data['transshipment_centers'] = TransshipmentCenters::all();
         $data['cities'] = Cities::all();
-        GeneralLog('Acente oluştur sayfası görüntülendi.');
+        GeneralLog('Muhtelif araç kayıt sayfası görüntülendi.');
         return view('backend.operation.various_cars.create', compact(['data']));
     }
 
@@ -62,7 +62,6 @@ class VariousController extends Controller
             'phone' => 'required',
             'where_car' => 'required',
         ]);
-
 
         $insert = Various::create([
             'brand' => $request->arac_marka,
@@ -120,11 +119,10 @@ class VariousController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
-
         $request->validate([
             'arac_marka' => 'required',
             'model' => 'required',
@@ -136,7 +134,6 @@ class VariousController extends Controller
             'phone' => 'required',
             'where_car' => 'required',
         ]);
-
 
         $my_various_car = Various::find($id)->first();
         $my_various_car->brand = $request->arac_marka;
@@ -150,26 +147,22 @@ class VariousController extends Controller
         $my_various_car->city = $request->where_car;
         $my_various_car->save();
 
-
-        GeneralLog('Muhtelif ' . $request->arac_marka . ' plakalı araç güncellendi!');
-
+        GeneralLog($request->arac_marka . ' plakalı muhtelif araç güncellendi!');
 
         return back()
             ->with('success', 'Kayıt güncellendi!');
-
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return int
      */
     public function destroy($id)
     {
         $destroy = Various::find($id);
         GeneralLog($destroy->plaque . ' plakalı muhtelif araç silindi!');
-
 
         $destroy = Various::find($id)->delete();
         if ($destroy) {
