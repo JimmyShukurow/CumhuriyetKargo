@@ -9,12 +9,17 @@ use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckLogin;
 use App\Http\Middleware\MidsOfCont\AgenciesMid;
 use App\Http\Middleware\MidsOfCont\DepartmentsMid;
+use App\Http\Middleware\MidsOfCont\GeneralServicesFeeMid;
+use App\Http\Middleware\MidsOfCont\LocalLocationMid;
 use App\Http\Middleware\MidsOfCont\ModulesMid;
 use App\Http\Middleware\MidsOfCont\RegionalDirectoratesMid;
+use App\Http\Middleware\MidsOfCont\SenderCurrentsMid;
 use App\Http\Middleware\MidsOfCont\ThemeMid;
+use App\Http\Middleware\MidsOfCont\TransferCarsMid;
 use App\Http\Middleware\MidsOfCont\Users\AgencyUserMid;
 use App\Http\Middleware\MidsOfCont\Users\GmUsersMid;
 use App\Http\Middleware\MidsOfCont\Users\TCUserMid;
+use App\Http\Middleware\MidsOfCont\VariousCarsMid;
 use App\Http\Middleware\Operation;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\CheckStatus;
@@ -96,6 +101,12 @@ class Kernel extends HttpKernel
         'ThemeMid' => ThemeMid::class,
         'DepartmentsMid' => DepartmentsMid::class,
         'AdminSystemSupportMid' => AdminSystemSupportMid::class,
+        'TransferCarsMid' => TransferCarsMid::class,
+        'VariousCarsMid' => VariousCarsMid::class,
+        'LocalLocationMid' => LocalLocationMid::class,
+        'GeneralServicesFeeMid' => GeneralServicesFeeMid::class,
+        'SenderCurrentsMid' => SenderCurrentsMid::class,
+
 
     ];
 }

@@ -342,7 +342,7 @@
                             <h4 class="pb-3 card-title text-center">Şifre Değişikliği</h4>
 
 
-                            <form action="{{route('personel.ChangePassowrd')}}" id="frm" method="POST">
+                            <form action="{{route('personel.ChangePassword')}}" id="frm" method="POST">
                                 @csrf
                                 <div class="form-row">
                                     <div class="col-md-4">

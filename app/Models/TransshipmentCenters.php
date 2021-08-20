@@ -11,8 +11,10 @@ class TransshipmentCenters extends Model
 {
     use HasFactory, LogsActivity, SoftDeletes;
 
-    protected $fillable = ['id', 'tc_name', 'phone', 'type', 'city', 'district', 'neighborhood', 'adress', 'tc_director_id', 'tc_assistant_director_id'];
-    protected static $logAttributes = ['id', 'tc_name', 'phone', 'type', 'city', 'district', 'neighborhood', 'adress', 'tc_director_id', 'tc_assistant_director_id'];
+    protected $fillable
+        = ['id', 'tc_name', 'phone', 'type', 'city', 'district', 'neighborhood', 'adress', 'status', 'status_description', 'tc_director_id', 'tc_assistant_director_id'];
+    protected static $logAttributes
+        = ['id', 'tc_name', 'phone', 'type', 'city', 'district', 'neighborhood', 'adress', 'status', 'status_description', 'tc_director_id', 'tc_assistant_director_id'];
     protected $table = 'transshipment_centers';
 
     public function getDescriptionForEvent(string $eventName): string

@@ -429,7 +429,7 @@ class AdminSystemSupportController extends Controller
 //                ->select('users.name_surname', 'users.email')
 //                ->where('tickets.id', $ticket_id)
 //                ->first();
-            
+
 //            $data['title'] = 'Destek Talebiniz Yanıtlandı!';
 //            $data['body'] = 'Sayın <b>' . $user->name_surname . '</b>, <b>' . $ticket->title . '</b> başlıklı destek talebiniz <b>yanıtlanmıştır</b>. Detayları görmek için lütfen portalı ziyaret edin!';
 //            $data['link'] = \route('systemSupport.TicketDetails', $ticket->id);
@@ -440,7 +440,7 @@ class AdminSystemSupportController extends Controller
 
             # Notification
             User::find($ticket->user_id)
-                ->notify(new TicketNotify('"' . $ticket->title . '"' . ' başlıklı destek talebiniz yanıtlandı.', route('systemSupport.TicketDetails', $ticket->id)));
+                ->notify(new TicketNotify('"' . $ticket->title . '"' . ' başlıklı destek talebiniz yanıtlandı.', route('systemSupport.TicketDetails', $ticket->id), $ticket_id));
 
             return back()->with('success', 'Yanıt gönderildi.');
         } else {

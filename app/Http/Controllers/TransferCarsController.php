@@ -37,6 +37,7 @@ class TransferCarsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
         $data['transshipment_centers'] = TransshipmentCenters::all();
@@ -114,7 +115,6 @@ class TransferCarsController extends Controller
                     return '<b class="text-danger">' . $cars->muayene_kalan_sure . '</b>';
             })
             ->editColumn('sigorta_kalan_sure', function ($cars) {
-
                 if ($cars->sigorta_kalan_sure > 0)
                     return '<b class="text-success">' . $cars->sigorta_kalan_sure . '</b>';
                 else
@@ -265,7 +265,6 @@ class TransferCarsController extends Controller
         $cars = DB::table('tc_cars_all_data')
             ->where('id', $request->carID)
             ->first();
-
 
         $value = $cars->ugradigi_aktarmalar;
         $value = substr($value, 0, strlen($value) - 1);

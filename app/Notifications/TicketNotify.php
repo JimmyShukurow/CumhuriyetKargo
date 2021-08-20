@@ -16,10 +16,11 @@ class TicketNotify extends Notification
      *
      * @return void
      */
-    public function __construct($notification, $link = '')
+    public function __construct($notification, $link = '', $ticket_id = '')
     {
         $this->notification = $notification;
         $this->link = $link;
+        $this->ticket_id = $ticket_id;
     }
 
     /**
@@ -57,7 +58,8 @@ class TicketNotify extends Notification
     {
         return [
             'notification' => $this->notification,
-            'link' => $this->link
+            'link' => $this->link,
+            'ticket_id' => $this->ticket_id,
         ];
     }
 }

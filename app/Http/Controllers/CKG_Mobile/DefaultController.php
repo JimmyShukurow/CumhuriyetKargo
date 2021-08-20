@@ -84,10 +84,15 @@ class DefaultController extends Controller
 
                     $xData = json_decode($key->data);
 
+                    if (isset($xData->ticket_id))
+                        $ticket_id = $xData->ticket_id;
+                    else
+                        $ticket_id = '';
+
                     $array[] = [
                         'id' => $key->id,
                         "notifiable_id" => $key->notifiable_id,
-                        'data' => ['notification' => $xData->notification, 'link' => $xData->link],
+                        'data' => ['notification' => $xData->notification, 'link' => $xData->link, 'ticket_id' => $ticket_id],
                         'read_at' => $key->read_at,
                         'created_at' => $key->created_at,
                     ];
@@ -102,6 +107,12 @@ class DefaultController extends Controller
                     ->limit(30)
                     ->orderBy('updated_at', 'desc')
                     ->get();
+                break;
+
+            case 'GetNotificationCount':
+                $count = Auth::user()->unReadnotifications->count();
+                return response()
+                    ->json(['count' => $count], 200);
                 break;
 
             default:
@@ -155,7 +166,9 @@ class DefaultController extends Controller
 
                 if ($ticket_id == '')
                     $data = ['status' => 0, 'message' => 'ticket id is missing!'];
-                else
+                else {
+                    $array = array();
+
                     $data['ticket_details'] = DB::table('ticket_details')
                         ->select(['ticket_details.*', 'view_users_all_info.name_surname', 'view_users_all_info.email', 'view_users_all_info.user_type', 'view_users_all_info.display_name', 'view_users_all_info.branch_city', 'view_users_all_info.branch_district', 'view_users_all_info.branch_name'])
                         ->join('view_users_all_info', 'view_users_all_info.id', '=', 'ticket_details.user_id')
@@ -163,6 +176,33 @@ class DefaultController extends Controller
                         ->orderBy('ticket_details.created_at', 'desc')
                         ->limit(50)
                         ->get();
+
+                    foreach ($data['ticket_details'] as $key) {
+
+                        $array[] = [
+                            'id' => $key->id,
+                            'ticket_id' => $key->ticket_id,
+                            'user_id' => $key->user_id,
+                            'file1' => $key->file1,
+                            'message' => substr($key->message, '0', 1) != '#' ? strip_tags($key->message) : $key->message,
+                            'file2' => $key->file2,
+                            'file3' => $key->file3,
+                            'file4' => $key->file4,
+                            'created_at' => $key->created_at,
+                            'updated_at' => $key->updated_at,
+                            'name_surname' => $key->name_surname,
+                            'email' => $key->email,
+                            'user_type' => $key->user_type,
+                            'display_name' => $key->display_name,
+                            'branch_city' => $key->branch_city,
+                            'branch_district' => $key->branch_district,
+                            'branch_name' => $key->branch_name,
+                        ];
+                    }
+
+                    $data['ticket_details'] = $array;
+
+                }
 
                 break;
 
@@ -282,6 +322,19 @@ class DefaultController extends Controller
                 } else
                     return response()
                         ->json(['status' => 0, 'Bir hata oluştu, Lütfen daha sonra tekrar deneyin'], 200);
+                break;
+
+            case 'MarkAsRead':
+                $transaction = Auth::user()
+                    ->unreadNotifications
+                    ->when($request->id, function ($query) use ($request) {
+                        return $query->where('id', $request->id);
+                    })
+                    ->markAsRead();
+
+                $count = Auth::user()->unReadnotifications->count();
+                # return response()->noContent();
+                return response()->json(['status' => 1, 'remaining_notifications' => $count], 200);
                 break;
 
             default:

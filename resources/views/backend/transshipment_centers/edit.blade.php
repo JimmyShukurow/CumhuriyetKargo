@@ -13,7 +13,8 @@
                         </i>
                     </div>
                     <div>Transfer Merkezi (Aktarma) Düzenle
-                        <div class="page-title-subheading">Bu sayfa üzerinden yeni transfer merkezlerini düzenleyebilirsiniz.
+                        <div class="page-title-subheading">Bu sayfa üzerinden yeni transfer merkezlerini
+                            düzenleyebilirsiniz.
                         </div>
                     </div>
                 </div>
@@ -36,7 +37,8 @@
         <div class="main-card mb-3 card">
             <div class="card-body">
                 <h5 class="card-title">TRANSFER MERKEZİ DÜZENLE</h5>
-                <form id="TransshipmentCenterForm" method="POST" action="{{ route('TransshipmentCenters.update', $tc->id) }}">
+                <form id="TransshipmentCenterForm" method="POST"
+                      action="{{ route('TransshipmentCenters.update', $tc->id) }}">
                     @csrf
                     @method('PUT')
                     <div class="form-row">
@@ -97,8 +99,9 @@
                                 <select name="district" id="district" required class="form-control">
                                     <option value="">İlçe Seçiniz</option>
                                     @foreach($data['districts'] as $district)
-                                        <option {{ $tc->district == $district->district_name ? 'selected' : ''  }} id="{{$district->district_id}}"
-                                                value="{{$district->district_id}}">{{$district->district_name}}</option>
+                                        <option
+                                            {{ $tc->district == $district->district_name ? 'selected' : ''  }} id="{{$district->district_id}}"
+                                            value="{{$district->district_id}}">{{$district->district_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -107,11 +110,12 @@
                         <div class="col-md-4">
                             <div class="position-relative form-group">
                                 <label for="neighborhood" class="">Mahalle</label>
-                                <select name="neighborhood" id="neighborhood" required class="form-control">
+                                <select name="neighborhood" id="neighborhood"  class="form-control">
                                     <option value="">Mahalle Seçiniz</option>
                                     @foreach($data['neighborhoods'] as $neighborhood)
-                                        <option {{ $tc->neighborhood == $neighborhood->neighborhood_name ? 'selected' : ''  }} id="{{$neighborhood->neighborhood_id}}"
-                                                value="{{$neighborhood->neighborhood_id}}">{{$neighborhood->neighborhood_name}}</option>
+                                        <option
+                                            {{ $tc->neighborhood == $neighborhood->neighborhood_name ? 'selected' : ''  }} id="{{$neighborhood->neighborhood_id}}"
+                                            value="{{$neighborhood->neighborhood_id}}">{{$neighborhood->neighborhood_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -201,6 +205,26 @@
                     </div>
 
                     <div class="form-row">
+                        <div class="col-md-3">
+                            <div class="position-relative form-group">
+                                <label for="status">Statü</label>
+                                <select class="form-control" required name="status" id="status">
+                                    <option {{$tc->status == '1' ? 'selected' :  ''}} value="1">Aktif</option>
+                                    <option {{$tc->status == '0' ? 'selected' :  ''}} value="0">Pasif</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-9">
+                            <div class="position-relative form-group">
+                                <label for="status_description">Statü Açıklama</label>
+                                <input type="text" name="status_description" id="status_description" value="{{$tc->status_description}}"
+                                       class="form-control" maxlength="500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
                         <div class="col-md-12">
                             <div class="position-relative form-group">
                                 <label for="adress" class="">Adres</label>
@@ -212,7 +236,7 @@
 
                     <button type="submit" class="ladda-button mb-2 mr-2 btn btn-gradient-primary"
                             data-style="slide-right">
-                        <span class="ladda-label">Transfer Merkezi Oluştur</span>
+                        <span class="ladda-label">Kaydet</span>
                         <span class="ladda-spinner"></span>
                         <div class="ladda-progress" style="width: 0px;"></div>
                     </button>

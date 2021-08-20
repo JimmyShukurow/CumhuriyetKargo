@@ -140,7 +140,6 @@ class PersonelController extends Controller
             })
             ->markAsRead();
 
-
         $count = Auth::user()->unReadnotifications->count();
 
         # return response()->noContent();
@@ -164,7 +163,6 @@ class PersonelController extends Controller
             ->orderBy('id', 'desc')
             ->where('user_id', Auth::id())
             ->count();
-
 
         $notifications = DB::table('notifications')
             ->where('notifiable_id', Auth::id())

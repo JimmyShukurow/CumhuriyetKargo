@@ -187,6 +187,7 @@ class TCController extends Controller
             'district' => 'nullable|numeric',
             'neighborhood' => 'nullable|numeric',
             'director' => 'nullable|numeric',
+            'status' => 'required|numeric',
             'assistant_director' => 'nullable|numeric'
         ]);
 
@@ -209,6 +210,8 @@ class TCController extends Controller
                 'district' => $district,
                 'neighborhood' => $neighborhood,
                 'tc_director_id' => $request->director,
+                'status' => $request->status,
+                'status_description' => $request->status == '1' ? '' : $request->status_description,
                 'tc_assistant_director_id' => $request->assistant_director,
                 'adress' => tr_strtoupper($request->adress)
             ]);
