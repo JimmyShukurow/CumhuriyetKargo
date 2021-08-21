@@ -64,8 +64,48 @@ class MainCargoController extends Controller
         $data['agency_users'] = User::where('agency_code', Auth::user()->agency_code)->get();
         $data['cities'] = Cities::all();
 
+        ## daily report start
+        $daily['package_count'] = DB::table('cargoes')
+            ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
+            ->whereRaw('deleted_at is null')
+            ->where('cargo_type', 'Koli')
+            ->count();
 
-        return view('backend.main_cargo.index', compact(['data']));
+        $daily['file_count'] = DB::table('cargoes')
+            ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
+            ->whereRaw('deleted_at is null')
+            ->where('cargo_type', 'Dosya')
+            ->count();
+
+        $daily['total_cargo_count'] = DB::table('cargoes')
+            ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
+            ->whereRaw('deleted_at is null')
+            ->count();
+
+        $daily['total_cargo_count'] = DB::table('cargoes')
+            ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
+            ->whereRaw('deleted_at is null')
+            ->count();
+
+        $daily['total_desi'] = DB::table('cargoes')
+            ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
+            ->whereRaw('deleted_at is null')
+            ->sum('desi');
+
+        $daily['total_number_of_pieces'] = DB::table('cargoes')
+            ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
+            ->whereRaw('deleted_at is null')
+            ->sum('number_of_pieces');
+
+        $daily['total_endorsement'] = DB::table('cargoes')
+            ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
+            ->whereRaw('deleted_at is null')
+            ->sum('total_price');
+
+        $daily['total_endorsement'] = round($daily['total_endorsement'], 2);
+        ## daily report end
+
+        return view('backend.main_cargo.index', compact(['data', 'daily']));
     }
 
     public function newCargo()
@@ -1319,6 +1359,74 @@ class MainCargoController extends Controller
 
                 break;
 
+            # INDEX TRANSACTION START
+
+            case 'GetCargoInfo':
+
+                $data['cargo'] = Cargoes::find($request->id);
+
+                if ($data['cargo'] == null)
+                    return response()
+                        ->json(['status' => 0, 'message' => 'Kargo Bulunamadı!'], 200);
+
+                $data['cargo']->tracking_no = TrackingNumberDesign($data['cargo']->tracking_no);
+
+                $data['status'] = 1;
+
+                return response()
+                    ->json($data, 200);
+
+                break;
+
+            case 'GetMainDailySummery':
+                ## daily report start
+                $daily['package_count'] = DB::table('cargoes')
+                    ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
+                    ->whereRaw('deleted_at is null')
+                    ->where('cargo_type', 'Koli')
+                    ->count();
+                $daily['package_count'] = getDotter($daily['package_count']);
+
+
+                $daily['file_count'] = DB::table('cargoes')
+                    ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
+                    ->whereRaw('deleted_at is null')
+                    ->where('cargo_type', 'Dosya')
+                    ->count();
+                $daily['file_count'] = getDotter($daily['file_count']);
+
+                $daily['total_cargo_count'] = DB::table('cargoes')
+                    ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
+                    ->whereRaw('deleted_at is null')
+                    ->count();
+                $daily['total_cargo_count'] = getDotter($daily['total_cargo_count']);
+
+                $daily['total_desi'] = DB::table('cargoes')
+                    ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
+                    ->whereRaw('deleted_at is null')
+                    ->sum('desi');
+                $daily['total_desi'] = getDotter($daily['total_desi']);
+
+                $daily['total_number_of_pieces'] = DB::table('cargoes')
+                    ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
+                    ->whereRaw('deleted_at is null')
+                    ->sum('number_of_pieces');
+                $daily['total_number_of_pieces'] = getDotter($daily['total_number_of_pieces']);
+
+                $daily['total_endorsement'] = DB::table('cargoes')
+                    ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
+                    ->whereRaw('deleted_at is null')
+                    ->sum('total_price');
+
+                $daily['total_endorsement'] = getDotter(round($daily['total_endorsement'], 2));
+                ## daily report end
+
+                return response()
+                    ->json($daily, 200);
+                break;
+
+            # INDEX TRANSACTION END
+
             default:
                 return 'no -case';
                 break;
@@ -1378,9 +1486,6 @@ class MainCargoController extends Controller
             ->setRowId(function ($cargoes) {
                 return "cargo-item-" . $cargoes->id;
             })
-            ->editColumn('tracking_no', function ($cargoes) {
-                return TrackingNumberDesign($cargoes->tracking_no);
-            })
             ->editColumn('payment_type', function ($cargoes) {
                 return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . $cargoes->payment_type . '</b>' : '<b class="text-dark">' . $cargoes->payment_type . '</b>';
             })
@@ -1414,8 +1519,15 @@ class MainCargoController extends Controller
             ->editColumn('status_for_human', function ($cargoes) {
                 return '<b class="text-success">' . $cargoes->status_for_human . '</b>';
             })
-            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
-            ->rawColumns(['edit', 'status_for_human', 'total_price', 'collectible', 'payment_type', 'collection_fee', 'status', 'name_surname', 'created_at'])
+            ->editColumn('free_btn', function ($t) {
+                return '';
+            })
+            ->editColumn('check', function ($t) {
+                return '<span class="unselectable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+            })
+            ->addColumn('tracking_no', 'backend.main_cargo.columns.tracking_no')
+            ->addColumn('edit', 'backend.main_cargo.columns.edit')
+            ->rawColumns(['edit', 'tracking_no', 'check', 'status_for_human', 'total_price', 'collectible', 'payment_type', 'collection_fee', 'status', 'name_surname', 'created_at'])
             ->make(true);
     }
 
@@ -1440,19 +1552,16 @@ class MainCargoController extends Controller
         $startDate = $request->startDate;
         $filterByDAte = $request->filterByDAte;
 
-        $finishDate=new Carbon($finishDate);
-        $startDate=new Carbon($startDate);
+        $finishDate = new Carbon($finishDate);
+        $startDate = new Carbon($startDate);
 
-        $diff=$startDate->diffInDays($finishDate);
+        $diff = $startDate->diffInDays($finishDate);
 
-        if($filterByDAte){
-            if ($diff >=60){
+        if ($filterByDAte) {
+            if ($diff >= 60) {
                 return response()->json([], 509);
             }
         }
-
-
-
 
 
         if ($currentDistrict) {

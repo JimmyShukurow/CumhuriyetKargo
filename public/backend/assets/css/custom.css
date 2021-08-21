@@ -215,3 +215,17 @@ table.Table20Padding th, table.Table20Padding td {
         max-width: 1200px;
     }
 }
+
+.dt-checkbox {
+    width: 25px;
+    height: 25px;
+}
+
+.NikolasDataTable tbody tr.selected {
+    color: #000 !important;
+    background-color: #29b2ff !important;
+}
+
+.select-checkbox:hover {
+    cursor: pointer;
+}

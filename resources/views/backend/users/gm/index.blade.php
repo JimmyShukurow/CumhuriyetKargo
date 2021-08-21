@@ -604,7 +604,7 @@
                                 <li class="list-group-item">
                                     <div class="widget-content pt-4 pb-4 pr-1 pl-1">
 
-                                        <div style="overflow-x: scroll" class="cont">
+                                        <div style="overflow-x: auto" class="cont">
                                             <table style="white-space: nowrap" id="AgencyCard"
                                                    class="TableNoPadding table table-bordered table-striped">
                                                 <thead>
@@ -642,7 +642,7 @@
                                         </div>
                                         <h4 class="mt-3">Son Hareketler</h4>
 
-                                        <div style="overflow-x: scroll; white-space: nowrap; max-height: 300px;"
+                                        <div style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
                                              class="cont">
                                             <table style="white-space: nowrap" id="TableEmployees"
                                                    class="Table30Padding table table-striped mt-3">

@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="/backend/assets/css/datatables.min.css">
     <link href="/backend/assets/css/toastr.min.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="/backend/assets/css/custom.css?v=1">
+    <link rel="stylesheet" href="/backend/assets/css/js-snackbar.css">
     <script src="/backend/assets/scripts/jquery.js"></script>
     <script src="/backend/assets/scripts/sweetalert.js"></script>
     <script src="/backend/assets/scripts/general-up.js"></script>
@@ -1194,6 +1195,7 @@
 @endif
 <script src="/backend/assets/scripts/popper.min.js"></script>
 <script src="/backend/assets/scripts/general.js"></script>
+<script src="/backend/assets/scripts/js-snackbar.js"></script>
 <script type="text/javascript" src="/backend/assets/scripts/main.8d288f825d8dffbbe55e.js"></script>
 <script>
     @if(\Illuminate\Support\Facades\Session::exists('virtual-login'))

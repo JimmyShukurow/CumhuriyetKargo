@@ -6,13 +6,16 @@ $(document).ready(function () {
     $SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').addClass('mm-active');
     $SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent("li").addClass('mm-active');
 
+    $('#datatableRefreshBtn').click(function () {
+        $(this).prop('disabled', true);
+    });
+
 });
 
 $('.btnReply').click(function () {
     $(this).prop('disabled', 'true');
     $('#ticketForm').submit();
 })
-
 
 
 // alert($(window).width());

@@ -27,11 +27,12 @@
                                         <div class="widget-content-outer">
                                             <div class="widget-content-wrapper">
                                                 <div class="widget-content-left">
-                                                    <div class="widget-heading">Paket Sayısı</div>
-                                                    <div class="widget-subheading">Toplan Kesilen Koli Adeti</div>
+                                                    <div class="widget-heading">Koli Sayısı</div>
+                                                    <div class="widget-subheading">(Bugün) Toplam Kesilen Koli Adeti</div>
                                                 </div>
                                                 <div class="widget-content-right">
-                                                    <div class="widget-numbers text-success">29</div>
+                                                    <div id="package_count"
+                                                         class="widget-numbers text-success">{{$daily['package_count']}}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -43,11 +44,12 @@
                                             <div class="widget-content-wrapper">
                                                 <div class="widget-content-left">
                                                     <div class="widget-heading">Desi</div>
-                                                    <div class="widget-subheading">Total Desi
+                                                    <div class="widget-subheading">(Bugün) Total Desi
                                                     </div>
                                                 </div>
                                                 <div class="widget-content-right">
-                                                    <div class="widget-numbers text-primary">954</div>
+                                                    <div id="total_desi"
+                                                         class="widget-numbers text-primary">{{$daily['total_desi']}}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -63,10 +65,11 @@
                                             <div class="widget-content-wrapper">
                                                 <div class="widget-content-left">
                                                     <div class="widget-heading">Dosya Sayısı</div>
-                                                    <div class="widget-subheading">Toplam Kesilen Dosya</div>
+                                                    <div class="widget-subheading">(Bugün) Toplam Kesilen Dosya</div>
                                                 </div>
                                                 <div class="widget-content-right">
-                                                    <div class="widget-numbers text-danger">25</div>
+                                                    <div id="file_count"
+                                                         class="widget-numbers text-danger">{{$daily['file_count']}}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -78,11 +81,12 @@
                                             <div class="widget-content-wrapper">
                                                 <div class="widget-content-left">
                                                     <div class="widget-heading">Parça Sayısı</div>
-                                                    <div class="widget-subheading">Toplam Parça Sayısı
+                                                    <div class="widget-subheading">(Bugün) Toplam Parça Sayısı
                                                     </div>
                                                 </div>
                                                 <div class="widget-content-right">
-                                                    <div class="widget-numbers text-warning">92</div>
+                                                    <div id="total_number_of_pieces"
+                                                         class="widget-numbers text-warning">{{$daily['total_number_of_pieces']}}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -98,10 +102,11 @@
                                             <div class="widget-content-wrapper">
                                                 <div class="widget-content-left">
                                                     <div class="widget-heading">Toplam Kesilen Kargo</div>
-                                                    <div class="widget-subheading">Kargo Adeti</div>
+                                                    <div class="widget-subheading">(Bugün) Kargo Adeti</div>
                                                 </div>
                                                 <div class="widget-content-right">
-                                                    <div class="widget-numbers text-success">41</div>
+                                                    <div id="total_cargo_count"
+                                                         class="widget-numbers text-success">{{$daily['total_cargo_count']}}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -113,11 +118,12 @@
                                             <div class="widget-content-wrapper">
                                                 <div class="widget-content-left">
                                                     <div class="widget-heading">Ciro</div>
-                                                    <div class="widget-subheading">Bugünkü Toplam Cironuz
+                                                    <div class="widget-subheading">(Bugün) Toplam Cironuz
                                                     </div>
                                                 </div>
                                                 <div class="widget-content-right">
-                                                    <div class="widget-numbers text-primary">₺6,758.42</div>
+                                                    <div class="widget-numbers text-primary" id="total_endorsement">
+                                                        ₺{{getDotter($daily['total_endorsement'])}}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -136,8 +142,8 @@
                             <div class="no-gutters row">
 
                                 <div class="p-2 col-lg-2 col-sm-4 col-xs-6">
-                                    <button
-                                        class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success">
+                                    <button id="btnRefreshMainCargoPage"
+                                            class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success">
                                         <i class="lnr-sync text-success opacity-7 btn-icon-wrapper mb-2"> </i>
                                         Yenile
                                     </button>
@@ -154,8 +160,8 @@
                                 </div>
 
                                 <div class="p-2 col-lg-2 col-sm-4 col-xs-6">
-                                    <button
-                                        class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-warning">
+                                    <button id="btnExportExcel"
+                                            class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-warning">
                                         <i class="fas fa-file-excel text-warning opacity-7 btn-icon-wrapper mb-2"> </i>
                                         Excele Aktar
                                     </button>
@@ -217,13 +223,13 @@
                             <div class="col-md-2">
                                 <label for="startDate">Başlangıç Tarih:</label>
                                 <input type="datetime-local" id="startDate" value="{{ date('Y-m-d') }}T00:00"
-                                       class="form-control form-control-sm">
+                                       class="form-control niko-filter form-control-sm">
                             </div>
 
                             <div class="col-md-2">
                                 <label for="finishDate">Bitiş Tarihi:</label>
                                 <input type="datetime-local" id="finishDate" value="{{ date('Y-m-d') }}T23:59"
-                                       class="form-control form-control-sm">
+                                       class="form-control niko-filter form-control-sm">
                             </div>
 
                             <div class="col-md-2">
@@ -369,12 +375,6 @@
                                 </select>
                             </div>
 
-                            {{-- <div class="col-md-2">--}}
-                            {{-- <label for="currentCode">Gönderici Cari Kod:</label>--}}
-                            {{-- <input type="text" id="currentCode" data-inputmask="'mask': '999 999 999'"--}}
-                            {{-- placeholder="___ ___ ___" type="text"--}}
-                            {{-- class="form-control input-mask-trigger form-control-sm niko-filter">--}}
-                            {{-- </div>--}}
 
                             <div class="col-md-2">
                                 <label for="currentName">Gönderici Adı:</label>
@@ -400,10 +400,12 @@
             <div class="card mb-3">
                 <div class="card-body">
 
-                    <table style="white-space: nowrap;" id="AgenciesTable"
+                    <table style="white-space: nowrap;" id="CargoesTable"
                            class="align-middle mb-0 table Table20Padding table-bordered table-striped table-hover NikolasDataTable">
                         <thead>
                         <tr>
+                            <th class="free"></th>
+                            <th class="check"></th>
                             <th>KTNO</th>
                             <th>Gönderici Adı</th>
                             <th>Gönderici İl</th>
@@ -413,6 +415,9 @@
                             <th>Alıcı Adres</th>
                             <th>Ödeme Tipi</th>
                             <th>Ücret</th>
+                            <th>Parça Sayısı</th>
+                            <th>Ağırlık (KG)</th>
+                            <th>Hacim (m<sup>3</sup>)</th>
                             <th>Tahsilat Tipi</th>
                             <th>Tahilatlı</th>
                             <th>Fatura Tutarı</th>
@@ -430,6 +435,8 @@
                         </tbody>
                         <tfoot>
                         <tr>
+                            <th class="free"></th>
+                            <th class="check"></th>
                             <th>KTNO</th>
                             <th>Gönderici Adı</th>
                             <th>Gönderici İl</th>
@@ -439,6 +446,9 @@
                             <th>Alıcı Adres</th>
                             <th>Ödeme Tipi</th>
                             <th>Ücret</th>
+                            <th>Parça Sayısı</th>
+                            <th>Ağırlık (KG)</th>
+                            <th>Hacim (m<sup>3</sup>)</th>
                             <th>Tahsilat Tipi</th>
                             <th>Tahilatlı</th>
                             <th>Fatura Tutarı</th>
@@ -583,6 +593,15 @@
     </style>
 
     <script>
+
+        $('#btnExportExcel').click(function () {
+            let count = oTable.rows({selected: true}).count();
+            if (count > 0)
+                $('#selectedExcelBtn').click();
+            else
+                ToastMessage('error', 'Lütfen excele aktarılacak satırları seçin!', 'Hata!');
+        });
+
         var oTable;
         var detailsID = null;
         // and The Last Part: NikoStyle
@@ -592,11 +611,16 @@
 
             oTable = $('.NikolasDataTable').DataTable({
                 pageLength: 10,
+                columnDefs: [{
+                    orderable: false,
+                    className: 'select-checkbox',
+                    targets: 1
+                }],
                 lengthMenu: [
                     [10, 25, 50, 100, 250, 500, -1],
                     ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
                 ],
-                order: [17, 'desc'],
+                order: [22, 'desc'],
                 language: {
                     "sDecimal": ",",
                     "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
@@ -629,17 +653,23 @@
                     }
                 },
                 dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
-
                 select: {
                     style: 'multi',
                     selector: 'td:nth-child(2)'
                 },
                 buttons: [
-                    'print',
+                    {
+                        extend: 'selectAll',
+                        text: 'Tümünü Seç'
+                    },
+                    {
+                        extend: 'selectNone',
+                        text: 'Tümünü Bırak'
+                    },
                     {
                         extend: 'excelHtml5',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
                         },
                         title: "CK - Kesilen Kargolar"
                     },
@@ -647,6 +677,22 @@
                         text: 'Yenile',
                         action: function (e, dt, node, config) {
                             dt.ajax.reload();
+                        },
+                        attr: {
+                            id: 'datatableRefreshBtn'
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        text: 'Ex Akt',
+                        exportOptions: {
+                            modifier: {
+                                selected: true
+                            },
+                            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+                        },
+                        attr: {
+                            id: 'selectedExcelBtn'
                         }
                     },
                     {
@@ -682,14 +728,20 @@
                     },
                     error: function (xhr, error, code) {
                         if (code == "Too Many Requests") {
-                            ToastMessage('info', 'Aşırı istekte bulundunuz, Lütfen bir süre sonra tekrar deneyin!', 'Hata');
+                            SnackMessage('Aşırı istekte bulundunuz, Lütfen bir süre sonra tekrar deneyin!', 'error', 'bl');
                         }
                     },
                     complete: function () {
-                        ToastMessage('info', 'Tamamlandı!', 'Bilgi');
+                        SnackMessage('Tamamlandı!', 'info', 'bl');
+
+                        if ($('#datatableRefreshBtn').prop('disabled') == true)
+                            $('#datatableRefreshBtn').prop('disabled', false);
+
                     }
                 },
                 columns: [
+                    {data: 'free_btn', name: 'free_btn'},
+                    {data: 'check', name: 'check'},
                     {data: 'tracking_no', name: 'tracking_no'},
                     {data: 'sender_name', name: 'sender_name'},
                     {data: 'sender_city', name: 'sender_city'},
@@ -699,6 +751,9 @@
                     {data: 'receiver_address', name: 'receiver_address'},
                     {data: 'payment_type', name: 'payment_type'},
                     {data: 'total_price', name: 'total_price'},
+                    {data: 'number_of_pieces', name: 'number_of_pieces'},
+                    {data: 'cubic_meter_volume', name: 'cubic_meter_volume'},
+                    {data: 'cubic_meter_volume', name: 'cubic_meter_volume'},
                     {data: 'collectible', name: 'collectible'},
                     {data: 'collectible', name: 'collectible'},
                     {data: 'collection_fee', name: 'collection_fee'},
@@ -710,9 +765,13 @@
                     {data: 'created_at', name: 'created_at'},
                     {data: 'edit', name: 'edit'},
                 ],
-
+                // scrollY: '450px',
+                // scrollX: false,
             });
+
+            $('#selectedExcelBtn').hide();
         });
+
 
         function drawDT() {
             oTable.draw();
@@ -732,21 +791,74 @@
             drawDT();
         });
 
-        // parse a date in yyyy-mm-dd format
-        function dateFormat(date) {
-            date = String(date);
-            let text = date.substring(0, 10);
-            let time = date.substring(19, 8);
-            time = time.substring(3, 11);
-            let datetime = text + " " + time;
-            return datetime;
-        }
+        $(document).on('dblclick', '.main-cargo-tracking_no', function () {
+            let tracking_no = $(this).attr('tracking-no')
+            let id = $(this).prop('id')
+            copyToClipBoard(tracking_no);
+            SnackMessage('Takip numarası kopyalandı!', 'info', 'bl');
+            cargoInfo(id);
+        });
+
+        $(document).on('click', '.cargo-detail', function () {
+            cargoInfo($(this).prop('id'));
+        });
+
+        var array = new Array();
 
 
-        $(document).on('click', '.user-detail', function () {
-            $('#ModalUserDetail').modal();
+        $('#btnRefreshMainCargoPage').click(function () {
 
-            $('#ModalBodyUserDetail.modal-body').block({
+
+            SnackMessage('Yenileniyor', 'info', 'bl');
+
+            $('.app-main__inner').block({
+                message: $('<div class="loader mx-auto">\n' +
+                    '                            <div class="ball-grid-pulse">\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                            </div>\n' +
+                    '                        </div>')
+            });
+            $('.blockUI.blockMsg.blockElement').css('border', '0px');
+            $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+            setTimeout(function () {
+                $.ajax('/MainCargo/AjaxTransactions/GetMainDailySummery', {
+                    method: 'POST',
+                    data: {
+                        _token: token
+                    }
+                }).done(function (response) {
+                    $('#file_count').html(response.file_count);
+                    $('#package_count').html(response.package_count);
+                    $('#total_cargo_count').html(response.total_cargo_count);
+                    $('#total_desi').html(response.total_desi);
+                    $('#total_endorsement').html("₺" + response.total_endorsement);
+                    $('#total_number_of_pieces').html(response.total_number_of_pieces);
+                }).error(function (jqXHR, exception) {
+                    ajaxError(jqXHR.status);
+                }).always(function () {
+                    $('.app-main__inner').unblock();
+                    $('#CargoesTable').DataTable().ajax.reload();
+                });
+            }, 750);
+
+        });
+
+
+        function cargoInfo(user) {
+
+            $('#ModalCargoDetails').modal();
+
+
+            $('#ModalCargoDetails').block({
                 message: $('<div class="loader mx-auto">\n' +
                     '                            <div class="ball-grid-pulse">\n' +
                     '                                <div class="bg-white"></div>\n' +
@@ -765,219 +877,237 @@
             $('.blockUI.blockMsg.blockElement').css('border', '0px');
             $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
-            detailsID = $(this).prop('id');
-            userInfo($(this).prop('id'));
-        });
-
-        var array = new Array();
-
-        function userInfo(user) {
-            $.ajax('/SenderCurrents/AjaxTransaction/GetCurrentInfo', {
+            $.ajax('/MainCargo/AjaxTransactions/GetCargoInfo', {
                 method: 'POST',
                 data: {
                     _token: token,
-                    currentID: user
+                    id: user
                 },
                 cache: false
             }).done(function (response) {
-                let currentStatus, currentConfirmed;
-                let creatorDisplayName = '<span class="text-primary font-weight-bold">(' + response.current.creator_display_name + ')</span>';
 
-                if (response.current.status == "1")
-                    currentStatus = '<span class="text-success">(Aktif Hesap)</span>';
-                else
-                    currentStatus = '<span class="text-danger">(Pasif Hesap)</span>';
+                if (response.status == 0) {
+                    setTimeout(function () {
+                        ToastMessage('error', response.message, 'Hata!');
+                        $('#ModalCargoDetails').modal('hide');
+                        $('#CargoesTable').DataTable().ajax.reload();
+                        return false;
+                    }, 250);
+                } else if (response.status == 1) {
 
-                if (response.current.confirmed == "1") {
-                    currentConfirmed = '<span class="text-success font-weight-bold">Onaylandı</span>';
-                    $('#divConfirmCurrent').hide();
-                } else {
-                    currentConfirmed = '<span class="text-danger font-weight-bold">Onay Bekliyor</span>';
-                    $('#divConfirmCurrent').show();
+                    let cargo = response.cargo;
+
+                    $('#titleTrackingNo').text(cargo.tracking_no);
+
                 }
 
-                let city = response.current.city + "/",
-                    district = response.current.district + " ",
-                    neighborhood = response.current.neighborhood + " ",
-                    street = response.current.street != '' && response.current.street != null ? response.current.street + " CAD. " : "",
-                    street2 = response.current.street2 != '' && response.current.street2 != null ? response.current.street2 + " SK. " : "",
-                    buildingNo = "NO:" + response.current.building_no + " ",
-                    door = "D:" + response.current.door_no + " ",
-                    floor = "KAT:" + response.current.floor + " ",
-                    addressNote = "(" + response.current.address_note + ")";
 
-                let fullAddress = neighborhood + street + street2 + buildingNo + floor + door + addressNote;
-
-
-                $('#agencyName').html(response.current.name);
-                $('#agencyCityDistrict').html(response.current.agency_city + "/" + response.current.agency_district + " - " + response.current.agency_name + " Acente " + "(" + response.current.agency_code + ")");
-                $('#titleBranch').html(response.current.name + ' - ÖZET ' + currentStatus);
-
-                $('#currentCategory').html(response.current.category);
-                $('#modalCurrentCode').html(response.current.current_code);
-                $('#nameSurnameCompany').html(response.current.name);
-                $('#currentAgency').html(response.current.agency_city + "/" + response.current.agency_district + " - " + response.current.agency_name + " Acente " + "(" + response.current.agency_code + ")");
-                $('#taxOffice').html(response.current.tax_administration);
-                $('#tcknVkn').html(response.current.tckn);
-                $('#phone').html(response.current.phone);
-                $('#cityDistrict').html(response.current.city + "/" + response.current.district);
-                $('#address').html(fullAddress);
-                $('#gsm').html(response.current.gsm);
-                $('#gsm2').html(response.current.gsm2);
-                $('#phone2').html(response.current.phone2);
-                $('#email').html(response.current.email);
-                $('#website').html(response.current.website);
-                $('#regDate').html(response.current.created_at);
-                $('#dispatchCityDistrict').html(response.current.dispatch_city + "/" + response.current.dispatch_district);
-                $('#dispatchAddress').html(response.current.dispatch_adress);
-                $('#iban').html(response.current.iban);
-                $('#bankOwner').html(response.current.bank_owner_name);
-                $('#contractStartDate').html(response.current.contract_start_date);
-                $('#contractEndDate').html(response.current.contract_end_date);
-                $('#reference').html(response.current.reference);
-                $('#currentCreatorUser').html(response.current.creator_user_name + " " + creatorDisplayName);
-                $('#currentFilePrice').html(response.price.file_price + "₺");
-                $('#current1_5Desi').html(response.price.d_1_5 + "₺");
-                $('#current6_10Desi').html(response.price.d_6_10 + "₺");
-                $('#current11_15Desi').html(response.price.d_11_15 + "₺");
-                $('#current16_20Desi').html(response.price.d_16_20 + "₺");
-                $('#current21_25Desi').html(response.price.d_21_25 + "₺");
-                $('#current26_30Desi').html(response.price.d_26_30 + "₺");
-                $('#currentAmountOfIncrease').html(response.price.amount_of_increase + "₺");
-                $('#currentCollectPrice').html(response.price.collect_price + "₺");
-                $('#collectAmountOfIncrease').html("%" + response.price.collect_amount_of_increase);
-                $('#currentConfirmed').html(currentConfirmed);
-
-                $('.modal-body').unblock();
+                $('#ModalCargoDetails').unblock();
                 return false;
             });
 
             $('#ModalAgencyDetail').modal();
         }
 
-        $(document).on('click', '#btnConfirmCurrent', function () {
-            $('#btnConfirmCurrent').prop('disabled', true);
-
-            $.ajax('/SenderCurrents/AjaxTransaction/ConfirmCurrent', {
-                method: 'POST',
-                data: {
-                    _token: token,
-                    currentID: detailsID
-                }
-            }).done(function (response) {
-
-                if (response.status == -1)
-                    ToastMessage('error', response.message, '');
-                else if (response.status == 1) {
-                    ToastMessage('success', 'İşlem başarılı, cari hesabı onaylandı!', 'İşlem Başarılı!');
-                    userInfo(detailsID);
-                    $('#divConfirmCurrent').hide();
-                }
-
-
-                $('.modalEnabledDisabled.modal-body').unblock();
-            }).error(function (jqXHR, response) {
-                ToastMessage('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!', 'Hata!');
-            }).always(function () {
-                $('#btnConfirmCurrent').prop('disabled', false);
-            });
-
-        });
-
-        $(document).on('click', '#btnEnabledDisabled', function () {
-            // alert(detailsID);
-            $('#modalEnabledDisabled').modal();
-
-            $('#modalBodyEnabledDisabled.modalEnabledDisabled.modal-body').block({
-                message: $('<div class="loader mx-auto">\n' +
-                    '                            <div class="ball-pulse-sync">\n' +
-                    '                                <div class="bg-warning"></div>\n' +
-                    '                                <div class="bg-warning"></div>\n' +
-                    '                                <div class="bg-warning"></div>\n' +
-                    '                            </div>\n' +
-                    '                        </div>')
-            });
-            $('.blockUI.blockMsg.blockElement').css('width', '100%');
-            $('.blockUI.blockMsg.blockElement').css('border', '0px');
-            $('.blockUI.blockMsg.blockElement').css('background-color', '');
-
-
-            $.ajax('/SenderCurrents/AjaxTransaction/GetCurrentInfo', {
-                method: 'POST',
-                data: {
-                    _token: token,
-                    currentID: detailsID
-                }
-            }).done(function (response) {
-
-                $('#userNameSurname').val(response.current.name);
-                $('#accountStatus').val(response.current.status);
-
-                $('.modalEnabledDisabled.modal-body').unblock();
-            });
-        });
-
-        $(document).on('click', '#btnSaveStatus', function () {
-
-            ToastMessage('warning', 'İstek alındı, lütfen bekleyiniz.', 'Dikkat!');
-            $.ajax('/SenderCurrents/AjaxTransaction/ChangeStatus', {
-                method: 'POST',
-                data: {
-                    _token: token,
-                    currentID: detailsID,
-                    status: $('#accountStatus').val(),
-                }
-            }).done(function (response) {
-                if (response.status == 1) {
-
-                    $('#ModalBodyUserDetail.modal-body').block({
-                        message: $('<div class="loader mx-auto">\n' +
-                            '                            <div class="ball-grid-pulse">\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                                <div class="bg-white"></div>\n' +
-                            '                            </div>\n' +
-                            '                        </div>')
-                    });
-                    $('.blockUI.blockMsg.blockElement').css('width', '100%');
-                    $('.blockUI.blockMsg.blockElement').css('border', '0px');
-                    $('.blockUI.blockMsg.blockElement').css('background-color', '');
-
-                    userInfo(detailsID);
-                    ToastMessage('success', 'Değişiklikler başarıyla kaydedildi.', 'İşlem Başarılı!');
-                    $('#modalEnabledDisabled').modal('toggle');
-                } else if (response.status == 0) {
-                    ToastMessage('error', response.description, 'Hata!');
-                } else if (response.status == -1) {
-                    response.errors.status.forEach(key =>
-                        ToastMessage('error', key, 'Hata!')
-                    );
-                }
-
-                return false;
-            }).error(function (jqXHR, response) {
-
-                ToastMessage('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!', 'Hata!');
-            });
-        });
-        $(document).on('click', '#btnCurrentPerformanceReport', function () {
-            ToastMessage('warning', 'Cari performans raporu çok yakında!', 'Bilgi');
-        });
-
-        $(document).on('click', '#btnPrintModal', function () {
-            printWindow('#ModalBodyUserDetail', "CK - " + $('#agencyName').text());
-        });
 
     </script>
 @endsection
 
 
 @section('modals')
+    <!-- Large modal => Modal Cargo Details -->
+    <div class="modal fade bd-example-modal-lg" id="ModalCargoDetails" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xxl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalGiveRolePermissionLabel">Kargo Detayları</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div style="overflow-y: auto; max-height: 75vh;" id="ModalBodyUserDetail" class="modal-body">
 
+                    {{-- CARD START --}}
+                    <div class="col-md-12">
+                        <div class="mb-3 profile-responsive card">
+                            <div class="dropdown-menu-header">
+                                <div class="dropdown-menu-header-inner bg-dark">
+                                    <div class="menu-header-image "
+                                         style="background-image: url('/backend/assets/images/dropdown-header/abstract10.jpg');">
+                                    </div>
+                                    <div class="menu-header-content btn-pane-right">
+                                        <div class="avatar-icon-wrapper mr-3 avatar-icon-xl btn-hover-shine">
+                                            <div class="avatar-icon rounded">
+                                                <img src="/backend/assets/images/ck-ico-white.png" alt="Avatar 5">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h5 id="titleTrackingNo" class="menu-header-title">###</h5>
+                                            <h6 id="titleCreatorInfo" class="menu-header-subtitle">###/###</h6>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="p-0 list-group-item">
+                                    <div class="grid-menu grid-menu-2col">
+                                        <div class="no-gutters row">
+                                            <div class="col-sm-4">
+                                                <div class="p-1">
+                                                    <button
+                                                        id="passwordResetBtn"
+                                                        class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
+                                                        <i class="lnr-redo text-dark opacity-7 btn-icon-wrapper mb-2"></i>
+                                                        Şifre Sıfırla
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <div class="p-1">
+                                                    <button id="btnEnabledDisabled"
+                                                            class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
+                                                        <i class="lnr-construction text-danger opacity-7 btn-icon-wrapper mb-2">
+                                                        </i>
+                                                        Hesabı Aktif/Pasif Yap
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <div class="p-1">
+                                                    <button id="btnVirtualLogin"
+                                                            class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-alternate">
+                                                        <i class="fa fa-paper-plane text-alternate opacity-7 btn-icon-wrapper mb-2">
+                                                        </i>
+                                                        Hesaba Sanal Giriş Yap
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div class="widget-content pt-4 pb-4">
+
+                                        <div class="cont">
+
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <table style="white-space: nowrap" id="AgencyCard"
+                                                           class="TableNoPadding table table-bordered table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th class="text-center" id="titleBranch" colspan="2">Genel
+                                                                Merkez
+                                                                Acente
+                                                            </th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        <tr>
+                                                            <td class="static">Telefon</td>
+                                                            <td id="phone">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">E-Mail</td>
+                                                            <td id="email"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Statü</td>
+                                                            <td id="general-status">Aktif</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Statü Açıklama</td>
+                                                            <td id="statusDescription"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Kayıt Tarihi</td>
+                                                            <td id="regDate"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="col-6">
+                                                    <table style="white-space: nowrap" id="AgencyCard"
+                                                           class="TableNoPadding table table-bordered table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th class="text-center" id="titleBranch" colspan="2">Genel
+                                                                Merkez
+                                                                Acente
+                                                            </th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        <tr>
+                                                            <td class="static">Telefon</td>
+                                                            <td id="phone">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">E-Mail</td>
+                                                            <td id="email"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Statü</td>
+                                                            <td id="general-status">Aktif</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Statü Açıklama</td>
+                                                            <td id="statusDescription"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Kayıt Tarihi</td>
+                                                            <td id="regDate"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <h4 class="mt-3">Son Hareketler</h4>
+
+                                        <div style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
+                                             class="cont">
+                                            <table style="white-space: nowrap" id="TableEmployees"
+                                                   class="Table30Padding table table-striped mt-3">
+                                                <thead>
+                                                <tr>
+                                                    <th>Kayıt Tarihi</th>
+                                                    <th>Hareket Tipi</th>
+                                                    <th>Detay</th>
+                                                    <th>Hareket</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="tbodyUseLog">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </div>
+                    {{-- CARD END --}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
