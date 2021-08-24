@@ -553,6 +553,12 @@ function TrackingNumberDesign($tracking_no)
     return $new_no;
 }
 
+function CurrentCodeDesign($current_code)
+{
+    $new_code = substr($current_code, 0, 3) . ' ' . substr($current_code, 3, 3) . ' ' . substr($current_code, 6, 3);
+    return $new_code;
+}
+
 
 
 

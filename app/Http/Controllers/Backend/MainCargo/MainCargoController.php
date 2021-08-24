@@ -1371,6 +1371,19 @@ class MainCargoController extends Controller
 
                 $data['cargo']->tracking_no = TrackingNumberDesign($data['cargo']->tracking_no);
 
+                $data['sender'] = DB::table('currents')
+                    ->select(['current_code', 'tckn', 'category'])
+                    ->where('id', $data['cargo']->sender_id)
+                    ->first();
+                $data['sender']->current_code = CurrentCodeDesign($data['sender']->current_code);
+
+                $data['receiver'] = DB::table('currents')
+                    ->select(['current_code', 'tckn', 'category'])
+                    ->where('id', $data['cargo']->receiver_id)
+                    ->first();
+                $data['receiver']->current_code = CurrentCodeDesign($data['receiver']->current_code);
+
+
                 $data['status'] = 1;
 
                 return response()

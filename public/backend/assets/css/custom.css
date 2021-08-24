@@ -229,3 +229,6 @@ table.Table20Padding th, table.Table20Padding td {
 .select-checkbox:hover {
     cursor: pointer;
 }
+.header__pane.ml-auto {
+    display: none;
+}

@@ -28,7 +28,8 @@
                                             <div class="widget-content-wrapper">
                                                 <div class="widget-content-left">
                                                     <div class="widget-heading">Koli Sayısı</div>
-                                                    <div class="widget-subheading">(Bugün) Toplam Kesilen Koli Adeti</div>
+                                                    <div class="widget-subheading">(Bugün) Toplam Kesilen Koli Adeti
+                                                    </div>
                                                 </div>
                                                 <div class="widget-content-right">
                                                     <div id="package_count"
@@ -896,8 +897,58 @@
                 } else if (response.status == 1) {
 
                     let cargo = response.cargo;
+                    let sender = response.sender;
+                    let receiver = response.receiver;
 
                     $('#titleTrackingNo').text(cargo.tracking_no);
+
+                    $('#senderTcknVkn').text(sender.tckn);
+                    $('#senderCurrentCode').text(sender.current_code);
+                    $('#senderCustomerType').text(sender.category);
+                    $('#senderNameSurname').text(cargo.sender_name);
+                    $('#senderPhone').text(cargo.sender_phone);
+                    $('#senderCityDistrict').text(cargo.sender_city + "/" + cargo.sender_district);
+                    $('#senderNeighborhood').text(cargo.sender_neighborhood);
+                    $('#senderAddress').text(cargo.sender_address);
+
+                    $('#receiverTcknVkn').text(receiver.tckn);
+                    $('#receiverCurrentCode').text(receiver.current_code);
+                    $('#receiverCustomerType').text(receiver.category);
+                    $('#receiverNameSurname').text(cargo.receiver_name);
+                    $('#receiverPhone').text(cargo.receiver_phone);
+                    $('#receiverCityDistrict').text(cargo.receiver_city + "/" + cargo.receiver_district);
+                    $('#receiverNeighborhood').text(cargo.receiver_neighborhood);
+                    $('#receiverAddress').text(cargo.receiver_address);
+
+
+                    $('#cargoTrackingNo').text(cargo.tracking_no);
+                    $('#cargoCreatedAt').text(cargo.created_at);
+                    $('#numberOfPieces').text(cargo.number_of_pieces);
+
+                    $('#cargoKg').text(cargo.cubic_meter_volume);
+                    $('#cubicMeterVolume').text(cargo.cubic_meter_volume);
+                    $('#desi').text(cargo.desi);
+
+                    $('#cargoType').text(cargo.cargo_type);
+                    $('#paymentType').text(cargo.payment_type);
+                    $('#transporter').text(cargo.transporter);
+                    $('#system').text(cargo.system);
+                    $('#creatorUserInfo').text(cargo.system);
+                    $('#customerCode').text(cargo.customer_code);
+                    $('#cargoContent').text(cargo.cargo_content);
+                    $('#cargoContentEx').text(cargo.cargo_content_ex);
+
+
+
+                    //
+                    //
+                    // $('#numberOfPieces').text(cargo.number_of_pieces);
+                    // $('#numberOfPieces').text(cargo.number_of_pieces);
+                    // $('#numberOfPieces').text(cargo.number_of_pieces);
+                    // $('#numberOfPieces').text(cargo.number_of_pieces);
+                    // $('#numberOfPieces').text(cargo.number_of_pieces);
+                    // $('#numberOfPieces').text(cargo.number_of_pieces);
+
 
                 }
 
@@ -997,77 +1048,232 @@
                                         <div class="cont">
 
                                             <div class="row">
-                                                <div class="col-6">
+                                                <div class="col-sm-6">
                                                     <table style="white-space: nowrap" id="AgencyCard"
                                                            class="TableNoPadding table table-bordered table-striped">
                                                         <thead>
                                                         <tr>
-                                                            <th class="text-center" id="titleBranch" colspan="2">Genel
-                                                                Merkez
-                                                                Acente
+                                                            <th class="text-center" id="titleBranch" colspan="2">
+                                                                Gönderici Bilgileri
                                                             </th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-
                                                         <tr>
-                                                            <td class="static">Telefon</td>
-                                                            <td id="phone">
-                                                            </td>
+                                                            <td class="static">Cari Kodu:</td>
+                                                            <td id="senderCurrentCode"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="static">E-Mail</td>
-                                                            <td id="email"></td>
+                                                            <td class="static">Müşteri Tipi:</td>
+                                                            <td id="senderCustomerType"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="static">Statü</td>
-                                                            <td id="general-status">Aktif</td>
+                                                            <td class="static">TCKN/VKN:</td>
+                                                            <td id="senderTcknVkn"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="static">Statü Açıklama</td>
-                                                            <td id="statusDescription"></td>
+                                                            <td class="static">Ad Soyad:</td>
+                                                            <td id="senderNameSurname"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="static">Kayıt Tarihi</td>
-                                                            <td id="regDate"></td>
+                                                            <td class="static">Telefon:</td>
+                                                            <td id="senderPhone"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">İl/İlçe:</td>
+                                                            <td id="senderCityDistrict"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Mahalle:</td>
+                                                            <td id="senderNeighborhood"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Adres:</td>
+                                                            <td style="white-space: initial;" id="senderAddress"></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <div class="col-6">
+                                                <div class="col-sm-6">
                                                     <table style="white-space: nowrap" id="AgencyCard"
                                                            class="TableNoPadding table table-bordered table-striped">
                                                         <thead>
                                                         <tr>
-                                                            <th class="text-center" id="titleBranch" colspan="2">Genel
-                                                                Merkez
-                                                                Acente
+                                                            <th class="text-center" id="titleBranch" colspan="2">
+                                                                Alıcı Bilgileri
                                                             </th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
+                                                        <tr>
+                                                            <td class="static">Cari Kodu:</td>
+                                                            <td id="receiverCurrentCode"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Müşteri Tipi:</td>
+                                                            <td id="receiverCustomerType"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">TCKN/VKN:</td>
+                                                            <td id="receiverTcknVkn"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Ad Soyad:</td>
+                                                            <td id="receiverNameSurname"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Telefon:</td>
+                                                            <td id="receiverPhone"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">İl/İlçe:</td>
+                                                            <td id="receiverCityDistrict"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Mahalle:</td>
+                                                            <td id="receiverNeighborhood"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Adres:</td>
+                                                            <td style="white-space: initial;" id="receiverAddress"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <div class="divider"></div>
+                                            <h3 class="text-dark text-center mb-4">Kargo Bilgileri</h3>
+
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <table style="white-space: nowrap" id="AgencyCard"
+                                                           class="TableNoPadding table table-bordered table-striped">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td class="static">Kargo Takip No:</td>
+                                                            <td id="cargoTrackingNo"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Kayıt Tarihi:</td>
+                                                            <td id="cargoCreatedAt"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Parça Sayısı:</td>
+                                                            <td id="numberOfPieces"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">KG:</td>
+                                                            <td id="cargoKg"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Hacim (m<sup>3</sup>):</td>
+                                                            <td id="cubicMeterVolume"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Desi:</td>
+                                                            <td id="desi"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Gönderi Türü:
+                                                            <td id="cargoType"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Ödeme Tipi:</td>
+                                                            <td id="paymentType"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Taşıyan:</td>
+                                                            <td id="transporter"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Sistem:</td>
+                                                            <td id="system"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Oluşturan:</td>
+                                                            <td id="creatorUserInfo"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Müşteri Kodu:</td>
+                                                            <td id="customerCode"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Kargo İçeriği:</td>
+                                                            <td id="cargoContent"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Kargo İçerik Açıklaması:</td>
+                                                            <td style="white-space: initial;" id="cargoContentEx"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <table style="white-space: nowrap" id="AgencyCard"
+                                                           class="TableNoPadding table table-bordered table-striped">
+
+                                                        <tbody>
+                                                        <tr>
+                                                            <td class="static">Tahislatlı:</td>
+                                                            <td id="collectible"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Fatura Tutarı:</td>
+                                                            <td id="collection_fee"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Çıkış İl:</td>
+                                                            <td id="exitCity"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Çıkış Şube:</td>
+                                                            <td id="exitBranch"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Varış İl:</td>
+                                                            <td id="arrivalCity"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Varış Şube:</td>
+                                                            <td id="arrivalBranch"></td>
+                                                        </tr>
 
                                                         <tr>
-                                                            <td class="static">Telefon</td>
-                                                            <td id="phone">
-                                                            </td>
+                                                            <td class="static">Statü:</td>
+                                                            <td id="cargoStatus"></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td class="static">İnsanlar İçin Statü:</td>
+                                                            <td id="cargoStatusForHumen"></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td class="static">Mesafe (KM):</td>
+                                                            <td id="distance"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="static">E-Mail</td>
-                                                            <td id="email"></td>
+                                                            <td class="static">Mesafe Ücreti:</td>
+                                                            <td id="distancePrice"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="static">Statü</td>
-                                                            <td id="general-status">Aktif</td>
+                                                            <td class="static">KDV:</td>
+                                                            <td id="kdv"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="static">Statü Açıklama</td>
-                                                            <td id="statusDescription"></td>
+                                                            <td class="static">Ek Hizmet Tutarı:</td>
+                                                            <td id="addServiceFee"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="static">Kayıt Tarihi</td>
-                                                            <td id="regDate"></td>
+                                                            <td class="static">Hizmet Ücreti:</td>
+                                                            <td id="serviceFee"></td>
                                                         </tr>
+                                                        <tr>
+                                                            <td class="static">Genel Toplam:</td>
+                                                            <td id="totalFee"></td>
+                                                        </tr>
+
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -1075,7 +1281,7 @@
 
 
                                         </div>
-                                        <h4 class="mt-3">Son Hareketler</h4>
+                                        <h4 class="mt-3">Kargo Hareketleri</h4>
 
                                         <div style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
                                              class="cont">

@@ -32,7 +32,7 @@ class DefaultController extends Controller
         }
 
         return response()
-            ->json(['status' => '0', 'message' => 'Hatalı kullanıcı adı veya şifre!'], 200);
+            ->json(['status' => 0, 'message' => 'Hatalı kullanıcı adı veya şifre!'], 200);
     }
 
     public function user()
