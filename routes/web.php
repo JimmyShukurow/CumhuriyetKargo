@@ -85,7 +85,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::group(['prefix' => 'MainCargo', 'as' => 'mainCargo.'], function () {
         Route::get('NewCargo', [MainCargoController::class, 'newCargo'])->name('newCargo');
         Route::get('', [MainCargoController::class, 'index'])->name('index');
-        Route::get('GetCargoes', [MainCargoController::class, 'getMainCargoes'])->name('getCargoes');
+        Route::get('GetCargoes', [MainCargoController::class, 'getMainCargoes'])->name('getCargoes')
+            ->middleware('throttle:20,1');
         Route::post('AjaxTransactions/{transaction}', [MainCargoController::class, 'ajaxTransacrtions']);
     });
 

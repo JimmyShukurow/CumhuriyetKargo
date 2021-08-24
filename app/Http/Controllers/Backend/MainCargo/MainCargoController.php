@@ -832,7 +832,7 @@ class MainCargoController extends Controller
                         return response()->json(['status' => -1, 'message' => 'Yalnızca Kurumsal-Anlaşmalı cariler tahsilatlı kargo çıkartabilir.'], 200);
                 }
 
-                ## customers controle
+                ## customers control
                 $currentState = CurrentControl($current->current_code);
                 $receiverState = CurrentControl($receiver->current_code);
 
@@ -995,7 +995,7 @@ class MainCargoController extends Controller
                     return response()
                         ->json(['status' => -1, 'message' => 'Hizmet tutarları eşleşmiyor, lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
 
-
+                $totalAgirlik = 0;
                 # Control Parts Of Cargo
                 if ($cargoType == 'Koli') {
                     $desiData = $request->desiData;
@@ -1059,6 +1059,8 @@ class MainCargoController extends Controller
                         $desiValues = array_values($desiValues);
                         $desiKeys = array_values($desiKeys);
 
+                        $totalAgirlik += $agirlik;
+
                         if (count($desiKeys) == 0)
                             break;
                     }
@@ -1092,6 +1094,10 @@ class MainCargoController extends Controller
                 $pickUpAddress = $collection->contains('add-service-21') ? '1' : '0';
 
                 $ctn = CreateCargoTrackingNo(Auth::user()->agency_code);
+
+                $userGeneralInfo = DB::table('view_users_all_info')
+                    ->where('id', Auth::id())
+                    ->first();
 
                 # start create new Cargo
                 $CreateCargo = Cargoes::create([
@@ -1135,8 +1141,8 @@ class MainCargoController extends Controller
                     'arrival_agency_code' => '31',
                     'arrival_tc_code' => '31',
 
-                    'departure_city' => $current->city,
-                    'departure_district' => $current->district,
+                    'departure_city' => $userGeneralInfo->branch_city,
+                    'departure_district' => $userGeneralInfo->branch_district,
                     'departure_agency_code' => Auth::user()->agency_code,
                     'departure_tc_code' => $departureAgency->transshipment_center_code,
                     'creator_agency_code' => Auth::user()->agency_code,
@@ -1146,9 +1152,11 @@ class MainCargoController extends Controller
                     'collection_fee' => $request->tahsilatliKargo == 'true' ? getDoubleValue($request->faturaTutari) : 0,
                     'collection_payment_type' => $request->tahsilatliKargo == 'true' ? 'Nakit' : '0',
                     'desi' => $cargoType == 'Koli' ? $totalDesi : 0,
+                    'kg' => $totalAgirlik,
                     'kdv_percent' => 18,
                     'cubic_meter_volume' => $cargoType == 'Koli' ? $totalHacim : 0,
                     'kdv_price' => $kdvPrice,
+                    'distance' => $distance,
                     'distance_price' => $distancePrice,
                     'service_price' => $serviceFee,
                     'add_service_price' => $addServicePrice,
@@ -1360,7 +1368,6 @@ class MainCargoController extends Controller
                 break;
 
             # INDEX TRANSACTION START
-
             case 'GetCargoInfo':
 
                 $data['cargo'] = Cargoes::find($request->id);
@@ -1370,6 +1377,7 @@ class MainCargoController extends Controller
                         ->json(['status' => 0, 'message' => 'Kargo Bulunamadı!'], 200);
 
                 $data['cargo']->tracking_no = TrackingNumberDesign($data['cargo']->tracking_no);
+                $data['cargo']->distance = getDotter($data['cargo']->distance);
 
                 $data['sender'] = DB::table('currents')
                     ->select(['current_code', 'tckn', 'category'])
@@ -1383,6 +1391,25 @@ class MainCargoController extends Controller
                     ->first();
                 $data['receiver']->current_code = CurrentCodeDesign($data['receiver']->current_code);
 
+                $data['creator'] = DB::table('view_users_all_info')
+                    ->select(['name_surname', 'display_name'])
+                    ->where('id', $data['cargo']->creator_user_id)
+                    ->first();
+
+                $data['departure'] = DB::table('agencies')
+                    ->select(['agency_code', 'agency_name'])
+                    ->where('id', $data['cargo']->departure_agency_code)
+                    ->first();
+
+                $data['sms'] = DB::table('sent_sms')
+                    ->select('id', 'heading', 'subject', 'phone', 'sms_content', 'result')
+                    ->where('ctn', str_replace(' ', '', $data['cargo']->tracking_no))
+                    ->get();
+
+                $data['add_services'] = DB::table('cargo_add_services')
+                    ->select(['service_name', 'price'])
+                    ->where('cargo_tracking_no', str_replace(' ', '', $data['cargo']->tracking_no))
+                    ->get();
 
                 $data['status'] = 1;
 
@@ -1437,7 +1464,6 @@ class MainCargoController extends Controller
                 return response()
                     ->json($daily, 200);
                 break;
-
             # INDEX TRANSACTION END
 
             default:
@@ -1500,7 +1526,7 @@ class MainCargoController extends Controller
                 return "cargo-item-" . $cargoes->id;
             })
             ->editColumn('payment_type', function ($cargoes) {
-                return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . $cargoes->payment_type . '</b>' : '<b class="text-dark">' . $cargoes->payment_type . '</b>';
+                return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . 'GÖ' . '</b>' : '<b class="text-dark">' . 'AÖ' . '</b>';
             })
             ->editColumn('receiver_address', function ($cargoes) {
                 return substr($cargoes->receiver_address, 0, 30);

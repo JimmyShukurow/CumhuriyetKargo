@@ -103,6 +103,8 @@ class DefaultController extends Controller
 
             case 'GetTickets':
                 $data['tickets'] = DB::table('tickets')
+                    ->join('departments', 'departments.id', '=', 'tickets.department_id')
+                    ->select(['tickets.*', 'departments.department_name'])
                     ->where('user_id', Auth::id())
                     ->limit(30)
                     ->orderBy('updated_at', 'desc')
@@ -138,7 +140,7 @@ class DefaultController extends Controller
                 $validator = Validator::make($request->all(), $rules);
 
                 if ($validator->fails())
-                    return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
+                    return response()->json(['status' => 0, 'errors' => $validator->getMessageBag()->toArray()], 200);
 
                 $password_check = User::where('id', Auth::id())
                     ->where("password", Hash::make($request->password))
@@ -216,7 +218,7 @@ class DefaultController extends Controller
                 $validator = Validator::make($request->all(), $rules);
 
                 if ($validator->fails())
-                    return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
+                    return response()->json(['status' => 0, 'errors' => $validator->getMessageBag()->toArray()], 200);
 
 
                 # token => ticked_id
@@ -286,7 +288,7 @@ class DefaultController extends Controller
                 $validator = Validator::make($request->all(), $rules);
 
                 if ($validator->fails())
-                    return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
+                    return response()->json(['status' => 0, 'errors' => $validator->getMessageBag()->toArray()], 200);
 
                 global $file1;
 
