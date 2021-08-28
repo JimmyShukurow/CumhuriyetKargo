@@ -82,11 +82,6 @@ class MainCargoController extends Controller
             ->whereRaw('deleted_at is null')
             ->count();
 
-        $daily['total_cargo_count'] = DB::table('cargoes')
-            ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
-            ->whereRaw('deleted_at is null')
-            ->count();
-
         $daily['total_desi'] = DB::table('cargoes')
             ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
             ->whereRaw('deleted_at is null')
@@ -137,12 +132,20 @@ class MainCargoController extends Controller
         $filePrice = FilePrice::first();
         $fee['first_file_price'] = $filePrice->individual_file_price;
 
+        # evrensel posta hizmetleri ücreti
+        $postServicePercent = DB::table('settings')
+            ->where('key', 'post_services_percent')
+            ->first();
+        $postServicePercent = $postServicePercent->value;
+
+        $fee['postal_services_fee'] = ($fee['first_file_price'] * $postServicePercent) / 100;
+
         $totalFirst = 0;
         $totalFirstNoKDV = 0;
-        $totalFirst += $fee['first_total'] + $fee['first_file_price'];
-        $totalFirstNoKDV = $fee['first_total'] + $fee['first_file_price'];
+        $totalFirst += $fee['first_total'] + $fee['first_file_price'] + $fee['postal_services_fee'];
+        $totalFirstNoKDV = $fee['first_total'] + $fee['first_file_price'] + $fee['postal_services_fee'];
 
-        $fee['first_total'] = $totalFirst + ((18 * $totalFirst) / 100);
+        $fee['first_total'] = round($totalFirst + ((18 * $totalFirst) / 100), 2);
         $fee['first_total_no_kdv'] = $totalFirstNoKDV;
 
         $data['collectible_cargo'] = Settings::where('key', 'collectible_cargo')->first();
@@ -601,7 +604,8 @@ class MainCargoController extends Controller
                         ->first();
                     $desiPrice = $desiPrice->individual_unit_price;
                 }
-                return response()->json(['status' => '1', 'price' => $desiPrice, 'distance' => $distance, 'distance_price' => $distancePrice]);
+
+                return response()->json(['status' => '1', 'price' => $desiPrice, 'distance' => $distance, 'distance_price' => $distancePrice, 'post_service_price' => $postServicePrice]);
                 break;
 
             case 'GetFilePrice':
@@ -630,7 +634,6 @@ class MainCargoController extends Controller
 
             case 'GetPriceForCustomers':
 
-
                 $desi = $request->desi;
                 $cargoType = $request->cargoType;
                 $currentCode = str_replace(' ', '', $request->currentCode);
@@ -650,7 +653,6 @@ class MainCargoController extends Controller
                     $desiPrice = 0;
                     $json = ['service_fee' => $desiPrice];
                 } else {
-
 
                     if (($currentType == 'Gönderici' && $currentCategory == 'Kurumsal') || ($receiverType == 'Gönderici' && $receiverCategory == 'Kurumsal')) {
                         # => contracted / En az 1 Kurumsal
@@ -765,6 +767,27 @@ class MainCargoController extends Controller
                         }
                     }
                 }
+
+                # evrensel posta hizmetleri ücreti start
+                $postServicePercent = GetSettingsVal('post_services_percent');
+
+                $postServicePrice = ($json['service_fee'] * $postServicePercent) / 100;
+                $postServicePrice = round($postServicePrice, 2);
+                # evrensel posta hizmetleri ücreti start
+
+
+                if ($cargoType == 'Koli' && $desi >= 100) {
+                    $heavyLoadCarryingCost = GetSettingsVal('heavy_load_carrying_cost');
+                    $heavyLoadCarryingCost = $heavyLoadCarryingCost + (($heavyLoadCarryingCost * 18) / 100);
+                } else
+                    $heavyLoadCarryingCost = 0;
+
+                $json = [
+                    'service_fee' => $json['service_fee'],
+                    'post_service_price' => $postServicePrice,
+                    'heavy_load_carrying_cost' => $heavyLoadCarryingCost
+                ];
+
                 return response()->json($json, 200);
                 break;
 
@@ -780,6 +803,8 @@ class MainCargoController extends Controller
                     'mesafe' => 'required',
                     'ekHizmetFiyat' => 'required',
                     'hizmetUcreti' => 'required',
+                    'postaHizmetleriUcreti' => 'required',
+                    'agirYukTasimaBedeli' => 'required',
                     'genelToplam' => 'required',
                     'totalHacim' => 'required',
                     'kargoIcerigi' => 'required',
@@ -995,6 +1020,19 @@ class MainCargoController extends Controller
                     return response()
                         ->json(['status' => -1, 'message' => 'Hizmet tutarları eşleşmiyor, lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
 
+
+                # evrensel posta hizmetleri ücreti start
+                $postServicePercent = GetSettingsVal('post_services_percent');
+
+                $postServicePrice = ($serviceFee * $postServicePercent) / 100;
+                $postServicePrice = round($postServicePrice, 2);
+                # evrensel posta hizmetleri ücreti start
+
+                if (!(compareFloatEquality($request->postaHizmetleriUcreti, $postServicePrice)))
+                    return response()
+                        ->json(['status' => -1, 'message' => 'Posta hizmetleri bedeli eşleşmiyor, lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
+
+
                 $totalAgirlik = 0;
                 # Control Parts Of Cargo
                 if ($cargoType == 'Koli') {
@@ -1077,15 +1115,32 @@ class MainCargoController extends Controller
                     # return $totalHacim . ' => ' . $totalDesi;
                 }
 
+                if ($cargoType == 'Koli' && $desi >= 100) {
+                    $heavyLoadCarryingCost = GetSettingsVal('heavy_load_carrying_cost');
+                    $heavyLoadCarryingCost = $heavyLoadCarryingCost + (($heavyLoadCarryingCost * 18) / 100);
+                } else
+                    $heavyLoadCarryingCost = 0;
+
+                if (!(compareFloatEquality($request->agirYukTasimaBedeli, $heavyLoadCarryingCost)))
+                    return response()
+                        ->json(['status' => -1, 'message' => 'Ağır yük taşıma bedeli eşleşmiyor, lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
+
+
                 $currentAddress = AddressMaker($current->city, $current->district, $current->neighborhood, $current->street, $current->street2, $current->building_no, $current->floor, $current->door_no, $current->address_note);
                 $receiverAddress = AddressMaker($receiver->city, $receiver->district, $receiver->neighborhood, $receiver->street, $receiver->street2, $receiver->building_no, $receiver->floor, $receiver->door_no, $receiver->address_note);
                 $departureAgency = Agencies::find(Auth::user()->agency_code);
 
                 ## calc total price
-                $totalPriceExceptKdv = $distancePrice + $addServicePrice + $serviceFee;
+                $totalPriceExceptKdv = $distancePrice + $addServicePrice + $serviceFee + $postServicePrice;
                 $kdvPrice = $totalPriceExceptKdv * 0.18;
                 $kdvPrice = round($kdvPrice, 2);
-                $totalPrice = $totalPriceExceptKdv + $kdvPrice;
+                $totalPrice = $totalPriceExceptKdv + $kdvPrice + $heavyLoadCarryingCost;
+
+
+                if ($totalPrice != $request->genelToplam)
+                    return response()
+                        ->json(['status' => -1, 'message' => 'Gene toplamlar eşleşmiyor, lütfen sistem destek ile iletişime geçin!'], 200);
+
 
                 $collection = collect(array_keys($addServices));
                 $homeDelivery = $collection->contains('add-service-8') ? '1' : '0';
@@ -1160,6 +1215,8 @@ class MainCargoController extends Controller
                     'distance_price' => $distancePrice,
                     'service_price' => $serviceFee,
                     'add_service_price' => $addServicePrice,
+                    'post_service_price' => $postServicePrice,
+                    'heavy_load_carrying_cost' => $heavyLoadCarryingCost,
                     'total_price' => $totalPrice,
                     'home_delivery' => $homeDelivery,
                     'pick_up_address' => $pickUpAddress,

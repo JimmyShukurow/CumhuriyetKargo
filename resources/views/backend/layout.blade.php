@@ -81,6 +81,7 @@
             <div style="margin-bottom: 15px" class="logo-src">
                 <a href="{{route(getUserFirstPage())}}">
                     <img id="main-logo" style="width: 10rem;" src="/backend/assets/images/ck-logo-white.png" alt="">
+                    {{--<img id="main-logo" style="width: 11rem;" src="/backend/assets/images/CKG_Sis_Gif.png" alt="">--}}
                 </a>
             </div>
             {{--id="panelMlAuto" --}}

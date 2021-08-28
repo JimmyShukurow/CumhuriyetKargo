@@ -652,6 +652,9 @@ function getPriceForCustomers() {
         }).done(function (response) {
 
             $('#serviceFee').text(roundLikePHP(response.service_fee, 2));
+            $('#postServicePrice').text(response.post_service_price);
+            $('#heavyLoadCarryingCost').text(response.heavy_load_carrying_cost);
+
             calculateTotalPrice();
 
             $('#tableSummery').unblock();
@@ -797,12 +800,14 @@ $('.add-fee').click(function () {
 });
 
 function calculateTotalPrice() {
-    var total = 0, wKDV = 0, kdvPercent = parseFloat($('#kdvPercent').text());
-    var addFee = parseFloat($('#addFeePrice').text());
-    var serviceFee = parseFloat($('#serviceFee').text());
+    let total = 0, wKDV = 0, kdvPercent = parseFloat($('#kdvPercent').text());
+    let addFee = parseFloat($('#addFeePrice').text());
+    let serviceFee = parseFloat($('#serviceFee').text());
+    let postServiceFee = parseFloat($('#postServicePrice').text());
+    let heavyLoadCarryingCost = parseFloat($('#heavyLoadCarryingCost').text());
 
-    total += addFee + serviceFee + DistancePrice;
-    wKDV = total + (kdvPercent * (total) / 100);
+    total += addFee + serviceFee + DistancePrice + postServiceFee;
+    wKDV = total + (kdvPercent * (total) / 100) + heavyLoadCarryingCost;
     $('#totalPrice').text(roundLikePHP(wKDV, 2));
     // No - KDV
     $('#kdvExcluding').text(roundLikePHP(total, 2));
@@ -1350,6 +1355,9 @@ function CalculateDesi(RealDesi, PartNumber, clickButton) {
     }).done(function (response) {
 
         $('#serviceFee').text(roundLikePHP(response.service_fee, 2));
+        $('#postServicePrice').text(response.post_service_price);
+        $('#heavyLoadCarryingCost').text(response.heavy_load_carrying_cost);
+
         // DistancePrice = response.distance_price;
         // $('#labelDistancePrice').text(response.distance_price);
         calculateTotalPrice();
@@ -1507,7 +1515,6 @@ function createCargo() {
     let desiData = getFormData($('#formPartDesiContainer'));
     let addServicesData = getFormData($('#formAdditionalServices'));
 
-
     //# Create Order Start
     $('#btnCargoComplate').prop('disabled', true);
     $.ajax('/MainCargo/AjaxTransactions/CreateCargo', {
@@ -1529,6 +1536,8 @@ function createCargo() {
             mesafeUcreti: $('#labelDistancePrice').text(),
             ekHizmetFiyat: $('#addFeePrice').text(),
             hizmetUcreti: $('#serviceFee').text(),
+            postaHizmetleriUcreti: $('#postServicePrice').text(),
+            agirYukTasimaBedeli: $('#heavyLoadCarryingCost').text(),
             genelToplam: $('#totalPrice').text(),
             totalHacim: $('#hPartsTotalM3').text(),
             kargoIcerigi: $('#cargoIcerigi').val(),

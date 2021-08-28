@@ -229,6 +229,25 @@ table.Table20Padding th, table.Table20Padding td {
 .select-checkbox:hover {
     cursor: pointer;
 }
+
 .header__pane.ml-auto {
     display: none;
+}
+
+.barcode-mini-text {
+    font-size: 11px;
+}
+
+.barcode-slogan {
+    padding: 0px;
+    margin: 0;
+    font-size: 9px;
+}
+
+.code39-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 106px;
+    margin-top: 15px;
 }

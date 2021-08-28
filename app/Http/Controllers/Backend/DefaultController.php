@@ -113,7 +113,6 @@ class DefaultController extends Controller
                 return redirect(route('Login'))
                     ->with('error', '24 saat içerisinde en fazla 3 kez şifre sıfırlayabilirsiniz!');
 
-
             #code exist control
             $code_exist_control = DB::select("SELECT *, TIMESTAMPDIFF(SECOND,created_at,NOW()) as second_diff
             FROM security_codes

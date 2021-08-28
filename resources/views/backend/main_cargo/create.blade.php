@@ -179,7 +179,8 @@
                                     <label for="cariKod">Açıklama:</label>
                                 </div>
                                 <div class="input-group mb-1">
-                                    <textarea name="" id="explantion" class="form-control" cols="30" rows="2"></textarea>
+                                    <textarea name="" id="explantion" class="form-control" cols="30"
+                                              rows="2"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -528,6 +529,23 @@
                                                        class="font-weight-bold">{{$fee['first_file_price']}}</label><b>₺</b>
                                             </td>
                                         </tr>
+
+                                        <tr>
+                                            <td>Posta Hizmetleri Bedeli:</td>
+                                            <td class="text-center">
+                                                <label id="postServicePrice"
+                                                       class="font-weight-bold">{{$fee['postal_services_fee']}}</label><b>₺</b>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Ağır Yük Taşıma Bedeli:</td>
+                                            <td class="text-center">
+                                                <label id="heavyLoadCarryingCost"
+                                                       class="font-weight-bold">0</label><b>₺</b>
+                                            </td>
+                                        </tr>
+
                                         <tr>
                                             <td>Genel Toplam:</td>
                                             <td class="text-center">

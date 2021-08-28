@@ -502,7 +502,9 @@ function CurrentControl($currentCode)
 
 function compareFloatEquality($a, $b)
 {
-    if (abs(($a - $b) / $b) <= 0.00001)
+    if ($a == 0 && $b == 0)
+        return true;
+    else if (abs(($a - $b) / $b) <= 0.00001)
         return true;
     else
         return false;
@@ -557,6 +559,17 @@ function CurrentCodeDesign($current_code)
 {
     $new_code = substr($current_code, 0, 3) . ' ' . substr($current_code, 3, 3) . ' ' . substr($current_code, 6, 3);
     return $new_code;
+}
+
+function GetSettingsVal($key)
+{
+    $val = DB::table('settings')
+        ->where('key', $key)
+        ->first();
+
+    $val = $val->value;
+
+    return $val;
 }
 
 
