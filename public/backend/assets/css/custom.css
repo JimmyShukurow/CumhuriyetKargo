@@ -251,3 +251,11 @@ table.Table20Padding th, table.Table20Padding td {
     max-height: 106px;
     margin-top: 15px;
 }
+
+.vertical-rl {
+    transform: rotate(7deg);
+    -ms-transform: rotate(270deg); /* IE 9 */
+    -moz-transform: rotate(270deg); /* Firefox */
+    -webkit-transform: rotate(270deg); /* Safari and Chrome */
+    -o-transform: rotate(270deg); /* Opera */
+}

@@ -1024,7 +1024,7 @@
         </div>
     </div>
 
-    <!-- Large modal => Modal  -->
+    <!-- Large modal => Modal Barcode -->
     <div class="modal fade bd-example-modal-lg" id="ModalShowBarcode" tabindex="-1" role="dialog"
          aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -1035,7 +1035,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div style="overflow-x: hidden; max-height: 75vh;" id="ModalBodyUserDetail"
+                <div style="overflow-x: hidden; max-height: 75vh;" id="ModalBarcodes"
                      class="modal-body">
 
                     <div style="background: #fff !important; max-width: 475px; color: #000 !important;"
@@ -1045,25 +1045,25 @@
                             <div class="col-6">
                                 <h5 class="font-weight-bold barcode-slogan">Cumhuriyet Kargo - Sevgi ve Değer
                                     Taşıyoruz..</h5>
-                                <h3 class="font-weight-bold  text-dark">VAN Gölü</h3>
+                                <h3 class="font-weight-bold  text-dark m-0">VAN Gölü</h3>
+                                <b>EVREN</b>
                             </div>
 
                             <div class="col-6">
                                 <h3 class="p-0 m-0">HL 102856 AÖ</h3>
-                                <h6 style="font-size: 0.8rem;">GönderiNo: 145646 749879 87968</h6>
+                                <h6 style="font-size: 0.8rem;" class="m-0">GönderiNo: 145646 749879 87968</h6>
+                                <b>ÜRÜN BEDELİ: 858₺</b>
                             </div>
                             <div class="col-12 code39-container">
                                 <svg style="width: 100%;" class="barcode"></svg>
                             </div>
                             <div class="col-12 text-center">
-                                <h3 class="font-weight-bold text-dark">VAN HATTI</h3>
+                                <h3 style="margin-top: -12px;" class="font-weight-bold text-dark">VAN HATTI</h3>
                             </div>
                             <div class="col-9 p-0">
                                 <table style="width: 100%;" border="1">
                                     <tr>
-                                        <td class="barcode-mini-text text-center font-weight-bold"
-                                            style="writing-mode: vertical-rl;">GÖN
-                                        </td>
+                                        <td class="barcode-mini-text text-center font-weight-bold vertical-rl">GÖN</td>
                                         <td>
                                             <p class="barcode-mini-text p-1 m-0 font-weight-bold">Kitaip yayın evi,
                                                 Basım DAĞ. Reklam Tic. LTD ŞTİ</p>
@@ -1074,17 +1074,17 @@
                                         </td>
                                         <td rowspan="2">
                                             <p class="font-weight-bold barcode-mini-text m-0">28.08.2021</p>
-                                            <p class="m-0  barcode-mini-text font-weight-bold">Kg:50</p>
-                                            <p class="m-0  barcode-mini-text font-weight-bold">Ds:50</p>
-                                            <p class="m-0  barcode-mini-text font-weight-bold">Kg/Ds:50</p>
-                                            <p class="m-0  barcode-mini-text font-weight-bold">Toplam:164</p>
-                                            <p class="text-center font-weight-bold">2/2</p>
+                                            <p class="m-0  barcode-mini-text font-weight-bolder">KOLİ</p>
+                                            <p class="m-0  barcode-mini-text">Kg:50</p>
+                                            <p class="m-0  barcode-mini-text">Ds:50</p>
+                                            <p class="m-0  barcode-mini-text">Kg/Ds:50</p>
+                                            <p class="m-0  barcode-mini-text">Toplam:164</p>
+                                            <p class="m-0 text-center font-weight-bold">2/2</p>
                                         </td>
                                     </tr>
 
                                     <tr>
-                                        <td class="barcode-mini-text text-center font-weight-bold"
-                                            style="writing-mode: vertical-rl;">ALICI
+                                        <td class="barcode-mini-text text-center font-weight-bold vertical-rl">ALICI
                                         </td>
                                         <td>
                                             <p class="barcode-mini-text p-1 m-0 font-weight-bold">Gülbahar Mah. Cemal
@@ -1099,7 +1099,7 @@
 
                                 </table>
                             </div>
-                            <div class="col-3">
+                            <div style="display: flex; align-items: center; justify-content: center;" class="col-3">
                                 <div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
                             </div>
                         </div>
@@ -1110,6 +1110,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                    <button type="button" id="btnPrintBarcode" class="btn btn-primary">Yazdır</button>
                 </div>
             </div>
         </div>

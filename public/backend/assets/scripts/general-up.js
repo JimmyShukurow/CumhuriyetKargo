@@ -96,6 +96,27 @@ function printWindow(selector, title) {
     }
 }
 
+function printBarcode(selector) {
+    var divContents = $(selector).html();
+    var $cssLink = $('link');
+    var printWindow = window.open('', '', 'height=' + window.outerHeight * 0.6 + ', width=' + window.outerWidth * 0.6);
+    printWindow.document.write('<html><head>');
+    for (var i = 0; i < $cssLink.length; i++) {
+        printWindow.document.write($cssLink[i].outerHTML);
+    }
+    printWindow.document.write('</head><body>');
+    printWindow.document.write(divContents);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.onload = function () {
+        printWindow.focus();
+        setTimeout(function () {
+            printWindow.print();
+            printWindow.close();
+        }, 100);
+    }
+}
+
 function roundLikePHP(num, dec) {
     var num_sign = num >= 0 ? 1 : -1;
     return parseFloat((Math.round((num * Math.pow(10, dec)) + (num_sign * 0.0001)) / Math.pow(10, dec)).toFixed(dec));

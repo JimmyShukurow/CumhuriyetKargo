@@ -441,7 +441,7 @@ $('#btnPrintSelectedBarcode').click(function () {
 $(document).ready(function () {
     JsBarcode(".barcode", "125644563456345634");
 
-    JsBarcode(".barcode", "31265 42315 64546", {
+    JsBarcode(".barcode", "D@56@HI@ECVHLDEOIIAB5S@", {
         textPosition: "none",
         text: " "
     });
@@ -463,7 +463,7 @@ $(document).ready(function () {
     });
 
     function makeCode() {
-        qrcode.makeCode("31265 42315 64546");
+        qrcode.makeCode("D@56@HI@ECVHLDEOIIAB5S@");
     }
 
     makeCode();
@@ -478,6 +478,9 @@ $(document).ready(function () {
 })
 
 
+$(document).on('click', '#btnPrintBarcode', function () {
+    printBarcode('#ModalBarcodes');
+});
 
 
 
