@@ -249,7 +249,7 @@ table.Table20Padding th, table.Table20Padding td {
     align-items: center;
     justify-content: center;
     max-height: 106px;
-    margin-top: 15px;
+    margin-top: -5px;
 }
 
 .vertical-rl {
@@ -258,4 +258,17 @@ table.Table20Padding th, table.Table20Padding td {
     -moz-transform: rotate(270deg); /* Firefox */
     -webkit-transform: rotate(270deg); /* Safari and Chrome */
     -o-transform: rotate(270deg); /* Opera */
+}
+
+.qr-barcode-cont {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 56px;
+}
+
+.qrcode {
+    width: 100px;
+    height: 100px;
+    margin-top: 15px;
 }

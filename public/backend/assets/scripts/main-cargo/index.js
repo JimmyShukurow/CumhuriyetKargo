@@ -446,7 +446,6 @@ $(document).ready(function () {
         text: " "
     });
 
-
     // JsBarcode('.barcode', 'Hey bitch!', {
     //     format: "pharmacode",
     //     lineColor: "#000",

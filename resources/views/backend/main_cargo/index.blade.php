@@ -1042,23 +1042,23 @@
                          class="container">
 
                         <div class="row">
-                            <div class="col-6">
+                            <div style="z-index: 99;" class="col-6">
                                 <h5 class="font-weight-bold barcode-slogan">Cumhuriyet Kargo - Sevgi ve Değer
                                     Taşıyoruz..</h5>
                                 <h3 class="font-weight-bold  text-dark m-0">VAN Gölü</h3>
                                 <b>EVREN</b>
                             </div>
 
-                            <div class="col-6">
+                            <div style="z-index: 99;" class="col-6">
                                 <h3 class="p-0 m-0">HL 102856 AÖ</h3>
                                 <h6 style="font-size: 0.8rem;" class="m-0">GönderiNo: 145646 749879 87968</h6>
-                                <b>ÜRÜN BEDELİ: 858₺</b>
+                                <b style="font-size: 12px;">ÜRÜN BEDELİ: 858₺</b>
                             </div>
                             <div class="col-12 code39-container">
                                 <svg style="width: 100%;" class="barcode"></svg>
                             </div>
-                            <div class="col-12 text-center">
-                                <h3 style="margin-top: -12px;" class="font-weight-bold text-dark">VAN HATTI</h3>
+                            <div class="col-8">
+                                <h3 style="margin-top: -18px;" class="font-weight-bold text-dark">VAN HATTI</h3>
                             </div>
                             <div class="col-9 p-0">
                                 <table style="width: 100%;" border="1">
@@ -1087,6 +1087,8 @@
                                         <td class="barcode-mini-text text-center font-weight-bold vertical-rl">ALICI
                                         </td>
                                         <td>
+                                            <p class="barcode-mini-text p-1 m-0 font-weight-bold">NURULLAH GÜÇ</p>
+
                                             <p class="barcode-mini-text p-1 m-0 font-weight-bold">Gülbahar Mah. Cemal
                                                 Sururi Sk.
                                                 Halim Meriç İş Merkezi No:15/E K:4/22 Şişli/İstanbul</p>
@@ -1099,10 +1101,12 @@
 
                                 </table>
                             </div>
-                            <div style="display: flex; align-items: center; justify-content: center;" class="col-3">
-                                <div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
+                            <div    class="col-3 qr-barcode-cont">
+                                <div id="qrcode"></div>
                             </div>
                         </div>
+
+                        <div class="divider"></div>
 
 
                     </div>
