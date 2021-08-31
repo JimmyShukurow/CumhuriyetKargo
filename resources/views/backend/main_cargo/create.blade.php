@@ -189,7 +189,19 @@
                         <div class="form-group row mt-3">
                             <label for="colFormLabelSm"
                                    class="col-sm-5 col-form-label">Gönderi Türü:</label>
+
+
                             <div id="divCargoType" class="col-sm-7 p-0">
+
+                                <select name="" id="" disabled class="form-control form-control-sm">
+                                    <option value="">Seçiniz</option>
+                                    <option value="">Dosya-Mi</option>
+                                    <option value="">Paket</option>
+                                    <option value="">Koli</option>
+                                    <option value="">Çuval</option>
+                                    <option value="">Rulo</option>
+                                </select>
+
                                 <input class="check_user_type" data-width="100%"
                                        style="display: none;"
                                        onchange="" type="checkbox"

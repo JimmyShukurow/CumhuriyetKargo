@@ -179,12 +179,42 @@ class DefaultController extends Controller
                         ->limit(50)
                         ->get();
 
+                    # Get First Message START
+                    $realTicket = DB::table('tickets')
+                        ->join('view_users_all_info', 'view_users_all_info.id', '=', 'tickets.user_id')
+                        ->select(['tickets.*', 'view_users_all_info.name_surname', 'view_users_all_info.email', 'view_users_all_info.user_type', 'view_users_all_info.display_name', 'view_users_all_info.branch_city', 'view_users_all_info.branch_district', 'view_users_all_info.branch_name'])
+                        ->where('tickets.id', $ticket_id)
+                        ->first();
+
+
+                    $userID = Auth::id();
+                    $array[] = [
+                        'id' => "0",
+                        'ticket_id' => "$ticket_id",
+                        'user_id' => "$userID",
+                        'file1' => $realTicket->file1,
+                        'message' => substr($realTicket->message, '0', 1) != '#' ? strip_tags($realTicket->message) : $realTicket->message,
+                        'file2' => $realTicket->file2,
+                        'file3' => $realTicket->file3,
+                        'file4' => $realTicket->file4,
+                        'created_at' => $realTicket->created_at,
+                        'updated_at' => $realTicket->updated_at,
+                        'name_surname' => $realTicket->name_surname,
+                        'email' => $realTicket->email,
+                        'user_type' => $realTicket->user_type,
+                        'display_name' => $realTicket->display_name,
+                        'branch_city' => $realTicket->branch_city,
+                        'branch_district' => $realTicket->branch_district,
+                        'branch_name' => $realTicket->branch_name,
+                    ];
+                    # Get First Message END
+
                     foreach ($data['ticket_details'] as $key) {
 
                         $array[] = [
-                            'id' => $key->id,
-                            'ticket_id' => $key->ticket_id,
-                            'user_id' => $key->user_id,
+                            'id' => "$key->id",
+                            'ticket_id' => "$key->ticket_id",
+                            'user_id' => "$key->user_id",
                             'file1' => $key->file1,
                             'message' => substr($key->message, '0', 1) != '#' ? strip_tags($key->message) : $key->message,
                             'file2' => $key->file2,
@@ -201,9 +231,7 @@ class DefaultController extends Controller
                             'branch_name' => $key->branch_name,
                         ];
                     }
-
                     $data['ticket_details'] = $array;
-
                 }
 
                 break;
