@@ -194,7 +194,6 @@
                             <div id="divCargoType" class="col-sm-7 p-0">
 
                                 <select name="" id="selectCargoType" class="form-control form-control-sm">
-                                    <option value="">Seçiniz</option>
                                     <option value="Dosya-Mi">Dosya-Mi</option>
                                     <option value="Paket">Paket</option>
                                     <option value="Koli">Koli</option>

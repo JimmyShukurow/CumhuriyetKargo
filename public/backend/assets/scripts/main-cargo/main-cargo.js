@@ -837,9 +837,12 @@ $('#selectCargoType').change(function () {
 
 
         if ($('#selectCargoType').val() != 'Dosya-Mi') {
+
             $('#modalCalcDesi').modal();
             CargoType = 'Koli';
+
         } else {
+
             CargoType = 'Dosya';
             $('#labelDesi').text('0');
             $('#partQuantity').text('1');

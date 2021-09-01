@@ -815,16 +815,13 @@ class MainCargoController extends Controller
 
                 $SecondCargoType = $request->cargoType;
 
-                if ($request->gonderiTuru == 'Koli' && $request->desi == 0)
+                if ($request->gonderiTuru != 'Dosya-Mi' && $request->desi == 0)
                     return response()
-                        ->json(['status' => -1, 'message' => 'Lütfen koli için desi bilgisi giriniz!'], 200);
+                        ->json(['status' => -1, 'message' => 'Lütfen ' . $request->gonderiTuru . ' için desi bilgisi giriniz!'], 200);
 
                 if ($request->odemeTipi == 'Alıcı Ödemeli' && $request->tahsilatliKargo == 'true')
                     return response()
                         ->json(['status' => -1, 'message' => 'Alıcı ödemeli tahsilatlı kargo çıkaramazsınız, Sadece gönderici ödemeli tahsilatlı kargo çıkarılabilir!'], 200);
-
-
-                $CargoTypes = CargoTypes();
 
 
                 $currentCode = str_replace(' ', '', $request->gondericiCariKodu);
@@ -915,10 +912,10 @@ class MainCargoController extends Controller
                         # ===> Cari Anlaşmalı Fiyat Standart Fiyat
                         $currentPrice = CurrentPrices::where('current_code', $currentCode)->first();
 
-                        if ($cargoType == 'Dosya') {
+                        if ($cargoType == 'Dosya-Mi') {
                             $filePrice = $currentPrice->file_price;
                             $serviceFee = $filePrice;
-                        } else if ($cargoType == 'Koli') {
+                        } else if ($cargoType != 'Dosya-Mi') {
                             ## calc desi price
                             $desiPrice = 0;
                             if ($desi > 30) {
@@ -936,10 +933,10 @@ class MainCargoController extends Controller
                     if ($currentCategory == 'Bireysel' && $receiverCategory == 'Kurumsal') {
                         # ===> Cari Anlaşmalı Fiyat Standart Fiyat
                         $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
-                        if ($cargoType == 'Dosya') {
+                        if ($cargoType == 'Dosya-Mi') {
                             $filePrice = $currentPrice->file_price;
                             $serviceFee = $filePrice;
-                        } else if ($cargoType == 'Koli') {
+                        } else if ($cargoType != 'Dosya-Mi') {
                             ## calc desi price
                             $desiPrice = 0;
                             if ($desi > 30) {
@@ -966,10 +963,10 @@ class MainCargoController extends Controller
                             $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
 
 
-                        if ($cargoType == 'Dosya') {
+                        if ($cargoType == 'Dosya-Mi') {
                             $filePrice = $currentPrice->file_price;
                             $serviceFee = $filePrice;
-                        } else if ($cargoType == 'Koli') {
+                        } else if ($cargoType != 'Dosya-Mi') {
                             ## calc desi price
                             $desiPrice = 0;
                             if ($desi > 30) {
@@ -985,11 +982,11 @@ class MainCargoController extends Controller
 
                 } else {
                     # => not contracted / Bireysel - Bireysel
-                    if ($cargoType == 'Dosya') {
+                    if ($cargoType == 'Dosya-Mi') {
                         $filePrice = FilePrice::first();
                         $filePrice = $filePrice->individual_file_price;
                         $serviceFee = $filePrice;
-                    } else if ($cargoType == 'Koli') {
+                    } else if ($cargoType != 'Dosya-Mi') {
 
                         ## calc desi price
                         $maxDesiInterval = DB::table('desi_lists')
@@ -1019,8 +1016,7 @@ class MainCargoController extends Controller
                     }
                 }
 
-                return $request->hizmetUcreti . '=>' . $serviceFee;
-
+//                return $request->hizmetUcreti . '=>' . $serviceFee;
                 if (!(compareFloatEquality($request->hizmetUcreti, $serviceFee)))
                     return response()
                         ->json(['status' => -1, 'message' => 'Hizmet tutarları eşleşmiyor, lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
@@ -1040,7 +1036,7 @@ class MainCargoController extends Controller
 
                 $totalAgirlik = 0;
                 # Control Parts Of Cargo
-                if ($cargoType == 'Koli') {
+                if ($cargoType != 'Dosya-Mi') {
                     $desiData = $request->desiData;
                     $partQuantity = count($desiData) / 4;
 
@@ -1120,7 +1116,7 @@ class MainCargoController extends Controller
                     # return $totalHacim . ' => ' . $totalDesi;
                 }
 
-                if ($cargoType == 'Koli' && $desi >= 100) {
+                if ($cargoType != 'Dosya-Mi' && $desi >= 100) {
                     $heavyLoadCarryingCost = GetSettingsVal('heavy_load_carrying_cost');
                     $heavyLoadCarryingCost = $heavyLoadCarryingCost + (($heavyLoadCarryingCost * 18) / 100);
                 } else
@@ -1142,9 +1138,11 @@ class MainCargoController extends Controller
                 $totalPrice = $totalPriceExceptKdv + $kdvPrice + $heavyLoadCarryingCost;
 
 
+                return $totalPrice . ' ' . $request->genelToplam;
+
                 if ($totalPrice != $request->genelToplam)
                     return response()
-                        ->json(['status' => -1, 'message' => 'Gene toplamlar eşleşmiyor, lütfen sistem destek ile iletişime geçin!'], 200);
+                        ->json(['status' => -1, 'message' => 'Genel toplamlar eşleşmiyor, lütfen sistem destek ile iletişime geçin!'], 200);
 
 
                 $collection = collect(array_keys($addServices));
@@ -1189,7 +1187,7 @@ class MainCargoController extends Controller
                     'sender_address' => $currentAddress,
                     'customer_code' => $request->musteriKodu,
                     'payment_type' => $request->odemeTipi,
-                    'number_of_pieces' => $cargoType == 'Koli' ? $partQuantity : 1,
+                    'number_of_pieces' => $cargoType != 'Dosya-Mi' ? $partQuantity : 1,
                     'cargo_type' => $cargoType,
                     'cargo_content' => tr_strtoupper($request->kargoIcerigi),
                     'cargo_content_ex' => tr_strtoupper($request->kargoIcerigiAciklama),
@@ -1211,10 +1209,10 @@ class MainCargoController extends Controller
                     'collectible' => $request->tahsilatliKargo == 'true' ? '1' : '0',
                     'collection_fee' => $request->tahsilatliKargo == 'true' ? getDoubleValue($request->faturaTutari) : 0,
                     'collection_payment_type' => $request->tahsilatliKargo == 'true' ? 'Nakit' : '0',
-                    'desi' => $cargoType == 'Koli' ? $totalDesi : 0,
+                    'desi' => $cargoType != 'Dosya-Mi' ? $totalDesi : 0,
                     'kg' => $totalAgirlik,
                     'kdv_percent' => 18,
-                    'cubic_meter_volume' => $cargoType == 'Koli' ? $totalHacim : 0,
+                    'cubic_meter_volume' => $cargoType != 'Dosya-Mi' ? $totalHacim : 0,
                     'kdv_price' => $kdvPrice,
                     'distance' => $distance,
                     'distance_price' => $distancePrice,
@@ -1256,7 +1254,7 @@ class MainCargoController extends Controller
                         }
                     }
 
-                    if ($cargoType == 'Koli') {
+                    if ($cargoType != 'Dosya-Mi') {
 
                         $desiValues = array_values($desiData);
                         $desiKeys = array_keys($desiData);
