@@ -572,6 +572,21 @@ function GetSettingsVal($key)
     return $val;
 }
 
+function CargoTypes()
+{
+    # just here - no db
+    $cargoTypes = [
+        'Dosya-Mi',
+        'Paket',
+        'Koli',
+        'Çuval',
+        'Rulo',
+        'Palet Kargo',
+        'Sandık'
+    ];
+}
+
+
 
 
 

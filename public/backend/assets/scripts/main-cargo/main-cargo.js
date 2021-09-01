@@ -479,7 +479,6 @@ function getReceiverInfo(currentCode, tryExist = false) {
 
         $('#aliciCariKod').val(response.current_code);
 
-
         if ($('#gondericiCariKod').val() == $('#aliciCariKod').val()) {
             $('#aliciCariKod').val('');
             ToastMessage('error', 'Alıcı ve gönderici aynı olamaz!', 'Hata!');
@@ -817,11 +816,16 @@ var CustomerOK = false;
 
 $('#divCargoType').click(function () {
 
+});
+
+$('#selectCargoType').change(function () {
+
     let receiverSelect = $('#aliciAdi').select2('data');
     let currentSelect = $('#gondericiAdi').select2('data');
 
     if (receiverSelect.length == 0 || currentSelect.length == 0) {
         ToastMessage('error', 'Önce Göndericiyi ve Alıcıyı Seçmelisiniz!', 'Hata!');
+        $('#selectCargoType').val('');
         return false;
     }
     if ($('#gondericiTCKN').val().trim() == '' || $('#gondericiTelNo').val().trim() == '' || $('#gondericiCariKod').val().trim() == '' ||
@@ -831,7 +835,8 @@ $('#divCargoType').click(function () {
     } else {
         $('#checkCargoType').prop('disabled', false);
 
-        if ($('#checkCargoType').prop('checked') == true) {
+
+        if ($('#selectCargoType').val() != 'Dosya-Mi') {
             $('#modalCalcDesi').modal();
             CargoType = 'Koli';
         } else {
@@ -842,7 +847,22 @@ $('#divCargoType').click(function () {
             // getFilePrice();
             getPriceForCustomers();
         }
+
+        //
+        // if ($('#checkCargoType').prop('checked') == true) {
+        //     $('#modalCalcDesi').modal();
+        //     CargoType = 'Koli';
+        // } else {
+        //     CargoType = 'Dosya';
+        //     $('#labelDesi').text('0');
+        //     $('#partQuantity').text('1');
+        //     calculateTotalPrice();
+        //     // getFilePrice();
+        //     getPriceForCustomers();
+        // }
     }
+
+
 });
 
 $('#divPaymentType').click(function () {
@@ -1523,7 +1543,8 @@ function createCargo() {
             _token: token,
             gondericiCariKodu: $('#gondericiCariKod').val(),
             aliciCariKodu: $('#aliciCariKod').val(),
-            gonderiTuru: CargoType,
+            gonderiTuru: $('#selectCargoType').val(),
+            cargoType: CargoType,
             odemeTipi: PaymentType,
             desi: $('#labelDesi').text(),
             parcaSayisi: $('#partQuantity').text(),

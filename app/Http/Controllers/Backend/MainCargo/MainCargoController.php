@@ -807,13 +807,13 @@ class MainCargoController extends Controller
                     'agirYukTasimaBedeli' => 'required',
                     'genelToplam' => 'required',
                     'totalHacim' => 'required',
-                    'kargoIcerigi' => 'required',
                 ];
                 $validator = Validator::make($request->all(), $rules);
 
                 if ($validator->fails())
                     return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
 
+                $SecondCargoType = $request->cargoType;
 
                 if ($request->gonderiTuru == 'Koli' && $request->desi == 0)
                     return response()
@@ -822,6 +822,9 @@ class MainCargoController extends Controller
                 if ($request->odemeTipi == 'Alıcı Ödemeli' && $request->tahsilatliKargo == 'true')
                     return response()
                         ->json(['status' => -1, 'message' => 'Alıcı ödemeli tahsilatlı kargo çıkaramazsınız, Sadece gönderici ödemeli tahsilatlı kargo çıkarılabilir!'], 200);
+
+
+                $CargoTypes = CargoTypes();
 
 
                 $currentCode = str_replace(' ', '', $request->gondericiCariKodu);
@@ -1015,6 +1018,8 @@ class MainCargoController extends Controller
                         $serviceFee = $desiPrice;
                     }
                 }
+
+                return $request->hizmetUcreti . '=>' . $serviceFee;
 
                 if (!(compareFloatEquality($request->hizmetUcreti, $serviceFee)))
                     return response()

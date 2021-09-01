@@ -155,28 +155,28 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="col-md-12">
-                                <div class="position-relative ">
-                                    <label for="cariKod">Kargo İçeriği:</label>
-                                </div>
-                                <div class="input-group mb-1">
-                                    <select name="cargoIcerigi" id="cargoIcerigi" class="form-control" id="">
-                                        <option value="">Seçiniz</option>
-                                        <option value="Varil">Varil</option>
-                                        <option value="Çuval">Çuval</option>
-                                        <option value="Kırılacak Eşya">Kırılacak Eşya</option>
-                                        <option value="ikinci El Eşya">ikinci El Eşya</option>
-                                        <option value="Bozulabilir Eşya">Bozulabilir Eşya</option>
-                                        <option value="Elektronik Eşya">Elektronik Eşya</option>
-                                        <option value="Sıvı Eşya">Sıvı Eşya</option>
-                                        <option value="Dökülebilir Eşya">Dökülebilir Eşya</option>
-                                    </select>
-                                </div>
-                            </div>
+                            {{--                            <div class="col-md-12">--}}
+                            {{--                                <div class="position-relative ">--}}
+                            {{--                                    <label for="cariKod">Kargo İçeriği:</label>--}}
+                            {{--                                </div>--}}
+                            {{--                                <div class="input-group mb-1">--}}
+                            {{--                                    <select name="cargoIcerigi" id="cargoIcerigi" class="form-control" id="">--}}
+                            {{--                                        <option value="">Seçiniz</option>--}}
+                            {{--                                        <option value="Varil">Varil</option>--}}
+                            {{--                                        <option value="Çuval">Çuval</option>--}}
+                            {{--                                        <option value="Kırılacak Eşya">Kırılacak Eşya</option>--}}
+                            {{--                                        <option value="ikinci El Eşya">ikinci El Eşya</option>--}}
+                            {{--                                        <option value="Bozulabilir Eşya">Bozulabilir Eşya</option>--}}
+                            {{--                                        <option value="Elektronik Eşya">Elektronik Eşya</option>--}}
+                            {{--                                        <option value="Sıvı Eşya">Sıvı Eşya</option>--}}
+                            {{--                                        <option value="Dökülebilir Eşya">Dökülebilir Eşya</option>--}}
+                            {{--                                    </select>--}}
+                            {{--                                </div>--}}
+                            {{--                            </div>--}}
 
                             <div class="col-md-12">
                                 <div class="position-relative ">
-                                    <label for="cariKod">Açıklama:</label>
+                                    <label for="cariKod">Kargo İçerik Açıklaması:</label>
                                 </div>
                                 <div class="input-group mb-1">
                                     <textarea name="" id="explantion" class="form-control" cols="30"
@@ -193,13 +193,15 @@
 
                             <div id="divCargoType" class="col-sm-7 p-0">
 
-                                <select name="" id="" disabled class="form-control form-control-sm">
+                                <select name="" id="selectCargoType" class="form-control form-control-sm">
                                     <option value="">Seçiniz</option>
-                                    <option value="">Dosya-Mi</option>
-                                    <option value="">Paket</option>
-                                    <option value="">Koli</option>
-                                    <option value="">Çuval</option>
-                                    <option value="">Rulo</option>
+                                    <option value="Dosya-Mi">Dosya-Mi</option>
+                                    <option value="Paket">Paket</option>
+                                    <option value="Koli">Koli</option>
+                                    <option value="Çuval">Çuval</option>
+                                    <option value="Rulo">Rulo</option>
+                                    <option value="Palet Kargo">Palet Kargo</option>
+                                    <option value="Sandık">Sandık</option>
                                 </select>
 
                                 <input class="check_user_type" data-width="100%"
