@@ -542,11 +542,21 @@ function DistributionControl(neighborhood = '') {
     }).done(function (response) {
 
         console.log(response);
-        if (response.status == 0)
+        if (response.status == 0) {
             ToastMessage('error', response.message, 'Hata!');
-        else if (response.status == 1) {
+            $('#dagitimDurumu').val('DAĞITIM YOK');
+            $('#dagitimDurumu').toggleClass('text-alternate text-danger');
+        } else if (response.status == 1) {
             $('#varisSube').val(response.arrival_agency);
-            $('#varisTransferMerkezi').val(response.arrival_tc + " TRANSFER");
+            $('#varisTransferMerkezi').val(response.arrival_tc + " TM");
+            $('#dagitimDurumu').val(response.area_type);
+            $('#dagitimDurumu').removeClass('text-danger');
+            $('#dagitimDurumu').removeClass('text-alternate');
+            $('#dagitimDurumu').addClass('text-success');
+
+            if (response.area_type == 'Mobil Bölge')
+                ToastMessage('warning', "Bölge mobil olarak kayıtlı, teslimat gecikmeli olabilir. Bölge: " + $('#aliciMahalle').val())
+
         }
 
 
@@ -1681,7 +1691,7 @@ $('#btnCargoComplate').click(delay(function () {
     }
 
     if (CargoType == 'Koli' && parseFloat($('#labelDesi').text()) == 0) {
-        ToastMessage('error', 'Lütfen koli için desi bilgisi giriniz!', 'Hata');
+        ToastMessage('error', 'Lütfen kargo için desi bilgisi giriniz!', 'Hata');
         goCreate = false;
         return false;
     }

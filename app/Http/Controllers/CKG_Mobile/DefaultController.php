@@ -8,6 +8,7 @@ use App\Models\RegioanalDirectorates;
 use App\Models\TicketDetails;
 use App\Models\Tickets;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -109,6 +110,14 @@ class DefaultController extends Controller
                     ->limit(30)
                     ->orderBy('updated_at', 'desc')
                     ->get();
+
+                foreach ($data['tickets'] as $key) {
+                    $key->title = '#D-' . $key->id . ' - ' . $key->message;
+                    $key->created_at = $key->created_at . ' (' . Carbon::parse($key->created_at)->diffForHumans() . ')';
+
+                }
+
+
                 break;
 
             case 'GetNotificationCount':
@@ -165,6 +174,7 @@ class DefaultController extends Controller
 
             case 'GetTicketDetails':
                 $ticket_id = $request->ticket_id;
+                $is_message = "0";
 
                 if ($ticket_id == '')
                     $data = ['status' => 0, 'message' => 'ticket id is missing!'];
@@ -206,10 +216,37 @@ class DefaultController extends Controller
                         'branch_city' => $realTicket->branch_city,
                         'branch_district' => $realTicket->branch_district,
                         'branch_name' => $realTicket->branch_name,
+                        'is_massage' => $is_message,
+                        'time_for_humans' => Carbon::parse($realTicket->created_at)->diffForHumans()
                     ];
                     # Get First Message END
 
                     foreach ($data['ticket_details'] as $key) {
+
+                        if (isRedirectedMessage($key->message) != null) {
+                            $message = " Bu destek talebi <b>$key->name_surname</b>
+                                    <b>($key->display_name)</b>
+                                    tarafından
+                                    <b>" . \Carbon\Carbon::parse($key->created_at)->translatedFormat('d F D Y H:i') . "</b>
+                                    tarihinde
+                                    <b>" . isRedirectedMessage($key->message) . "</b> departmanına
+                                    yönlendirildi.";
+
+                            $is_message = "1";
+                        } else if (isUpdatedStatusMessage($key->message) != null) {
+
+                            $message = " Bu destek talebi <b>$key->name_surname</b>
+                                    <b>($key->display_name)</b>
+                                    tarafından
+                                    <b>" . \Carbon\Carbon::parse($key->created_at)->translatedFormat('d F D Y H:i') . "</b>
+                                    tarihinde destek talebinin durumu
+                                    <b style='color:red;'>" . isRedirectedMessage($key->message) . "</b> olarak güncellendi.";
+                            $is_message = "1";
+                        } else {
+                            $message = $key->message;
+                            $is_message = "0";
+                        }
+
 
                         $array[] = [
                             'id' => "$key->id",
@@ -217,7 +254,7 @@ class DefaultController extends Controller
                             'user_id' => "$key->user_id",
                             'file1' => $key->file1,
 //                            'message' => substr($key->message, '0', 1) != '#' ? strip_tags($key->message) : $key->message,
-                            'message' => $key->message,
+                            'message' => $message,
                             'file2' => $key->file2,
                             'file3' => $key->file3,
                             'file4' => $key->file4,
@@ -230,6 +267,8 @@ class DefaultController extends Controller
                             'branch_city' => $key->branch_city,
                             'branch_district' => $key->branch_district,
                             'branch_name' => $key->branch_name,
+                            'is_massage' => $is_message,
+                            'time_for_humans' => Carbon::parse($key->created_at)->diffForHumans()
                         ];
                     }
                     $data['ticket_details'] = $array;

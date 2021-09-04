@@ -346,7 +346,6 @@
                                     <b>{{isUpdatedStatusMessage($detail->message)}}</b> olarak güncellendi.
                                 </div>
                             @else
-
                                 <div class="answer">
                                     <div
                                         class="borderles {{$ticket->user_id != $detail->user_id ? 'department-reply' : '' }}">
@@ -370,7 +369,6 @@
                                         <div class="message">
                                             {!! $detail->message !!}
                                         </div>
-
 
                                         @if ($detail->file1 != '' || $detail->file2 != '' || $detail->file3 != '' || $detail->file4 != '')
                                             <div class="attachments">
@@ -463,7 +461,6 @@
                                                 <a target="_blank"
                                                    href="/backend/assets/ticket_files/{{$ticket->file3}}">Ek3</a>
                                             </b>
-
                                         @endif
 
                                         @if($ticket->file4 != '')

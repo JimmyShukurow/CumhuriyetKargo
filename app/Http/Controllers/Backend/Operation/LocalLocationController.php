@@ -160,6 +160,7 @@ class LocalLocationController extends Controller
 
     public function getLocation(Request $request)
     {
+
         #getLocation
         if ($request->city)
             $city = Cities::find($request->city);

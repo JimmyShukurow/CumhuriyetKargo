@@ -1076,7 +1076,8 @@
                                 <li class="nav-item">
                                     <a href="/SystemUpdates"
                                        class="nav-link">
-                                        <b>CKG-Sis V{{getSystemVersion()}}</b>
+                                        <b><span class="badge badge-danger">Yeni Güncelleme</span> CKG-Sis
+                                            V{{getSystemVersion()}}</b>
                                         <div style="text-transform: none ;" class="badge bg-ck ml-0 ml-1">
                                             <small>Powered By CKG-Team</small>
                                         </div>

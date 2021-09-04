@@ -69,13 +69,13 @@ class MainCargoController extends Controller
         $daily['package_count'] = DB::table('cargoes')
             ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
             ->whereRaw('deleted_at is null')
-            ->where('cargo_type', 'Koli')
+            ->where('cargo_type', 'Dosya-Mi')
             ->count();
 
         $daily['file_count'] = DB::table('cargoes')
             ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
             ->whereRaw('deleted_at is null')
-            ->where('cargo_type', 'Dosya')
+            ->where('cargo_type', 'Dosya-Mi')
             ->count();
 
         $daily['total_cargo_count'] = DB::table('cargoes')
@@ -780,7 +780,7 @@ class MainCargoController extends Controller
                 # evrensel posta hizmetleri ücreti start
 
 
-                if ($cargoType == 'Koli' && $desi >= 100) {
+                if ($cargoType != 'Dosya-Mi' && $desi >= 100) {
                     $heavyLoadCarryingCost = GetSettingsVal('heavy_load_carrying_cost');
                     $heavyLoadCarryingCost = $heavyLoadCarryingCost + (($heavyLoadCarryingCost * 18) / 100);
                 } else
@@ -1120,7 +1120,7 @@ class MainCargoController extends Controller
                     # return $totalHacim . ' => ' . $totalDesi;
                 }
 
-                if ($cargoType != 'Dosya-Mi' && $desi >= 100) {
+                if ($cargoType != 'Dosya-Mi' && $totalDesi >= 100) {
                     $heavyLoadCarryingCost = GetSettingsVal('heavy_load_carrying_cost');
                     $heavyLoadCarryingCost = $heavyLoadCarryingCost + (($heavyLoadCarryingCost * 18) / 100);
                 } else
@@ -1429,6 +1429,59 @@ class MainCargoController extends Controller
 
                 break;
 
+            case 'DistributionControl':
+
+                if ($request->currentCode == '' || $request->receiverCode == '')
+                    return response()
+                        ->json([
+                            'status' => 0,
+                            'message' => 'Alıcı ve Gönderici cari kodu bilgileri zorunludur!'
+                        ]);
+
+                $currentCode = str_replace(' ', '', $request->currentCode);
+                $receiverCode = str_replace(' ', '', $request->receiverCode);
+
+                $receiver = Currents::where('current_code', $receiverCode)
+                    ->first();
+
+//                return $receiver->city . ' - ' . $receiver->district . ' - ' . $receiver->neighborhood;
+
+                $control = DB::table('local_locations')
+                    ->where('city', $receiver->city)
+                    ->where('district', $receiver->district)
+                    ->where('neighborhood', $receiver->neighborhood)
+                    ->first();
+
+                if ($control == null)
+                    return response()
+                        ->json([
+                            'status' => 0,
+                            'message' => 'Alıcı için dağıtım yapılmayan bölge: ' . $receiver->neighborhood
+                        ]);
+
+                $agency = DB::table('agencies')
+                    ->where('id', $control->agency_code)
+                    ->first();
+
+                $tc = getTCofAgency($agency->id);
+
+                if ($control->area_type == 'AB')
+                    $control->area_type = 'Ana Bölge';
+                else if ($control->area_type == 'MB')
+                    $control->area_type = 'Mobil Bölge';
+
+                $array = [
+                    'status' => 1,
+                    'arrival_agency' => $agency->agency_name . '-' . $agency->agency_code,
+                    'arrival_tc' => $tc->tc_name,
+                    'area_type' => $control->area_type,
+                ];
+
+                return response()
+                    ->json($array, 200);
+                break;
+
+
             # INDEX TRANSACTION START
             case 'GetCargoInfo':
 
@@ -1480,61 +1533,12 @@ class MainCargoController extends Controller
 
                 break;
 
-            case 'DistributionControl':
-
-                if ($request->currentCode == '' || $request->receiverCode == '')
-                    return response()
-                        ->json([
-                            'status' => 0,
-                            'message' => 'Alıcı ve Gönderici cari kodu bilgileri zorunludur!'
-                        ]);
-
-
-                $currentCode = str_replace(' ', '', $request->currentCode);
-                $receiverCode = str_replace(' ', '', $request->receiverCode);
-
-                $receiver = Currents::where('current_code', $receiverCode)
-                    ->first();
-
-//                return $receiver->city . ' - ' . $receiver->district . ' - ' . $receiver->neighborhood;
-
-                $control = DB::table('local_locations')
-                    ->where('city', $receiver->city)
-                    ->where('district', $receiver->district)
-                    ->where('neighborhood', $receiver->neighborhood)
-                    ->first();
-
-                if ($control == null)
-                    return response()
-                        ->json([
-                            'status' => 0,
-                            'message' => 'Alıcı için dağıtım yapılmayan bölge: ' . $receiver->neighborhood
-                        ]);
-
-                $agency = DB::table('agencies')
-                    ->where('id', $control->agency_code)
-                    ->first();
-
-                $tc = getTCofAgency($agency->id);
-
-                $array = [
-                    'status' => 1,
-                    'arrival_agency' => $agency->agency_name . '-' . $agency->agency_code,
-                    'arrival_tc' => $tc->tc_name
-                ];
-
-                return $array;
-
-                return $request->all();
-
-                break;
-
             case 'GetMainDailySummery':
                 ## daily report start
                 $daily['package_count'] = DB::table('cargoes')
                     ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
                     ->whereRaw('deleted_at is null')
-                    ->where('cargo_type', 'Koli')
+                    ->whereNotIn('cargo_type', ['Dosya-Mi'])
                     ->count();
                 $daily['package_count'] = getDotter($daily['package_count']);
 
@@ -1542,7 +1546,7 @@ class MainCargoController extends Controller
                 $daily['file_count'] = DB::table('cargoes')
                     ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
                     ->whereRaw('deleted_at is null')
-                    ->where('cargo_type', 'Dosya')
+                    ->where('cargo_type', 'Dosya-Mi')
                     ->count();
                 $daily['file_count'] = getDotter($daily['file_count']);
 

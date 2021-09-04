@@ -81,9 +81,9 @@ class AgencyController extends Controller
         $phone = CharacterCleaner($request->phone);
         $phone2 = CharacterCleaner($request->phone2);
 
-        $city = Cities::find($request->city)->first();
-        $district = Districts::find($request->district)->first();
-        $neighborhood = Neighborhoods::find($request->neighborhood)->first();
+        $city = Cities::find($request->city);
+        $district = Districts::find($request->district);
+        $neighborhood = Neighborhoods::find($request->neighborhood);
         $post_code = '0' . $neighborhood->post_code;
 
 //        echo $city->city_name . ' => ' . $district->district_name . ' => ' . $neighborhood->neighborhood_name . ' => ' . $post_code;

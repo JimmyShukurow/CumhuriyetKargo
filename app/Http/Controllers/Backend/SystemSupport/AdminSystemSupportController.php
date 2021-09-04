@@ -500,8 +500,8 @@ class AdminSystemSupportController extends Controller
                 $data['link'] = '';
                 $data['reading_time'] = '2';
 
-                Mail::to($user->email)
-                    ->send(new SendMail($data));
+//                Mail::to($user->email)
+//                    ->send(new SendMail($data));
 
                 $ticket = Tickets::where('id', $ticket_id)->first();
                 activity()

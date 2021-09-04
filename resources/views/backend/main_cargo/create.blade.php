@@ -63,7 +63,7 @@
                 </div>
                 <div class="row p-3">
                     {{-- Gönderici START --}}
-                    <div class="col-md-5 border-box" id="divider-gonderici">
+                    <div class="col-md-6 border-box" id="divider-gonderici">
                         <h6 class="font-weight-bold">Gönderici - Seçenekler</h6>
                         <div style="margin-top: 0;" class="divider"></div>
 
@@ -133,7 +133,7 @@
                                     <label for="cikisTM">Çıkış TM:</label>
                                 </div>
                                 <div class="input-group mb-1">
-                                    <input type="text" readonly id="cikisTM" value="{{$tc->tc_name}} TRANSFER"
+                                    <input type="text" readonly id="cikisTM" value="{{$tc->tc_name}} TM"
                                            class="form-control text-alternate form-control-sm">
                                 </div>
                             </div>
@@ -285,7 +285,7 @@
                     {{-- Gönderici END --}}
 
                     {{-- Alıcı START--}}
-                    <div class="col-md-5 border-box" id="divider-alici">
+                    <div class="col-md-6 border-box" id="divider-alici">
                         <h6 class="font-weight-bold">Alıcı - Teslimat Bilgileri</h6>
                         <div style="margin-top: 0;" class="divider"></div>
 
@@ -331,7 +331,7 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="position-relative ">
                                     <label for="aliciMusteriTipi">Müşteri Tipi:</label>
                                 </div>
@@ -340,7 +340,7 @@
                                            class="form-control form-control-sm">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="position-relative ">
                                     <label for="aliciMusteriTipi">Varış Şube:</label>
                                 </div>
@@ -349,12 +349,21 @@
                                            class="form-control text-alternate form-control-sm">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="position-relative ">
                                     <label for="aliciMusteriTipi">Varış TM:</label>
                                 </div>
                                 <div class="input-group mb-1">
                                     <input type="text" readonly id="varisTransferMerkezi"
+                                           class="form-control text-alternate form-control-sm">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="position-relative ">
+                                    <label for="dagitimDurumu">Dağıtım:</label>
+                                </div>
+                                <div class="input-group mb-1">
+                                    <input type="text" readonly id="dagitimDurumu"
                                            class="form-control text-alternate form-control-sm">
                                 </div>
                             </div>
@@ -489,12 +498,13 @@
                     {{-- Alıcı START--}}
 
                     {{-- Ek Hizmetler START--}}
-                    <div class="col-md-2 border-box" id="divider-hizmetler">
-                        <h6 class="font-weight-bold">Ek Hizmetler</h6>
-                        <div style="margin-top: 0;" class="divider"></div>
+                    <div class="col-md-12 border-box" id="divider-hizmetler">
 
-                        <div class="form-row">
-                            <div class="col-md-12 unselectable">
+                        <div class="form-row mt-4">
+
+                            <div style="padding-top: 35px; padding-left: 20px; border: 2px solid #ce2427"
+                                 class="col-md-2 unselectable">
+                                <h6 class="font-weight-bold">Ek Hizmetler</h6>
                                 <form id="formAdditionalServices">
                                     @foreach($data['additional_service'] as $service)
                                         <div class="form-check mb-1">
@@ -517,21 +527,24 @@
                                            for="add-service-tahsilatli">Tahsilatlı Kargo
                                     </label>
                                 </div>
+                                <img id="loginLogo" class="loginLogo" src="/backend/login_assets/CKG_Sis_Gif.gif"
+                                     alt="branding logo" width="100%"
+                                     style="max-width:400px; position: absolute; bottom: 0; left: 0;">
                             </div>
-                        </div>
 
-                        <div class="form-row">
-                            <div class="col-md-12">
-                                <div class="divider"></div>
-                                <fieldset class="row mt-3">
-                                    <h3 class="font-weight-bold text-center">Özet</h3>
+                            <div style="padding: 0 40px; border: 2px solid #ce2427; border-left: 0px solid #ce2427;"
+                                 class="col-md-10">
 
-                                    <table id="tableSummery" class="table-bordered unselectable" style="width: 100%;">
+                                <fieldset class="row ">
+                                    <h3 style="width: 100%;" class="font-weight-bold text-center">Özet</h3>
+
+                                    <table class="table-bordered table-striped unselectable"
+                                           style="width: 100%;padding-left: 20px;">
+                                        <tbody>
                                         <tr>
                                             <td>Mesafe(Km):</td>
-                                            <td width="75" class="text-center"><b id="distance">0</b></td>
+                                            <td width="100" class="text-center"><b id="distance">0</b></td>
                                         </tr>
-                                        <tbody>
                                         <tr>
                                             <td>Mesafe Ücreti:</td>
                                             <td class="text-center">
@@ -615,6 +628,7 @@
                                         class="btn btn-primary mt-3">Tamamla
                                 </button>
                             </div>
+
                         </div>
                     </div>
                     {{--  Ek Hizmetler START--}}
