@@ -198,21 +198,21 @@ function Decrypte4x($key)
 function SendSMS($text, $number, $subject = 'UNKNOWN', $heading = 'CUMHURIYETK', $ctn = '')
 {
     $xmlContent = '<?xml version="1.0"?>
-            <SMS>
-                <authentication>
-                    <username>cumhuriyetkargo</username>
-                    <password>Cumhuriyet1416</password>
-                </authentication>
-                <message>
-                    <originator>CUMHURIYETK</originator>
-                    <text>' . $text . '</text>
-                    <unicode>8</unicode>
-                    <international></international>
-                </message>
-                <receivers>
-                    <receiver>' . $number . '</receiver>
-                </receivers>
-            </SMS>';
+             <SMS>
+                 <authentication>
+                     <username>cumhuriyetkargo</username>
+                     <password>Cumhuriyet1416</password>
+                 </authentication>
+                 <message>
+                     <originator>CUMHURIYETK</originator>
+                     <text>' . $text . '</text>
+                     <unicode>8</unicode>
+                     <international></international>
+                 </message>
+                 <receivers>
+                     <receiver>' . $number . '</receiver>
+                 </receivers>
+             </SMS>';
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -586,6 +586,25 @@ function CargoTypes()
     ];
 }
 
+
+function getTCofAgency($agency_id)
+{
+    $agency = DB::table('agencies')
+        ->where('id', $agency_id)
+        ->first();
+
+
+    $tcLocation = DB::table('transshipment_center_districts')
+        ->where('city', $agency->city)
+        ->where('district', $agency->district)
+        ->first();
+
+    $tc = DB::table('transshipment_centers')
+        ->where('id', $tcLocation->tc_id)
+        ->first();
+
+    return $tc;
+}
 
 
 

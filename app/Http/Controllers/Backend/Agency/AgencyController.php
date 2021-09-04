@@ -188,11 +188,19 @@ class AgencyController extends Controller
         ]);
 
 
-        $city = Cities::find($request->city);
-        $district = Districts::find($request->district);
-        $neighborhood = Neighborhoods::find($request->neighborhood);
-        $post_code = '0' . $neighborhood->post_code;
+        $cityDistrictNeighborhood = DB::table('view_city_district_neighborhoods')
+            ->where('city_id', $request->city)
+            ->where('district_id', $request->district)
+            ->where('neighborhood_id', $request->neighborhood)
+            ->get();
 
+        if ($cityDistrictNeighborhood == null) {
+            $request->flash();
+            return back()
+                ->with('error', 'Lütfen geçerli bir il ilçe ve mahalle seçin!');
+        }
+
+        $post_code = '0' . $cityDistrictNeighborhood[0]->post_code;
 //        echo $city->city_name . ' => ' . $district->district_name . ' => ' . $neighborhood->neighborhood_name . ' => ' . $post_code;
 
         $there_is_some_agency_code = DB::table('agencies')
@@ -222,9 +230,9 @@ class AgencyController extends Controller
                 'phone2' => $request->phone2,
                 'transshipment_center_code' => $request->transshipment_center,
                 'agency_code' => $post_code,
-                'city' => tr_strtoupper($city->city_name),
-                'district' => tr_strtoupper($district->district_name),
-                'neighborhood' => tr_strtoupper($neighborhood->neighborhood_name),
+                'city' => tr_strtoupper($cityDistrictNeighborhood[0]->city_name),
+                'district' => tr_strtoupper($cityDistrictNeighborhood[0]->district_name),
+                'neighborhood' => tr_strtoupper($cityDistrictNeighborhood[0]->neighborhood_name),
                 'agency_name' => tr_strtoupper($request->agency_name),
                 'agency_development_officer' => tr_strtoupper($request->agency_development_officer),
                 'adress' => tr_strtoupper($request->adress)

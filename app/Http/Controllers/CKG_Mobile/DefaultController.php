@@ -186,14 +186,14 @@ class DefaultController extends Controller
                         ->where('tickets.id', $ticket_id)
                         ->first();
 
-
                     $userID = Auth::id();
                     $array[] = [
                         'id' => "0",
                         'ticket_id' => "$ticket_id",
                         'user_id' => "$userID",
                         'file1' => $realTicket->file1,
-                        'message' => substr($realTicket->message, '0', 1) != '#' ? strip_tags($realTicket->message) : $realTicket->message,
+//                        'message' => substr($realTicket->message, '0', 1) != '#' ? strip_tags($realTicket->message) : $realTicket->message,
+                        'message' => $realTicket->message,
                         'file2' => $realTicket->file2,
                         'file3' => $realTicket->file3,
                         'file4' => $realTicket->file4,
@@ -216,7 +216,8 @@ class DefaultController extends Controller
                             'ticket_id' => "$key->ticket_id",
                             'user_id' => "$key->user_id",
                             'file1' => $key->file1,
-                            'message' => substr($key->message, '0', 1) != '#' ? strip_tags($key->message) : $key->message,
+//                            'message' => substr($key->message, '0', 1) != '#' ? strip_tags($key->message) : $key->message,
+                            'message' => $key->message,
                             'file2' => $key->file2,
                             'file3' => $key->file3,
                             'file4' => $key->file4,

@@ -27,8 +27,8 @@
                                         <div class="widget-content-outer">
                                             <div class="widget-content-wrapper">
                                                 <div class="widget-content-left">
-                                                    <div class="widget-heading">Koli Sayısı</div>
-                                                    <div class="widget-subheading">(Bugün) Toplam Kesilen Koli Adeti
+                                                    <div class="widget-heading">Kargo Sayısı</div>
+                                                    <div class="widget-subheading">(Bugün) Toplam Kesilen Kargo Adeti
                                                     </div>
                                                 </div>
                                                 <div class="widget-content-right">
@@ -102,8 +102,8 @@
                                         <div class="widget-content-outer">
                                             <div class="widget-content-wrapper">
                                                 <div class="widget-content-left">
-                                                    <div class="widget-heading">Toplam Kesilen Kargo</div>
-                                                    <div class="widget-subheading">(Bugün) Kargo Adeti</div>
+                                                    <div class="widget-heading">Toplam Kesilen Kargo-Dosya</div>
+                                                    <div class="widget-subheading">(Bugün) Kargo-Dosya Adeti</div>
                                                 </div>
                                                 <div class="widget-content-right">
                                                     <div id="total_cargo_count"

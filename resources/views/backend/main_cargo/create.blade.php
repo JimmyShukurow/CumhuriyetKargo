@@ -107,13 +107,34 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <div class="position-relative ">
                                     <label for="gondericiMusteriTipi">Müşteri Tipi:</label>
                                 </div>
                                 <div class="input-group mb-1">
                                     <input type="text" readonly id="gondericiMusteriTipi"
                                            class="form-control form-control-sm">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="position-relative ">
+                                    <label for="cikisSube">Çıkış Şube:</label>
+                                </div>
+                                <div class="input-group mb-1">
+                                    <input type="text" readonly
+                                           value="{{$agency->agency_name . '-' . $agency->agency_code}}" id="cikisSube"
+                                           class="form-control text-alternate form-control-sm">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="position-relative ">
+                                    <label for="cikisTM">Çıkış TM:</label>
+                                </div>
+                                <div class="input-group mb-1">
+                                    <input type="text" readonly id="cikisTM" value="{{$tc->tc_name}} TRANSFER"
+                                           class="form-control text-alternate form-control-sm">
                                 </div>
                             </div>
                         </div>
@@ -155,24 +176,24 @@
                         </div>
 
                         <div class="form-row">
-                            {{--                            <div class="col-md-12">--}}
-                            {{--                                <div class="position-relative ">--}}
-                            {{--                                    <label for="cariKod">Kargo İçeriği:</label>--}}
-                            {{--                                </div>--}}
-                            {{--                                <div class="input-group mb-1">--}}
-                            {{--                                    <select name="cargoIcerigi" id="cargoIcerigi" class="form-control" id="">--}}
-                            {{--                                        <option value="">Seçiniz</option>--}}
-                            {{--                                        <option value="Varil">Varil</option>--}}
-                            {{--                                        <option value="Çuval">Çuval</option>--}}
-                            {{--                                        <option value="Kırılacak Eşya">Kırılacak Eşya</option>--}}
-                            {{--                                        <option value="ikinci El Eşya">ikinci El Eşya</option>--}}
-                            {{--                                        <option value="Bozulabilir Eşya">Bozulabilir Eşya</option>--}}
-                            {{--                                        <option value="Elektronik Eşya">Elektronik Eşya</option>--}}
-                            {{--                                        <option value="Sıvı Eşya">Sıvı Eşya</option>--}}
-                            {{--                                        <option value="Dökülebilir Eşya">Dökülebilir Eşya</option>--}}
-                            {{--                                    </select>--}}
-                            {{--                                </div>--}}
-                            {{--                            </div>--}}
+                            {{-- <div class="col-md-12">--}}
+                            {{-- <div class="position-relative ">--}}
+                            {{-- <label for="cariKod">Kargo İçeriği:</label>--}}
+                            {{-- </div>--}}
+                            {{-- <div class="input-group mb-1">--}}
+                            {{-- <select name="cargoIcerigi" id="cargoIcerigi" class="form-control" id="">--}}
+                            {{-- <option value="">Seçiniz</option>--}}
+                            {{-- <option value="Varil">Varil</option>--}}
+                            {{-- <option value="Çuval">Çuval</option>--}}
+                            {{-- <option value="Kırılacak Eşya">Kırılacak Eşya</option>--}}
+                            {{-- <option value="ikinci El Eşya">ikinci El Eşya</option>--}}
+                            {{-- <option value="Bozulabilir Eşya">Bozulabilir Eşya</option>--}}
+                            {{-- <option value="Elektronik Eşya">Elektronik Eşya</option>--}}
+                            {{-- <option value="Sıvı Eşya">Sıvı Eşya</option>--}}
+                            {{-- <option value="Dökülebilir Eşya">Dökülebilir Eşya</option>--}}
+                            {{-- </select>--}}
+                            {{-- </div>--}}
+                            {{-- </div>--}}
 
                             <div class="col-md-12">
                                 <div class="position-relative ">
@@ -203,13 +224,13 @@
                                     <option value="Sandık">Sandık</option>
                                 </select>
 
-                                <input class="check_user_type" data-width="100%"
-                                       style="display: none;"
-                                       onchange="" type="checkbox"
-                                       checked id="checkCargoType"
-                                       data-toggle="toggle"
-                                       data-on="Dosya"
-                                       data-off="Koli" data-onstyle="alternate" data-offstyle="primary">
+                                {{-- <input  class="check_user_type" data-width="100%"--}}
+                                {{--  style="display: none;"--}}
+                                {{--  onchange="" type="checkbox"--}}
+                                {{--  checked id="checkCargoType"--}}
+                                {{--   data-toggle="toggle"--}}
+                                {{--   data-on="Dosya"--}}
+                                {{--   data-off="Koli" data-onstyle="alternate" data-offstyle="primary">--}}
                             </div>
                         </div>
 
@@ -310,13 +331,31 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <div class="position-relative ">
                                     <label for="aliciMusteriTipi">Müşteri Tipi:</label>
                                 </div>
                                 <div class="input-group mb-1">
                                     <input type="text" readonly id="aliciMusteriTipi"
                                            class="form-control form-control-sm">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative ">
+                                    <label for="aliciMusteriTipi">Varış Şube:</label>
+                                </div>
+                                <div class="input-group mb-1">
+                                    <input type="text" readonly id="varisSube"
+                                           class="form-control text-alternate form-control-sm">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative ">
+                                    <label for="aliciMusteriTipi">Varış TM:</label>
+                                </div>
+                                <div class="input-group mb-1">
+                                    <input type="text" readonly id="varisTransferMerkezi"
+                                           class="form-control text-alternate form-control-sm">
                                 </div>
                             </div>
                         </div>

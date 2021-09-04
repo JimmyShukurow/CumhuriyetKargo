@@ -17,6 +17,7 @@ use App\Models\FilePrice;
 use App\Models\Receivers;
 use App\Models\Settings;
 use App\Models\SmsContent;
+use App\Models\TransshipmentCenters;
 use App\Models\User;
 use Carbon\Carbon;
 use Faker\Provider\Address;
@@ -110,6 +111,8 @@ class MainCargoController extends Controller
 
         ## get agency district
         $agency = Agencies::where('id', Auth::user()->agency_code)->first();
+        $tc = TransshipmentCenters::where('id', $agency->transshipment_center_code)->first();
+
         $data['districts'] = DB::table('view_city_districts')
             ->where('city_name', $agency->city)
             ->get();
@@ -120,6 +123,7 @@ class MainCargoController extends Controller
         $data['user_neighborhood'] = $agency->neighborhood;
         $data['user_district'] = $agency->district;
         $data['user_city'] = $agency->city;
+
 
         $fee['first_add_service'] = DB::table('additional_services')
             ->where('default', '=', '1')
@@ -150,7 +154,7 @@ class MainCargoController extends Controller
 
         $data['collectible_cargo'] = Settings::where('key', 'collectible_cargo')->first();
 
-        return view('backend.main_cargo.create', compact(['data', 'fee']));
+        return view('backend.main_cargo.create', compact(['data', 'fee', 'agency', 'tc']));
     }
 
     public function ajaxTransacrtions(Request $request, $transaction)
@@ -649,7 +653,7 @@ class MainCargoController extends Controller
                 $receiverType = $receiver->current_type;
                 $receiverCategory = $receiver->category;
 
-                if ($cargoType == 'Koli' && $desi == 0) {
+                if ($cargoType != 'Dosya-Mi' && $desi == 0) {
                     $desiPrice = 0;
                     $json = ['service_fee' => $desiPrice];
                 } else {
@@ -662,10 +666,10 @@ class MainCargoController extends Controller
                             # ===> Cari Anlaşmalı Fiyat Standart Fiyat
                             $currentPrice = CurrentPrices::where('current_code', $currentCode)->first();
 
-                            if ($cargoType == 'Dosya') {
+                            if ($cargoType == 'Dosya-Mi') {
                                 $filePrice = $currentPrice->file_price;
                                 $json = ['service_fee' => $filePrice];
-                            } else if ($cargoType == 'Koli') {
+                            } else if ($cargoType != 'Dosya-Mi') {
                                 ## calc desi price
                                 $desiPrice = 0;
                                 if ($desi > 30) {
@@ -683,10 +687,10 @@ class MainCargoController extends Controller
                         if ($currentCategory == 'Bireysel' && $receiverCategory == 'Kurumsal') {
                             # ===> Cari Anlaşmalı Fiyat Standart Fiyat
                             $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
-                            if ($cargoType == 'Dosya') {
+                            if ($cargoType == 'Dosya-Mi') {
                                 $filePrice = $currentPrice->file_price;
                                 $json = ['service_fee' => $filePrice];
-                            } else if ($cargoType == 'Koli') {
+                            } else if ($cargoType != 'Dosya-Mi') {
                                 ## calc desi price
                                 $desiPrice = 0;
                                 if ($desi > 30) {
@@ -713,10 +717,10 @@ class MainCargoController extends Controller
                                 $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
 
 
-                            if ($cargoType == 'Dosya') {
+                            if ($cargoType == 'Dosya-Mi') {
                                 $filePrice = $currentPrice->file_price;
                                 $json = ['service_fee' => $filePrice];
-                            } else if ($cargoType == 'Koli') {
+                            } else if ($cargoType != 'Dosya-Mi') {
                                 ## calc desi price
                                 $desiPrice = 0;
                                 if ($desi > 30) {
@@ -732,11 +736,11 @@ class MainCargoController extends Controller
 
                     } else {
                         # => not contracted / Bireysel - Bireysel
-                        if ($cargoType == 'Dosya') {
+                        if ($cargoType == 'Dosya-Mi') {
                             $filePrice = FilePrice::first();
                             $filePrice = $filePrice->individual_file_price;
                             $json = ['service_fee' => $filePrice];
-                        } else if ($cargoType == 'Koli') {
+                        } else {
 
                             ## calc desi price
                             $maxDesiInterval = DB::table('desi_lists')
@@ -1137,10 +1141,8 @@ class MainCargoController extends Controller
                 $kdvPrice = round($kdvPrice, 2);
                 $totalPrice = $totalPriceExceptKdv + $kdvPrice + $heavyLoadCarryingCost;
 
-
-                return $totalPrice . ' ' . $request->genelToplam;
-
-                if ($totalPrice != $request->genelToplam)
+//                return $totalPrice . ' ' . $request->genelToplam;
+                if ("$totalPrice" != "$request->genelToplam")
                     return response()
                         ->json(['status' => -1, 'message' => 'Genel toplamlar eşleşmiyor, lütfen sistem destek ile iletişime geçin!'], 200);
 
@@ -1478,6 +1480,55 @@ class MainCargoController extends Controller
 
                 break;
 
+            case 'DistributionControl':
+
+                if ($request->currentCode == '' || $request->receiverCode == '')
+                    return response()
+                        ->json([
+                            'status' => 0,
+                            'message' => 'Alıcı ve Gönderici cari kodu bilgileri zorunludur!'
+                        ]);
+
+
+                $currentCode = str_replace(' ', '', $request->currentCode);
+                $receiverCode = str_replace(' ', '', $request->receiverCode);
+
+                $receiver = Currents::where('current_code', $receiverCode)
+                    ->first();
+
+//                return $receiver->city . ' - ' . $receiver->district . ' - ' . $receiver->neighborhood;
+
+                $control = DB::table('local_locations')
+                    ->where('city', $receiver->city)
+                    ->where('district', $receiver->district)
+                    ->where('neighborhood', $receiver->neighborhood)
+                    ->first();
+
+                if ($control == null)
+                    return response()
+                        ->json([
+                            'status' => 0,
+                            'message' => 'Alıcı için dağıtım yapılmayan bölge: ' . $receiver->neighborhood
+                        ]);
+
+                $agency = DB::table('agencies')
+                    ->where('id', $control->agency_code)
+                    ->first();
+
+                $tc = getTCofAgency($agency->id);
+
+                $array = [
+                    'status' => 1,
+                    'arrival_agency' => $agency->agency_name . '-' . $agency->agency_code,
+                    'arrival_tc' => $tc->tc_name
+                ];
+
+                return $array;
+
+                return $request->all();
+
+                break;
+
             case 'GetMainDailySummery':
                 ## daily report start
                 $daily['package_count'] = DB::table('cargoes')
@@ -1676,7 +1727,6 @@ class MainCargoController extends Controller
         } else {
             $receiverDistrict = false;
         }
-
 
         $cargoes = DB::table('cargoes')
             ->join('users', 'users.id', '=', 'cargoes.creator_user_id')

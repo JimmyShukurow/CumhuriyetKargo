@@ -24,17 +24,17 @@
                     </div>
                 </div>
                 <div class="page-title-actions">
-                    <div class="d-inline-block dropdown">
-                        <a href="{{ route('SenderCurrents.create') }}">
-                            <button type="button" aria-haspopup="true" aria-expanded="false"
-                                    class="btn-shadow btn btn-info">
-						<span class="btn-icon-wrapper pr-2 opacity-7">
-							<i class="fa fa-plus fa-w-20"></i>
-						</span>
-                                Yeni Cari Oluştur
-                            </button>
-                        </a>
-                    </div>
+                    {{--                    <div class="d-inline-block dropdown">--}}
+                    {{--                        <a href="{{ route('SenderCurrents.create') }}">--}}
+                    {{--                            <button type="button" aria-haspopup="true" aria-expanded="false"--}}
+                    {{--                                    class="btn-shadow btn btn-info">--}}
+                    {{--						<span class="btn-icon-wrapper pr-2 opacity-7">--}}
+                    {{--							<i class="fa fa-plus fa-w-20"></i>--}}
+                    {{--						</span>--}}
+                    {{--                                Yeni Cari Oluştur--}}
+                    {{--                            </button>--}}
+                    {{--                        </a>--}}
+                    {{--                    </div>--}}
                 </div>
             </div>
         </div>
@@ -124,6 +124,7 @@
                         <th>İl</th>
                         <th>İlçe</th>
                         <th>Mahalle</th>
+                        <th>Bölge Tipi</th>
                         <th>Dağıtan</th>
                         <th>İşlem</th>
                     </tr>
@@ -136,6 +137,7 @@
                         <th>İl</th>
                         <th>İlçe</th>
                         <th>Mahalle</th>
+                        <th>Bölge Tipi</th>
                         <th>Dağıtan</th>
                         <th>İşlem</th>
                     </tr>
@@ -161,8 +163,40 @@
             $('#TbodyNeighborhoods').html('');
         });
 
-        $(document).on('change', '.select-all-cb', function () {
-            $('input:checkbox:not(:disabled)').prop('checked', this.checked);
+        $(document).on('change', '.select-all-cb-ab', function () {
+            $('input:checkbox:not(:disabled).location-ab').prop('checked', this.checked);
+
+            if ($(this).prop('checked') == true) {
+                $('input:checkbox:not(:disabled).location-mb').prop('checked', false);
+                $('#cb-select-all-mb').prop('checked', false);
+            }
+
+        });
+
+        $(document).on('change', '.select-all-cb-mb', function () {
+            $('input:checkbox:not(:disabled).location-mb').prop('checked', this.checked);
+
+            if ($(this).prop('checked') == true) {
+                $('input:checkbox:not(:disabled).location-ab').prop('checked', false);
+                $('#cb-select-all-ab').prop('checked', false);
+            }
+
+
+        });
+
+
+        $(document).on('click', '.location-mb', function () {
+            let cb_id = $(this).prop('value');
+
+            if ($(this).prop('checked') == true)
+                $('#ab-' + cb_id).prop('checked', false);
+        });
+
+        $(document).on('click', '.location-ab', function () {
+            let cb_id = $(this).prop('value');
+
+            if ($(this).prop('checked') == true)
+                $('#mb-' + cb_id).prop('checked', false);
         });
 
 
@@ -172,7 +206,7 @@
 
             var NeighborhoodArray = [];
             $("input.check-give-district-to-region[type=checkbox]:checked:not(:disabled)").each(function () {
-                NeighborhoodArray.push($(this).val());
+                NeighborhoodArray.push($(this).prop('id'));
             });
 
             $.ajax('{{ route('LocalLocation.store') }}', {
@@ -239,18 +273,41 @@
                 $('#TbodyNeighborhoods').html('');
 
                 $.each(response, function (key, value) {
+
+                    let stringAB = '', stringMB = '', stringAgencyName = '';
+
+                    if (value['count'] == '1') {
+                        if (value['area_type'] == 'AB') {
+                            stringAB = 'checked disabled';
+                            stringMB = 'disabled'
+                        } else if (value['area_type'] == 'MB') {
+                            stringMB = 'checked disabled';
+                            stringAB = 'disabled';
+                        }
+                    }
+
+
+                    if (value['agency_name'] != null) {
+                        stringAgencyName = ' (' + value['agency_name'] + ')';
+                    }
+
                     $('#TbodyNeighborhoods').append(
                         '<tr>' +
 
-                        '<td width="10"> <input style="width: 20px" value="' + (
-                            value['neighborhood_id']) +
-                        '" type="checkbox" ' +
-                        (value['count'] != '0' ? 'checked disabled' : '') +
-                        ' class="form-control check-give-district-to-region  ck-' +
+                        '<td width="10"> <input style="width: 20px"' +
+                        ' value="' + (value['neighborhood_id']) + '" type="checkbox" ' +
+                        (stringAB) + ' id="ab-' + (value['neighborhood_id']) + '"' +
+                        ' class="form-control check-give-district-to-region location-ab ck-' +
                         (value['neighborhood_id']) +
                         '">' + '</td>' +
 
-                        '<td>' + ($('#districtX option:selected').text()) + '-' + (value['neighborhood_name']) + '</td>' +
+                        '<td width="10"> <input style="width: 20px" ' +
+                        'value="' + (value['neighborhood_id']) + '" type="checkbox" ' + (stringMB) +
+                        ' id="mb-' + (value['neighborhood_id']) + '"' + ' class="form-control check-give-district-to-region location-mb  ck-' +
+                        (value['neighborhood_id']) +
+                        '">' + '</td>' +
+
+                        '<td>' + (value['neighborhood_name']) + stringAgencyName + '</td>' +
 
                         '</tr>'
                     );
@@ -259,7 +316,6 @@
                 $('.select-all-cb').prop('checked', false);
 
                 $('#modalBodyTCDistricts.modal-body').unblock();
-
 
             });
         });
@@ -437,6 +493,7 @@
                     {data: 'city', name: 'city'},
                     {data: 'district', name: 'district'},
                     {data: 'neighborhood', name: 'neighborhood'},
+                    {data: 'area_type', name: 'area_type'},
                     {data: 'agency_name', name: 'agency_name'},
                     {data: 'edit', name: 'edit'}
                 ],
@@ -463,15 +520,17 @@
             drawDT();
         });
 
-
         $('#btnGiveNeighborhood').click(delay(function () {
             if ($('#selectAgency').val() == '')
                 ToastMessage('warning', '', 'Önce acente seçin!');
             else {
                 $('#ModalCityDistrictNeighborhoods').modal();
+                $('#districtX').val('');
+                $('#TbodyNeighborhoods').html('');
+                $('#cb-select-all-mb').prop('checked', false);
+                $('#cb-select-all-ab').prop('checked', false);
             }
         }, 450));
-
 
     </script>
 @endsection
@@ -516,11 +575,15 @@
 
                     <table style="margin-bottom:  0;" class="table table-striped">
                         <thead>
-                        <th style="width: 50px;padding:0">
-                            <input style="width: 20px;margin-left: 7px;" type="checkbox"
-                                   class="select-all-cb form-control">
+                        <th title="Ana Bölge" style="width: 50px;padding:0">
+                            (AB) <input style="width: 20px;margin-left: 7px;" type="checkbox" id="cb-select-all-ab"
+                                        class="select-all-cb-ab form-control">
                         </th>
-                        <th>Mahalle</th>
+                        <th title="Mobil Bölge" style="width: 50px;padding:0">
+                            (MB) <input style="width: 20px;margin-left: 7px;" type="checkbox" id="cb-select-all-mb"
+                                        class="select-all-cb-mb form-control">
+                        </th>
+                        <th style="vertical-align: middle;">Mahalle</th>
                         </thead>
                     </table>
                     <div style="max-height: 50vh; overflow-y: scroll;">

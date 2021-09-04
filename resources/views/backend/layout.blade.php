@@ -1197,7 +1197,7 @@
 <script src="/backend/assets/scripts/popper.min.js"></script>
 <script src="/backend/assets/scripts/general.js"></script>
 <script src="/backend/assets/scripts/js-snackbar.js"></script>
-<script type="text/javascript" src="/backend/assets/scripts/main.8d288f825d8dffbbe55e.js"></script>
+<script type="text/javascript" src="/backend/assets/scripts/main.8d288f825d8dffbbe55e.js?v=1.0.0.0"></script>
 <script>
     @if(\Illuminate\Support\Facades\Session::exists('virtual-login'))
     $(document).on('click', '#virtualCloseBtn', function () {

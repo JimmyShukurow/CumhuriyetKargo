@@ -48,6 +48,9 @@ class LocalLocationController extends Controller
      */
     public function store(Request $request)
     {
+
+//        return $request->all();
+
         $insert = false;
         $city = Cities::find($request->city_id);
         $district = Districts::find($request->district_id);
@@ -55,7 +58,10 @@ class LocalLocationController extends Controller
 
         for ($i = 0, $iMax = count($neighArray); $i < $iMax; $i++) {
 
-            $neighborhood = Neighborhoods::find($neighArray[$i]);
+            $area_type = substr($neighArray[$i], 0, 2);
+            $n_id = substr($neighArray[$i], 3, strlen($neighArray[$i]));
+
+            $neighborhood = Neighborhoods::find($n_id);
 
             $get = DB::table('local_locations')
                 ->where('city', $city->city_name)
@@ -68,7 +74,8 @@ class LocalLocationController extends Controller
                     'agency_code' => $request->agency_code,
                     'city' => $city->city_name,
                     'district' => $district->district_name,
-                    'neighborhood' => $neighborhood->neighborhood_name
+                    'neighborhood' => $neighborhood->neighborhood_name,
+                    'area_type' => $area_type,
                 ]);
             }
         }
@@ -140,13 +147,13 @@ class LocalLocationController extends Controller
         $city = Cities::find($request->city);
         $city = $city->city_name;
 
-//        return $city . ' =>  ' . $district;
-
         $data = DB::select("SELECT *,
-        ( SELECT COUNT(*) FROM local_locations WHERE city = city_name AND district = district_name AND neighborhood = neighborhood_name ) AS count
-        FROM view_city_district_neighborhoods
-        WHERE city_name = '$city'
-        AND district_name = '$district'");
+        (SELECT COUNT(*) FROM local_locations WHERE city = city_name AND district = district_name AND neighborhood = neighborhood_name ) AS count,
+	    (SELECT area_type FROM local_locations WHERE city = city_name AND district = district_name AND neighborhood = neighborhood_name ) AS area_type,
+			(SELECT agency_code FROM local_locations WHERE city = city_name AND district = district_name AND neighborhood = neighborhood_name ) AS agency_code,
+			(SELECT agencies.agency_name FROM agencies WHERE agencies.id =
+            (SELECT agency_code FROM local_locations WHERE city = city_name AND district = district_name AND neighborhood = neighborhood_name )
+			) AS agency_name FROM view_city_district_neighborhoods WHERE  city_name = '$city' AND district_name = '$district'");
 
         return $data;
     }
@@ -173,10 +180,14 @@ class LocalLocationController extends Controller
         return datatables()->of($locations)
             ->setRowId(function ($currents) {
                 return "location-item-" . $currents->id;
-            })->addColumn('edit', function ($location) {
+            })
+            ->editColumn('area_type', function ($location) {
+                return $location->area_type == 'AB' ? '<b class="text-primary">Ana Bölge</b>' : '<b class="text-alternate">Mobil Bölge</b>';
+            })
+            ->addColumn('edit', function ($location) {
                 return '<a class="text-danger font-weight-bold trash" from="location" id="' . $location->id . '" href="javascript:void(0)">Kaldır</a>';
             })
-            ->rawColumns(['edit'])
+            ->rawColumns(['edit', 'area_type'])
             ->make(true);
     }
 

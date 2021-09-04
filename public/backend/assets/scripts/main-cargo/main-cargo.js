@@ -479,11 +479,11 @@ function getReceiverInfo(currentCode, tryExist = false) {
 
         $('#aliciCariKod').val(response.current_code);
 
-        if ($('#gondericiCariKod').val() == $('#aliciCariKod').val()) {
-            $('#aliciCariKod').val('');
-            ToastMessage('error', 'Alıcı ve gönderici aynı olamaz!', 'Hata!');
-            return false;
-        }
+        // if ($('#gondericiCariKod').val() == $('#aliciCariKod').val()) {
+        //     $('#aliciCariKod').val('');
+        //     ToastMessage('error', 'Alıcı ve gönderici aynı olamaz!', 'Hata!');
+        //     return false;
+        // }
 
         if (response.category == 'Bireysel') {
             $('#aliciMusteriTipi').val('Bireysel');
@@ -498,7 +498,6 @@ function getReceiverInfo(currentCode, tryExist = false) {
             $('#aliciMusteriTipi').addClass('text-success');
             $('#aliciMusteriTipi').removeClass('text-primary');
         }
-
 
         // console.log(response);
         var newOption = new Option(response.name, response.name, true, true);
@@ -517,11 +516,44 @@ function getReceiverInfo(currentCode, tryExist = false) {
         getDistance(CurrentCity, response.city);
 
         getPriceForCustomers();
+        DistributionControl();
 
     }).error(function (jqXHR, exception) {
         ajaxError(jqXHR.status)
     }).always(function () {
         $('#divider-alici').unblock();
+    });
+
+}
+
+function DistributionControl(neighborhood = '') {
+
+    if ($('#aliciCariKod').val() == '')
+        return false;
+
+    $.ajax('/MainCargo/AjaxTransactions/DistributionControl', {
+        method: 'POST',
+        data: {
+            _token: token,
+            currentCode: $('#gondericiCariKod').val(),
+            receiverCode: $('#aliciCariKod').val(),
+            neighborhood: neighborhood,
+        }
+    }).done(function (response) {
+
+        console.log(response);
+        if (response.status == 0)
+            ToastMessage('error', response.message, 'Hata!');
+        else if (response.status == 1) {
+            $('#varisSube').val(response.arrival_agency);
+            $('#varisTransferMerkezi').val(response.arrival_tc + " TRANSFER");
+        }
+
+
+    }).error(function (jqXHR, exception) {
+        ajaxError(jqXHR.status);
+    }).always(function () {
+        $('#divider-gonderici').unblock();
     });
 
 }
@@ -603,6 +635,7 @@ function getCurrentInfo(currentCode, tryExist = false) {
         $('#TahsilatFaturaTutari').trigger('keyup');
 
         getPriceForCustomers();
+        DistributionControl();
 
     }).error(function (jqXHR, exception) {
         ajaxError(jqXHR.status)
@@ -645,7 +678,7 @@ function getPriceForCustomers() {
                 currentCode: currentCode,
                 receiverCode: receiverCode,
                 paymentType: PaymentType,
-                cargoType: CargoType,
+                cargoType: $('#selectCargoType').val(),
                 desi: parseFloat($('#labelDesi').text())
             }
         }).done(function (response) {
@@ -946,7 +979,7 @@ function getFilePrice() {
 }
 
 $('#btnDesi').click(function () {
-    if ($('#checkCargoType').prop('checked') == false)
+    if (CargoType == 'Koli')
         $('#modalCalcDesi').modal()
 });
 
@@ -1387,6 +1420,17 @@ function CalculateDesi(RealDesi, PartNumber, clickButton) {
         $('#modalCalcDesi').modal('hide');
 
 
+        if ($('#selectCargoType').val() != 'Paket') {
+            if (RealDesi > 1 && RealDesi < 5) {
+                ToastMessage('warning', 'Kargo türü paket olarak değiştirildi!', 'Bilgi!');
+                $('#selectCargoType').val('Paket');
+            }
+        } else {
+            if (RealDesi >= 5) {
+                ToastMessage('warning', 'Kargo türü koli olarak değiştirildi!', 'Bilgi!');
+                $('#selectCargoType').val('Koli');
+            }
+        }
     }).error(function (jqXHR, exception) {
         ajaxError(jqXHR.status)
     }).always(function () {
@@ -1413,7 +1457,6 @@ $('#add-service-tahsilatli').click(function () {
 
         $('#TahsilatFaturaTutari').trigger('keyup');
     }
-
 });
 
 $(document).ready(function () {
