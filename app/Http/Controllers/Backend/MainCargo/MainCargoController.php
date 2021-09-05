@@ -849,8 +849,28 @@ class MainCargoController extends Controller
                 $desi = $request->desi;
                 $cargoType = $request->gonderiTuru;
                 $paymenyType = $request->odemeTipi;
-
                 $permission_collectible_cargo = Settings::where('key', 'collectible_cargo')->first();
+
+
+                ### Distribution Control START ###
+                $distribution = DB::table('local_locations')
+                    ->where('city', $receiver->city)
+                    ->where('district', $receiver->district)
+                    ->where('neighborhood', $receiver->neighborhood)
+                    ->first();
+
+                if ($distribution == null)
+                    return response()
+                        ->json([
+                            'status' => -1,
+                            'message' => 'Alıcı için dağıtım yapılmayan bölge: ' . $receiver->neighborhood
+                        ]);
+
+                $arrivalAgency = DB::table('agencies')
+                    ->where('id', $distribution->agency_code)
+                    ->first();
+                $arrivalTC = getTCofAgency($arrivalAgency->id);
+                ### Distribution Control END ###
 
 
                 if ($request->tahsilatliKargo == 'true' && $permission_collectible_cargo->value == '0')
@@ -1198,8 +1218,8 @@ class MainCargoController extends Controller
                     'arrival_city' => $receiver->city,
                     'arrival_district' => $receiver->district,
 
-                    'arrival_agency_code' => '31',
-                    'arrival_tc_code' => '31',
+                    'arrival_agency_code' => $arrivalAgency->id,
+                    'arrival_tc_code' => $arrivalTC->id,
 
                     'departure_city' => $userGeneralInfo->branch_city,
                     'departure_district' => $userGeneralInfo->branch_district,
@@ -1481,7 +1501,6 @@ class MainCargoController extends Controller
                     ->json($array, 200);
                 break;
 
-
             # INDEX TRANSACTION START
             case 'GetCargoInfo':
 
@@ -1512,9 +1531,25 @@ class MainCargoController extends Controller
                     ->first();
 
                 $data['departure'] = DB::table('agencies')
-                    ->select(['agency_code', 'agency_name'])
+                    ->select(['agency_code', 'agency_name', 'city', 'district'])
                     ->where('id', $data['cargo']->departure_agency_code)
                     ->first();
+
+                $data['departure_tc'] = DB::table('transshipment_centers')
+                    ->select(['city', 'tc_name'])
+                    ->where('id', $data['cargo']->departure_tc_code)
+                    ->first();
+
+                $data['arrival'] = DB::table('agencies')
+                    ->select(['agency_code', 'agency_name', 'city', 'district'])
+                    ->where('id', $data['cargo']->arrival_agency_code)
+                    ->first();
+
+                $data['arrival_tc'] = DB::table('transshipment_centers')
+                    ->select(['city', 'tc_name'])
+                    ->where('id', $data['cargo']->arrival_tc_code)
+                    ->first();
+
 
                 $data['sms'] = DB::table('sent_sms')
                     ->select('id', 'heading', 'subject', 'phone', 'sms_content', 'result')

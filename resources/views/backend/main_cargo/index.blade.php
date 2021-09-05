@@ -832,22 +832,25 @@
                                                                 <td id="desi"></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="static">Çıkış İl:</td>
-                                                                <td id="exitCity"></td>
-                                                            </tr>
-                                                            <tr>
                                                                 <td class="static">Çıkış Şube:</td>
-                                                                <td id="exitBranch"></td>
+                                                                <td class="text-primary" id="exitBranch"></td>
                                                             </tr>
 
                                                             <tr>
-                                                                <td class="static">Varış İl:</td>
-                                                                <td id="arrivalCity"></td>
+                                                                <td class="static">Çıkış Transfer:</td>
+                                                                <td class="text-primary" id="exitTransfer"></td>
                                                             </tr>
+
                                                             <tr>
                                                                 <td class="static">Varış Şube:</td>
-                                                                <td id="arrivalBranch"></td>
+                                                                <td class="text-alternate" id="arrivalBranch"></td>
                                                             </tr>
+
+                                                            <tr>
+                                                                <td class="static">Varış Transfer:</td>
+                                                                <td class="text-alternate" id="arrivalTC"></td>
+                                                            </tr>
+
 
                                                             <tr>
                                                                 <td class="static">Mesafe (KM):</td>
@@ -1101,7 +1104,7 @@
 
                                 </table>
                             </div>
-                            <div    class="col-3 qr-barcode-cont">
+                            <div class="col-3 qr-barcode-cont">
                                 <div id="qrcode"></div>
                             </div>
                         </div>

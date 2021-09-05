@@ -313,6 +313,9 @@ function cargoInfo(user) {
             let receiver = response.receiver;
             let creator = response.creator;
             let departure = response.departure;
+            let departure_tc = response.departure_tc;
+            let arrival = response.arrival;
+            let arrival_tc = response.arrival_tc;
             let sms = response.sms;
             let add_services = response.add_services;
 
@@ -355,10 +358,10 @@ function cargoInfo(user) {
 
             $('td#collectible').text(cargo.collectible);
             $('#collection_fee').text(cargo.collection_fee + "₺");
-            $('#exitCity').text(cargo.departure_city + "/" + cargo.departure_district);
-            $('#exitBranch').text(departure.agency_name + " (" + departure.agency_code + ")");
-            $('#arrivalCity').text(cargo.arrival_city + "/" + cargo.arrival_district);
-            $('#arrivalBranch').text(cargo.arrival_agency_code);
+            $('#exitTransfer').text(departure_tc.city + " - " + departure_tc.tc_name + " TM");
+            $('#exitBranch').text(departure.city + "/" + departure.district + " - " + departure.agency_name + " (" + departure.agency_code + ")");
+            $('#arrivalTC').text(arrival_tc.city + " - " + arrival_tc.tc_name + " TM");
+            $('#arrivalBranch').text(arrival.city + "/" + arrival.district + " - " + arrival.agency_name + " (" + arrival.agency_code + ")");
             $('td#postServicesPrice').text(cargo.post_service_price + "₺");
             $('td#heavyLoadCarryingCost').text(cargo.heavy_load_carrying_cost + "₺");
             $('td#distance').text(cargo.distance + " KM");
@@ -367,7 +370,6 @@ function cargoInfo(user) {
             $('td#addServiceFee').text(cargo.add_service_price + "₺");
             $('td#serviceFee').text(cargo.service_price + "₺");
             $('td#totalFee').text(cargo.total_price + "₺");
-
 
             var addServiceTotalPrice = 0;
             $('#tbodyCargoAddServices').html('');
@@ -392,10 +394,9 @@ function cargoInfo(user) {
                 $('#tbodyCargoAddServices').append(
                     '<tr>' +
                     '<td class="font-weight-bold text-primary">' + 'Toplam:' + ' </td>' +
-                    '<td class="font-weight-bold text-primary">' + addServiceTotalPrice + "₺" + '</td>' +
+                    '<td class="font-weight-bold text-primary">' + cargo.add_service_price + "₺" + '</td>' +
                     +'</tr>'
-                )
-                ;
+                );
 
             }
 
