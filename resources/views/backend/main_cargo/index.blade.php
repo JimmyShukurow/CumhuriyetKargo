@@ -616,9 +616,9 @@
                                             <h5 id="titleTrackingNo" class="menu-header-title">###</h5>
                                             <h6 id="titleCreatorInfo" class="menu-header-subtitle">###/###</h6>
                                         </div>
-
                                     </div>
                                 </div>
+
                             </div>
                             <ul class="list-group list-group-flush">
 

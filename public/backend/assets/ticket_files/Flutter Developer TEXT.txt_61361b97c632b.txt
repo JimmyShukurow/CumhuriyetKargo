@@ -1,0 +1,50 @@
+Flutter Developer İş İlanı
+
+Şişli-Mecidiyeköy'deki Kargo şirketimizin genel merkezine acil olarak en az 1 yıl deneyimli, tam zamanlı çalışacak flutter geliştirici arayışımız bulunmaktadır.
+
+Aranan Nitelikler;
+
+- En az 1 yıl Flutter platformu ve Dart dili konusunda deneyim sahibi,
+
+-   Uygulamayı geliştirme aşamasından iOS ve Android platformlarında yayınlanmasına kadar olan tüm süreçte tecrübeli,
+
+- Restful API & web servisler ve entegrasyonlarında tecrübeli,
+
+-  Git kontrol sistemini kullanabilen
+
+- Yenilikçiliğe, öğrenmeye açık, kod kalitesine ve yeniden kullanılabilir kod yazmaya önem veren
+
+- Analitik düşünce yapısına sahip, sorumluluk sahibi, proaktif ve sonuç odaklı yaklaşımla çalıştığı işleri baştan sona takip ederek tamamlayan,
+
+-Modern ve özgün arayüzler tasarlayabilen,
+
+-Görsel detaylara önem veren,
+
+-Yüksek iletişim yetkinlikleri ve iyi ekip oyuncusu olan,
+
+-Motivasyonu yüksek sorumluluk alabilen.
+
+İş Tanımı
+
+-Mobil/Web uygulama ihtiyaçları için Flutter ile yazılım geliştirilmesi,
+
+-Geliştirilen yazılımın web servis entegrasyonlarının yapılması,
+
+- İhtiyaç ve fonksiyonel özelliklere göre yazılım tasarımının gerçekleştirilmesi,
+
+Ne geliştiriyoruz;
+
+Şubelerimizin ve Müşterilerimizin kullandığı CRM projelerini ve Web servisleri geliştiriyoruz.
+
+Lokasyon;
+
+Ofisimiz Mecidiyeköy'de, metroya ve metrobüse 15 dakika uzaklıktadır.
+
+Şartlar & Çalışma Saatleri:
+
+Maaş + Yemek + Sigorta
+
+Hafta İçi: 08:30-18:30
+Cumartesi 08:30-14:00
+
+İş Türü: Tam zamanlı

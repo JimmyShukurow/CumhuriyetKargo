@@ -863,7 +863,7 @@ class MainCargoController extends Controller
                     return response()
                         ->json([
                             'status' => -1,
-                            'message' => 'Alıcı için dağıtım yapılmayan bölge: ' . $receiver->neighborhood
+                            'message' => 'Alıcı için dağıtım yapılmayan bölge: ' . $receiver->neighborhood . '. NOT: Şube teslim olarak işaretlendi'
                         ]);
 
                 $arrivalAgency = DB::table('agencies')
@@ -1476,7 +1476,7 @@ class MainCargoController extends Controller
                     return response()
                         ->json([
                             'status' => 0,
-                            'message' => 'Alıcı için dağıtım yapılmayan bölge: ' . $receiver->neighborhood
+                            'message' => 'Alıcı için dağıtım yapılmayan bölge: ' . $receiver->neighborhood . '. NOT: Şube teslim olarak işaretlendi'
                         ]);
 
                 $agency = DB::table('agencies')

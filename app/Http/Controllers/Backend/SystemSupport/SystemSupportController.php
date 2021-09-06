@@ -36,19 +36,22 @@ class SystemSupportController extends Controller
 
         if ($request->hasFile('file1')) {
             $file1 = $request->file('file1')->getClientOriginalName() . '_' . uniqid() . '.' . $request->file1->getClientOriginalExtension();
-            $request->file1->move(public_path('backend/assets/ticket_files'), $file1);
+            $request->file1->move(public_path('/backend/assets/ticket_files'), $file1);
+//
+//            $fileName = time().'_'.$request->file->getClientOriginalName();
+//            $filePath = $request->file('file')->storeAs('/backend/assets/ticket_files', $fileName, 'public');
         }
         if ($request->hasFile('file2')) {
             $file2 = $request->file('file2')->getClientOriginalName() . '_' . uniqid() . '.' . $request->file2->getClientOriginalExtension();
-            $request->file2->move(public_path('backend/assets/ticket_files'), $file2);
+            $request->file2->move(public_path('/backend/assets/ticket_files'), $file2);
         }
         if ($request->hasFile('file3')) {
             $file3 = $request->file('file3')->getClientOriginalName() . '_' . uniqid() . '.' . $request->file3->getClientOriginalExtension();
-            $request->file3->move(public_path('backend/assets/ticket_files'), $file3);
+            $request->file3->move(public_path('/backend/assets/ticket_files'), $file3);
         }
         if ($request->hasFile('file4')) {
             $file4 = $request->file('file4')->getClientOriginalName() . '_' . uniqid() . '.' . $request->file4->getClientOriginalExtension();
-            $request->file4->move(public_path('backend/assets/ticket_files'), $file4);
+            $request->file4->move(public_path('/backend/assets/ticket_files'), $file4);
         }
 
         $insert = Tickets::create([
