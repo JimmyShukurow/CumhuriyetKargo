@@ -593,7 +593,6 @@ function getTCofAgency($agency_id)
         ->where('id', $agency_id)
         ->first();
 
-
     $tcLocation = DB::table('transshipment_center_districts')
         ->where('city', $agency->city)
         ->where('district', $agency->district)
@@ -606,6 +605,16 @@ function getTCofAgency($agency_id)
     return $tc;
 }
 
+# this function for api
+function FileUrlGenerator($file)
+{
+    $url = "https://www.nurullahguc.com/backend/assets/ticket_files/";
+    if ($file == '')
+        return $file;
+    else
+        return $file = $url . $file;
+
+}
 
 
 

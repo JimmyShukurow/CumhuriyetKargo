@@ -197,16 +197,22 @@ class DefaultController extends Controller
                         ->first();
 
                     $userID = Auth::id();
+
+                    $file1 = FileUrlGenerator($request->file1);
+                    $file2 = FileUrlGenerator($request->file2);
+                    $file3 = FileUrlGenerator($request->file3);
+                    $file4 = FileUrlGenerator($request->file4);
+
                     $array[] = [
                         'id' => "0",
                         'ticket_id' => "$ticket_id",
                         'user_id' => "$userID",
                         //                        'message' => substr($realTicket->message, '0', 1) != '#' ? strip_tags($realTicket->message) : $realTicket->message,
                         'message' => $realTicket->message,
-                        'file1' => $realTicket->file1,
-                        'file2' => $realTicket->file2,
-                        'file3' => $realTicket->file3,
-                        'file4' => $realTicket->file4,
+                        'file1' => $file1,
+                        'file2' => $file2,
+                        'file3' => $file3,
+                        'file4' => $file4,
                         'created_at' => $realTicket->created_at,
                         'updated_at' => $realTicket->updated_at,
                         'name_surname' => $realTicket->name_surname,
@@ -247,17 +253,21 @@ class DefaultController extends Controller
                             $is_message = "0";
                         }
 
+                        $file1 = FileUrlGenerator($key->file1);
+                        $file2 = FileUrlGenerator($key->file2);
+                        $file3 = FileUrlGenerator($key->file3);
+                        $file4 = FileUrlGenerator($key->file4);
 
                         $array[] = [
                             'id' => "$key->id",
                             'ticket_id' => "$key->ticket_id",
                             'user_id' => "$key->user_id",
-                            'file1' => $key->file1,
-//                            'message' => substr($key->message, '0', 1) != '#' ? strip_tags($key->message) : $key->message,
+                            // 'message' => substr($key->message, '0', 1) != '#' ? strip_tags($key->message) : $key->message,
                             'message' => $message,
-                            'file2' => $key->file2,
-                            'file3' => $key->file3,
-                            'file4' => $key->file4,
+                            'file1' => $file1,
+                            'file2' => $file2,
+                            'file3' => $file3,
+                            'file4' => $file4,
                             'created_at' => $key->created_at,
                             'updated_at' => $key->updated_at,
                             'name_surname' => $key->name_surname,
@@ -270,6 +280,7 @@ class DefaultController extends Controller
                             'is_massage' => $is_message,
                             'time_for_humans' => Carbon::parse($key->created_at)->diffForHumans()
                         ];
+
                     }
                     $data['ticket_details'] = $array;
                 }
