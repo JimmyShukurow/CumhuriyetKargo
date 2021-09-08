@@ -454,7 +454,7 @@ function getSystemVersion()
     if ($latestVersion === null)
         return '2.0.0.0';
 
-    return $latestVersion->version;
+    return $latestVersion;
 }
 
 function CatchDesiInterval($desi)

@@ -60,7 +60,7 @@
                         <div class="col-md-4">
                             <div class="position-relative form-group">
                                 <label for="plaque" class="">Plaka:</label>
-                                <input type="text" placeholder="Araç plakasını giriniz." name="plaque" required
+                                <input type="text" placeholder="Araç plakasını giriniz." name="plaque"
                                        id="plaque" value="{{old('plaque')}}" class="form-control">
                             </div>
                         </div>
@@ -109,8 +109,8 @@
                         </div>
                         <div class="col-md-4">
                             <div class="position-relative form-group">
-                                <label for="driver_name" class="">Şöför Adı:</label>
-                                <input type="text" placeholder="Şöförün adını giriniz" name="driver_name" required
+                                <label for="driver_name" class="">Muhattap:</label>
+                                <input type="text" placeholder="Muhattap adını giriniz" name="driver_name" required
                                        id="driver_name" value="{{old('driver_name')}}" class="form-control">
                             </div>
                         </div>

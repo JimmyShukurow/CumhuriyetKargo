@@ -415,9 +415,9 @@ class ModuleController extends Controller
 
     public function systemUpdateCreate()
     {
-        return view('backend.module.system_update.admin.create');
+        $version = getSystemVersion();
+        return view('backend.module.system_update.admin.create', compact('version'));
     }
-
 
     public function systemUpdateEdit($id)
     {
@@ -433,7 +433,7 @@ class ModuleController extends Controller
     public function systemUpdateUpdate(Request $request)
     {
         $request->validate([
-            'version' => 'required|min:8',
+            'version' => 'required',
             'title' => 'required|max:200|',
             'content' => 'required|min:3'
         ]);

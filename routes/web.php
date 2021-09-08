@@ -88,6 +88,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('GetCargoes', [MainCargoController::class, 'getMainCargoes'])->name('getCargoes')
             ->middleware('throttle:20,1');
         Route::post('AjaxTransactions/{transaction}', [MainCargoController::class, 'ajaxTransacrtions']);
+        Route::get('StatementOfResponsibility/{ctn}', [MainCargoController::class, 'statementOfResponsibility']);
     });
 
     Route::group(['prefix' => 'Operation'], function () {
@@ -254,7 +255,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
             Route::get('/SystemUpdate/Create', [ModuleController::class, 'systemUpdateCreate'])->name('systemUpdate.Create');
             Route::post('/SystemUpdate/Insert', [ModuleController::class, 'systemUpdateInsert'])->name('systemUpdate.Insert');
             Route::get('/SystemUpdate/Edit/{id}', [ModuleController::class, 'systemUpdateEdit'])->name('systemUpdate.Edit');
-            Route::get('/SystemUpdate/Update/{id}', [ModuleController::class, 'systemUpdateUpdate'])->name('systemUpdate.Update');
+            Route::post('/SystemUpdate/Update/{id}', [ModuleController::class, 'systemUpdateUpdate'])->name('systemUpdate.Update');
             Route::get('/SystemUpdate/Delete/{id}', [ModuleController::class, 'systemUpdateDelete'])->name('systemUpdate.Delete');
 
 

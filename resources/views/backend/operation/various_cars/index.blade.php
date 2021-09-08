@@ -116,7 +116,7 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label for="driverName">Şöför Adı:</label>
+                            <label for="driverName">Muhattap:</label>
                             <input type="text" id="driverName"
                                    class="form-control niko-filter form-control-sm niko-select-filter">
                         </div>
@@ -124,7 +124,7 @@
 
                         <div class="col-md-3">
                             <label for="phoneInfo">İletişim:</label>
-                            <input type="text" data-inputmask="'mask': '538 069 22 99'"
+                            <input type="text" data-inputmask="'mask': '(999) 999 99 99'"
                                    placeholder="___ ___ __ __" type="text" id="phoneInfo"
                                    class="form-control input-mask-trigger form-control-sm niko-filter">
                         </div>

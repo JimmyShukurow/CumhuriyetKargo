@@ -37,7 +37,7 @@
             <div class="card-body">
                 <h5 class="card-title">Sistem Detaylarını Güncelle</h5>
                 {{--                <form id="TransshipmentCenterForm" method="POST" action="{{ route('TransshipmentCenters.store') }}">--}}
-                <form method="POST" action="{{ route('module.systemUpdate.Insert') }}">
+                <form method="POST" action="{{ route('module.systemUpdate.Update', $data->id) }}">
                     @csrf
                     <input type="hidden" name="id" value="{{$data->id}}">
                     <div class="form-row">

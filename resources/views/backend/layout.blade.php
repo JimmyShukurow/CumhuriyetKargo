@@ -1076,8 +1076,17 @@
                                 <li class="nav-item">
                                     <a href="/SystemUpdates"
                                        class="nav-link">
-                                        <b><span class="badge badge-danger">Yeni Güncelleme</span> CKG-Sis
-                                            V{{getSystemVersion()}}</b>
+
+                                        @php $version = getSystemVersion(); @endphp
+                                        @php $diffHour = \Carbon\Carbon::parse($version->created_at)->diffInHours(date(date('Y-m-d H:i:s'))) @endphp
+                                        <b>
+                                            @if($diffHour < 24)
+                                                <span id="spanNewUpdate"
+                                                      title="{{\Carbon\Carbon::parse($version->created_at)->diffForHumans()}}"
+                                                      class="badge badge-danger">Yeni Güncelleme</span>
+                                            @endif
+                                            CKG-Sis V{{$version->version}}
+                                        </b>
                                         <div style="text-transform: none ;" class="badge bg-ck ml-0 ml-1">
                                             <small>Powered By CKG-Team</small>
                                         </div>
@@ -1093,7 +1102,7 @@
 </div>
 <div class="app-drawer-overlay d-none animated fadeIn"></div>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="/backend/assets/scripts/jquery.min.js"></script>
 <script src="/backend/assets/scripts/toastr.js"></script>
 <script>
     @if (Session::has('error'))
@@ -1114,12 +1123,30 @@
 @yield('js')
 
 <script>
-
     // var vid = document.getElementById("bildirimSes");
     // vid.muted = true;
     // vid.play();
     // vid.muted = false;
     // vid.play();
+
+    @if($diffHour < 24)
+
+    let counter = 0;
+    setInterval(function () {
+
+        counter++;
+        if (counter % 2 == 0) {
+            $('#spanNewUpdate').removeClass('badge-danger');
+            $('#spanNewUpdate').addClass('badge-warning');
+        } else {
+            $('#spanNewUpdate').addClass('badge-danger');
+            $('#spanNewUpdate').removeClass('badge-warning');
+        }
+
+        if (counter >= 500)
+            counter = 0;
+    }, 900);
+    @endif
 
     function sendMarkRequest(id = null) {
         return $.ajax("{{route('personel.markAsRead')}}", {

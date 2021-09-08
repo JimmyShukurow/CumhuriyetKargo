@@ -991,12 +991,16 @@
 
                                             <div class="col-sm-4">
                                                 <div class="p-1">
-                                                    <button id="btnEnabledDisabled"
-                                                            class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
-                                                        <i class="lnr-construction text-danger opacity-7 btn-icon-wrapper mb-2">
-                                                        </i>
-                                                        Hesabı Aktif/Pasif Yap
-                                                    </button>
+                                                    <a style="text-decoration: none;" id="PrintStatementOfResposibility"
+                                                       target="_blank"
+                                                       href="">
+                                                        <button id=""
+                                                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-primary">
+                                                            <i class="pe-7s-ribbon text-primary opacity-7 btn-icon-wrapper mb-2">
+                                                            </i>
+                                                            Sorumluluk Taahütnamesi
+                                                        </button>
+                                                    </a>
                                                 </div>
                                             </div>
 

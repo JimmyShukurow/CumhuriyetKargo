@@ -371,6 +371,8 @@ function cargoInfo(user) {
             $('td#serviceFee').text(cargo.service_price + "₺");
             $('td#totalFee').text(cargo.total_price + "₺");
 
+            $('#PrintStatementOfResposibility').attr('href', '/MainCargo/StatementOfResponsibility/' + cargo.tracking_no);
+
             var addServiceTotalPrice = 0;
             $('#tbodyCargoAddServices').html('');
 

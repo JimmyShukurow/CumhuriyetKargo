@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class MainCargoController extends Controller
 {
@@ -863,7 +864,7 @@ class MainCargoController extends Controller
                     return response()
                         ->json([
                             'status' => -1,
-                            'message' => 'Alıcı için dağıtım yapılmayan bölge: ' . $receiver->neighborhood . '. NOT: Şube teslim olarak işaretlendi'
+                            'message' => 'Alıcı için dağıtım yapılmayan bölge: ' . $receiver->neighborhood
                         ]);
 
                 $arrivalAgency = DB::table('agencies')
@@ -920,6 +921,8 @@ class MainCargoController extends Controller
                     }
                     $addServicePrice += $service->price;
                 }
+
+//                return $addServicePrice;
 
                 if ($request->ekHizmetFiyat != $addServicePrice)
                     return response()
@@ -1213,14 +1216,11 @@ class MainCargoController extends Controller
                     'cargo_type' => $cargoType,
                     'cargo_content' => tr_strtoupper($request->kargoIcerigi),
                     'cargo_content_ex' => tr_strtoupper($request->kargoIcerigiAciklama),
-
                     'tracking_no' => $ctn,
                     'arrival_city' => $receiver->city,
                     'arrival_district' => $receiver->district,
-
                     'arrival_agency_code' => $arrivalAgency->id,
                     'arrival_tc_code' => $arrivalTC->id,
-
                     'departure_city' => $userGeneralInfo->branch_city,
                     'departure_district' => $userGeneralInfo->branch_district,
                     'departure_agency_code' => Auth::user()->agency_code,
@@ -1476,7 +1476,7 @@ class MainCargoController extends Controller
                     return response()
                         ->json([
                             'status' => 0,
-                            'message' => 'Alıcı için dağıtım yapılmayan bölge: ' . $receiver->neighborhood . '. NOT: Şube teslim olarak işaretlendi'
+                            'message' => 'Alıcı için dağıtım yapılmayan bölge: ' . $receiver->neighborhood
                         ]);
 
                 $agency = DB::table('agencies')
@@ -1720,7 +1720,6 @@ class MainCargoController extends Controller
             ->make(true);
     }
 
-
     public function getGlobalCargoes(Request $request)
     {
         $trackingNo = str_replace([' ', '_'], ['', ''], $request->trackingNo);
@@ -1835,6 +1834,38 @@ class MainCargoController extends Controller
             ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
             ->rawColumns(['edit', 'cargo_type', 'agency_name', 'status_for_human', 'total_price', 'collectible', 'payment_type', 'collection_fee', 'status', 'name_surname', 'created_at'])
             ->make(true);
+    }
+
+    public function statementOfResponsibility($ctn)
+    {
+        $ctn = str_replace(' ', '', $ctn);
+
+        $templateProccessor = new TemplateProcessor('backend/word-template/StatementOfResposibility.docx');
+
+        $cargo = Cargoes::where('tracking_no', $ctn)->first();
+        $sender = Currents::find($cargo->sender_id);
+
+        $templateProccessor
+            ->setValue('date', date('d/m/Y'));
+        $templateProccessor
+            ->setValue('name', $cargo->sender_name);
+        $templateProccessor
+            ->setValue('tckn', $sender->tckn);
+        $templateProccessor
+            ->setValue('phone', $cargo->sender_phone);
+        $templateProccessor
+            ->setValue('address', $cargo->sender_address);
+        $templateProccessor
+            ->setValue('ctn', TrackingNumberDesign($cargo->tracking_no));
+
+        $fileName = 'ST-' . substr($cargo->sender_name, 0, 30) . '.docx';
+
+        $templateProccessor
+            ->saveAs($fileName);
+
+        return response()
+            ->download($fileName)
+            ->deleteFileAfterSend(true);
     }
 
 }

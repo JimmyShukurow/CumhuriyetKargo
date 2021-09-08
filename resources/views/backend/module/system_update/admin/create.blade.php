@@ -45,7 +45,7 @@
                                 <label class="">Sistem Versiyonu*</label>
                                 <div class="input-group">
                                     <input type="text" name="version" required class="form-control"
-                                           value="{{old('version')}}" placeholder="Sistem Versiyonunu Giriniz">
+                                           value="{{$version->version}}" placeholder="Sistem Versiyonunu Giriniz">
                                 </div>
                             </div>
                             <div class="position-relative form-group">

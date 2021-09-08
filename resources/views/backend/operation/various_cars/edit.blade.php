@@ -62,7 +62,7 @@
                         <div class="col-md-4">
                             <div class="position-relative form-group">
                                 <label for="link" class="">Plaka:</label>
-                                <input type="text" placeholder="Araç plakasını giriniz." name="plaque" required
+                                <input type="text" placeholder="Araç plakasını giriniz." name="plaque"
                                        id="plaque" value="{{ $data['various_car']->plaque}}" class="form-control">
                             </div>
                         </div>
@@ -117,8 +117,8 @@
                         </div>
                         <div class="col-md-4">
                             <div class="position-relative form-group">
-                                <label for="link" class="">Şöför Adı:</label>
-                                <input type="text" placeholder="Şöförün adını giriniz" name="driver_name" required
+                                <label for="link" class="">Muhattap:</label>
+                                <input type="text" placeholder="Muhattap adını giriniz" name="driver_name"
                                        id="driver_name" value="{{ $data['various_car']->driver_name}}"
                                        class="form-control">
                             </div>

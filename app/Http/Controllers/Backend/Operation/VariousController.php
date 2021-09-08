@@ -54,7 +54,6 @@ class VariousController extends Controller
         $request->validate([
             'arac_marka' => 'required',
             'model' => 'required',
-            'plaque' => 'required',
             'tonnage' => 'required|numeric',
             'case_type' => 'required',
             'model_year' => 'required',
@@ -126,7 +125,6 @@ class VariousController extends Controller
         $request->validate([
             'arac_marka' => 'required',
             'model' => 'required',
-            'plaque' => 'required',
             'tonnage' => 'required',
             'case_type' => 'required',
             'model_year' => 'required',
@@ -196,7 +194,7 @@ class VariousController extends Controller
             ->whereRaw($caseType ? "case_type='" . $caseType . "'" : '1 > 0')
             ->whereRaw($driverName ? "driver_name like '%" . $driverName . "%'" : '1 > 0')
             ->whereRaw($addPerson ? "name_surname like '%" . $addPerson . "%'" : '1 > 0')
-            ->whereRaw($phoneInfo ? "phone='" . $phoneInfo . "'" : '1 > 0')
+            ->whereRaw($phoneInfo ? "variouses.phone='" . $phoneInfo . "'" : '1 > 0')
             ->whereRaw($searchCity ? "city='" . $searchCity . "'" : '1 > 0')
             ->whereRaw($tonnageCar ? "tonnage='" . $tonnageCar . "'" : '1 > 0');
 

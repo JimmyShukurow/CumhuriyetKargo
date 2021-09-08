@@ -1,4 +1,9 @@
 var CurrentCity = "", DistancePrice = 0, PaymentType = 'Gönderici Ödemeli', CargoType = "Dosya";
+var MobilBolge = $('#add-service-19');
+var AdreseTeslim = $('#add-service-8');
+var SubeTeslim = $('#add-service-11');
+
+MobilBolge.prop('disabled', true);
 
 $(document).ready(function () {
     $('#gondericiAdi').select2({
@@ -55,6 +60,15 @@ $(document).ready(function () {
         placeholder: "Alıcı Arayın",
     });
     $('#containerReciverCorporate').hide();
+
+    // Local Storage Transaction START
+    let seriMod = localStorage.getItem('seriMod');
+    if (seriMod) {
+        $('#seriMod').prop('checked', true);
+        getCurrentInfo(localStorage.getItem('currentCode'));
+        localStorage.clear();
+    }
+    // Local Storage Transaction END
 });
 
 $(document).on('click', '#btnGondericiOlustur', function () {
@@ -544,8 +558,10 @@ function DistributionControl(neighborhood = '') {
         console.log(response);
         if (response.status == 0) {
             ToastMessage('error', response.message, 'Hata!');
-            $('#dagitimDurumu').val('DAĞITIM YOK');
-            $('#dagitimDurumu').toggleClass('text-alternate text-danger');
+            $('#dagitimDurumu').val('AT DIŞI - DAĞITIM YOK');
+            $('#dagitimDurumu').removeClass('text-alternate');
+            $('#dagitimDurumu').addClass('text-danger');
+
         } else if (response.status == 1) {
             $('#varisSube').val(response.arrival_agency);
             $('#varisTransferMerkezi').val(response.arrival_tc + " TM");
@@ -554,8 +570,26 @@ function DistributionControl(neighborhood = '') {
             $('#dagitimDurumu').removeClass('text-alternate');
             $('#dagitimDurumu').addClass('text-success');
 
-            if (response.area_type == 'Mobil Bölge')
-                ToastMessage('warning', "Bölge mobil olarak kayıtlı, teslimat gecikmeli olabilir. Bölge: " + $('#aliciMahalle').val())
+            if (response.area_type == 'Mobil Bölge') {
+                ToastMessage('warning', "Bölge mobil olarak kayıtlı, teslimat gecikmeli olabilir. Bölge: " + $('#aliciMahalle').val() + " (Mobil olarak işaretlendi!)");
+
+                if (MobilBolge.prop('checked') == false) {
+                    MobilBolge.prop('disabled', false);
+                    MobilBolge.click();
+                    MobilBolge.prop('disabled', true);
+                    calculateTotalPrice();
+                    clearAddServices();
+                }
+
+            } else if (response.area_type == 'Ana Bölge') {
+                if (MobilBolge.prop('checked') == true) {
+                    MobilBolge.prop('disabled', false);
+                    MobilBolge.click();
+                    MobilBolge.prop('disabled', true);
+                }
+                calculateTotalPrice();
+                clearAddServices();
+            }
 
         }
 
@@ -566,6 +600,11 @@ function DistributionControl(neighborhood = '') {
         $('#divider-gonderici').unblock();
     });
 
+}
+
+function clearAddServices() {
+    AdreseTeslim.prop('disabled', false);
+    SubeTeslim.prop('disabled', false);
 }
 
 function getCurrentInfo(currentCode, tryExist = false) {
@@ -607,12 +646,6 @@ function getCurrentInfo(currentCode, tryExist = false) {
             $('#gondericiMusteriTipi').val('Kurumsal - Anlaşmalı Cari');
             $('#gondericiMusteriTipi').addClass('text-success');
             $('#gondericiMusteriTipi').removeClass('text-primary');
-        }
-
-        if ($('#gondericiCariKod').val() == $('#aliciCariKod').val()) {
-            $('#gondericiCariKod').val('');
-            ToastMessage('error', 'Alıcı ve gönderici aynı olamaz!', 'Hata!');
-            return false;
         }
 
         let legal_number = response.tckn != '' ? response.tckn : response.vkn;
@@ -1064,12 +1097,6 @@ function getDistance(startPoint, endPoint) {
     }
 
 }
-
-function myConfirmation() {
-    return 'Are you sure you want to quit?';
-}
-
-window.onbeforeunload = myConfirmation;
 
 // ==================> ############### <======================= \\
 // ==================> CALC DESI START <======================= \\
@@ -1580,11 +1607,27 @@ function createCargo() {
     // Check Parts Of Cargo End
 
     function getFormData($form) {
+
+        // $('.add-fee').prop('disabled', false);
+
         var unindexed_array = $form.serializeArray();
         var indexed_array = {};
+
+        let disableElements = $(':disabled');
+
+        let disableElementsArray = [];
+        for (let i = 0; i < disableElements.length; i++) {
+            disableElementsArray.push(i);
+            $('#' + disableElements[i].id).prop('disabled', false);
+        }
+
         $.map(unindexed_array, function (n, i) {
             indexed_array[n['name']] = n['value'];
         });
+
+        for (let i = 0; i < disableElementsArray.length; i++) {
+            $('#' + disableElements[i].id).prop('disabled', false);
+        }
         return indexed_array;
     }
 
@@ -1627,6 +1670,17 @@ function createCargo() {
             return false;
         } else if (response.status == 1) {
             ToastMessage('success', response.message, 'İşlem Başarılı!');
+
+            window.onbeforeunload = null;
+            if ($('#seriMod').prop('checked') == true) {
+                localStorage.setItem('seriMod', true);
+                localStorage.setItem('currentCode', $('#aliciCariKod').val());
+                window.location.reload();
+            } else {
+                location.href = "/";
+            }
+
+            $('#btnCargoComplate').prop('disabled', true);
             return false;
         } else if (response.status == 0) {
             $.each(response.errors, function (index, value) {
@@ -1636,8 +1690,9 @@ function createCargo() {
 
     }).error(function (jqXHR, exception) {
         ajaxError(jqXHR.status)
-    }).always(function () {
         clearPage();
+    }).always(function () {
+
     });
     //# Create Order End
 }
@@ -1785,7 +1840,10 @@ $('#TahsilatFaturaTutari').keyup(delay(function () {
 }, 1000));
 
 
+function myConfirmation() {
+    return 'Are you sure you want to quit?';
+}
 
-
+window.onbeforeunload = myConfirmation;
 
 
