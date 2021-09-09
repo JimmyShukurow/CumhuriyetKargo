@@ -393,7 +393,8 @@
                                     <div class="position-relative form-group">
                                         <label for="contractStartDate" class="">Sözleşme Başlangıç Tarihi:</label>
                                         <input name="sozlesmeBaslangicTarihi" required id="contractStartDate"
-                                               type="date" value="{{old('sozlesmeBaslangicTarihi')}}"
+                                               type="date"
+                                               value="{{old('sozlesmeBaslangicTarihi') == '' ?  date('Y-m-d') : old('sozlesmeBaslangicTarihi')}}"
                                                class="form-control input-mask-trigger form-control-sm">
                                     </div>
                                 </div>
@@ -401,8 +402,13 @@
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="contractEndDate" class="">Sözleşme Bitiş Tarihi:</label>
-                                        <input name="sozlesmeBitisTarihi" required id="contractEndDate"
-                                               type="date" value="{{old('sozlesmeBitisTarihi')}}"
+
+                                        @php $date = \Carbon\Carbon::createFromDate(date('Y')) @endphp
+                                        @php $endOfYear = \Carbon\Carbon::parse(date('Y-m-d'))->endOfYear()->format('Y-m-d') @endphp
+
+                                        <input readonly name="sozlesmeBitisTarihi" required id="contractEndDate"
+                                               type="date"
+                                               value="{{$endOfYear}}"
                                                class="form-control input-mask-trigger form-control-sm">
                                     </div>
                                 </div>

@@ -1667,6 +1667,7 @@ function createCargo() {
 
         if (response.status == -1) {
             ToastMessage('error', response.message, 'Hata!');
+            $('#btnCargoComplate').prop('disabled', false);
             return false;
         } else if (response.status == 1) {
             ToastMessage('success', response.message, 'İşlem Başarılı!');
@@ -1677,6 +1678,7 @@ function createCargo() {
                 localStorage.setItem('currentCode', $('#aliciCariKod').val());
                 window.location.reload();
             } else {
+                localStorage.setItem('cargo-success', true);
                 location.href = "/";
             }
 

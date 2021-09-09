@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Notifications\GeneralNotify;
 use App\Rules\AgencyControl;
 use App\Rules\PriceControl;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,8 +22,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use phpDocumentor\Reflection\Types\Collection;
 use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Current;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\TemplateProcessor;
 use Spatie\Activitylog\Models\Activity;
 use function GuzzleHttp\Promise\all;
+use PhpOffice\PhpWord\Writer\PDF;
 
 class SenderCurrentController extends Controller
 {
@@ -141,6 +145,10 @@ class SenderCurrentController extends Controller
                 ->exists();
         }
 
+        $date = \Carbon\Carbon::createFromDate(date('Y'));
+        $endOfYear = \Carbon\Carbon::parse(date('Y-m-d'))->endOfYear();
+
+
         ### => insert transaction
         $insert = Currents::create([
             'current_type' => 'Gönderici',
@@ -177,7 +185,7 @@ class SenderCurrentController extends Controller
             'confirmed' => '0',
             'created_by_user_id' => Auth::id(),
             'contract_start_date' => $request->sozlesmeBaslangicTarihi,
-            'contract_end_date' => $request->sozlesmeBitisTarihi,
+            'contract_end_date' => $endOfYear,
         ]);
 
         if ($insert) {
@@ -350,7 +358,7 @@ class SenderCurrentController extends Controller
                 'reference' => tr_strtoupper($request->referans),
                 'created_by_user_id' => Auth::id(),
                 'contract_start_date' => $request->sozlesmeBaslangicTarihi,
-                'contract_end_date' => $request->sozlesmeBitisTarihi,
+                'contract_end_date' => $request->sozlesmeBitisTarihi . ' 23:59:58',
             ]);
 
         if ($update) {
@@ -638,5 +646,66 @@ class SenderCurrentController extends Controller
 
         return response()->json(['data' => $data, 'cargo' => $cargo]);
     }
- 
+
+
+    public function printCurrentContract($CurrentCode)
+    {
+
+        $CurrentCode = str_replace(' ', '', $CurrentCode);
+        $templateProccessor = new TemplateProcessor('backend/word-template/CurrentContract.docx');
+
+        $current = Currents::where('current_code', $CurrentCode)->first();
+        $currentPrice = CurrentPrices::where('current_code', $CurrentCode)->first();
+        $agency = Agencies::find($current->agency);
+
+        $templateProccessor->setValue('date', date('d/m/Y'));
+        $templateProccessor->setValue('name', $current->name);
+
+        $templateProccessor->setValue('file', $currentPrice->file_price);
+        $templateProccessor->setValue('d1_5', $currentPrice->d_1_5);
+        $templateProccessor->setValue('d6_10', $currentPrice->d_6_10);
+        $templateProccessor->setValue('d11_15', $currentPrice->d_11_15);
+        $templateProccessor->setValue('d16_20', $currentPrice->d_16_20);
+        $templateProccessor->setValue('d21_25', $currentPrice->d_21_25);
+        $templateProccessor->setValue('d26_30', $currentPrice->d_26_30);
+        $templateProccessor->setValue('amount_of_increase', $currentPrice->amount_of_increase);
+
+        $templateProccessor->setValue('CurrentCode', CurrentCodeDesign($current->current_code));
+        $templateProccessor->setValue('category', $current->category);
+        $templateProccessor->setValue('tax_office', $current->tax_administration);
+        $templateProccessor->setValue('vkn', $current->tckn);
+        $templateProccessor->setValue('agency', $agency->city . '/' . $agency->district . " - " . $agency->agency_name . " (" . $agency->agency_code . ")");
+        $templateProccessor->setValue('contract_start_date', Carbon::parse($current->contract_start_date)->format('d/m/Y'));
+        $templateProccessor->setValue('contract_end_date', Carbon::parse($current->contract_end_date)->format('d/m/Y'));
+        $templateProccessor->setValue('contract_lifetime', Carbon::parse($current->contract_start_date)->diffInDays($current->contract_end_date));
+
+        $fileName = 'CS-' . substr($current->name, 0, 30) . '.docx';
+        $pdfName = 'CS-' . substr($current->name, 0, 30) . '.pdf';
+
+
+        $templateProccessor
+            ->saveAs($fileName);
+
+        return response()
+            ->download($fileName)
+            ->deleteFileAfterSend(true);
+
+//        /* Set the PDF Engine Renderer Path */
+//        $domPdfPath = base_path('vendor/dompdf/dompdf');
+//        \PhpOffice\PhpWord\Settings::setPdfRendererPath($domPdfPath);
+//        \PhpOffice\PhpWord\Settings::setPdfRendererName('DomPDF');
+//
+//        $content = IOFactory::load($fileName);
+//
+//        $PdfWriter = IOFactory::createWriter($content, 'PDF');
+//
+//        $PdfWriter->save($pdfName);
+//
+//        return response()
+//            ->download($pdfName)
+//            ->deleteFileAfterSend(true);
+
+
+    }
+
 }

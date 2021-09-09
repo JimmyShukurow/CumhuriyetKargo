@@ -9,6 +9,7 @@ use App\Models\RoleModules;
 use App\Models\Roles;
 use App\Models\SubModules;
 use App\Models\SystemUpdate;
+use App\Models\ThemeSystem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
@@ -498,6 +499,30 @@ class ModuleController extends Controller
     public function systemUpdateShow($id)
     {
         return SystemUpdate::findOrFail($id);
+    }
+
+    public function changeTheme(Request $request)
+    {
+
+
+        $theme = ThemeSystem::find(1)
+            ->update([
+                'header' => $request->header,
+                'sidebar' => $request->sidebar,
+                'logo' => $request->logo,
+                'avatar' => $request->avatar,
+            ]);
+
+        if ($theme)
+            return response()
+                ->json(['status' => 1]);
+        else
+            return response()
+                ->json(['status' => 0, 'message' => 'Bir hata oluştu, lütfen daha sonra tekrar deneyiniz!']);
+
+
+        return $request->all();
+
     }
 
 }

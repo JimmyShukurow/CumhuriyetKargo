@@ -427,17 +427,22 @@
                 $('#contractEndDate').html(response.current.contract_end_date);
                 $('#reference').html(response.current.reference);
                 $('#currentCreatorUser').html(response.current.creator_user_name + " " + creatorDisplayName);
-                $('#currentFilePrice').html(response.price.file_price + "₺");
-                $('#current1_5Desi').html(response.price.d_1_5 + "₺");
-                $('#current6_10Desi').html(response.price.d_6_10 + "₺");
-                $('#current11_15Desi').html(response.price.d_11_15 + "₺");
-                $('#current16_20Desi').html(response.price.d_16_20 + "₺");
-                $('#current21_25Desi').html(response.price.d_21_25 + "₺");
-                $('#current26_30Desi').html(response.price.d_26_30 + "₺");
-                $('#currentAmountOfIncrease').html(response.price.amount_of_increase + "₺");
-                $('#currentCollectPrice').html(response.price.collect_price + "₺");
-                $('#collectAmountOfIncrease').html("%" + response.price.collect_amount_of_increase);
-                $('#currentConfirmed').html(currentConfirmed);
+
+                if (response.current.category == 'Kurumsal') {
+
+                    $('#currentFilePrice').html(response.price.file_price + "₺");
+                    $('#current1_5Desi').html(response.price.d_1_5 + "₺");
+                    $('#current6_10Desi').html(response.price.d_6_10 + "₺");
+                    $('#current11_15Desi').html(response.price.d_11_15 + "₺");
+                    $('#current16_20Desi').html(response.price.d_16_20 + "₺");
+                    $('#current21_25Desi').html(response.price.d_21_25 + "₺");
+                    $('#current26_30Desi').html(response.price.d_26_30 + "₺");
+                    $('#currentAmountOfIncrease').html(response.price.amount_of_increase + "₺");
+                    $('#currentCollectPrice').html(response.price.collect_price + "₺");
+                    $('#collectAmountOfIncrease').html("%" + response.price.collect_amount_of_increase);
+                    $('#currentConfirmed').html(currentConfirmed);
+                    $('#PrintCurrentContract').attr('href', '/SenderCurrents/CurrentContract/' + response.current.current_code);
+                }
 
                 $('.modal-body').unblock();
                 return false;
@@ -609,7 +614,7 @@
                                     <div class="grid-menu grid-menu-2col">
                                         <div class="no-gutters row">
 
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-3">
                                                 <div class="p-1">
                                                     <button id="btnEnabledDisabled"
                                                             class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
@@ -620,7 +625,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-3">
                                                 <div class="p-1">
                                                     <button id="btnPrintModal"
                                                             class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-primary">
@@ -631,7 +636,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-3">
                                                 <div class="p-1">
                                                     <button id="btnCurrentPerformanceReport"
                                                             class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-alternate">
@@ -639,6 +644,21 @@
                                                         </i>
                                                         Cari Performans Raporu
                                                     </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-3">
+                                                <div class="p-1">
+                                                    <a style="text-decoration: none;" id="PrintCurrentContract"
+                                                       target="_blank"
+                                                       href="">
+                                                        <button id=""
+                                                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
+                                                            <i class="pe-7s-ribbon text-dark opacity-7 btn-icon-wrapper mb-2">
+                                                            </i>
+                                                            Sözleşme Yazdır
+                                                        </button>
+                                                    </a>
                                                 </div>
                                             </div>
 

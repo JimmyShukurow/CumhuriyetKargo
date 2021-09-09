@@ -26,19 +26,6 @@
             <div class="card-body">
                 <h5 class="card-title"></h5>
 
-
-            </div>
-        </div>
-    </div>
-@endsection
-
-@section("theme-settings")
-    <div class="ui-theme-settings">
-        <button type="button" id="TooltipDemo" class="btn-open-options btn btn-warning">
-            <i class="fa fa-cog fa-w-16 fa-spin fa-2x"></i>
-        </button>
-        <div class="theme-settings__inner">
-            <div class="scrollbar-container">
                 <div class="theme-settings__options-wrapper">
                     <h3 class="themeoptions-heading">Layout Options
                     </h3>
@@ -110,6 +97,52 @@
                                     </div>
                                 </div>
                             </li>
+
+                            <li class="list-group-item">
+                                <div class="widget-content p-0">
+                                    <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">Logo
+                                            </div>
+                                            <div class="widget-subheading">Logonuzu seçin
+                                            </div>
+                                        </div>
+
+                                        <div class="widger-content-right">
+                                            <select style="width: 150px;" class="ml-4 form-control" name=""
+                                                    id="selectLogo">
+                                                <option value="default">Default</option>
+                                                <option value="blue">Blue</option>
+                                                <option value="white">White</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="widget-content p-0">
+                                    <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">Avatar
+                                            </div>
+                                            <div class="widget-subheading">Avatar seçin
+                                            </div>
+                                        </div>
+
+                                        <div class="widger-content-right">
+                                            <select style="width: 150px;" class="ml-4 form-control" name=""
+                                                    id="selectAvatar">
+                                                <option value="default">Default</option>
+                                                <option value="blue">Blue</option>
+                                                <option value="white">White</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+
                         </ul>
                     </div>
                     <h3 class="themeoptions-heading">
@@ -127,7 +160,7 @@
                             <li class="list-group-item">
                                 <h5 class="pb-2">Choose Color Scheme
                                 </h5>
-                                <div class="theme-settings-swatches">
+                                <div class="theme-settings-swatches theme-box-header">
                                     <div class="swatch-holder bg-primary switch-header-cs-class"
                                          data-class="bg-primary header-text-light">
                                     </div>
@@ -244,6 +277,13 @@
                     </div>
                     <h3 class="themeoptions-heading">
                         <div>Sidebar Options</div>
+
+                        <button type="button" id="btnSaveTheme"
+                                class="btn-pill btn-primary btn-shadow btn-wide ml-auto btn btn-focus btn-sm "
+                                data-class="">
+                            Temayı Kaydet
+                        </button>
+
                         <button type="button"
                                 class="btn-pill btn-shadow btn-wide ml-auto btn btn-focus btn-sm switch-sidebar-cs-class"
                                 data-class="">
@@ -254,9 +294,9 @@
                         <ul class="list-group">
 
                             <li class="list-group-item">
-                                <h5 class="pb-2">Choose Color Scheme
+                                <h5 class="pb-2">Choose Color Scheme 2
                                 </h5>
-                                <div class="theme-settings-swatches">
+                                <div class="theme-settings-swatches theme-box-sidebar">
                                     <div class="swatch-holder bg-primary switch-sidebar-cs-class"
                                          data-class="bg-primary sidebar-text-light">
                                     </div>
@@ -420,11 +460,94 @@
                         </ul>
                     </div>
                 </div>
+
+
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section("theme-settings")
+    <div class="ui-theme-settings">
+        <button type="button" id="TooltipDemo" class="btn-open-options btn btn-warning">
+            <i class="fa fa-cog fa-w-16 fa-spin fa-2x"></i>
+        </button>
+        <div class="theme-settings__inner">
+            <div class="scrollbar-container">
             </div>
         </div>
     </div>
 @endsection
 
 @section('js')
+    <script>
+        var header = 'bg-asteroid header-text-light', sidebar = 'bg-asteroid sidebar-text-light',
+            logo = "ck-logo-white.png", avatar = "ck-ico-white.png";
 
+        $('.theme-box-header > .swatch-holder').click(function () {
+            let theme = $(this).attr('data-class');
+            header = theme;
+        });
+
+        $('.theme-box-sidebar > .swatch-holder').click(function () {
+            let theme = $(this).attr('data-class');
+            sidebar = theme;
+        });
+
+        $('#selectLogo').change(function () {
+            let val = $(this).val();
+
+            if (val == 'default')
+                logo = 'ck-logo-white.png';
+            else if (val == 'white')
+                logo = 'ck-logo-full-white.png';
+            else if (val == 'blue')
+                logo = 'ck-logo.png';
+
+            $('#main-logo').attr('src', '/backend/assets/images/' + logo);
+        });
+
+        $('#selectAvatar').change(function () {
+
+            let val = $(this).val();
+
+            if (val == 'default')
+                avatar = 'ck-ico-white.png';
+            else if (val == 'white')
+                avatar = 'ck-ico-full-white.png';
+            else if (val == 'blue')
+                avatar = 'ck-ico-blue.png';
+
+            $('#first-profile-avatar').attr('src', '/backend/assets/images/' + avatar);
+            $('#iconAvatar').attr('src', '/backend/assets/images/' + avatar);
+        });
+
+
+        $('#btnSaveTheme').click(function () {
+
+            $('#btnSaveTheme').prop('disabled', true);
+
+            $.ajax('{{route('changeTheme')}}', {
+                method: 'POST',
+                data: {
+                    _token: token,
+                    header: header,
+                    sidebar: sidebar,
+                    logo: logo,
+                    avatar: avatar
+                }
+            }).done(function (response) {
+
+                if (response.status == 1)
+                    swal('Değişiklikler kaydedildi!', 'İşlem Başarılı!', 'success');
+                else
+                    swal(response.message, 'Hata!', 'error');
+
+            }).error(function (jqXHR, exception) {
+                ajaxError(jqXHR.status);
+            }).always(function () {
+                $('#btnSaveTheme').prop('disabled', false);
+            });
+        });
+    </script>
 @endsection

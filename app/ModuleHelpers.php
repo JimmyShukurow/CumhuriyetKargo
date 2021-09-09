@@ -45,3 +45,8 @@ function GetLayoutInformaiton()
     return $user;
     die();
 }
+
+function getSystemTheme()
+{
+    return $theme = \App\Models\ThemeSystem::find(1);
+}

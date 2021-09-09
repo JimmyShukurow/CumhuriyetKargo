@@ -174,6 +174,15 @@ $(document).ready(function () {
     });
 
     $('#selectedExcelBtn').hide();
+
+    // Local Storage Transaction START
+    let cargoSuccees = localStorage.getItem('cargo-success');
+    if (cargoSuccees) {
+        swal('İşlem Başarılı!'  , 'Kargo Oluşturuldu!', 'success');
+        localStorage.clear();
+    }
+    // Local Storage Transaction END
+
 });
 
 

@@ -75,11 +75,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('GetTransferCar', [TransferCarsController::class, 'getTransferCar'])->name('getTransferCars');
     });
 
-
     Route::get('VariousCarsGetCars', [VariousController::class, 'getCars'])->name('VariousCars.getCars');
 
-    # Main Routes
-    Route::get('/SystemUpdates', [ModuleController::class, 'systemUpdateView']);
 
     # ==> Main Cargo Transaction
     Route::group(['prefix' => 'MainCargo', 'as' => 'mainCargo.'], function () {
@@ -117,6 +114,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::group(['prefix' => 'SenderCurrents', 'as' => 'senderCurrents.'], function () {
             Route::post('AjaxTransaction/{transaction}', [SenderCurrentController::class, 'ajaxTransaction']);
             Route::get('GetCurrents', [SenderCurrentController::class, 'getCurrents'])->name('getCurrents');
+            Route::get('CurrentContract/{CurrentCode}', [SenderCurrentController::class, 'printCurrentContract']);
         });
         Route::resource('SenderCurrents', SenderCurrentController::class);
     });
@@ -247,6 +245,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     });
 
 
+    # Main Routes
+    Route::get('/SystemUpdates', [ModuleController::class, 'systemUpdateView']);
     Route::group(['prefix' => '/Module', 'middleware' => ['ModulesMid']], (function () {
         Route::name('module.')->group(function () {
             Route::get('/', [ModuleController::class, 'index'])->name('Index');
@@ -298,6 +298,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('GetNonPermissionsOfRole', [ModuleController::class, 'getNonPermissionsOfRole']);
         Route::post('AddSubModuleToRole', [ModuleController::class, 'insertSubModuleToRole']);
         Route::post('DestroyModuleOfRole', [ModuleController::class, 'destroySubModuleOfRole']);
+
+        Route::post('ChangeTheme', [ModuleController::class, 'changeTheme'])->name('changeTheme');
     }));
 
 

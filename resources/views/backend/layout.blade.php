@@ -6,6 +6,7 @@
 <!doctype html>
 <html lang="tr">
 @php $user = GetLayoutInformaiton() @endphp
+@php $theme = getSystemTheme() @endphp
 
 <head>
     <meta charset="utf-8">
@@ -76,11 +77,11 @@
 <body>
 <div id="appContainer" class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
     {{-- $$$ Awsome Header ;) $$$ --}}
-    <div class="app-header header-shadow bg-asteroid header-text-light">
+    <div class="app-header header-shadow {{$theme->header}}">
         <div class="app-header__logo">
             <div style="margin-bottom: 15px" class="logo-src">
                 <a href="{{route(getUserFirstPage())}}">
-                    <img id="main-logo" style="width: 10rem;" src="/backend/assets/images/ck-logo-white.png" alt="">
+                    <img id="main-logo" style="width: 10rem;" src="/backend/assets/images/{{$theme->logo}}" alt="">
                     {{--<img id="main-logo" style="width: 11rem;" src="/backend/assets/images/CKG_Sis_Gif.png" alt="">--}}
                 </a>
             </div>
@@ -312,7 +313,7 @@
                                     <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                        class="p-0 btn">
                                         <img id="first-profile-avatar" width="42" class="rounded-circle"
-                                             src="/backend/assets/images/ck-ico-white.png" alt="">
+                                             src="/backend/assets/images/{{$theme->avatar}}" alt="">
                                         <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                     </a>
                                     <div tabindex="-1" role="menu" aria-hidden="true"
@@ -326,8 +327,8 @@
                                                     <div class="widget-content p-0">
                                                         <div class="widget-content-wrapper">
                                                             <div class="widget-content-left mr-3">
-                                                                <img width="42" class="rounded-circle"
-                                                                     src="/backend/assets/images/ck-ico-white.png"
+                                                                <img width="42" class="rounded-circle" id="iconAvatar"
+                                                                     src="/backend/assets/images/{{$theme->avatar}}"
                                                                      alt="">
                                                             </div>
                                                             <div class="widget-content-left">
@@ -419,7 +420,7 @@
 
     <div class="app-main">
         {{-- HERE THE AWSOME HEADER :) --}}
-        <div class="app-sidebar sidebar-shadow bg-asteroid sidebar-text-light">
+        <div class="app-sidebar sidebar-shadow {{$theme->sidebar}}">
             <div class="app-header__logo">
                 <div class="logo-src"></div>
                 <div class="header__pane ml-auto">
