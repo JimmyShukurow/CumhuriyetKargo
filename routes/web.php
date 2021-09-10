@@ -24,6 +24,7 @@ use App\Http\Controllers\Backend\MainCargo\MainCargoController;
 use App\Http\Controllers\Backend\Marketing\SenderCurrentController;
 use App\Http\Controllers\Backend\Operation\LocalLocationController;
 use App\Http\Controllers\Backend\Operation\VariousController;
+use App\Http\Controllers\Backend\WhoIs\WhoIsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,10 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     });
 
     Route::get('VariousCarsGetCars', [VariousController::class, 'getCars'])->name('VariousCars.getCars');
+
+    Route::group(['prefix' => 'WhoIsWho', 'as' => 'whois.'], function () {
+        Route::get('', [WhoIsController::class, 'index'])->name('index');
+    });
 
 
     # ==> Main Cargo Transaction
