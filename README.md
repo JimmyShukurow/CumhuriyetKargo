@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://laravel.com" target="_blank">
+<a href="https://cumhuriyetkargo.com.tr" target="_blank">
 <img src="https://cumhuriyetkargo.com.tr/assets/CKG_Sis_Gif.gif" width="400"></a></p>
 
 ## CKG-Sis
