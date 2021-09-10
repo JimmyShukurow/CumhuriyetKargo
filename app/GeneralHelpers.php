@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CargoMovements;
 use App\Models\Cities;
 use App\Models\Currents;
 use App\Models\Settings;
@@ -7,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Tickets;
 use App\Models\SentSms;
+use App\Models\Debits;
 
 function tr_strtoupper($text)
 {
@@ -616,5 +618,37 @@ function FileUrlGenerator($file)
 
 }
 
+function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status)
+{
+    $insert = CargoMovements::create([
+        'ctn' => $ctn,
+        'cargo_id' => $cargoID,
+        'user_id' => $userID,
+        'part_no' => $partNo,
+        'info' => $info,
+        'status' => $status
+    ]);
+
+    if ($insert)
+        return $insert;
+    else
+        return false;
+}
+
+function InsertDebits($ctn, $cargoID, $partNo, $userID, $movementID)
+{
+    $agency = \App\Models\Agencies::find(Auth::id())->first();
+
+    $insert = Debits::create([
+        'cargo_id' => $cargoID,
+        'ctn' => $ctn,
+        'part_no' => $partNo,
+        'user_id' => $userID,
+        'agency_code' => $agency->id,
+        'movement_id' => $movementID,
+    ]);
+
+    return $insert == true ? true : false;
+}
 
 

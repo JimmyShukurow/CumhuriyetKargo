@@ -282,8 +282,8 @@ select.form-control {
   padding-top: 0 !important;
   padding-bottom: 0 !important; }
 
-/* 
-TODO:M: To check with latest bootstrap version and remove it. 
+/*
+TODO:M: To check with latest bootstrap version and remove it.
 Bootstrap Enhance */
 .custom-control {
   display: block; }
@@ -493,7 +493,7 @@ Bootstrap Enhance */
       margin-left: 10px; }
 
 /*.dropdown-header {
-  text-transform: uppercase; 
+  text-transform: uppercase;
 
 }*/
   .dropdown-header.highlight {
@@ -514,7 +514,7 @@ Bootstrap Enhance */
   background-color: #DA4453; }
 
 .btn-info ~ .dropdown-menu .dropdown-item.active {
-  background-color: #3BAFDA; }
+  background-color: #33429a; }
 
 .btn-warning ~ .dropdown-menu .dropdown-item.active {
   background-color: #F6BB42; }
@@ -696,7 +696,7 @@ button:focus {
     transition: 300ms ease all;
     background: inherit; }
     .header-navbar .navbar-container ul.nav li > a.nav-link {
-      padding: 0.4rem 0.4rem; 
+      padding: 0.4rem 0.4rem;
       font-size: 0.8rem;
     }
       .header-navbar .navbar-container ul.nav li > a.nav-link i.flag-icon {
@@ -1245,12 +1245,12 @@ button:focus {
 
 
 .tag-info {
-  background-color: #3BAFDA; }
+  background-color: #33429a; }
 
 
 
   .tag-info.tag-glow {
-    box-shadow: 0px 0px 10px #3BAFDA; }
+    box-shadow: 0px 0px 10px #33429a; }
   .tag-info[href]:focus {
     background-color: #2494be; }
   .tag-info[href]:hover {
@@ -1490,7 +1490,7 @@ button:focus {
   .nav.nav-tabs.nav-underline {
     background: #fff;
     position: relative;
-    border-bottom: 1px solid #3BAFDA; }
+    border-bottom: 1px solid #33429a; }
     .nav.nav-tabs.nav-underline .nav-item {
       position: relative;
       z-index: 1;
@@ -1505,7 +1505,7 @@ button:focus {
         background-color: transparent; }
         .nav.nav-tabs.nav-underline .nav-item.open a .nav-link:focus, .nav.nav-tabs.nav-underline .nav-item.open a .nav-link:hover {
           background-color: transparent;
-          color: #3BAFDA; }
+          color: #33429a; }
       .nav.nav-tabs.nav-underline .nav-item a.nav-link {
         position: relative;
         display: block;
@@ -1516,7 +1516,7 @@ button:focus {
         padding: 0.5rem 1rem;
         -webkit-transition: color 0.2s;
         transition: color 0.2s;
-        color: #3BAFDA;
+        color: #33429a;
         border: none; }
         .nav.nav-tabs.nav-underline .nav-item a.nav-link.dropdown-toggle::after {
           margin-top: -1rem; }
@@ -1530,14 +1530,14 @@ button:focus {
             -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
         .nav.nav-tabs.nav-underline .nav-item a.nav-link:hover, .nav.nav-tabs.nav-underline .nav-item a.nav-link:focus {
-          color: #3BAFDA; }
+          color: #33429a; }
         .nav.nav-tabs.nav-underline .nav-item a.nav-link:before {
           position: absolute;
           bottom: -1px;
           left: 0;
           width: 100%;
           height: 4px;
-          background: #3BAFDA;
+          background: #33429a;
           content: '';
           -webkit-transition: -webkit-transform 0.3s;
           transition: transform 0.3s;
@@ -2051,7 +2051,7 @@ a:hover {
 }
 
 .badge-info {
-    background-color: #3BAFDA;
+    background-color: #33429a;
 }
 
 .badge-gri {
@@ -2131,7 +2131,7 @@ a:hover {
     top: 4px;
     right: 15px;
     border-color: #00affc;
-    border: 1px solid #3BAFDA !important
+    border: 1px solid #33429a !important
 }
 
 .badge-danger1 {
@@ -2230,7 +2230,7 @@ a:hover {
     /*padding-right: 0.6em;
     padding-left: 0.4em;*/
     border-radius: 2.21rem;
-   
+
 }
 
 .badge4 {

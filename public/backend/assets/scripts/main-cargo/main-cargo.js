@@ -1675,7 +1675,7 @@ function createCargo() {
             window.onbeforeunload = null;
             if ($('#seriMod').prop('checked') == true) {
                 localStorage.setItem('seriMod', true);
-                localStorage.setItem('currentCode', $('#aliciCariKod').val());
+                localStorage.setItem('currentCode', $('#gondericiCariKod').val());
                 window.location.reload();
             } else {
                 localStorage.setItem('cargo-success', true);

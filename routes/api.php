@@ -53,6 +53,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/GetDefaultData/{val?}', [DefaultController::class, 'getDefaultData']);
     Route::post('DefaultTransaction/{val?}', [DefaultController::class, 'defaultTransaction']);
 
+    Route::any('DebitTransaction/{val?}', [DefaultController::class, 'debitTransaction']);
 });
 
 

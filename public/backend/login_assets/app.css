@@ -35,7 +35,7 @@ html {
       background: url(../../app-assets/images/backgrounds/bg-2.jpg) no-repeat center center fixed;
       background-size: cover; }
     html body .pace .pace-progress {
-      background: #3BAFDA; }
+      background: #33429a; }
 
 /*
 * Blank page
@@ -3533,7 +3533,7 @@ input[type="month"].form-control {
     .datepaginator .pagination li a.dp-off, .datepaginator-sm .pagination li a.dp-off, .datepaginator-lg .pagination li a.dp-off {
       background-color: #f5f5f5 !important; }
     .datepaginator .pagination li a.dp-today, .datepaginator-sm .pagination li a.dp-today, .datepaginator-lg .pagination li a.dp-today {
-      background-color: #3BAFDA !important; }
+      background-color: #33429a !important; }
     .datepaginator .pagination li a.dp-selected, .datepaginator-sm .pagination li a.dp-selected, .datepaginator-lg .pagination li a.dp-selected {
       background-color: #967ADC !important; }
     .datepaginator .pagination li a .dp-divider, .datepaginator-sm .pagination li a .dp-divider, .datepaginator-lg .pagination li a .dp-divider {

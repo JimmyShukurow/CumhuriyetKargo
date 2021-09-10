@@ -7,6 +7,7 @@ use App\Models\AdditionalServices;
 use App\Models\Agencies;
 use App\Models\CargoAddServices;
 use App\Models\Cargoes;
+use App\Models\CargoMovements;
 use App\Models\CargoPartDetails;
 use App\Models\Cities;
 use App\Models\CurrentPrices;
@@ -17,6 +18,7 @@ use App\Models\FilePrice;
 use App\Models\Receivers;
 use App\Models\Settings;
 use App\Models\SmsContent;
+use App\Models\TransshipmentCenterDistricts;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
 use Carbon\Carbon;
@@ -71,32 +73,38 @@ class MainCargoController extends Controller
             ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
             ->whereRaw('deleted_at is null')
             ->where('cargo_type', '<>', 'Dosya-Mi')
+            ->where('departure_agency_code', $agency->id)
             ->count();
 
         $daily['file_count'] = DB::table('cargoes')
             ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
             ->whereRaw('deleted_at is null')
             ->where('cargo_type', 'Dosya-Mi')
+            ->where('departure_agency_code', $agency->id)
             ->count();
 
         $daily['total_cargo_count'] = DB::table('cargoes')
             ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
             ->whereRaw('deleted_at is null')
+            ->where('departure_agency_code', $agency->id)
             ->count();
 
         $daily['total_desi'] = DB::table('cargoes')
             ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
             ->whereRaw('deleted_at is null')
+            ->where('departure_agency_code', $agency->id)
             ->sum('desi');
 
         $daily['total_number_of_pieces'] = DB::table('cargoes')
             ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
             ->whereRaw('deleted_at is null')
+            ->where('departure_agency_code', $agency->id)
             ->sum('number_of_pieces');
 
         $daily['total_endorsement'] = DB::table('cargoes')
             ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
             ->whereRaw('deleted_at is null')
+            ->where('departure_agency_code', $agency->id)
             ->sum('total_price');
 
         $daily['total_endorsement'] = round($daily['total_endorsement'], 2);
@@ -112,7 +120,12 @@ class MainCargoController extends Controller
 
         ## get agency district
         $agency = Agencies::where('id', Auth::user()->agency_code)->first();
-        $tc = TransshipmentCenters::where('id', $agency->transshipment_center_code)->first();
+
+        $tc = TransshipmentCenterDistricts::where('city', $agency->city)
+            ->where('district', $agency->district)
+            ->first();
+
+        $tc = TransshipmentCenters::find($tc->tc_id);
 
         $data['districts'] = DB::table('view_city_districts')
             ->where('city_name', $agency->city)
@@ -1158,6 +1171,11 @@ class MainCargoController extends Controller
                 $receiverAddress = AddressMaker($receiver->city, $receiver->district, $receiver->neighborhood, $receiver->street, $receiver->street2, $receiver->building_no, $receiver->floor, $receiver->door_no, $receiver->address_note);
                 $departureAgency = Agencies::find(Auth::user()->agency_code);
 
+                $tc = TransshipmentCenterDistricts::where('city', $departureAgency->city)
+                    ->where('district', $departureAgency->district)
+                    ->first();
+
+
                 ## calc total price
                 $totalPriceExceptKdv = $distancePrice + $addServicePrice + $serviceFee + $postServicePrice;
                 $kdvPrice = $totalPriceExceptKdv * 0.18;
@@ -1224,7 +1242,7 @@ class MainCargoController extends Controller
                     'departure_city' => $userGeneralInfo->branch_city,
                     'departure_district' => $userGeneralInfo->branch_district,
                     'departure_agency_code' => Auth::user()->agency_code,
-                    'departure_tc_code' => $departureAgency->transshipment_center_code,
+                    'departure_tc_code' => $tc->tc_id,
                     'creator_agency_code' => Auth::user()->agency_code,
                     'creator_user_id' => Auth::id(),
                     'status' => 'İRSALİYE KESİLDİ',
@@ -1251,8 +1269,20 @@ class MainCargoController extends Controller
                     'system' => 'CKG-Sis',
                 ]);
 
+                # Get Movement Text
+                $info = DB::table('cargo_movement_contents')
+                    ->where('key', 'agency_create_cargo')
+                    ->first();
+
+                $agency = DB::table('agencies')
+                    ->where('id', Auth::user()->agency_code)
+                    ->first();
+                $infoText = str_replace(['[agency]'], [$agency->city . ' - ' . $agency->agency_name], $info->content);
+
+
                 if ($CreateCargo) {
 
+                    ## Insert Add Services START
                     foreach ($addServices as $key => $value) {
                         $serviceID = substr($key, 12, strlen($key));
                         $service = AdditionalServices::find($serviceID);
@@ -1275,7 +1305,9 @@ class MainCargoController extends Controller
                             break;
                         }
                     }
+                    ## Insert Add Services END
 
+                    ## INSERT Cargo Parts START
                     if ($cargoType != 'Dosya-Mi') {
 
                         $desiValues = array_values($desiData);
@@ -1328,6 +1360,11 @@ class MainCargoController extends Controller
                                 'cubic_meter_volume' => $hacim
                             ]);
 
+                            # INSERT Movements START
+                            $insert = InsertCargoMovement($ctn, $CreateCargo->id, Auth::id(), $reversePartQuantity, $infoText, $info->status);
+                            #inert debit
+                            $insert = InsertDebits($ctn, $CreateCargo->id, $reversePartQuantity, Auth::id(), $insert->id);
+                            # INSERT Movements END
 
                             if ($insert)
                                 $reversePartQuantity--;
@@ -1361,9 +1398,18 @@ class MainCargoController extends Controller
                             if (count($desiKeys) == 0)
                                 break;
                         }
+                    } else {
+                        # INSERT Movements START
+                        $insert = InsertCargoMovement($ctn, $CreateCargo->id, Auth::id(), 1, $infoText, $info->status);
+                        #inert debit
+                        $insert = InsertDebits($ctn, $CreateCargo->id, 1, Auth::id(), $insert->id);
+                        # INSERT Movements END
                     }
+                    ## INSERT Cargo Parts END
 
-                    if ($insert) {
+
+                    ## SMS Transactions
+                    if ($insert != false) {
 
                         $smstoCurrent = CargoAddServices::where('cargo_tracking_no', $ctn)
                             ->where('service_name', 'Göndericiye SMS')
@@ -1569,11 +1615,15 @@ class MainCargoController extends Controller
                 break;
 
             case 'GetMainDailySummery':
+
+                $agency = Agencies::where('id', Auth::user()->agency_code)->first();
+
                 ## daily report start
                 $daily['package_count'] = DB::table('cargoes')
                     ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
                     ->whereRaw('deleted_at is null')
                     ->whereNotIn('cargo_type', ['Dosya-Mi'])
+                    ->where('departure_agency_code', $agency->id)
                     ->count();
                 $daily['package_count'] = getDotter($daily['package_count']);
 
@@ -1582,30 +1632,35 @@ class MainCargoController extends Controller
                     ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
                     ->whereRaw('deleted_at is null')
                     ->where('cargo_type', 'Dosya-Mi')
+                    ->where('departure_agency_code', $agency->id)
                     ->count();
                 $daily['file_count'] = getDotter($daily['file_count']);
 
                 $daily['total_cargo_count'] = DB::table('cargoes')
                     ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
                     ->whereRaw('deleted_at is null')
+                    ->where('departure_agency_code', $agency->id)
                     ->count();
                 $daily['total_cargo_count'] = getDotter($daily['total_cargo_count']);
 
                 $daily['total_desi'] = DB::table('cargoes')
                     ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
                     ->whereRaw('deleted_at is null')
+                    ->where('departure_agency_code', $agency->id)
                     ->sum('desi');
                 $daily['total_desi'] = getDotter($daily['total_desi']);
 
                 $daily['total_number_of_pieces'] = DB::table('cargoes')
                     ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
                     ->whereRaw('deleted_at is null')
+                    ->where('departure_agency_code', $agency->id)
                     ->sum('number_of_pieces');
                 $daily['total_number_of_pieces'] = getDotter($daily['total_number_of_pieces']);
 
                 $daily['total_endorsement'] = DB::table('cargoes')
                     ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
                     ->whereRaw('deleted_at is null')
+                    ->where('departure_agency_code', $agency->id)
                     ->sum('total_price');
 
                 $daily['total_endorsement'] = getDotter(round($daily['total_endorsement'], 2));
@@ -1626,6 +1681,8 @@ class MainCargoController extends Controller
 
     public function getMainCargoes(Request $request)
     {
+        $agency = Agencies::where('id', Auth::user()->agency_code)->first();
+
         $finishDate = $request->finishDate;
         $startDate = $request->startDate;
         $cargoType = $request->cargoType;
@@ -1669,7 +1726,8 @@ class MainCargoController extends Controller
             ->whereRaw($system ? "system='" . $system . "'" : '1 > 0')
             ->whereRaw($record == 1 ? "cargoes.deleted_at is null" : 'cargoes.deleted_at is not null')
             ->whereRaw("cargoes.created_at between '" . $startDate . "'  and '" . $finishDate . "'")
-            ->whereRaw($transporter ? "transporter='" . $transporter . "'" : '1 > 0');
+            ->whereRaw($transporter ? "transporter='" . $transporter . "'" : '1 > 0')
+            ->where('departure_agency_code', $agency->id);
 
         return datatables()->of($cargoes)
             ->setRowId(function ($cargoes) {

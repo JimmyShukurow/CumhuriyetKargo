@@ -368,7 +368,7 @@
                                                     </li>
                                                     <li class="nav-item">
                                                         <a href="javascript:void(0);" class="nav-link">Mesajlar
-                                                            <div class="ml-auto badge badge-warning">512
+                                                            <div class="ml-auto badge badge-warning">Çok Yakında
                                                             </div>
                                                         </a>
                                                     </li>
@@ -387,12 +387,15 @@
                                             <div class="no-gutters row">
 
                                                 <div class="col-sm-12">
-                                                    <button
-                                                        class="btn-icon-vertical btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
-                                                        <i
-                                                            class="pe-7s-ticket icon-gradient bg-love-kiss btn-icon-wrapper mb-2"></i>
-                                                        <b>Destek & Tickets</b>
-                                                    </button>
+                                                    <a style="text-decoration: none;"
+                                                       href="{{route('systemSupport.myTickets')}}">
+                                                        <button
+                                                            class="btn-icon-vertical btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
+                                                            <i
+                                                                class="pe-7s-ticket icon-gradient bg-love-kiss btn-icon-wrapper mb-2"></i>
+                                                            <b>Destek & Tickets</b>
+                                                        </button>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
