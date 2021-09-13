@@ -39,6 +39,47 @@
                                         </div>
                                     </div>
                                 </li>
+
+                                <li class="bg-transparent list-group-item">
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-outer">
+                                            <div class="widget-content-wrapper">
+                                                <div class="widget-content-left">
+                                                    <div class="widget-heading">Dosya Sayısı</div>
+                                                    <div class="widget-subheading">(Bugün) Toplam Kesilen Dosya</div>
+                                                </div>
+                                                <div class="widget-content-right">
+                                                    <div id="file_count"
+                                                         class="widget-numbers text-danger">{{$daily['file_count']}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="col-md-12 col-lg-4">
+                            <ul class="list-group list-group-flush">
+
+                                <li class="bg-transparent list-group-item">
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-outer">
+                                            <div class="widget-content-wrapper">
+                                                <div class="widget-content-left">
+                                                    <div class="widget-heading">Toplam Kesilen Kargo-Dosya</div>
+                                                    <div class="widget-subheading">(Bugün) Kargo-Dosya Adeti</div>
+                                                </div>
+                                                <div class="widget-content-right">
+                                                    <div id="total_cargo_count"
+                                                         class="widget-numbers text-success">{{$daily['total_cargo_count']}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+
                                 <li class="bg-transparent list-group-item">
                                     <div class="widget-content p-0">
                                         <div class="widget-content-outer">
@@ -60,22 +101,7 @@
                         </div>
                         <div class="col-md-12 col-lg-4">
                             <ul class="list-group list-group-flush">
-                                <li class="bg-transparent list-group-item">
-                                    <div class="widget-content p-0">
-                                        <div class="widget-content-outer">
-                                            <div class="widget-content-wrapper">
-                                                <div class="widget-content-left">
-                                                    <div class="widget-heading">Dosya Sayısı</div>
-                                                    <div class="widget-subheading">(Bugün) Toplam Kesilen Dosya</div>
-                                                </div>
-                                                <div class="widget-content-right">
-                                                    <div id="file_count"
-                                                         class="widget-numbers text-danger">{{$daily['file_count']}}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
+
                                 <li class="bg-transparent list-group-item">
                                     <div class="widget-content p-0">
                                         <div class="widget-content-outer">
@@ -93,26 +119,7 @@
                                         </div>
                                     </div>
                                 </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-12 col-lg-4">
-                            <ul class="list-group list-group-flush">
-                                <li class="bg-transparent list-group-item">
-                                    <div class="widget-content p-0">
-                                        <div class="widget-content-outer">
-                                            <div class="widget-content-wrapper">
-                                                <div class="widget-content-left">
-                                                    <div class="widget-heading">Toplam Kesilen Kargo-Dosya</div>
-                                                    <div class="widget-subheading">(Bugün) Kargo-Dosya Adeti</div>
-                                                </div>
-                                                <div class="widget-content-right">
-                                                    <div id="total_cargo_count"
-                                                         class="widget-numbers text-success">{{$daily['total_cargo_count']}}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
+
                                 <li class="bg-transparent list-group-item">
                                     <div class="widget-content p-0">
                                         <div class="widget-content-outer">
@@ -130,6 +137,7 @@
                                         </div>
                                     </div>
                                 </li>
+                                
                             </ul>
                         </div>
                     </div>
@@ -342,7 +350,6 @@
 
                         </div>
                         <div class="row pt-2">
-
 
                             <div class="col-md-2">
                                 <label for="receiverCode">Kargo Takip No:</label>
