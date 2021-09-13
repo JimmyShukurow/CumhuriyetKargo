@@ -9,7 +9,8 @@ use App\Http\Controllers\Backend\Personel\PersonelController;
 use App\Http\Controllers\Backend\User\UserAgency\UserAgencyController;
 use App\Http\Controllers\Backend\User\UserTC\UserTCController;
 use App\Http\Controllers\CKG_Mobile\DefaultController;
-
+use App\Http\Controllers\CKG_Mobile\DebitController;
+use App\Http\Controllers\CKG_Mobile\CargoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,8 +54,25 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/GetDefaultData/{val?}', [DefaultController::class, 'getDefaultData']);
     Route::post('DefaultTransaction/{val?}', [DefaultController::class, 'defaultTransaction']);
 
-    Route::any('DebitTransaction/{val?}', [DefaultController::class, 'debitTransaction']);
+    Route::any('DebitTransaction/{val?}', [DebitController::class, 'debitTransaction']);
+    Route::post('CargoTransaction/{val?}', [CargoController::class, 'cargoTransaction']);
+
 });
+
+
+
+//Route::middleware('auth:auth')->group(function () {
+//
+//Route::group(['middleware' => 'ApiAuthenticate'], function () {
+//    Route::post('/logout', [DefaultController::class, 'logout']);
+//    Route::get('/user', [DefaultController::class, 'user']);
+//    Route::get('/GetDefaultData/{val?}', [DefaultController::class, 'getDefaultData']);
+//    Route::post('DefaultTransaction/{val?}', [DefaultController::class, 'defaultTransaction']);
+//
+//    Route::any('DebitTransaction/{val?}', [DebitController::class, 'debitTransaction']);
+//    Route::post('CargoTransaction/{val?}', [CargoController::class, 'cargoTransaction']);
+//    });
+//});
 
 
 
