@@ -561,8 +561,8 @@ function DistributionControl(neighborhood = '') {
             $('#dagitimDurumu').val('AT DIŞI - DAĞITIM YOK');
             $('#dagitimDurumu').removeClass('text-alternate');
             $('#dagitimDurumu').addClass('text-danger');
-
         } else if (response.status == 1) {
+
             $('#varisSube').val(response.arrival_agency);
             $('#varisTransferMerkezi').val(response.arrival_tc + " TM");
             $('#dagitimDurumu').val(response.area_type);

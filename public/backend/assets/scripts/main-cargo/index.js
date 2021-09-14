@@ -178,7 +178,7 @@ $(document).ready(function () {
     // Local Storage Transaction START
     let cargoSuccees = localStorage.getItem('cargo-success');
     if (cargoSuccees) {
-        swal('İşlem Başarılı!'  , 'Kargo Oluşturuldu!', 'success');
+        swal('İşlem Başarılı!', 'Kargo Oluşturuldu!', 'success');
         localStorage.clear();
     }
     // Local Storage Transaction END
@@ -327,6 +327,7 @@ function cargoInfo(user) {
             let arrival_tc = response.arrival_tc;
             let sms = response.sms;
             let add_services = response.add_services;
+            let movements = response.movements;
 
             $('#titleTrackingNo').text(cargo.tracking_no);
 
@@ -411,6 +412,30 @@ function cargoInfo(user) {
 
             }
 
+            $('#tbodyCargoMovements').html('');
+
+            if (movements.length == 0)
+                $('#tbodyCargoMovements').html('<tr><td colspan="5" class="text-center">Burda hiç veri yok.</td></tr>');
+            else {
+                $.each(movements, function (key, val) {
+
+                    let result = val['number_of_pieces'] == val['current_pieces'] ? 'text-success' : 'text-danger';
+
+                    $('#tbodyCargoMovements').append(
+                        '<tr>' +
+                        '<td>' + val['status'] + '</td>' +
+                        '<td>' + val['info'] + '</td>' +
+                        '<td class="' + result + ' font-weight-bold">' + val['number_of_pieces'] + '/' + val['current_pieces'] + '</td>' +
+                        '<td>' + val['created_at'] + '</td>' +
+                        '<td><button group_id="' + val['group_id'] + '" class="btn btn-primary btn-xs btnMovementDetail">Detay</button></td>' +
+                        +'</tr>'
+                    );
+
+                });
+
+            }
+
+
             $('#tbodySentMessages').html('');
             $.each(sms, function (key, val) {
 
@@ -438,10 +463,80 @@ function cargoInfo(user) {
 
         $('#ModalCargoDetails').unblock();
         return false;
+    }).error(function (jqXHR, exception) {
+        ajaxError(jqXHR.status);
+    }).always(function () {
+        $('#ModalCargoDetails').unblock();
     });
 
     $('#ModalAgencyDetail').modal();
 }
+
+$(document).on('click', '.btnMovementDetail', function () {
+
+    let group_id = $(this).attr('group_id');
+
+    $('#ModalMovementsDetail').modal();
+
+    $('#modalBodyCargoMovementsDetails').block({
+        message: $('<div class="loader mx-auto">\n' +
+            '                            <div class="ball-grid-pulse">\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                            </div>\n' +
+            '                        </div>')
+    });
+    $('.blockUI.blockMsg.blockElement').css('width', '100%');
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+
+    $.ajax('/MainCargo/AjaxTransactions/GetCargoMovementDetails', {
+        method: 'POST',
+        data: {
+            _token: token,
+            group_id: group_id
+        }
+    }).done(function (response) {
+
+        $('#tbodyCargoMovementDetails').html('');
+
+        if (response.length == 0)
+            $('#tbodyCargoMovementDetails').html('<tr><td colspan="5" class="text-center">Burda hiç veri yok.</td></tr>');
+        else {
+            $.each(response, function (key, val) {
+
+                let result = val['number_of_pieces'] == val['current_pieces'] ? 'text-success' : 'text-danger';
+
+                $('#tbodyCargoMovementDetails').append(
+                    '<tr>' +
+                    '<td>' + val['status'] + '</td>' +
+                    '<td>' + val['info'] + '</td>' +
+                    '<td class="text-dark font-weight-bold">' + val['part_no'] + '</td>' +
+                    '<td>' + val['created_at'] + '</td>' +
+                    +'</tr>'
+                );
+
+            });
+
+        }
+
+
+    }).error(function (jqXHR, exception) {
+        ajaxError(jqXHR.status);
+    }).always(function () {
+        $('#modalBodyCargoMovementsDetails').unblock();
+    });
+
+
+});
 
 
 $('#btnPrintSelectedBarcode').click(function () {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CKG_Mobile;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cargoes;
+use App\Models\CargoMovements;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -23,7 +24,17 @@ class CargoController extends Controller
                 if ($cargo == null)
                     $data = ['status' => '0', 'message' => 'Kargo bulunamadı!'];
                 else {
-                    $cargo['cargo']->tracking_no = TrackingNumberDesign($tracking_no);
+//                    $cargo['movements'] = CargoMovements::where('ctn', $tracking_no)
+//                        ->get();
+
+                    $cargo['movements'] = DB::table('cargo_movements')
+                        ->selectRaw('cargo_movements.*, number_of_pieces,  cargo_movements.group_id as testmebitch, (SELECT Count(*) FROM cargo_movements where cargo_movements.group_id = testmebitch) as current_pieces')
+                        ->groupBy('group_id')
+                        ->join('cargoes', 'cargoes.tracking_no', '=', 'cargo_movements.ctn')
+                        ->where('ctn', '=', $tracking_no)
+                        ->get();
+
+//                    $cargo['cargo']->tracking_no = TrackingNumberDesign($tracking_no);
 
                     $cargo['cargo']->collectible = $cargo['cargo']->collectible == '0' ? 'HAYIR' : 'EVET';
 
@@ -71,6 +82,7 @@ class CargoController extends Controller
 
                     $data = [
                         'status' => '1',
+                        'movements' => $cargo['movements'],
                         'cargo' => $cargo['cargo'],
                         'sender' => $cargo['receiver'],
                         'departure' => $cargo['departure'],
@@ -82,6 +94,18 @@ class CargoController extends Controller
                         'add_services' => $cargo['add_services'],
                     ];
                 }
+                break;
+
+            case 'CargoMovements':
+                $tracking_no = str_replace(' ', '', $request->ctn);
+
+                $data['cargo_movements'] = DB::table('cargo_movements')
+                    ->selectRaw('cargo_movements.*, number_of_pieces,  cargo_movements.group_id as testmebitch, (SELECT Count(*) FROM cargo_movements where cargo_movements.group_id = testmebitch) as current_pieces')
+                    ->groupBy('group_id')
+                    ->join('cargoes', 'cargoes.tracking_no', '=', 'cargo_movements.ctn')
+                    ->where('ctn', '=', $tracking_no)
+                    ->get();
+
                 break;
 
             default:

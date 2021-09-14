@@ -1307,6 +1307,7 @@ class MainCargoController extends Controller
                     }
                     ## Insert Add Services END
 
+                    $group_id = uniqid('n_');
                     ## INSERT Cargo Parts START
                     if ($cargoType != 'Dosya-Mi') {
 
@@ -1361,7 +1362,7 @@ class MainCargoController extends Controller
                             ]);
 
                             # INSERT Movements START
-                            $insert = InsertCargoMovement($ctn, $CreateCargo->id, Auth::id(), $reversePartQuantity, $infoText, $info->status);
+                            $insert = InsertCargoMovement($ctn, $CreateCargo->id, Auth::id(), $reversePartQuantity, $infoText, $info->status, $group_id);
                             #inert debit
                             $insert = InsertDebits($ctn, $CreateCargo->id, $reversePartQuantity, Auth::id(), $insert->id);
                             # INSERT Movements END
@@ -1400,7 +1401,7 @@ class MainCargoController extends Controller
                         }
                     } else {
                         # INSERT Movements START
-                        $insert = InsertCargoMovement($ctn, $CreateCargo->id, Auth::id(), 1, $infoText, $info->status);
+                        $insert = InsertCargoMovement($ctn, $CreateCargo->id, Auth::id(), 1, $infoText, $info->status, $group_id);
                         #inert debit
                         $insert = InsertDebits($ctn, $CreateCargo->id, 1, Auth::id(), $insert->id);
                         # INSERT Movements END
@@ -1565,6 +1566,14 @@ class MainCargoController extends Controller
                     ->first();
                 $data['sender']->current_code = CurrentCodeDesign($data['sender']->current_code);
 
+
+                $data['movements'] = DB::table('cargo_movements')
+                    ->selectRaw('cargo_movements.*, number_of_pieces,  cargo_movements.group_id as testmebitch, (SELECT Count(*) FROM cargo_movements where cargo_movements.group_id = testmebitch) as current_pieces')
+                    ->groupBy('group_id')
+                    ->join('cargoes', 'cargoes.tracking_no', '=', 'cargo_movements.ctn')
+                    ->where('ctn', '=', str_replace(' ', '', $data['cargo']->tracking_no))
+                    ->get();
+
                 $data['receiver'] = DB::table('currents')
                     ->select(['current_code', 'tckn', 'category'])
                     ->where('id', $data['cargo']->receiver_id)
@@ -1613,6 +1622,16 @@ class MainCargoController extends Controller
                     ->json($data, 200);
 
                 break;
+
+            case 'GetCargoMovementDetails':
+
+                $details = DB::table('cargo_movements')
+                    ->where('group_id', $request->group_id)
+                    ->get();
+
+                return response()
+                    ->json($details, 200);
+
 
             case 'GetMainDailySummery':
 
