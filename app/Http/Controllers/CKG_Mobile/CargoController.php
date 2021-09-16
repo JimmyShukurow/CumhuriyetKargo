@@ -105,7 +105,6 @@ class CargoController extends Controller
                     ->join('cargoes', 'cargoes.tracking_no', '=', 'cargo_movements.ctn')
                     ->where('ctn', '=', $tracking_no)
                     ->get();
-
                 break;
 
             default:

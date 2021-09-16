@@ -535,15 +535,20 @@ $(document).on('click', '.btnMovementDetail', function () {
         $('#modalBodyCargoMovementsDetails').unblock();
     });
 
-
 });
 
 
 $('#btnPrintSelectedBarcode').click(function () {
+    $('#ModalShowBarcode').modal();
+});
+
+
+$(document).on('click', '#btnCargoPrintBarcode', function () {
 
     $('#ModalShowBarcode').modal();
 
 });
+
 
 $(document).ready(function () {
     JsBarcode(".barcode", "125644563456345634");
@@ -563,7 +568,8 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    var qrcode = new QRCode(document.getElementById("qrcode"), {
+
+    var qrcode = new QRCode(document.getElementsByClassName("qrcodes"), {
         width: 100,
         height: 100
     });
@@ -581,7 +587,7 @@ $(document).ready(function () {
             makeCode();
         }
     });
-})
+});
 
 
 $(document).on('click', '#btnPrintBarcode', function () {

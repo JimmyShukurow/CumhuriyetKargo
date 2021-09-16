@@ -1632,7 +1632,6 @@ class MainCargoController extends Controller
                 return response()
                     ->json($details, 200);
 
-
             case 'GetMainDailySummery':
 
                 $agency = Agencies::where('id', Auth::user()->agency_code)->first();
@@ -1645,7 +1644,6 @@ class MainCargoController extends Controller
                     ->where('departure_agency_code', $agency->id)
                     ->count();
                 $daily['package_count'] = getDotter($daily['package_count']);
-
 
                 $daily['file_count'] = DB::table('cargoes')
                     ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")

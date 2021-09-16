@@ -264,7 +264,7 @@ table.Table20Padding th, table.Table20Padding td {
     display: flex;
     align-items: center;
     justify-content: center;
-    bottom: 56px;
+    bottom: 16px;
 }
 
 .qrcode {

@@ -1013,7 +1013,7 @@
 
                                             <div class="col-sm-4">
                                                 <div class="p-1">
-                                                    <button id="btnVirtualLogin"
+                                                    <button id="btnCargoPrintBarcode" tracking-no="324123123"
                                                             class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-alternate">
                                                         <i class="lnr-printer text-alternate opacity-7 btn-icon-wrapper mb-2"> </i>
                                                         Barkod Yazdır
@@ -1024,7 +1024,6 @@
                                         </div>
                                     </div>
                                 </li>
-
                             </ul>
                         </div>
                     </div>
@@ -1036,6 +1035,8 @@
             </div>
         </div>
     </div>
+
+
 
     <!-- Large modal => Modal Barcode -->
     <div class="modal fade bd-example-modal-lg" id="ModalShowBarcode" tabindex="-1" role="dialog"
@@ -1115,20 +1116,21 @@
                                 </table>
                             </div>
                             <div class="col-3 qr-barcode-cont">
-                                <div id="qrcode"></div>
+                                <div class="qrcodes" id="qrcode"></div>
                             </div>
                         </div>
 
                         <div class="divider"></div>
 
-
                     </div>
+
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
                     <button type="button" id="btnPrintBarcode" class="btn btn-primary">Yazdır</button>
                 </div>
+
             </div>
         </div>
     </div>
