@@ -452,6 +452,8 @@ function cargoInfo(user) {
                 )
             });
 
+            $('#btnCargoPrintBarcode').attr('tracking-no', cargo.id);
+
             // $('#numberOfPieces').text(cargo.number_of_pieces);
             // $('#numberOfPieces').text(cargo.number_of_pieces);
             // $('#numberOfPieces').text(cargo.number_of_pieces);
@@ -545,37 +547,113 @@ $('#btnPrintSelectedBarcode').click(function () {
 
 $(document).on('click', '#btnCargoPrintBarcode', function () {
 
+
     $('#ModalShowBarcode').modal();
+
+    let tracking_no = $(this).attr('tracking-no');
+
+    $('#ModalBarcodes').block({
+        message: $('<div class="loader mx-auto">\n' +
+            '                            <div class="ball-grid-pulse">\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                            </div>\n' +
+            '                        </div>')
+    });
+    $('.blockUI.blockMsg.blockElement').css('width', '100%');
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+
+    $.ajax('/MainCargo/AjaxTransactions/GetCargoInfo', {
+        method: 'POST',
+        data: {
+            _token: token,
+            id: tracking_no,
+        }
+    }).done(function (response) {
+
+        if (response.status == 1) {
+
+            let cargo = response.cargo;
+            let sender = response.sender;
+            let receiver = response.receiver;
+            let creator = response.creator;
+            let departure = response.departure;
+            let departure_tc = response.departure_tc;
+            let arrival = response.arrival;
+            let arrival_tc = response.arrival_tc;
+            let sms = response.sms;
+            let add_services = response.add_services;
+
+
+            $('#barcodeDepartureTC').text(departure_tc.tc_name);
+            $('#barcodeDepartureAgency').text(departure.agency_name);
+            $('#barcodeTrackingNo').text(cargo.tracking_no);
+            $('#barcodeCargoTotalPrice').text(cargo.total_price + "₺");
+
+            $('#barcodeArrivalTC').text(arrival_tc.tc_name);
+            $('#barcodeArrivalAgency').text(arrival.agency_name);
+
+            $('#barcodeSenderName').text(cargo.sender_name);
+            $('#barcodeSenderCityDistrict').text(cargo.sender_city + "/" + cargo.sender_district);
+            $('#barcodeSenderPhone').text("TEL: " + cargo.sender_phone);
+
+
+            $('#barcodeReceiverName').text(cargo.receiver_name);
+            $('#barcodeReceiverAddress').text(cargo.receiver_address);
+            $('#barcodeReceiverCityDistrict').text(cargo.receiver_city + "/" + cargo.receiver_district);
+            $('#barcodeReceiverPhone').text("TEL: " + cargo.receiver_phone);
+
+            $('#barcodeRegDate').text(dateFormat(cargo.created_at).substring(0, 10));
+            $('#barcodeCargoType').text(cargo.cargo_type);
+
+            let barcodePaymentType = "HL 102856 ";
+            if (cargo.payment_type == "Alıcı Ödemeli")
+                barcodePaymentType += 'AÖ';
+            else if (cargo.payment_type == "Gönderici Ödemeli")
+                barcodePaymentType += 'GÖ';
+
+            $('#barcodePaymentType').text(barcodePaymentType);
+
+            makeBarcodeCode39('.barcode', cargo.tracking_no);
+            makeBarcodeQRCode('qrcode', cargo.tracking_no);
+
+        } else {
+            ToastMessage('error', response.message, 'Hata!');
+        }
+
+    }).error(function (jqXHR, exception) {
+        ajaxError(jqXHR.status);
+    }).always(function () {
+        $('#ModalBarcodes').unblock();
+    });
 
 });
 
-
-$(document).ready(function () {
-    JsBarcode(".barcode", "125644563456345634");
-
-    JsBarcode(".barcode", "D@56@HI@ECVHLDEOIIAB5S@", {
+function makeBarcodeCode39(selector, val) {
+    JsBarcode(selector, "D@56@HI@ECVHLDEOIIAB5S@", {
         textPosition: "none",
         text: " "
     });
+}
 
-    // JsBarcode('.barcode', 'Hey bitch!', {
-    //     format: "pharmacode",
-    //     lineColor: "#000",
-    //     width: 4,
-    //     height: 40,
-    //     displayValue: false
-    // });
-});
+function makeBarcodeQRCode(selector, val) {
 
-$(document).ready(function () {
-
-    var qrcode = new QRCode(document.getElementsByClassName("qrcodes"), {
+    let qrcode = new QRCode(document.getElementById(selector), {
         width: 100,
         height: 100
     });
 
     function makeCode() {
-        qrcode.makeCode("D@56@HI@ECVHLDEOIIAB5S@");
+        qrcode.makeCode(val);
     }
 
     makeCode();
@@ -587,8 +665,7 @@ $(document).ready(function () {
             makeCode();
         }
     });
-});
-
+}
 
 $(document).on('click', '#btnPrintBarcode', function () {
     printBarcode('#ModalBarcodes');

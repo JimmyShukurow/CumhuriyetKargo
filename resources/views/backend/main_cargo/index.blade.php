@@ -1059,36 +1059,41 @@
                             <div style="z-index: 99;" class="col-6">
                                 <h5 class="font-weight-bold barcode-slogan">Cumhuriyet Kargo - Sevgi ve Değer
                                     Taşıyoruz..</h5>
-                                <h3 class="font-weight-bold  text-dark m-0">VAN Gölü</h3>
-                                <b>EVREN</b>
+                                <h3 id="barcodeDepartureTC" class="font-weight-bold  text-dark m-0">VAN Gölü</h3>
+                                <b id="barcodeDepartureAgency">EVREN</b>
                             </div>
 
                             <div style="z-index: 99;" class="col-6">
-                                <h3 class="p-0 m-0">HL 102856 AÖ</h3>
-                                <h6 style="font-size: 0.8rem;" class="m-0">GönderiNo: 145646 749879 87968</h6>
-                                <b style="font-size: 12px;">ÜRÜN BEDELİ: 858₺</b>
+                                <h3 id="barcodePaymentType" class="p-0 m-0">HL 102856 AÖ</h3>
+                                <h6 style="font-size: 0.8rem;" class="m-0">GönderiNo: <b id="barcodeTrackingNo">145646
+                                        749879 87968</b></h6>
+                                <b style="font-size: 12px;">ÜRÜN BEDELİ: <b id="barcodeCargoTotalPrice">858₺</b></b>
                             </div>
                             <div class="col-12 code39-container">
                                 <svg style="width: 100%;" class="barcode"></svg>
                             </div>
-                            <div class="col-8">
-                                <h3 style="margin-top: -18px;" class="font-weight-bold text-dark">VAN HATTI</h3>
+                            <div class="col-12 text-center">
+                                <h3 id="barcodeArrivalTC" style="margin-top: -18px;" class="font-weight-bold text-dark">
+                                    VAN HATTI</h3>
+                                <b id="barcodeArrivalAgency">EVREN</b>
                             </div>
                             <div class="col-9 p-0">
                                 <table style="width: 100%;" border="1">
                                     <tr>
                                         <td class="barcode-mini-text text-center font-weight-bold vertical-rl">GÖN</td>
                                         <td>
-                                            <p class="barcode-mini-text p-1 m-0 font-weight-bold">Kitaip yayın evi,
+                                            <p id="barcodeSenderName"
+                                               class="barcode-mini-text p-1 m-0 font-weight-bold">Kitaip yayın evi,
                                                 Basım DAĞ. Reklam Tic. LTD ŞTİ</p>
                                             <p class="barcode-mini-text p-1 m-0 font-weight-bold">
-                                                <span>BAĞCILAR/İSTANBUL </span>
-                                                <span style="float: right;" class="text-right">TEL: 5354276824</span>
+                                                <span id="barcodeSenderCityDistrict">BAĞCILAR/İSTANBUL </span>
+                                                <span id="barcodeSenderPhone" style="float: right;" class="text-right">5354276824</span>
                                             </p>
                                         </td>
-                                        <td rowspan="2">
-                                            <p class="font-weight-bold barcode-mini-text m-0">28.08.2021</p>
-                                            <p class="m-0  barcode-mini-text font-weight-bolder">KOLİ</p>
+                                        <td style="white-space: nowrap;" rowspan="2">
+                                            <p id="barcodeRegDate" class="font-weight-bold barcode-mini-text m-0">
+                                                28.08.2021</p>
+                                            <p id="barcodeCargoType" class="m-0  barcode-mini-text font-weight-bolder">KOLİ</p>
                                             <p class="m-0  barcode-mini-text">Kg:50</p>
                                             <p class="m-0  barcode-mini-text">Ds:50</p>
                                             <p class="m-0  barcode-mini-text">Kg/Ds:50</p>
@@ -1101,14 +1106,17 @@
                                         <td class="barcode-mini-text text-center font-weight-bold vertical-rl">ALICI
                                         </td>
                                         <td>
-                                            <p class="barcode-mini-text p-1 m-0 font-weight-bold">NURULLAH GÜÇ</p>
+                                            <p id="barcodeReceiverName"
+                                               class="barcode-mini-text p-1 m-0 font-weight-bold">NURULLAH GÜÇ</p>
 
-                                            <p class="barcode-mini-text p-1 m-0 font-weight-bold">Gülbahar Mah. Cemal
+                                            <p id="barcodeReceiverAddress"
+                                               class="barcode-mini-text p-1 m-0 font-weight-bold">Gülbahar Mah. Cemal
                                                 Sururi Sk.
                                                 Halim Meriç İş Merkezi No:15/E K:4/22 Şişli/İstanbul</p>
                                             <p class="barcode-mini-text p-1 m-0 font-weight-bold">
-                                                <span>Şişli/İstanbul </span>
-                                                <span style="float: right;" class="text-right">TEL: 5354276824</span>
+                                                <span id="barcodeReceiverCityDistrict">Şişli/İstanbul </span>
+                                                <span id="barcodeReceiverPhone" style="float: right;"
+                                                      class="text-right">TEL: 5354276824</span>
                                             </p>
                                         </td>
                                     </tr>
