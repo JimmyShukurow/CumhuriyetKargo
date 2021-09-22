@@ -48,6 +48,10 @@
                             <a data-toggle="tab" href="#modules"
                                class="{{ setActive($tab, 'FilePrice')}} nav-link tab-nav-link">Dosya Fiyat</a>
                         </li>
+                        <li class="nav-item">
+                            <a data-toggle="tab" href="#miPrice"
+                               class="{{ setActive($tab, 'MiPrice')}} nav-link tab-nav-link">Mi Fiyat</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="card-body">
@@ -167,6 +171,43 @@
                                             <td>
                                                 <button id="{{$filePrice->id}}"
                                                         class="btn btn-primary editFilePrice">Düzenle
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane {{ setActive($tab, 'MiPrice') }} min-vh-100" id="miPrice"
+                             role="tabpanel">
+                            <div class="main-card mb-3 card">
+
+                                <div style="overflow-x: scroll;" class="card-body min-vh-100">
+                                    <table style="white-space: nowrap;"
+                                           class="table table-bordered mb-5">
+                                        <thead>
+                                        <tr>
+                                            <th>Kurumsal</th>
+                                            <th>Bireysel</th>
+                                            <th>Son Güncelleme</th>
+                                            <th width="10">İşlem</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr id="mi-price">
+                                            <td>
+                                                <b id="corporateMiPrice">₺{{$filePrice->corporate_mi_price}}</b>
+                                            </td>
+                                            <td>
+                                                <b id="individualMiPrice">₺{{$filePrice->individual_mi_price}}</b>
+                                            </td>
+                                            <td>
+                                                <b id="miPriceUpdate">{{$filePrice->updated_at}}</b>
+                                            </td>
+                                            <td>
+                                                <button id="{{$filePrice->id}}"
+                                                        class="btn btn-primary editMiPrice">Düzenle
                                                 </button>
                                             </td>
                                         </tr>
@@ -643,6 +684,8 @@
                     ToastMessage('success', 'Fiyat Çekildi!', 'İşlem Başarılı!');
                     $('#corporateFilePrice').html('₺' + response.price.corporate_file_price);
                     $('#individualFilePrice').html('₺' + response.price.individual_file_price);
+                    $('#individualMiPrice').html('₺' + response.price.individual_mi_price);
+                    $('#corporateMiPrice').html('₺' + response.price.corporate_mi_price);
                     $('#filePriceUpdate').html(dateFormat(response.price.updated_at));
 
                 } else if (response.status == 0)
@@ -657,6 +700,44 @@
                 $('#btnUpdateFilePrice').prop('disabled', false);
             });
         }
+
+        // # Mi Price
+        $(document).on('click', '.editMiPrice', function () {
+            edit_file = $(this).prop('id');
+            $('#editCorporteMiPrice').val($("#mi-price > td:nth-child(1)").text());
+            $('#editIndividualMiPrice').val($("#mi-price > td:nth-child(2)").text());
+            $('#modalEditMiPrice').modal();
+        });
+
+        $(document).on('click', '#btnUpdateMiPrice', function () {
+            $(this).prop('disabled', true);
+            ToastMessage('info', 'İstek alındı lütfen basdasdekleyiniz!', 'Bilgi');
+
+            $.ajax('ServiceFees/MiPrice/' + edit_file, {
+                method: 'POST',
+                data: {
+                    _token: token,
+                    corporate_mi_price: $('#editCorporteMiPrice').val(),
+                    individual_mi_price: $('#editIndividualMiPrice').val(),
+                }
+            }).done(function (response) {
+                if (response.status == 1) {
+                    $('.modal input[type=text]').val('');
+                    ToastMessage('success', 'Mi Fiyatları kaydedildi!', 'İşlem Başarılı!');
+                    $('#modalEditMiPrice').modal('toggle');
+                    getFilePrice();
+                } else if (response.status == 0)
+                    ToastMessage('error', response.message, 'Hata!');
+                else if (response.status == -1)
+                    $.each(response.errors, function (index, value) {
+                        ToastMessage('error', value, 'Hata!');
+                    });
+            }).error(function () {
+                ToastMessage('error', 'Bir hata oluştu lütfen daha sonra tekrar deneyiniz.', 'Hata!');
+            }).always(function () {
+                $('#btnUpdateMiPrice').prop('disabled', false);
+            });
+        });
     </script>
 @endsection
 
@@ -938,4 +1019,52 @@
             </div>
         </div>
     </div>
+
+    {{-- Standart Modal - Edit Mi Price --}}
+    <div class="modal fade" id="modalEditMiPrice" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Mi Fiyatlarını Düzenle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="modalBodyEnabledDisabled" class="modalEnabledDisabled modal-body ">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="editCorporteFilePrice">Kurumsal mi ücreti</label>
+                                <input class="form-control input-mask-trigger" id="editCorporteMiPrice"
+                                       placeholder="₺ 0.00"
+                                       type="text"
+                                       data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                       im-insert="true" style="text-align: right;">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="editIndividualFilePrice">Bireysel mi ücreti</label>
+                                <input class="form-control input-mask-trigger" id="editIndividualMiPrice"
+                                       placeholder="₺ 0.00"
+                                       type="text"
+                                       data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                       im-insert="true" style="text-align: right;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button id="btnUpdateMiPrice" type="button" class="btn btn-primary">Mi Fiyatlarını Kaydet
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection

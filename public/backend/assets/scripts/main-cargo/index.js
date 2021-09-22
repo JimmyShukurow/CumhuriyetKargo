@@ -623,8 +623,14 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
 
             $('#barcodePaymentType').text(barcodePaymentType);
 
-            makeBarcodeCode39('.barcode', cargo.tracking_no);
-            makeBarcodeQRCode('qrcode', cargo.tracking_no);
+
+            //      D@56@HI@ECVHLDEOIIAB5S@
+
+            // makeBarcodeCode39('.barcode', cargo.tracking_no);
+            // makeBarcodeQRCode('qrcode', cargo.tracking_no);
+
+            makeBarcodeCode39('.barcode', "D@56@HI@ECVHLDEOIIAB5S@");
+            makeBarcodeQRCode('qrcode', "D@56@HI@ECVHLDEOIIAB5S@");
 
         } else {
             ToastMessage('error', response.message, 'Hata!');
@@ -639,13 +645,15 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
 });
 
 function makeBarcodeCode39(selector, val) {
-    JsBarcode(selector, "D@56@HI@ECVHLDEOIIAB5S@", {
+    JsBarcode(selector, val, {
         textPosition: "none",
         text: " "
     });
 }
 
 function makeBarcodeQRCode(selector, val) {
+
+    $('#' + selector).html('');
 
     let qrcode = new QRCode(document.getElementById(selector), {
         width: 100,

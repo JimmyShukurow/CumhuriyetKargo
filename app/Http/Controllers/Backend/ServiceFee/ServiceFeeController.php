@@ -46,9 +46,36 @@ class ServiceFeeController extends Controller
             return response()->json(['status' => 0, 'message' => 'Bilinmeyen bir hata oluştu!']);
     }
 
+    public function updateMiPrice(Request $request, $id)
+    {
+        $request->corporate_mi_price = substr($request->corporate_mi_price, 3, strlen($request->corporate_mi_price));
+        $request->individual_mi_price = substr($request->individual_mi_price, 3, strlen($request->individual_mi_price));
+
+        $rules = [
+            'corporate_mi_price' => 'required',
+            'individual_mi_price' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails())
+            return response()->json(['status' => '-1', 'errors' => $validator->getMessageBag()->toArray()], 200);
+
+        $store = FilePrice::find($id)
+            ->update([
+                'corporate_mi_price' => $request->corporate_mi_price,
+                'individual_mi_price' => $request->individual_mi_price,
+            ]);
+
+        if ($store)
+            return response()->json(['status' => 1]);
+        else
+            return response()->json(['status' => 0, 'message' => 'Bilinmeyen bir hata oluştu!']);
+    }
+
     public function getFilePrice()
     {
         $FilePrice = FilePrice::first();
         return response()->json(['status' => 1, 'price' => $FilePrice], 200);
     }
+
 }

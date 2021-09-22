@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Tickets;
 use App\Models\SentSms;
 use App\Models\Debits;
+use App\Models\Agencies;
 
 function tr_strtoupper($text)
 {
@@ -636,7 +637,7 @@ function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $
 
 function InsertDebits($ctn, $cargoID, $partNo, $userID, $movementID)
 {
-    $agency = \App\Models\Agencies::find(Auth::id())->first();
+    $agency = Agencies::find(Auth::id());
 
     $insert = Debits::create([
         'cargo_id' => $cargoID,

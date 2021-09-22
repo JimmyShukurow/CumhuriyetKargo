@@ -110,6 +110,8 @@ class MainCargoController extends Controller
         $daily['total_endorsement'] = round($daily['total_endorsement'], 2);
         ## daily report end
 
+        $daily['total_desi'] = round($daily['total_desi'], 2);
+
         return view('backend.main_cargo.index', compact(['data', 'daily']));
     }
 
@@ -1023,9 +1025,11 @@ class MainCargoController extends Controller
                 } else {
                     # => not contracted / Bireysel - Bireysel
                     if ($cargoType == 'Dosya-Mi') {
+
                         $filePrice = FilePrice::first();
                         $filePrice = $filePrice->individual_file_price;
                         $serviceFee = $filePrice;
+
                     } else if ($cargoType != 'Dosya-Mi') {
 
                         ## calc desi price

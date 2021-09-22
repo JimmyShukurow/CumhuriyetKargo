@@ -13,17 +13,21 @@ class FilePrice extends Model
     protected $fillable = [
         'corporate_file_price',
         'individual_file_price',
+        'corporate_mi_price',
+        'individual_mi_price',
     ];
 
     protected static $logAttributes = [
         'corporate_file_price',
         'individual_file_price',
+        'corporate_mi_price',
+        'individual_mi_price',
     ];
 
     public function getDescriptionForEvent(string $eventName): string
     {
         $eventName = getLocalEventName($eventName);
-        return "Dosya ücretleri $eventName.";
+        return "Dosya-Mi ücretleri $eventName.";
     }
 
 }
