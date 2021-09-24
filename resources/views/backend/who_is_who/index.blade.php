@@ -135,8 +135,6 @@
                         <th>Şube İlçe</th>
                         <th>Şube Adı</th>
                         <th>Kullanıcı Tipi</th>
-                        <th>Kayıt Tarihi</th>
-                        <th>İşlem</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -153,8 +151,6 @@
                         <th>Şube İlçe</th>
                         <th>Şube Adı</th>
                         <th>Kullanıcı Tipi</th>
-                        <th>Kayıt Tarihi</th>
-                        <th>İşlem</th>
                     </tr>
                     </tfoot>
                 </table>
@@ -189,7 +185,7 @@
                     ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
                 ],
                 order: [
-                    9, 'desc'
+                    8, 'desc'
                 ],
                 language: {
                     "sDecimal": ",",
@@ -222,23 +218,8 @@
                         }
                     }
                 },
-                dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
+                dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>frtip',
                 buttons: [
-                    'pdf',
-                    'print',
-                    {
-                        extend: 'excelHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-                        },
-                        title: "CK - Sistem Kullanıcıları"
-                    },
-                    {
-                        text: 'Yenile',
-                        action: function (e, dt, node, config) {
-                            dt.ajax.reload();
-                        }
-                    },
                     {
                         extend: 'colvis',
                         text: 'Sütun Görünüm'
@@ -248,7 +229,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '{!! route('user.gm.getAllUsers') !!}',
+                    url: '{!! route('whois.getUsers') !!}',
                     data: function (d) {
                         d.name_surname = $('#name_surname').val();
                         d.agency = $('#agency').val();
@@ -273,8 +254,6 @@
                     {data: 'branch_district', name: 'branch_district'},
                     {data: 'branch_name', name: 'branch_name'},
                     {data: 'user_type', name: 'user_type'},
-                    {data: 'created_at', name: 'created_at'},
-                    {data: 'edit', name: 'edit'}
                 ],
                 scrollY: "400px",
             });

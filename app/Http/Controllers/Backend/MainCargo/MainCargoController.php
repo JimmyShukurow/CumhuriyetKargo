@@ -835,7 +835,7 @@ class MainCargoController extends Controller
 
                 $SecondCargoType = $request->cargoType;
 
-                if ($request->gonderiTuru != 'Dosya-Mi' && $request->desi == 0)
+                if (($request->gonderiTuru != 'Dosya' && $request->gonderiTuru != 'Mi') && $request->desi == 0)
                     return response()
                         ->json(['status' => -1, 'message' => 'Lütfen ' . $request->gonderiTuru . ' için desi bilgisi giriniz!'], 200);
 
@@ -954,16 +954,19 @@ class MainCargoController extends Controller
                         # ===> Cari Anlaşmalı Fiyat Standart Fiyat
                         $currentPrice = CurrentPrices::where('current_code', $currentCode)->first();
 
-                        if ($cargoType == 'Dosya-Mi') {
+                        if ($cargoType == 'Dosya') {
                             $filePrice = $currentPrice->file_price;
                             $serviceFee = $filePrice;
-                        } else if ($cargoType != 'Dosya-Mi') {
+                        } else if ($cargoType == 'Mi') {
+                            $filePrice = $currentPrice->mi_price;
+                            $serviceFee = $filePrice;
+                        } else if ($request->gonderiTuru != 'Dosya' && $request->gonderiTuru != 'Mi') {
                             ## calc desi price
                             $desiPrice = 0;
-                            if ($desi > 30) {
+                            if ($desi > 50) {
                                 $desiPrice = $currentPrice->d_26_30;
                                 $amountOfIncrease = $currentPrice->amount_of_increase;
-                                for ($i = 30; $i < $desi; $i++)
+                                for ($i = 50; $i < $desi; $i++)
                                     $desiPrice += $amountOfIncrease;
                             } else
                                 $desiPrice = $currentPrice[CatchDesiInterval($desi)]; #get interval                              #get interval
@@ -975,8 +978,11 @@ class MainCargoController extends Controller
                     if ($currentCategory == 'Bireysel' && $receiverCategory == 'Kurumsal') {
                         # ===> Cari Anlaşmalı Fiyat Standart Fiyat
                         $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
-                        if ($cargoType == 'Dosya-Mi') {
+                        if ($cargoType == 'Dosya') {
                             $filePrice = $currentPrice->file_price;
+                            $serviceFee = $filePrice;
+                        } else if ($cargoType == 'Mi') {
+                            $filePrice = $currentPrice->mi_price;
                             $serviceFee = $filePrice;
                         } else if ($cargoType != 'Dosya-Mi') {
                             ## calc desi price
@@ -987,7 +993,7 @@ class MainCargoController extends Controller
                                 for ($i = 30; $i < $desi; $i++)
                                     $desiPrice += $amountOfIncrease;
                             } else
-                                $desiPrice = $currentPrice[CatchDesiInterval($desi)]; #get interval                              #get interval
+                                $desiPrice = $currentPrice[CatchDesiInterval($desi)]; #get interval #get interval
                             $serviceFee = $desiPrice;
                         }
                     }

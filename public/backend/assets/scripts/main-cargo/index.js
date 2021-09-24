@@ -547,7 +547,6 @@ $('#btnPrintSelectedBarcode').click(function () {
 
 $(document).on('click', '#btnCargoPrintBarcode', function () {
 
-
     $('#ModalShowBarcode').modal();
 
     let tracking_no = $(this).attr('tracking-no');
@@ -622,7 +621,6 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
                 barcodePaymentType += 'GÖ';
 
             $('#barcodePaymentType').text(barcodePaymentType);
-
 
             //      D@56@HI@ECVHLDEOIIAB5S@
 

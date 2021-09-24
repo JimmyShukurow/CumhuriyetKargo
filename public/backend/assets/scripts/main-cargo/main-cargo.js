@@ -912,7 +912,7 @@ $('#selectCargoType').change(function () {
         $('#checkCargoType').prop('disabled', false);
 
 
-        if ($('#selectCargoType').val() != 'Dosya' && $('#selectCargoType').val() != 'Mi' ) {
+        if ($('#selectCargoType').val() != 'Dosya' && $('#selectCargoType').val() != 'Mi') {
 
             $('#modalCalcDesi').modal();
             CargoType = 'Koli';

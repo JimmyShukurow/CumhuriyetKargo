@@ -474,6 +474,14 @@ function CatchDesiInterval($desi)
         return 'd_21_25';
     else if ($desi > 25 && $desi <= 30)
         return 'd_26_30';
+    else if ($desi > 30 && $desi <= 35)
+        return 'd_31_35';
+    else if ($desi > 35 && $desi <= 40)
+        return 'd_36_40';
+    else if ($desi > 40 && $desi <= 45)
+        return 'd_41_45';
+    else if ($desi > 45 && $desi <= 50)
+        return 'd_46_50';
 }
 
 function CurrentControl($currentCode)

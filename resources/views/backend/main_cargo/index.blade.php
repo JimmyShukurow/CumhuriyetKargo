@@ -1101,7 +1101,6 @@
                                             <p class="m-0 text-center font-weight-bold">2/2</p>
                                         </td>
                                     </tr>
-
                                     <tr>
                                         <td class="barcode-mini-text text-center font-weight-bold vertical-rl">ALICI
                                         </td>
@@ -1120,7 +1119,6 @@
                                             </p>
                                         </td>
                                     </tr>
-
                                 </table>
                             </div>
                             <div class="col-3 qr-barcode-cont">
