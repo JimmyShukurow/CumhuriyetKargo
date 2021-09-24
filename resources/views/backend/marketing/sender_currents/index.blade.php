@@ -431,17 +431,23 @@
                 if (response.current.category == 'Kurumsal') {
 
                     $('#currentFilePrice').html(response.price.file_price + "₺");
+                    $('#currentMiPrice').html(response.price.mi_price + "₺");
                     $('#current1_5Desi').html(response.price.d_1_5 + "₺");
                     $('#current6_10Desi').html(response.price.d_6_10 + "₺");
                     $('#current11_15Desi').html(response.price.d_11_15 + "₺");
                     $('#current16_20Desi').html(response.price.d_16_20 + "₺");
                     $('#current21_25Desi').html(response.price.d_21_25 + "₺");
                     $('#current26_30Desi').html(response.price.d_26_30 + "₺");
+                    $('#current31_35Desi').html(response.price.d_31_35 + "₺");
+                    $('#current36_40Desi').html(response.price.d_36_40 + "₺");
+                    $('#current41_45Desi').html(response.price.d_41_45 + "₺");
+                    $('#current46_50Desi').html(response.price.d_46_50 + "₺");
                     $('#currentAmountOfIncrease').html(response.price.amount_of_increase + "₺");
                     $('#currentCollectPrice').html(response.price.collect_price + "₺");
                     $('#collectAmountOfIncrease').html("%" + response.price.collect_amount_of_increase);
                     $('#currentConfirmed').html(currentConfirmed);
                     $('#PrintCurrentContract').attr('href', '/SenderCurrents/CurrentContract/' + response.current.current_code);
+
                 }
 
                 $('.modal-body').unblock();
@@ -669,7 +675,7 @@
                                 <li class="list-group-item">
                                     <div class="widget-content pt-4 pb-4 pr-1 pl-1">
 
-                                        <div style="overflow-x: scroll" class="cont">
+                                        <div style="overflow-x: auto" class="cont">
                                             <table style="white-space: nowrap" id="InfoCard"
                                                    class="TableNoPadding table table-bordered table-striped">
                                                 <thead>
@@ -683,17 +689,14 @@
                                                     <td class="static">Onay</td>
                                                     <td id="currentConfirmed"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">Kategori</td>
                                                     <td id="currentCategory"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">Cari Kodu</td>
                                                     <td id="modalCurrentCode"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">Ad Soyad/Firma</td>
                                                     <td id="nameSurnameCompany"></td>
@@ -710,69 +713,54 @@
                                                     <td class="static">TCKN/VKN</td>
                                                     <td id="tcknVkn"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">Telefon</td>
                                                     <td id="phone"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">İl/İlçe</td>
                                                     <td id="cityDistrict"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">Adress</td>
                                                     <td id="address"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">GSM</td>
                                                     <td id="gsm"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">GSM (2)</td>
                                                     <td id="gsm2"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">Telefon (2)</td>
                                                     <td id="phone2"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">E-Posta</td>
                                                     <td id="email"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">Website</td>
                                                     <td id="website"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">Sevk İl/İlce</td>
                                                     <td id="dispatchCityDistrict"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">Sevk Adres</td>
                                                     <td id="dispatchAddress"></td>
                                                 </tr>
-
-
                                                 <tr>
                                                     <td class="static">IBAN</td>
                                                     <td id="iban"></td>
                                                 </tr>
-
-
                                                 <tr>
                                                     <td class="static">Hesap Sahibi</td>
                                                     <td id="bankOwner"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">Sözleşme Başlangıç Tarihi</td>
                                                     <td id="contractStartDate"></td>
@@ -781,23 +769,18 @@
                                                     <td class="static">Sözleşme Bitiş Tarihi</td>
                                                     <td id="contractEndDate"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">Referans</td>
                                                     <td id="reference"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">Oluşturan Kullanıcı</td>
                                                     <td id="currentCreatorUser"></td>
                                                 </tr>
-
                                                 <tr>
                                                     <td class="static">Kayıt Tarihi</td>
                                                     <td id="regDate"></td>
                                                 </tr>
-
-
                                                 </tbody>
                                             </table>
                                         </div>
@@ -817,10 +800,14 @@
                                             </tr>
 
                                             <tr>
+                                                <td class="static">Mi</td>
+                                                <td id="currentMiPrice"></td>
+                                            </tr>
+
+                                            <tr>
                                                 <td class="static">1-5 Desi</td>
                                                 <td id="current1_5Desi"></td>
                                             </tr>
-
                                             <tr>
                                                 <td class="static">6-10 Desi</td>
                                                 <td id="current6_10Desi"></td>
@@ -837,27 +824,38 @@
                                                 <td class="static">21-25 Desi</td>
                                                 <td id="current21_25Desi"></td>
                                             </tr>
-
                                             <tr>
                                                 <td class="static">26-30 Desi</td>
                                                 <td id="current26_30Desi"></td>
                                             </tr>
-
+                                            <tr>
+                                                <td class="static">31-35 Desi</td>
+                                                <td id="current31_35Desi"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="static">36-40 Desi</td>
+                                                <td id="current36_40Desi"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="static">41-45 Desi</td>
+                                                <td id="current41_45Desi"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="static">46-50 Desi</td>
+                                                <td id="current46_50Desi"></td>
+                                            </tr>
                                             <tr>
                                                 <td class="static">Üstü Desi</td>
                                                 <td id="currentAmountOfIncrease"></td>
                                             </tr>
-
                                             <tr>
                                                 <td class="static">Tahsilat Bedeli (0-200₺)</td>
                                                 <td id="currentCollectPrice"></td>
                                             </tr>
-
                                             <tr>
                                                 <td class="static">Tahsilat Bedeli Oranı (200₺ Üstü)</td>
                                                 <td id="collectAmountOfIncrease"></td>
                                             </tr>
-
                                             </tbody>
                                         </table>
 
@@ -874,10 +872,8 @@
                                                         </button>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
-
 
                                     </div>
                                 </li>

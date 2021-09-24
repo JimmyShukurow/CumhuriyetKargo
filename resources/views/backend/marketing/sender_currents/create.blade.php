@@ -439,6 +439,16 @@
 
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
+                                        <label for="miPrice" class="">Mi:</label>
+                                        <input name="miUcreti" id="miPrice" required
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                               type="text" value="{{ old('miUcreti') }}"
+                                               class="form-control input-mask-trigger form-control-sm">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
                                         <label for="d1_5" class="">1-5 Desi:</label>
                                         <input name="d1_5" id="d1_5" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
@@ -493,6 +503,46 @@
                                         <input name="d26_30" id="d26_30" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ old('d26_30') }}"
+                                               class="form-control input-mask-trigger form-control-sm">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="d31_35" class="">31-35 Desi:</label>
+                                        <input name="d31_35" id="d31_35" required
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                               type="text" value="{{ old('d31_35') }}"
+                                               class="form-control input-mask-trigger form-control-sm">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="d36_40" class="">36-40 Desi:</label>
+                                        <input name="d36_40" id="d36_40" required
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                               type="text" value="{{ old('d36_40') }}"
+                                               class="form-control input-mask-trigger form-control-sm">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="d41_45" class="">41-45 Desi:</label>
+                                        <input name="d41_45" id="d41_45" required
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                               type="text" value="{{ old('d41_45') }}"
+                                               class="form-control input-mask-trigger form-control-sm">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="d46_50" class="">46-50 Desi:</label>
+                                        <input name="d46_50" id="d46_50" required
+                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                               type="text" value="{{ old('d46_50') }}"
                                                class="form-control input-mask-trigger form-control-sm">
                                     </div>
                                 </div>

@@ -912,7 +912,7 @@ $('#selectCargoType').change(function () {
         $('#checkCargoType').prop('disabled', false);
 
 
-        if ($('#selectCargoType').val() != 'Dosya-Mi') {
+        if ($('#selectCargoType').val() != 'Dosya' && $('#selectCargoType').val() != 'Mi' ) {
 
             $('#modalCalcDesi').modal();
             CargoType = 'Koli';
@@ -925,6 +925,7 @@ $('#selectCargoType').change(function () {
             calculateTotalPrice();
             // getFilePrice();
             getPriceForCustomers();
+
         }
 
         //

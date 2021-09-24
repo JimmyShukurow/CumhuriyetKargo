@@ -90,12 +90,17 @@ class SenderCurrentController extends Controller
             'tahsilatEkHizmetBedeli' => 'required',
             'tahsilatEkHizmetBedeli200Ustu' => 'required',
             'dosyaUcreti' => ['required', new PriceControl],
+            'miUcreti' => ['required', new PriceControl],
             'd1_5' => ['required', new PriceControl],
             'd6_10' => ['required', new PriceControl],
             'd11_15' => ['required', new PriceControl],
             'd16_20' => ['required', new PriceControl],
             'd21_25' => ['required', new PriceControl],
             'd26_30' => ['required', new PriceControl],
+            'd31_35' => ['required', new PriceControl],
+            'd36_40' => ['required', new PriceControl],
+            'd41_45' => ['required', new PriceControl],
+            'd46_50' => ['required', new PriceControl],
             'ustuDesi' => ['required', new PriceControl],
         ]);
 
@@ -193,12 +198,17 @@ class SenderCurrentController extends Controller
             $create = CurrentPrices::create([
                 'current_code' => $current_code,
                 'file_price' => getDoubleValue($request->dosyaUcreti),
+                'mi_price' => getDoubleValue($request->miUcreti),
                 'd_1_5' => getDoubleValue($request->d1_5),
                 'd_6_10' => getDoubleValue($request->d6_10),
                 'd_11_15' => getDoubleValue($request->d11_15),
                 'd_16_20' => getDoubleValue($request->d16_20),
                 'd_21_25' => getDoubleValue($request->d21_25),
                 'd_26_30' => getDoubleValue($request->d26_30),
+                'd_31_35' => getDoubleValue($request->d31_35),
+                'd_36_40' => getDoubleValue($request->d36_40),
+                'd_41_45' => getDoubleValue($request->d41_45),
+                'd_46_50' => getDoubleValue($request->d46_50),
                 'amount_of_increase' => getDoubleValue($request->ustuDesi),
                 'collect_price' => getDoubleValue($request->tahsilatEkHizmetBedeli),
                 'collect_amount_of_increase' => getDoubleValue($request->tahsilatEkHizmetBedeli200Ustu),
@@ -288,12 +298,17 @@ class SenderCurrentController extends Controller
             'tahsilatEkHizmetBedeli' => 'required',
             'tahsilatEkHizmetBedeli200Ustu' => 'required',
             'dosyaUcreti' => ['required', new PriceControl],
+            'miUcreti' => ['required', new PriceControl],
             'd1_5' => ['required', new PriceControl],
             'd6_10' => ['required', new PriceControl],
             'd11_15' => ['required', new PriceControl],
             'd16_20' => ['required', new PriceControl],
             'd21_25' => ['required', new PriceControl],
             'd26_30' => ['required', new PriceControl],
+            'd31_35' => ['required', new PriceControl],
+            'd36_40' => ['required', new PriceControl],
+            'd41_45' => ['required', new PriceControl],
+            'd46_50' => ['required', new PriceControl],
             'ustuDesi' => ['required', new PriceControl],
         ]);
 
@@ -365,16 +380,20 @@ class SenderCurrentController extends Controller
 
             $current = Currents::find($id);
 
-
             $update = CurrentPrices::where('current_code', $current->current_code)
                 ->update([
                     'file_price' => getDoubleValue($request->dosyaUcreti),
+                    'mi_price' => getDoubleValue($request->miUcreti),
                     'd_1_5' => getDoubleValue($request->d1_5),
                     'd_6_10' => getDoubleValue($request->d6_10),
                     'd_11_15' => getDoubleValue($request->d11_15),
                     'd_16_20' => getDoubleValue($request->d16_20),
                     'd_21_25' => getDoubleValue($request->d21_25),
                     'd_26_30' => getDoubleValue($request->d26_30),
+                    'd_31_35' => getDoubleValue($request->d31_35),
+                    'd_36_40' => getDoubleValue($request->d36_40),
+                    'd_41_45' => getDoubleValue($request->d41_45),
+                    'd_46_50' => getDoubleValue($request->d46_50),
                     'amount_of_increase' => getDoubleValue($request->ustuDesi),
                     'collect_price' => getDoubleValue($request->tahsilatEkHizmetBedeli),
                     'collect_amount_of_increase' => getDoubleValue($request->tahsilatEkHizmetBedeli200Ustu),
@@ -662,14 +681,18 @@ class SenderCurrentController extends Controller
         $templateProccessor->setValue('name', $current->name);
 
         $templateProccessor->setValue('file', $currentPrice->file_price);
+        $templateProccessor->setValue('mi', $currentPrice->mi_price);
         $templateProccessor->setValue('d1_5', $currentPrice->d_1_5);
         $templateProccessor->setValue('d6_10', $currentPrice->d_6_10);
         $templateProccessor->setValue('d11_15', $currentPrice->d_11_15);
         $templateProccessor->setValue('d16_20', $currentPrice->d_16_20);
         $templateProccessor->setValue('d21_25', $currentPrice->d_21_25);
         $templateProccessor->setValue('d26_30', $currentPrice->d_26_30);
+        $templateProccessor->setValue('d31_35', $currentPrice->d_31_35);
+        $templateProccessor->setValue('d36_40', $currentPrice->d_36_40);
+        $templateProccessor->setValue('d41_45', $currentPrice->d_41_45);
+        $templateProccessor->setValue('d46_50', $currentPrice->d_46_50);
         $templateProccessor->setValue('amount_of_increase', $currentPrice->amount_of_increase);
-
         $templateProccessor->setValue('CurrentCode', CurrentCodeDesign($current->current_code));
         $templateProccessor->setValue('category', $current->category);
         $templateProccessor->setValue('tax_office', $current->tax_administration);
