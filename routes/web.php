@@ -81,6 +81,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::group(['prefix' => 'WhoIsWho', 'as' => 'whois.'], function () {
         Route::get('', [WhoIsController::class, 'index'])->name('index');
         Route::get('GetUsers', [WhoIsController::class, 'getUsers'])->name('getUsers');
+        Route::post('GetUserInfo', [WhoIsController::class, 'userInfo']);
     });
 
 
