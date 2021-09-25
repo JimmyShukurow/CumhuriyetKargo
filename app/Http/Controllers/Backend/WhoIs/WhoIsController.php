@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Backend\WhoIs;
 
+use App\DataTables\AgenciesDataTable;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Agencies;
 use App\Models\TransshipmentCenters;
 use App\Models\Roles;
+use Yajra\DataTables\DataTables;
 
 class WhoIsController extends Controller
 {
@@ -64,18 +67,24 @@ class WhoIsController extends Controller
 
         if ($data['user']->user_type == 'Acente')
             $data['director'] = DB::table('view_users_all_info')
-                ->select(['name_surname', 'display_name'])
-                ->where('agency_code', $data['user']->agency_code)
-                ->where('role_id', 20)
-                ->orderBy('created_at', 'asc')
+                ->select(['view_users_all_info.name_surname', 'view_users_all_info.display_name', 'agencies.phone'])
+                ->join('agencies', 'agencies.id', '=', 'view_users_all_info.id')
+                ->where('view_users_all_info.agency_code', $data['user']->agency_code)
                 ->first();
 
         else if ($data['user']->user_type == 'Aktarma')
             $data['director'] = DB::table('transshipment_centers')
-                ->select(['transshipment_centers.*', 'view_users_all_info.name_surname', 'view_users_all_info.display_name'])
+                ->select(['transshipment_centers.*', 'view_users_all_info.name_surname', 'view_users_all_info.display_name', 'view_users_all_info.phone'])
                 ->join('view_users_all_info', 'view_users_all_info.id', '=', 'transshipment_centers.tc_director_id')
                 ->where('transshipment_centers.id', $data['user']->tc_code)
                 ->first();
+
+        $data['region'] = DB::table('regional_directorates')
+            ->select(['regional_directorates.name'])
+            ->join('regional_districts', 'regional_districts.region_id', '=', 'regional_directorates.id')
+            ->where('regional_districts.city', $data['user']->branch_city)
+            ->where('regional_districts.district', $data['user']->branch_district)
+            ->first();
 
 
         $data['user_log'] = DB::table('activity_log')
@@ -86,6 +95,59 @@ class WhoIsController extends Controller
 
         return response()->json($data, 200);
 
+    }
+
+
+    public function index_agencies(AgenciesDataTable $dataTable)
+    {
+        $data['agencies'] = Agencies::all();
+        GeneralLog("'Kim Kimdir?' modülünde 'Acenteler' sayfası görüntülendi.");
+        return view('backend.who_is_who.agencies', compact('data'));
+    }
+
+
+    public function getAgencies()
+    {
+//        $agencies = Agencies::orderBy('created_at', 'desc')->get();
+        $agencies = DB::select('CALL proc_agency_region()');
+
+        return DataTables::of($agencies)
+            ->setRowClass(function ($agency) {
+                return 'agency-item-' . $agency->id;
+            })
+            ->setRowId(function ($agency) {
+                return 'agency-item-' . $agency->id;
+            })
+//            ->addColumn('intro', 'Hi {{$name_surname}}')
+            ->addColumn('regional_directorates', function ($agency) {
+                return $agency->regional_directorates != '' ? "$agency->regional_directorates  B.M." : "";
+            })
+            ->addColumn('tc_name', function ($agency) {
+                return $agency->tc_name != '' ? "$agency->tc_name  T.M." : "";
+            })
+            ->addColumn('edit', 'backend.who_is_who.columns.agencies_detail')
+            ->rawColumns(['edit'])
+            ->editColumn('city', function ($agency) {
+                return $agency->city . '/' . $agency->district;
+            })
+            ->editColumn('created_at', function ($agency) {
+                return Carbon::parse($agency->created_at)->format('Y-m-d H:i:s');
+            })
+            ->make(true);
+    }
+
+    public function agencyInfo(Request $request)
+    {
+        $agency_code = $request->agency_id;
+
+        $data['agency'] = DB::select('CALL proc_agency_region_search(' . $agency_code . ')');
+
+        $data['employees'] = DB::table('view_user_role')
+            ->where('agency_code', $agency_code)
+            ->orderBy('display_name', 'asc')
+            ->get();
+
+        return response()->json($data, 200);
     }
 
 
