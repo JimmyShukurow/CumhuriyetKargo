@@ -80,6 +80,9 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
     Route::group(['prefix' => 'WhoIsWho', 'as' => 'whois.'], function () {
         Route::get('', [WhoIsController::class, 'index'])->name('index');
+        Route::get('Agencies', [WhoIsController::class, 'index_agencies'])->name('agencies');
+        Route::get('GetAgencies', [WhoIsController::class, 'getAgencies'])->name('GetAgencies');
+        Route::post('GetAgencyInfo', [WhoIsController::class, 'agencyInfo'])->name('agencyInfo');
         Route::get('GetUsers', [WhoIsController::class, 'getUsers'])->name('getUsers');
         Route::post('GetUserInfo', [WhoIsController::class, 'userInfo']);
     });
