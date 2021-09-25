@@ -18,7 +18,7 @@
                     </div>
                     <div>Kim Kimdir?
                         <div class="page-title-subheading">Bu modül üzerinden sistemdeki tüm kullanıcıları
-                            listleyebilir, işlem yapablirsiniz.
+                            listleyebilir, işlem yapabl irsiniz.
                         </div>
                     </div>
                 </div>
