@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="/backend/assets/css/app-main-block.css">
 @endpush()
 
-@section('title', 'Tüm Kullanıcılar (General Managment)')
+@section('title', 'Kim Kimdir?')
 
 @section('content')
 
@@ -13,10 +13,10 @@
             <div class="page-title-wrapper">
                 <div class="page-title-heading">
                     <div class="page-title-icon">
-                        <i class="lnr-user icon-gradient bg-ripe-malin">
+                        <i class="fas fa-users icon-gradient bg-ripe-malin">
                         </i>
                     </div>
-                    <div>Tüm Kullanıcılar (General Managment)
+                    <div>Kim Kimdir?
                         <div class="page-title-subheading">Bu modül üzerinden sistemdeki tüm kullanıcıları
                             listleyebilir, işlem yapablirsiniz.
                         </div>
@@ -65,7 +65,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <label for="name_surname">Ad Soyad</label>
                             <input type="text" class="form-control" name="name_surname" id="name_surname">
                         </div>
@@ -76,15 +76,6 @@
                                 <option value="">Seçiniz</option>
                                 <option value="Acente">Acente</option>
                                 <option value="Aktarma">Aktarma</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-2">
-                            <label for="status">Statü</label>
-                            <select name="status" id="status" class="form-control">
-                                <option value="">Seçiniz</option>
-                                <option value="Aktif">Aktif</option>
-                                <option value="Pasif">Pasif</option>
                             </select>
                         </div>
 
@@ -130,11 +121,11 @@
                         <th>Yetki</th>
                         <th>Eposta</th>
                         <th>Telefon</th>
-                        <th>Statü</th>
                         <th>Şube İl</th>
                         <th>Şube İlçe</th>
                         <th>Şube Adı</th>
                         <th>Kullanıcı Tipi</th>
+                        <th>Detay</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -146,11 +137,11 @@
                         <th>Yetki</th>
                         <th>Eposta</th>
                         <th>Telefon</th>
-                        <th>Statü</th>
                         <th>Şube İl</th>
                         <th>Şube İlçe</th>
                         <th>Şube Adı</th>
                         <th>Kullanıcı Tipi</th>
+                        <th>Detay</th>
                     </tr>
                     </tfoot>
                 </table>
@@ -185,7 +176,7 @@
                     ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
                 ],
                 order: [
-                    8, 'desc'
+                    7, 'desc'
                 ],
                 language: {
                     "sDecimal": ",",
@@ -216,7 +207,8 @@
                             "0": "",
                             "1": "1 kayıt seçildi"
                         }
-                    }
+                    },
+                    "searchPlaceholder": "Kullanıcı Arayın",
                 },
                 dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>frtip',
                 buttons: [
@@ -235,7 +227,6 @@
                         d.agency = $('#agency').val();
                         d.tc = $('#tc').val();
                         d.role = $('#role').val();
-                        d.status = $('#status').val();
                         d.user_type = $('#user_type').val();
                     },
                     error: function (xhr, error, code) {
@@ -249,11 +240,11 @@
                     {data: 'display_name', name: 'display_name'},
                     {data: 'email', name: 'email'},
                     {data: 'phone', name: 'phone'},
-                    {data: 'status', name: 'status'},
                     {data: 'branch_city', name: 'branch_city'},
                     {data: 'branch_district', name: 'branch_district'},
                     {data: 'branch_name', name: 'branch_name'},
                     {data: 'user_type', name: 'user_type'},
+                    {data: 'detail', name: 'detail'},
                 ],
                 scrollY: "400px",
             });
@@ -311,7 +302,7 @@
         var array = new Array();
 
         function userInfo(user) {
-            $.ajax('/Users/GetUserInfo', {
+            $.ajax('WhoIsWho/GetUserInfo', {
                 method: 'POST',
                 data: {
                     _token: token,
@@ -320,15 +311,21 @@
                 cache: false
             }).done(function (response) {
                 var user = response.user;
+                var director = response.director;
 
-                $('#agencyName').html(user.name_surname + " (" + user.display_name + ")");
+                $('#agencyName').html(user.name_surname);
                 $('#agencyCityDistrict').html(user.branch_city + '/' + user.branch_district + ' - ' + user.branch_name + ' ' + user.user_type);
                 $('#titleBranch').html(user.name_surname + ' ÖZET');
                 $('#phone').html(user.phone);
                 $('#email').html(user.email);
-                $('#general-status').html(user.status == 0 ? 'Pasif' : 'Aktif');
-                $('#statusDescription').html(user.status_description);
-                $('#regDate').html(user.created_at);
+                $('td#name_surname').html(user.name_surname);
+                $('#authority').html(user.display_name);
+                $('td#phone').html(director.phone)
+
+                let fakeTitle = user.user_type == 'Aktarma' ? 'TRANSFER MERKEZİ' : 'ACENTE';
+
+                $('#dependency').html(director.name_surname + " (" + director.display_name + ")");
+                $('#place').html(user.branch_city + '/' + user.branch_district + ' - ' + user.branch_name + ' ' + fakeTitle);
 
                 var counter = 0;
                 array = [];
@@ -357,149 +354,6 @@
 
             $('#ModalAgencyDetail').modal();
         }
-
-
-        $(document).on('click', '.properties-log', function () {
-            var properties = $(this).attr('properties');
-            var log_id = $(this).attr('id');
-            var array_no = $(this).attr('array-no');
-            $('#json-renderer').text(JSON.parse(array[array_no]));
-            $('#json-renderer').jsonViewer(JSON.parse(array[array_no]), {
-                collapsed: false,
-                rootCollapsable: false,
-                withQuotes: false,
-                withLinks: true
-            });
-            $('#ModalLogProperties').modal();
-        });
-
-        $(document).on('click', '#passwordResetBtn', function () {
-            swal({
-                title: 'Parola Sıfırlama İşlemini Onaylayın.',
-                text: 'Kullanıcının şifresi sıfırlanacak ve sisteme kayıtlı telefon numarasına sms olarak gönderilecektir, bunu onaylıyor musunuz?',
-                icon: 'warning',
-                buttons: ['İptal Et', 'Onayla'],
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    ToastMessage('warning', 'İstek alındı, lütfen bekleyiniz.', 'Dikkat!');
-                    $.ajax('{{route('user.gm.passwordReset')}}', {
-                        method: 'POST',
-                        data: {
-                            _token: token,
-                            user: detailsID
-                        }
-                    }).done(function (response) {
-                        if (response.status == 1) {
-                            ToastMessage('success', 'Kullanıcnın şifresi sıfırlandı ve cep numarasına SMS gönderildi.', 'İşlem Başarılı!');
-                        } else if (response.status == 0) {
-                            ToastMessage('error', response.description, 'Hata!');
-                        }
-                    });
-                } else {
-                    ToastMessage('info', 'İşlem iptal edilidi.', 'Bilgi');
-                }
-            });
-        });
-
-        $(document).on('click', '#btnEnabledDisabled', function () {
-            // alert(detailsID);
-            $('#modalEnabledDisabled').modal();
-
-            $('#modalBodyEnabledDisabled.modalEnabledDisabled.modal-body').block({
-                message: $('<div class="loader mx-auto">\n' +
-                    '                            <div class="ball-pulse-sync">\n' +
-                    '                                <div class="bg-warning"></div>\n' +
-                    '                                <div class="bg-warning"></div>\n' +
-                    '                                <div class="bg-warning"></div>\n' +
-                    '                            </div>\n' +
-                    '                        </div>')
-            });
-            $('.blockUI.blockMsg.blockElement').css('width', '100%');
-            $('.blockUI.blockMsg.blockElement').css('border', '0px');
-            $('.blockUI.blockMsg.blockElement').css('background-color', '');
-
-
-            $.ajax('/Users/GetUserInfo', {
-                method: 'POST',
-                data: {
-                    _token: token,
-                    user: detailsID
-                }
-            }).done(function (response) {
-                console.log(response);
-
-                $('#userNameSurname').val(response.user.name_surname);
-                $('#accountStatus').val(response.user.status);
-                $('#statusDesc').val(response.user.status_description);
-
-                $('.modalEnabledDisabled.modal-body').unblock();
-            });
-        });
-
-        $(document).on('click', '#btnSaveStatus', function () {
-            ToastMessage('warning', 'İstek alındı, lütfen bekleyiniz.', 'Dikkat!');
-            $.ajax('/Users/ChangeStatus', {
-                method: 'POST',
-                data: {
-                    _token: token,
-                    user: detailsID,
-                    status: $('#accountStatus').val(),
-                    status_description: $('#statusDesc').val()
-                }
-            }).done(function (response) {
-                if (response.status == 1) {
-                    userInfo(detailsID);
-                    ToastMessage('success', 'Değişiklikler başarıyla kaydedildi.', 'İşlem Başarılı!');
-                    $('#modalEnabledDisabled').modal('toggle');
-                } else if (response.status == 0) {
-                    ToastMessage('error', response.description, 'Hata!');
-                } else if (response.status == -1) {
-                    response.errors.status.forEach(key =>
-                        ToastMessage('error', key, 'Hata!')
-                    );
-                }
-
-                return false;
-            }).error(function (jqXHR, response) {
-
-                ToastMessage('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!', 'Hata!');
-            });
-        });
-        $(document).on('click', '#btnVirtualLogin', function () {
-            $('#ModalVirtualLogin').modal();
-        });
-
-        function kelimeSayisi(icerik) {
-            var alfabem = "[a-zA-ZÂâÎîİıÇçŞşÜüÖöĞğ]";
-            var kelimeSayisi = 0;
-
-            for (var i = 0; i < icerik.length - 1; i++) {
-                if (icerik[i].match(alfabem) && !icerik[i + 1].match(alfabem))
-                    kelimeSayisi++;
-            }
-
-
-            if (icerik[icerik.length - 1].match(alfabem))
-                kelimeSayisi++;
-
-            return kelimeSayisi;
-        }
-
-        $(document).on('click', '#btnGoToVirtualLogin', function () {
-
-            if ($('#reason').val().trim() == '') {
-                ToastMessage('error', 'Gerekçe belirtmelisiniz!', 'Hata!');
-                return false;
-            } else if (kelimeSayisi($('#reason').val()) < 3) {
-                ToastMessage('error', 'Gerekçe en az 3 kelimeden oluşmalıdır!', 'Hata!');
-                return false;
-            }
-
-            window.location.href = "/Users/VirtualLogin/" + detailsID + "/" + $('#reason').val();
-
-        });
-
     </script>
 @endsection
 
@@ -540,45 +394,7 @@
                                 </div>
                             </div>
                             <ul class="list-group list-group-flush">
-                                <li class="p-0 list-group-item">
-                                    <div class="grid-menu grid-menu-2col">
-                                        <div class="no-gutters row">
-                                            <div class="col-sm-4">
-                                                <div class="p-1">
-                                                    <button
-                                                        id="passwordResetBtn"
-                                                        class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
-                                                        <i class="lnr-redo text-dark opacity-7 btn-icon-wrapper mb-2"></i>
-                                                        Şifre Sıfırla
-                                                    </button>
-                                                </div>
-                                            </div>
 
-                                            <div class="col-sm-4">
-                                                <div class="p-1">
-                                                    <button id="btnEnabledDisabled"
-                                                            class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
-                                                        <i class="lnr-construction text-danger opacity-7 btn-icon-wrapper mb-2">
-                                                        </i>
-                                                        Hesabı Aktif/Pasif Yap
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-4">
-                                                <div class="p-1">
-                                                    <button id="btnVirtualLogin"
-                                                            class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-alternate">
-                                                        <i class="fa fa-paper-plane text-alternate opacity-7 btn-icon-wrapper mb-2">
-                                                        </i>
-                                                        Hesaba Sanal Giriş Yap
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </li>
 
                                 <li class="list-group-item">
                                     <div class="widget-content pt-4 pb-4 pr-1 pl-1">
@@ -594,47 +410,57 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-
+                                                <tr>
+                                                    <td class="static">Ad Soyad</td>
+                                                    <td id="name_surname">
+                                                    </td>
+                                                </tr>
                                                 <tr>
                                                     <td class="static">Telefon</td>
                                                     <td id="phone">
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td class="static">Yetki</td>
+                                                    <td id="authority">
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td class="static">E-Mail</td>
                                                     <td id="email"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Statü</td>
-                                                    <td id="general-status">Aktif</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Statü Açıklama</td>
-                                                    <td id="statusDescription"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Kayıt Tarihi</td>
-                                                    <td id="regDate"></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <h4 class="mt-3">Son Hareketler</h4>
 
-                                        <div style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
-                                             class="cont">
-                                            <table style="white-space: nowrap" id="TableEmployees"
-                                                   class="Table30Padding table table-striped mt-3">
+                                    </div>
+
+
+                                    <div class="widget-content pt-4 pb-4 pr-1 pl-1">
+
+                                        <div style="overflow-x: auto" class="cont">
+                                            <table style="white-space: nowrap" id="AgencyCard"
+                                                   class="TableNoPadding table table-bordered table-striped">
                                                 <thead>
                                                 <tr>
-                                                    <th>Kayıt Tarihi</th>
-                                                    <th>Hareket Tipi</th>
-                                                    <th>Detay</th>
-                                                    <th>Hareket</th>
+                                                    <th class="text-center" id="titleBranch" colspan="2">BAĞIMLILIKLAR
+                                                    </th>
                                                 </tr>
                                                 </thead>
-                                                <tbody id="tbodyUseLog">
-
+                                                <tbody>
+                                                <tr>
+                                                    <td class="static">Bağlı olduğu kişi</td>
+                                                    <td id="dependency">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Çalıştığı yer</td>
+                                                    <td id="place"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">İletişim</td>
+                                                    <td id="phone"></td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -650,134 +476,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Large modal -->
-    <div class="modal fade bd-example-modal-lg" id="ModalLogProperties" tabindex="-1" role="dialog"
-         aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalGiveRolePermissionLabel">Log Detayları</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    {{-- CARD START --}}
-                    <div class="col-md-12">
-                        <div class="mb-3 profile-responsive card">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    <h3 class="text-center text-primary">Özellikler</h3>
-                                    <pre id="json-renderer"></pre>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    {{-- CARD END --}}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Standart Modal - Enabled/Disabled User --}}
-    <div class="modal fade" id="modalEnabledDisabled" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Hesabı Aktif Pasif Yap</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div id="modalBodyEnabledDisabled" class="modalEnabledDisabled modal-body ">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="userNameSurname">Ad Soyad</label>
-                                <input id="userNameSurname" class="form-control" type="text" readonly
-                                       value="Nurullah Güç">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="accountStatus">Hesap Durumu</label>
-                                <select class="form-control" name="" id="accountStatus">
-                                    <option value="0">Pasif</option>
-                                    <option value="1">Aktif</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="statusDesc">Statü Açıklaması</label>
-                                <textarea name="" id="statusDesc" cols="30" rows="10" class="form-control"></textarea>
-                                <em class="text-danger">Kullanıcı hesabı pasif edilmesinden dolayı sisteme giriş
-                                    yapamadığında karşısına çıkacak uyarıyı belirtin.</em>
-                                <em class="text-success"> <br>
-                                    <b>Default Message: Hesabınız pasif edilmiştir. Detaylı bilgi için sistem destek
-                                        ekibine ulaşın.</b>
-                                </em>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                    <button id="btnSaveStatus" type="button" class="btn btn-primary">Kaydet</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Standart Modal - Virtual Login --}}
-    <div class="modal fade" id="ModalVirtualLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Sanal Giriş</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body modalEnabledDisabled">
-                    <em class="text-dark">Kullanıcının hesabına neden sanal giriş yaptığınızı
-                        belirtin.</em>
-                    <em class="text-dark"><br>
-                        Not: Hesap sahibine bununla ilgili gerekçesi ile birlikte bir bildirim
-                        göndereceğiz.
-                    </em>
-                    <em class="text-dark"><br>
-                        Not: Yetkisi <b>Genel Yönetici</b> olanlar ve <b>kendi hesabınız</b> hariç tüm hesaplara sanal
-                        giriş
-                        yapabilirsiniz.
-                    </em>
-                    <div class="divider"></div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="reason">Gerekçe Belirtin (<label for="reason"
-                                                                             class="text-danger">Zorunlu*</label>)</label>
-                                <textarea name="" id="reason" cols="30" rows="4" class="form-control"></textarea>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                    <button id="btnGoToVirtualLogin" type="button" class="btn btn-primary">Hesaba Sanal Giriş Yap
-                    </button>
                 </div>
             </div>
         </div>
