@@ -312,6 +312,8 @@
             }).done(function (response) {
                 var user = response.user;
                 var director = response.director;
+                var region = response.region;
+
 
                 $('#agencyName').html(user.name_surname);
                 $('#agencyCityDistrict').html(user.branch_city + '/' + user.branch_district + ' - ' + user.branch_name + ' ' + user.user_type);
@@ -320,7 +322,8 @@
                 $('#email').html(user.email);
                 $('td#name_surname').html(user.name_surname);
                 $('#authority').html(user.display_name);
-                $('td#phone').html(director.phone)
+                $('td#phone').html(director.phone);
+                $('#district').html(region.name + ' BÖLGE MÜDÜRLÜĞÜ');
 
                 let fakeTitle = user.user_type == 'Aktarma' ? 'TRANSFER MERKEZİ' : 'ACENTE';
 
@@ -452,6 +455,10 @@
                                                     <td class="static">Bağlı olduğu kişi</td>
                                                     <td id="dependency">
                                                     </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Bağlı olduğu yer</td>
+                                                    <td id="district"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Çalıştığı yer</td>
