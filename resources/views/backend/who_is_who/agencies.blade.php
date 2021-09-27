@@ -38,6 +38,72 @@
             </div>
         </div>
 
+        <div class="card mt-3">
+            <div class="card-body">
+                <form method="POST" id="search-form">
+                    <div class="row">
+
+                        <div class="col-md-2">
+                            <label for="tc">Aktarma</label>
+                            <select name="tc" id="tc" class="form-control">
+                                <option value="">Seçiniz</option>
+                                @foreach($data['tc'] as $key)
+                                    <option
+                                        value="{{$key->id}}">{{ $key->city . '-' . $key->tc_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="agency">Acente</label>
+                            <select name="agency" id="agency" class="form-control">
+                                <option value="">Seçiniz</option>
+                                @foreach($data['agencies'] as $key)
+                                    <option
+                                        value="{{$key->id}}">{{ $key->city . '/' . $key->district . '-' . $key->agency_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="name_surname">Ad Soyad</label>
+                            <input type="text" class="form-control" name="name_surname" id="name_surname">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="user_type">Kullanıcı Tipi</label>
+                            <select name="user_type" id="user_type" class="form-control">
+                                <option value="">Seçiniz</option>
+                                <option value="Acente">Acente</option>
+                                <option value="Aktarma">Aktarma</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="role">Yetki</label>
+                            <select name="role" id="role" class="form-control">
+                                <option value="">Seçiniz</option>
+                                @foreach($data['roles'] as $key)
+                                    <option
+                                        value="{{$key->id}}">{{ $key->display_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row text-center mt-3">
+                        <div class="col-md-12 text-center">
+                            <button id="btn-submit" type="submit" class="btn btn-primary ">Ara</button>
+                            <input type="reset" class="btn btn-secondary">
+                        </div>
+                    </div>
+
+                </form>
+
+
+            </div>
+        </div>
+
         <div class="card mb-3">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i

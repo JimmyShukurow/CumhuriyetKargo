@@ -101,8 +101,10 @@ class WhoIsController extends Controller
     public function index_agencies(AgenciesDataTable $dataTable)
     {
         $data['agencies'] = Agencies::all();
+        $data['tc'] = TransshipmentCenters::all();
+        $data['roles'] = Roles::all();
         GeneralLog("'Kim Kimdir?' modülünde 'Acenteler' sayfası görüntülendi.");
-        return view('backend.who_is_who.agencies', compact('data'));
+        return view('backend.who_is_who.get.agencies', compact('data'));
     }
 
 
