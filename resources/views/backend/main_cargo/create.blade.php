@@ -540,7 +540,7 @@
                                     <h3 style="width: 100%;" class="font-weight-bold text-center">Özet</h3>
 
                                     <table class="table-bordered table-striped unselectable"
-                                           style="width: 100%;padding-left: 20px;">
+                                           style="width: 100%;padding-left: 20px;" id="tableSummery">
                                         <tbody>
                                         <tr>
                                             <td>Mesafe(Km):</td>

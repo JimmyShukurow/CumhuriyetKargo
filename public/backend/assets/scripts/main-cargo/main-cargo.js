@@ -545,6 +545,21 @@ function DistributionControl(neighborhood = '') {
     if ($('#aliciCariKod').val() == '')
         return false;
 
+
+    $('#divider-alici').block({
+        message: $('<div class="loader mx-auto">\n' +
+            '                            <div class="ball-pulse-sync">\n' +
+            '                                <div class="bg-warning"></div>\n' +
+            '                                <div class="bg-warning"></div>\n' +
+            '                                <div class="bg-warning"></div>\n' +
+            '                            </div>\n' +
+            '                        </div>')
+    });
+    $('.blockUI.blockMsg.blockElement').css('width', '100%');
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('left', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
     $.ajax('/MainCargo/AjaxTransactions/DistributionControl', {
         method: 'POST',
         data: {
@@ -597,9 +612,8 @@ function DistributionControl(neighborhood = '') {
     }).error(function (jqXHR, exception) {
         ajaxError(jqXHR.status);
     }).always(function () {
-        $('#divider-gonderici').unblock();
+        $('#divider-alici').unblock();
     });
-
 }
 
 function clearAddServices() {
@@ -1551,6 +1565,7 @@ function checkCurrent() {
             if ($('#add-service-tahsilatli').prop('checked') == true && (response.category != 'Kurumsal' || response.current_type != 'Gönderici')) {
                 ToastMessage('error', 'Yalnızca Kurumsal-Anlaşmalı cariler tahsilatlı kargo çıkartabilir.', 'Hata!');
                 clearPage();
+                $('.app-main__inner').unblock();
                 return false;
             } else
                 checkReceiver();
@@ -1668,7 +1683,7 @@ function createCargo() {
 
         if (response.status == -1) {
             ToastMessage('error', response.message, 'Hata!');
-            $('#btnCargoComplate').prop('disabled', false);
+            clearPage();
             return false;
         } else if (response.status == 1) {
             ToastMessage('success', response.message, 'İşlem Başarılı!');
@@ -1694,6 +1709,7 @@ function createCargo() {
     }).error(function (jqXHR, exception) {
         ajaxError(jqXHR.status)
         clearPage();
+        $('.app-main__inner').unblock();
     }).always(function () {
 
     });
@@ -1702,6 +1718,7 @@ function createCargo() {
 
 function clearPage() {
     $('#btnCargoComplate').prop('disabled', false);
+    $('.app-main__inner').unblock();
 }
 
 $('#btnCargoComplate').click(delay(function () {
@@ -1755,6 +1772,20 @@ $('#btnCargoComplate').click(delay(function () {
     }
 
     $('#btnCargoComplate').prop('disabled', true);
+
+    $('.app-main__inner').block({
+        message: $('<div class="loader mx-auto">\n' +
+            '                            <div class="ball-pulse-sync">\n' +
+            '                                <div class="bg-warning"></div>\n' +
+            '                                <div class="bg-warning"></div>\n' +
+            '                                <div class="bg-warning"></div>\n' +
+            '                            </div>\n' +
+            '                        </div>')
+    });
+    $('.blockUI.blockMsg.blockElement').css('width', '100%');
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('left', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
     // Check name and current codes Start
     // # checkCurrent => checkReceiver => createCargo

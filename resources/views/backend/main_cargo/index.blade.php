@@ -1093,7 +1093,8 @@
                                         <td style="white-space: nowrap;" rowspan="2">
                                             <p id="barcodeRegDate" class="font-weight-bold barcode-mini-text m-0">
                                                 28.08.2021</p>
-                                            <p id="barcodeCargoType" class="m-0  barcode-mini-text font-weight-bolder">KOLİ</p>
+                                            <p id="barcodeCargoType" class="m-0  barcode-mini-text font-weight-bolder">
+                                                KOLİ</p>
                                             <p class="m-0  barcode-mini-text">Kg:50</p>
                                             <p class="m-0  barcode-mini-text">Ds:50</p>
                                             <p class="m-0  barcode-mini-text">Kg/Ds:50</p>
