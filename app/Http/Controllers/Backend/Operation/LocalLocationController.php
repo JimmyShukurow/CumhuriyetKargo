@@ -153,7 +153,7 @@ class LocalLocationController extends Controller
 			(SELECT agency_code FROM local_locations WHERE city = city_name AND district = district_name AND neighborhood = neighborhood_name ) AS agency_code,
 			(SELECT agencies.agency_name FROM agencies WHERE agencies.id =
             (SELECT agency_code FROM local_locations WHERE city = city_name AND district = district_name AND neighborhood = neighborhood_name )
-			) AS agency_name FROM view_city_district_neighborhoods WHERE  city_name = '$city' AND district_name = '$district'");
+			) AS agency_name FROM view_city_district_neighborhoods WHERE  city_name = '$city' AND district_name = '$district' order by neighborhood_name asc");
 
         return $data;
     }

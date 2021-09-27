@@ -99,6 +99,7 @@ class MainCargoController extends Controller
             ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
             ->whereRaw('deleted_at is null')
             ->where('departure_agency_code', $agency->id)
+            ->whereNotIn('cargo_type', ['Dosya', 'Mi'])
             ->sum('number_of_pieces');
 
         $daily['total_endorsement'] = DB::table('cargoes')
@@ -669,7 +670,7 @@ class MainCargoController extends Controller
                 $receiverType = $receiver->current_type;
                 $receiverCategory = $receiver->category;
 
-                if ($cargoType != 'Dosya-Mi' && $desi == 0) {
+                if (($cargoType != 'Dosya' && $cargoType != 'Mi') && $desi == 0) {
                     $desiPrice = 0;
                     $json = ['service_fee' => $desiPrice];
                 } else {
@@ -682,16 +683,19 @@ class MainCargoController extends Controller
                             # ===> Cari Anlaşmalı Fiyat Standart Fiyat
                             $currentPrice = CurrentPrices::where('current_code', $currentCode)->first();
 
-                            if ($cargoType == 'Dosya-Mi') {
+                            if ($cargoType == 'Dosya') {
                                 $filePrice = $currentPrice->file_price;
                                 $json = ['service_fee' => $filePrice];
-                            } else if ($cargoType != 'Dosya-Mi') {
+                            } else if ($cargoType == 'Mi') {
+                                $filePrice = $currentPrice->mi_price;
+                                $json = ['service_fee' => $filePrice];
+                            } else if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
                                 ## calc desi price
                                 $desiPrice = 0;
-                                if ($desi > 30) {
-                                    $desiPrice = $currentPrice->d_26_30;
+                                if ($desi > 50) {
+                                    $desiPrice = $currentPrice->d_46_50;
                                     $amountOfIncrease = $currentPrice->amount_of_increase;
-                                    for ($i = 30; $i < $desi; $i++)
+                                    for ($i = 50; $i < $desi; $i++)
                                         $desiPrice += $amountOfIncrease;
                                 } else
                                     $desiPrice = $currentPrice[CatchDesiInterval($desi)]; #get interval                              #get interval
@@ -703,16 +707,19 @@ class MainCargoController extends Controller
                         if ($currentCategory == 'Bireysel' && $receiverCategory == 'Kurumsal') {
                             # ===> Cari Anlaşmalı Fiyat Standart Fiyat
                             $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
-                            if ($cargoType == 'Dosya-Mi') {
+                            if ($cargoType == 'Dosya') {
                                 $filePrice = $currentPrice->file_price;
                                 $json = ['service_fee' => $filePrice];
-                            } else if ($cargoType != 'Dosya-Mi') {
+                            } else if ($cargoType == 'Mi') {
+                                $filePrice = $currentPrice->mi_price;
+                                $json = ['service_fee' => $filePrice];
+                            } else if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
                                 ## calc desi price
                                 $desiPrice = 0;
-                                if ($desi > 30) {
-                                    $desiPrice = $currentPrice->d_26_30;
+                                if ($desi > 50) {
+                                    $desiPrice = $currentPrice->d_46_50;
                                     $amountOfIncrease = $currentPrice->amount_of_increase;
-                                    for ($i = 30; $i < $desi; $i++)
+                                    for ($i = 50; $i < $desi; $i++)
                                         $desiPrice += $amountOfIncrease;
                                 } else
                                     $desiPrice = $currentPrice[CatchDesiInterval($desi)]; #get interval                              #get interval
@@ -733,10 +740,13 @@ class MainCargoController extends Controller
                                 $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
 
 
-                            if ($cargoType == 'Dosya-Mi') {
+                            if ($cargoType == 'Dosya') {
                                 $filePrice = $currentPrice->file_price;
                                 $json = ['service_fee' => $filePrice];
-                            } else if ($cargoType != 'Dosya-Mi') {
+                            } else if ($cargoType == 'Mi') {
+                                $filePrice = $currentPrice->mi_price;
+                                $json = ['service_fee' => $filePrice];
+                            } else if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
                                 ## calc desi price
                                 $desiPrice = 0;
                                 if ($desi > 30) {
@@ -752,12 +762,15 @@ class MainCargoController extends Controller
 
                     } else {
                         # => not contracted / Bireysel - Bireysel
-                        if ($cargoType == 'Dosya-Mi') {
+                        if ($cargoType == 'Dosya') {
                             $filePrice = FilePrice::first();
                             $filePrice = $filePrice->individual_file_price;
                             $json = ['service_fee' => $filePrice];
+                        } else if ($cargoType == 'Mi') {
+                            $filePrice = FilePrice::first();
+                            $filePrice = $filePrice->individual_mi_price;
+                            $json = ['service_fee' => $filePrice];
                         } else {
-
                             ## calc desi price
                             $maxDesiInterval = DB::table('desi_lists')
                                 ->orderBy('finish_desi', 'desc')
@@ -796,7 +809,7 @@ class MainCargoController extends Controller
                 # evrensel posta hizmetleri ücreti start
 
 
-                if ($cargoType != 'Dosya-Mi' && $desi >= 100) {
+                if (($cargoType != 'Dosya' && $cargoType != 'Mi') && $desi >= 100) {
                     $heavyLoadCarryingCost = GetSettingsVal('heavy_load_carrying_cost');
                     $heavyLoadCarryingCost = $heavyLoadCarryingCost + (($heavyLoadCarryingCost * 18) / 100);
                 } else
@@ -903,7 +916,7 @@ class MainCargoController extends Controller
 
                 if ($currentState['status'] != 1)
                     return response()
-                        ->json(['status' => -1, 'message' => 'Gönderici hatalı!' . $currentState['result']], 200);
+                        ->json(['status' => -1, 'message' => 'Gönderici hatalı! ' . $currentState['result']], 200);
 
                 if ($receiverState['status'] != 1)
                     return response()
@@ -1030,13 +1043,19 @@ class MainCargoController extends Controller
 
                 } else {
                     # => not contracted / Bireysel - Bireysel
-                    if ($cargoType == 'Dosya-Mi') {
+                    if ($cargoType == 'Dosya') {
 
                         $filePrice = FilePrice::first();
                         $filePrice = $filePrice->individual_file_price;
                         $serviceFee = $filePrice;
 
-                    } else if ($cargoType != 'Dosya-Mi') {
+                    } else if ($cargoType == 'Mi') {
+
+                        $filePrice = FilePrice::first();
+                        $filePrice = $filePrice->individual_mi_price;
+                        $serviceFee = $filePrice;
+
+                    } else if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
 
                         ## calc desi price
                         $maxDesiInterval = DB::table('desi_lists')
@@ -1086,7 +1105,7 @@ class MainCargoController extends Controller
 
                 $totalAgirlik = 0;
                 # Control Parts Of Cargo
-                if ($cargoType != 'Dosya-Mi') {
+                if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
                     $desiData = $request->desiData;
                     $partQuantity = count($desiData) / 4;
 
@@ -1166,7 +1185,7 @@ class MainCargoController extends Controller
                     # return $totalHacim . ' => ' . $totalDesi;
                 }
 
-                if ($cargoType != 'Dosya-Mi' && $totalDesi >= 100) {
+                if (($cargoType != 'Dosya' && $cargoType != 'Mi') && $totalDesi >= 100) {
                     $heavyLoadCarryingCost = GetSettingsVal('heavy_load_carrying_cost');
                     $heavyLoadCarryingCost = $heavyLoadCarryingCost + (($heavyLoadCarryingCost * 18) / 100);
                 } else
@@ -1184,7 +1203,6 @@ class MainCargoController extends Controller
                 $tc = TransshipmentCenterDistricts::where('city', $departureAgency->city)
                     ->where('district', $departureAgency->district)
                     ->first();
-
 
                 ## calc total price
                 $totalPriceExceptKdv = $distancePrice + $addServicePrice + $serviceFee + $postServicePrice;
@@ -1209,6 +1227,16 @@ class MainCargoController extends Controller
                 $userGeneralInfo = DB::table('view_users_all_info')
                     ->where('id', Auth::id())
                     ->first();
+
+                if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
+                    $number_of_pieces = $partQuantity;
+                    $cubic_meter_volume = $totalHacim;
+                    $desi = $totalDesi;
+                } else {
+                    $number_of_pieces = 1;
+                    $cubic_meter_volume = 1;
+                    $desi = 0;
+                }
 
                 # start create new Cargo
                 $CreateCargo = Cargoes::create([
@@ -1240,7 +1268,7 @@ class MainCargoController extends Controller
                     'sender_address' => $currentAddress,
                     'customer_code' => $request->musteriKodu,
                     'payment_type' => $request->odemeTipi,
-                    'number_of_pieces' => $cargoType != 'Dosya-Mi' ? $partQuantity : 1,
+                    'number_of_pieces' => $number_of_pieces,
                     'cargo_type' => $cargoType,
                     'cargo_content' => tr_strtoupper($request->kargoIcerigi),
                     'cargo_content_ex' => tr_strtoupper($request->kargoIcerigiAciklama),
@@ -1259,10 +1287,10 @@ class MainCargoController extends Controller
                     'collectible' => $request->tahsilatliKargo == 'true' ? '1' : '0',
                     'collection_fee' => $request->tahsilatliKargo == 'true' ? getDoubleValue($request->faturaTutari) : 0,
                     'collection_payment_type' => $request->tahsilatliKargo == 'true' ? 'Nakit' : '0',
-                    'desi' => $cargoType != 'Dosya-Mi' ? $totalDesi : 0,
+                    'desi' => $desi,
                     'kg' => $totalAgirlik,
                     'kdv_percent' => 18,
-                    'cubic_meter_volume' => $cargoType != 'Dosya-Mi' ? $totalHacim : 0,
+                    'cubic_meter_volume' => $cubic_meter_volume,
                     'kdv_price' => $kdvPrice,
                     'distance' => $distance,
                     'distance_price' => $distancePrice,
@@ -1319,7 +1347,7 @@ class MainCargoController extends Controller
 
                     $group_id = uniqid('n_');
                     ## INSERT Cargo Parts START
-                    if ($cargoType != 'Dosya-Mi') {
+                    if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
 
                         $desiValues = array_values($desiData);
                         $desiKeys = array_keys($desiData);
@@ -1681,6 +1709,7 @@ class MainCargoController extends Controller
                     ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
                     ->whereRaw('deleted_at is null')
                     ->where('departure_agency_code', $agency->id)
+                    ->whereNotIn('cargo_type', ['Dosya', 'Mi'])
                     ->sum('number_of_pieces');
                 $daily['total_number_of_pieces'] = getDotter($daily['total_number_of_pieces']);
 
