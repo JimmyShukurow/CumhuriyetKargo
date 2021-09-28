@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\WhoIs;
 
 use App\DataTables\AgenciesDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\Cities;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -103,15 +104,29 @@ class WhoIsController extends Controller
         $data['agencies'] = Agencies::all();
         $data['tc'] = TransshipmentCenters::all();
         $data['roles'] = Roles::all();
+        $data['cities'] = Cities::all();
         GeneralLog("'Kim Kimdir?' modülünde 'Acenteler' sayfası görüntülendi.");
-        return view('backend.who_is_who.get.agencies', compact('data'));
+        return view('backend.who_is_who.agencies', compact('data'));
     }
 
 
-    public function getAgencies()
+    public function getAgencies(Request $request)
     {
-//        $agencies = Agencies::orderBy('created_at', 'desc')->get();
-        $agencies = DB::select('CALL proc_agency_region()');
+
+
+        $city = $request->city == 'Seçiniz' ? false : $request->city;
+        $district = $request->district == 'İlçe Seçin' ? false : $request->district;
+
+        //   $agencies = Agencies::orderBy('created_at', 'desc')->get();
+
+        $agencies = DB::table('view_agency_region')
+            ->whereRaw($request->filled('agency_code') ? 'agency_code=' . $request->agency_code : '1 > 0')
+            ->whereRaw($city ? "city='" . $request->city . "'" : '1 > 0')
+            ->whereRaw($district ? "district='" . $request->district . "'" : '1 > 0')
+//            ->whereRaw($request->filled('district') ? "district='" . $request->district . "'" : '1 > 0')
+            ->whereRaw($request->filled('agency') ? "agency like '%" . $request->agency . "%'" : '1 > 0')
+            ->whereRaw($request->filled('name_surname') ? "name_surname like '%" . $request->name_surname . "%'" : '1 > 0');
+
 
         return DataTables::of($agencies)
             ->setRowClass(function ($agency) {
