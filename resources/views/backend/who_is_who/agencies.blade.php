@@ -44,50 +44,49 @@
                     <div class="row">
 
                         <div class="col-md-2">
-                            <label for="tc">Aktarma</label>
-                            <select name="tc" id="tc" class="form-control">
+                            <label for="agency">Acente Adı</label>
+                            <input type="text" class="form-control" name="agency" id="agency">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="city">İl</label>
+                            <select name="city" id="city" class="form-control">
+                                <option value="">Seçiniz</option>
+                                @foreach($data['cities'] as $key)
+                                    <option
+                                        value="{{$key->id}}">{{ $key->city_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="district">İlçe</label>
+                            <select name="district" id="district" disabled class="form-control">
+                                <option value="">İlçe Seçin</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="dependency_tc">Bağlı Olduğu Aktarma</label>
+                            <select name="dependency_tc" id="dependency_tc" class="form-control">
                                 <option value="">Seçiniz</option>
                                 @foreach($data['tc'] as $key)
                                     <option
-                                        value="{{$key->id}}">{{ $key->city . '-' . $key->tc_name}}</option>
+                                        value="{{$key->id}}">{{ $key->tc_name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="col-md-2">
-                            <label for="agency">Acente</label>
-                            <select name="agency" id="agency" class="form-control">
-                                <option value="">Seçiniz</option>
-                                @foreach($data['agencies'] as $key)
-                                    <option
-                                        value="{{$key->id}}">{{ $key->city . '/' . $key->district . '-' . $key->agency_name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label for="name_surname">Ad Soyad</label>
-                            <input type="text" class="form-control" name="name_surname" id="name_surname">
+                            <label for="phone">Telefon</label>
+                            <input name="phone" id="phone" data-inputmask="'mask': '(999) 999 99 99'"
+                                   placeholder="(___) ___ __ __" type="text" class="form-control input-mask-trigger">
                         </div>
 
                         <div class="col-md-2">
-                            <label for="user_type">Kullanıcı Tipi</label>
-                            <select name="user_type" id="user_type" class="form-control">
-                                <option value="">Seçiniz</option>
-                                <option value="Acente">Acente</option>
-                                <option value="Aktarma">Aktarma</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-2">
-                            <label for="role">Yetki</label>
-                            <select name="role" id="role" class="form-control">
-                                <option value="">Seçiniz</option>
-                                @foreach($data['roles'] as $key)
-                                    <option
-                                        value="{{$key->id}}">{{ $key->display_name }}</option>
-                                @endforeach
-                            </select>
+                            <label for="phone">Şube Kodu</label>
+                            <input name="phone" id="agencyCode" data-inputmask="'mask': '999999'"
+                                   placeholder="______" type="text" class="form-control niko-filter input-mask-trigger">
                         </div>
                     </div>
 
@@ -124,7 +123,6 @@
                         <th>Acente Sahibi</th>
                         <th>Telefon</th>
                         <th>Şube Kodu</th>
-                        <th>Kayıt Tarihi</th>
                         <th width="10" class="text-center"></th>
                     </tr>
                     </thead>
@@ -143,9 +141,14 @@
     <script src="/backend/assets/scripts/backend-modules.js"></script>
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
     <script src="/backend/assets/scripts/jquery.blockUI.js"></script>
+    <script src="/backend/assets/scripts/city-districts-point.js"></script>
+
     <script>
+
+        var oTable;
+
         $(document).ready(function () {
-            $('.NikolasDataTable').DataTable({
+            oTable = $('.NikolasDataTable').DataTable({
                 pageLength: 10,
                 lengthMenu: [
                     [10, 25, 50, 100, 250, 500, -1],
@@ -208,7 +211,19 @@
                 responsive: true,
                 processing: true,
                 serverSide: true,
-                ajax: '{!! route('whois.GetAgencies') !!}',
+                ajax: {
+                    url: '{!! route('whois.GetAgencies') !!}',
+                    data: function (d) {
+                        d.agency_code = $('#agencyCode').val();
+                        d.city = $("#city option:selected").text();
+                        d.district = $("#district option:selected").text();
+                    },
+                    error: function (xhr, error, code) {
+                        if (code == "Too Many Requests") {
+                            ToastMessage('info', 'Aşırı istekte bulundunuz, Lütfen bir süre sonra tekrar deneyin!', 'Hata');
+                        }
+                    }
+                },
                 columns: [
                     {data: 'city', name: 'city'},
                     // {data: 'district', name: 'district'},
@@ -218,7 +233,6 @@
                     {data: 'name_surname', name: 'name_surname'},
                     {data: 'phone', name: 'phone'},
                     {data: 'agency_code', name: 'agency_code'},
-                    {data: 'created_at', name: 'created_at'},
                     {data: 'edit', name: 'edit'},
                 ],
                 scrollY: false
@@ -227,7 +241,32 @@
 
     </script>
     <script>
+        $('#search-form').on('submit', function (e) {
+            oTable.draw();
+            e.preventDefault();
+        });
 
+        $('#city').change(function () {
+            getDistricts('#city', '#district');
+        });
+
+
+        function drawDT() {
+            oTable.draw();
+        }
+
+        $('.niko-select-filter').change(delay(function (e) {
+            drawDT();
+        }, 1000));
+
+        $('.niko-filter').keyup(delay(function (e) {
+            drawDT();
+        }, 1000));
+
+
+        $('#city_district').change(function () {
+            getDistricts('#ilSelector', '#ilceSelector');
+        });
 
         $(document).on('click', '.agency-detail', function () {
             $('#ModalUserDetail').modal();
@@ -252,7 +291,6 @@
 
         function agencyPost(agency_id) {
 
-            alert(agency_id);
 
             $.post('{{ route('whois.agencyInfo') }}', {
                 _token: token,
@@ -275,13 +313,9 @@
                 $('#status').html(response.agency.status == "1" ? "Aktif" : "Pasif");
                 $('#agencyDevelopmentOfficer').html(response.agency[0].agency_development_officer);
                 $('#agencyCode').html(response.agency[0].agency_code);
-                $('#regDate').html(dateFormat(response.agency[0].created_at));
                 $('#updatedDate').html(dateFormat(response.agency[0].updated_at));
 
                 $('#tbodyEmployees').html('DENEMEEEE');
-
-
-                console.log(employee.length);
 
 
                 if (employee.length == 0) {
@@ -404,10 +438,7 @@
                                                     <td class="static">Şube Kodu</td>
                                                     <td id="agencyCode">021234</td>
                                                 </tr>
-                                                <tr>
-                                                    <td class="static">Kayıt Tarihi</td>
-                                                    <td id="regDate">535 427 68 24</td>
-                                                </tr>
+
                                                 <tr>
                                                     <td class="static">Son Güncellenme Tarihi</td>
                                                     <td id="updatedDate">535 427 68 24</td>
