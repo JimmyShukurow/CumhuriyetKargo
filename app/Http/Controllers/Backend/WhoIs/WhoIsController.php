@@ -30,7 +30,6 @@ class WhoIsController extends Controller
     public function getUsers(Request $request)
     {
 
-
         if (($request->name_surname && $request->name_surname != '') || ($request->agency && $request->agency != '')
             || ($request->tc && $request->tc != '') || ($request->role && $request->role != '')
             || ($request->user_type && $request->user_type != '')) {
@@ -113,9 +112,9 @@ class WhoIsController extends Controller
     public function getAgencies(Request $request)
     {
 
-
         $city = $request->city == 'Seçiniz' ? false : $request->city;
         $district = $request->district == 'İlçe Seçin' ? false : $request->district;
+        $tc = $request->dependency_tc == 'Seçiniz' ? false : $request->dependency_tc;
 
         //   $agencies = Agencies::orderBy('created_at', 'desc')->get();
 
@@ -123,8 +122,10 @@ class WhoIsController extends Controller
             ->whereRaw($request->filled('agency_code') ? 'agency_code=' . $request->agency_code : '1 > 0')
             ->whereRaw($city ? "city='" . $request->city . "'" : '1 > 0')
             ->whereRaw($district ? "district='" . $request->district . "'" : '1 > 0')
-//            ->whereRaw($request->filled('district') ? "district='" . $request->district . "'" : '1 > 0')
-            ->whereRaw($request->filled('agency') ? "agency like '%" . $request->agency . "%'" : '1 > 0')
+            ->whereRaw($tc ? "tc_name='" . $tc . "'" : '1 > 0')
+            ->whereRaw($request->filled('agency_name') ? "agency_name like '%" . $request->agency_name . "%'" : '1 > 0')
+            ->whereRaw($request->filled('') ? "t like '%" . $request->agency_name . "%'" : '1 > 0')
+            ->whereRaw($request->filled('phone') ? "phone='" . $request->phone . "'" : '1 > 0')
             ->whereRaw($request->filled('name_surname') ? "name_surname like '%" . $request->name_surname . "%'" : '1 > 0');
 
 

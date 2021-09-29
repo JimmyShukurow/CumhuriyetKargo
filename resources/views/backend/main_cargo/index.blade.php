@@ -988,7 +988,7 @@
                                             <div class="col-sm-4">
                                                 <div class="p-1">
                                                     <button
-                                                        id="passwordResetBtn"
+                                                        id="btnCargoCancel"
                                                         class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
                                                         <i class="lnr-cross text-danger opacity-7 btn-icon-wrapper mb-2"> </i>
                                                         Kargo İptal Başvurusu
@@ -1035,8 +1035,6 @@
             </div>
         </div>
     </div>
-
-
 
     <!-- Large modal => Modal Barcode -->
     <div class="modal fade bd-example-modal-lg" id="ModalShowBarcode" tabindex="-1" role="dialog"
@@ -1183,5 +1181,52 @@
             </div>
         </div>
     </div>
+
+    <!-- Large modal => Modal Cargo Cancel Form -->
+    <div class="modal fade bd-example-modal-lg" id="ModalCargoCancelForm" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalGiveRolePermissionLabel">Kargo İptal Başvurusu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div id="modalBodyCargoMovementsDetails" style="overflow-x: hidden; max-height: 75vh;"
+                     class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="reason">İptal Nedeni</label>
+                                <select name="" id="reason" class="form-control">
+                                    <option value="Gönderici Bilgileri Hatalı">Gönderici Bilgileri Hatalı</option>
+                                    <option value="Alıcı Bilgileri Hatalı">Alıcı Bilgileri Hatalı</option>
+                                    <option value="Müşteri İade">Müşteri İade</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="appointmentReason">
+                                    İptal Nedeni <small class="text-danger">(Zorunlu Alan)</small>
+                                </label>
+                                <textarea name="" id="appointmentReason" cols="30" rows="5"
+                                          class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 @endsection

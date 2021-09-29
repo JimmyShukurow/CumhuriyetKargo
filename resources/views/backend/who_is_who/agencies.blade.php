@@ -45,7 +45,7 @@
 
                         <div class="col-md-2">
                             <label for="agency">Acente Adı</label>
-                            <input type="text" class="form-control" name="agency" id="agency">
+                            <input type="text" class="form-control" name="agency" id="agencyName">
                         </div>
 
                         <div class="col-md-2">
@@ -72,7 +72,7 @@
                                 <option value="">Seçiniz</option>
                                 @foreach($data['tc'] as $key)
                                     <option
-                                        value="{{$key->id}}">{{ $key->tc_name }}</option>
+                                        value="{{$key->id}}">{{ $key->tc_name . ' T.M.'}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -217,6 +217,9 @@
                         d.agency_code = $('#agencyCode').val();
                         d.city = $("#city option:selected").text();
                         d.district = $("#district option:selected").text();
+                        d.agency_name = $('#agencyName').val();
+                        d.dependency_tc = $("#dependency_tc option:selected").text();
+                        d.phone = $('#phone').val();
                     },
                     error: function (xhr, error, code) {
                         if (code == "Too Many Requests") {
@@ -313,10 +316,7 @@
                 $('#status').html(response.agency.status == "1" ? "Aktif" : "Pasif");
                 $('#agencyDevelopmentOfficer').html(response.agency[0].agency_development_officer);
                 $('#agencyCode').html(response.agency[0].agency_code);
-                $('#updatedDate').html(dateFormat(response.agency[0].updated_at));
-
-                $('#tbodyEmployees').html('DENEMEEEE');
-
+                $('#updatedDate').html(response.agency[0].updated_at);
 
                 if (employee.length == 0) {
                     $('#tbodyEmployees').append(
@@ -414,8 +414,7 @@
                                                 <tr>
                                                     <td class="static">Telefon(2)</td>
                                                     <td data-inputmask="'mask': '(999) 999 99 99'" id="phone2">535 427
-                                                        68
-                                                        24
+                                                        68 24
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -447,7 +446,7 @@
                                             </table>
                                         </div>
 
-                                        <h4 class="mt-3">Acente Personelleri</h4>
+                                        <h4 class="mt-3">Acente Çalışanları</h4>
 
                                         <div style="overflow-x: scroll" class="cont">
                                             <table style="white-space: nowrap" id="TableEmployees"

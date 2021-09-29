@@ -677,9 +677,9 @@ $(document).on('click', '#btnPrintBarcode', function () {
     printBarcode('#ModalBarcodes');
 });
 
-
-
-
+$(document).on('click', '#btnCargoCancel', function () {
+    $('#ModalCargoCancelForm').modal();
+});
 
 
 
