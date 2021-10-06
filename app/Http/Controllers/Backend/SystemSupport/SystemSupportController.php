@@ -147,7 +147,7 @@ class SystemSupportController extends Controller
         if ($ticket->user_id != Auth::id())
             return redirect(route('systemSupport.myTickets'))->with('error', 'Aradığınız destek talebi bulunamadı!');
 
-        
+
         global $file1, $file2, $file3, $file4;
 
 

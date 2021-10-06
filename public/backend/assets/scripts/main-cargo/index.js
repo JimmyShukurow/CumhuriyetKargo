@@ -207,6 +207,7 @@ $('#btnClearFilter').click(function () {
 $(document).on('dblclick', '.main-cargo-tracking_no', function () {
     let tracking_no = $(this).attr('tracking-no')
     let id = $(this).prop('id')
+    detailsID = id;
     copyToClipBoard(tracking_no);
     SnackMessage('Takip numarası kopyalandı!', 'info', 'bl');
     cargoInfo(id);
@@ -217,7 +218,6 @@ $(document).on('click', '.cargo-detail', function () {
 });
 
 var array = new Array();
-
 
 $('#btnRefreshMainCargoPage').click(function () {
 
@@ -328,6 +328,7 @@ function cargoInfo(user) {
             let sms = response.sms;
             let add_services = response.add_services;
             let movements = response.movements;
+            let cancellations = response.cancellation_applications;
 
             $('#titleTrackingNo').text(cargo.tracking_no);
 
@@ -436,7 +437,6 @@ function cargoInfo(user) {
             }
 
 
-            $('#tbodySentMessages').html('');
             $.each(sms, function (key, val) {
 
                 let result = val['result'] == '1' ? '<b class="text-success">' + 'Başarılı' + '</b>' : '<b class="text-danger">' + 'Başarısız' + '</b>';
@@ -451,6 +451,43 @@ function cargoInfo(user) {
                     +'</tr>'
                 )
             });
+
+            $('#tbodyCargoCancellationApplications').html('');
+
+            if (movements.length == 0)
+                $('#tbodyCargoCancellationApplications').html('<tr><td colspan="5" class="text-center">Burda hiç veri yok.</td></tr>');
+            else {
+
+                $.each(cancellations, function (key, val) {
+
+
+                    val['approval_at'] = val['approval_at'] == null ? '' : val['approval_at'];
+                    val['confirming_user_name_surname'] = val['confirming_user_name_surname'] == null ? '' : val['confirming_user_name_surname'];
+                    val['confirming_user_display_name'] = val['confirming_user_display_name'] == null ? '' : ' (' + val['confirming_user_display_name'] + ')';
+
+                    let confirm_status = '';
+
+                    if (val['confirm'] == '0')
+                        confirm_status = '<b class="text-info">' + 'Sonuç Bekliyor' + '</b>';
+                    else if (val['confirm'] == '1')
+                        confirm_status = '<b class="text-success">' + 'Onaylandı' + '</b>';
+                    else if (val['confirm'] == '-1')
+                        confirm_status = '<b class="text-danger">' + 'Reddedildi' + '</b>';
+
+                    $('#tbodyCargoCancellationApplications').append(
+                        '<tr>' +
+                        '<td class="font-weight-bold">' + cargo.tracking_no + '</td>' +
+                        '<td class="font-weight-bold">' + val['name_surname'] + " (" + val['display_name'] + ")" + '</td>' +
+                        '<td title="' + val['application_reason'] + '">' + val['application_reason'].substring(0, 35) + '</td>' +
+                        '<td>' + confirm_status + '</td>' +
+                        '<td class="font-weight-bold">' + val['confirming_user_name_surname'] + val['confirming_user_display_name'] + '</td>' +
+                        '<td class="font-weight-bold text-center">' + val['approval_at'] + '</td>' +
+                        '<td class="font-weight-bold text-center">' + val['created_at'] + '</td>' +
+                        +'</tr>'
+                    )
+                });
+            }
+
 
             $('#btnCargoPrintBarcode').attr('tracking-no', cargo.id);
 
@@ -592,7 +629,6 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
             let sms = response.sms;
             let add_services = response.add_services;
 
-
             $('#barcodeDepartureTC').text(departure_tc.tc_name);
             $('#barcodeDepartureAgency').text(departure.agency_name);
             $('#barcodeTrackingNo').text(cargo.tracking_no);
@@ -681,8 +717,78 @@ $(document).on('click', '#btnCargoCancel', function () {
     $('#ModalCargoCancelForm').modal();
 });
 
+$(document).on('change', '#reason', function () {
+    $('#appointmentReason').val($(this).val());
+});
+
+$(document).on('click', '#btnMakeCargoCancelAppointment', function () {
+
+    if ($('#appointmentReason').val() == '') {
+        ToastMessage('error', 'Lütfen kargo iptal nedeni giriniz!', 'Hata!');
+        return false;
+    }
+
+    if (detailsID == '' || detailsID == null) {
+        ToastMessage('error', 'Kargo Seçilmedi!', 'Hata!');
+        return false;
+    }
+
+    $('#btnMakeCargoCancelAppointment').prop('disabled', true);
+
+    $('#modalBodyCargoCancelForm').block({
+        message: $('<div class="loader mx-auto">\n' +
+            '                            <div class="ball-grid-pulse">\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                            </div>\n' +
+            '                        </div>')
+    });
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
 
 
+    $.ajax('/MainCargo/AjaxTransactions/MakeCargoCancellationApplication', {
+        method: 'POST',
+        data: {
+            _token: token,
+            iptal_nedeni: $('#appointmentReason').val(),
+            id: detailsID,
+        }
+    }).done(function (response) {
+
+        if (response.status == -1) {
+            ToastMessage('error', response.message, 'Hata!');
+            return false;
+        } else if (response.status == 1) {
+
+            ToastMessage('success', 'Kargo iptal başvurusu oluşturuldu!', 'İşlem Başarılı!');
+            $('#ModalCargoCancelForm').modal('hide');
+
+            cargoInfo(detailsID);
+
+        } else if (response.status == 0) {
+            $.each(response.errors, function (index, value) {
+                ToastMessage('error', value, 'Hata!')
+            });
+        }
+
+    }).error(function (jqXHR, exception) {
+
+        ajaxError(jqXHR.status)
+
+    }).always(function () {
+        $('#btnMakeCargoCancelAppointment').prop('disabled', false);
+        $('#modalBodyCargoCancelForm').unblock();
+    });
+
+});
 
 
 

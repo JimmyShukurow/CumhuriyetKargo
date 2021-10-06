@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AdditionalServices;
 use App\Models\Agencies;
 use App\Models\CargoAddServices;
+use App\Models\CargoCancellationApplication;
 use App\Models\Cargoes;
 use App\Models\CargoMovements;
 use App\Models\CargoPartDetails;
@@ -21,6 +22,7 @@ use App\Models\SmsContent;
 use App\Models\TransshipmentCenterDistricts;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
+use Brick\Math\Exception\DivisionByZeroException;
 use Carbon\Carbon;
 use Faker\Provider\Address;
 use Illuminate\Http\Request;
@@ -1643,7 +1645,6 @@ class MainCargoController extends Controller
                     ->where('id', $data['cargo']->arrival_tc_code)
                     ->first();
 
-
                 $data['sms'] = DB::table('sent_sms')
                     ->select('id', 'heading', 'subject', 'phone', 'sms_content', 'result')
                     ->where('ctn', str_replace(' ', '', $data['cargo']->tracking_no))
@@ -1652,6 +1653,10 @@ class MainCargoController extends Controller
                 $data['add_services'] = DB::table('cargo_add_services')
                     ->select(['service_name', 'price'])
                     ->where('cargo_tracking_no', str_replace(' ', '', $data['cargo']->tracking_no))
+                    ->get();
+
+                $data['cancellation_applications'] = DB::table('view_cargo_cancellation_app_detail')
+                    ->where('cargo_id', $data['cargo']->id)
                     ->get();
 
                 $data['status'] = 1;
@@ -1724,6 +1729,63 @@ class MainCargoController extends Controller
 
                 return response()
                     ->json($daily, 200);
+                break;
+
+            case 'MakeCargoCancellationApplication':
+
+                $rules = [
+                    'iptal_nedeni' => 'required',
+                    'id' => 'required',
+                ];
+
+                $validator = Validator::make($request->all(), $rules);
+
+                if ($validator->fails())
+                    return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
+
+                $agency = Agencies::find(Auth::user()->agency_code);
+                $cargo = Cargoes::find($request->id);
+
+                if ($cargo == null || $cargo->creator_agency_code != $agency->id)
+                    return response()
+                        ->json([
+                            'status' => -1,
+                            'message' => 'Kargo Bulunamadı!'
+                        ], 200);
+
+                $control = DB::table('cargo_cancellation_applications')
+                    ->where('confirm', '0')
+                    ->where('cargo_id', $request->id)
+                    ->count();
+
+                if ($control > 0)
+                    return response()
+                        ->json([
+                            'status' => -1,
+                            'message' => 'Bu kargo için oluşturulmuş sonuç bekleyen bir iptal başvurusu zaten var!'
+                        ], 200);
+
+
+                if ($cargo->status_for_human != 'HAZIRLANIYOR')
+                    return response()
+                        ->json([
+                            'status' => -1,
+                            'message' => 'Bu kargo okutma işlemi görmüş, iptal başvurusu yapamazsınız. Lütfen Destek & Ticket üzerinden sistem desteğe durumu iletiniz!'
+                        ], 200);
+
+
+                $insert = CargoCancellationApplication::create([
+                    'cargo_id' => $cargo->id,
+                    'user_id' => Auth::id(),
+                    'application_reason' => $request->iptal_nedeni,
+                    'confirm' => '0',
+                ]);
+
+                if ($insert)
+                    return response()->json(['status' => 1], 200);
+                else
+                    return response()->json(['status' => -1, 'message' => 'Bir hata oluştu, lütfen daha sonra tekrar deneyiniz'], 200);
+
                 break;
             # INDEX TRANSACTION END
 

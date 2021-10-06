@@ -464,7 +464,6 @@
                 </div>
             </div>
 
-
             {{--Statistics--}}
             <div>
                 {{--            <div class="row">--}}
@@ -585,9 +584,7 @@
     <script src="/backend/assets/scripts/QrCode.min.js"></script>
 
     <script src="/backend/assets/scripts/main-cargo/index.js"></script>
-
 @endsection
-
 
 @section('modals')
     <!-- Large modal => Modal Cargo Details -->
@@ -641,7 +638,9 @@
                                                    class="btn-pill btn-wide mr-1 ml-1 btn btn-outline-alternate btn-sm show ">Kargo
                                                     Hareketleri</a>
                                                 <a data-toggle="tab" href="#tabCargoSMS"
-                                                   class="btn-pill btn-wide btn btn-outline-alternate btn-sm show">SMS</a>
+                                                   class="btn-pill btn-wide btn btn-outline-alternate btn-sm show">SMS </a>
+                                                <a data-toggle="tab" href="#tabCargoDetail"
+                                                   class="btn-pill ml-1 btn-wide btn btn-outline-alternate btn-sm show">Detay</a>
                                             </div>
                                         </div>
                                     </div>
@@ -977,6 +976,30 @@
                                                     </table>
                                                 </div>
                                             </div>
+                                            <div class="tab-pane show" id="tabCargoDetail" role="tabpanel">
+                                                <h3 class="text-dark text-center mb-4">Kargo İptal Başvurusu</h3>
+
+                                                <div style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
+                                                     class="cont">
+                                                    <table style="white-space: nowrap;" id="TableEmployees"
+                                                           class="Table30Padding table-bordered table-hover table table-striped mt-3">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Kargo Takip Numarası</th>
+                                                            <th>Başvuru Yapan</th>
+                                                            <th>İptal Nedeni</th>
+                                                            <th>Sonuç</th>
+                                                            <th>Sonuç Giren</th>
+                                                            <th>Sonuç Giriş Zamanı</th>
+                                                            <th>Başvuru Kayıt Zamanı</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="tbodyCargoCancellationApplications">
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -1194,7 +1217,7 @@
                     </button>
                 </div>
 
-                <div id="modalBodyCargoMovementsDetails" style="overflow-x: hidden; max-height: 75vh;"
+                <div id="modalBodyCargoCancelForm" style="overflow-x: hidden; max-height: 75vh;"
                      class="modal-body">
 
                     <div class="row">
@@ -1208,13 +1231,13 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="appointmentReason">
-                                    İptal Nedeni <small class="text-danger">(Zorunlu Alan)</small>
+                                    İptal Nedeni <small class="text-danger"><i>(Zorunlu Alan)</i></small>
                                 </label>
-                                <textarea name="" id="appointmentReason" cols="30" rows="5"
-                                          class="form-control"></textarea>
+                                <textarea name="" id="appointmentReason" cols="30" rows="5" class="form-control">Gönderici Bilgileri Hatalı</textarea>
                             </div>
                         </div>
 
@@ -1223,10 +1246,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                    <button type="button" id="btnMakeCargoCancelAppointment" class="btn btn-primary">Başvuru Yap
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-
-
 @endsection

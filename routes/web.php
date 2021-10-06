@@ -25,6 +25,7 @@ use App\Http\Controllers\Backend\Marketing\SenderCurrentController;
 use App\Http\Controllers\Backend\Operation\LocalLocationController;
 use App\Http\Controllers\Backend\Operation\VariousController;
 use App\Http\Controllers\Backend\WhoIs\WhoIsController;
+use App\Http\Controllers\Backend\ItAndNotifications\CargoCancellationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +86,15 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('GetAgencyInfo', [WhoIsController::class, 'agencyInfo'])->name('agencyInfo');
         Route::get('GetUsers', [WhoIsController::class, 'getUsers'])->name('getUsers');
         Route::post('GetUserInfo', [WhoIsController::class, 'userInfo']);
+    });
+
+    Route::group(['prefix' => 'ItAndNotification'], function () {
+
+        Route::group(['as' => 'cargoCancel.'], function () {
+            Route::get('CargoCancellations', [CargoCancellationController::class, 'index'])->name('index');
+                Route::get('/GetCancellations', [CargoCancellationController::class, 'getCancellations'])->name('getCancellations');
+        });
+
     });
 
 
