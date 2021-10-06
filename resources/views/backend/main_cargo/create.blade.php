@@ -223,6 +223,7 @@
                                     <option value="Rulo">Rulo</option>
                                     <option value="Palet Kargo">Palet Kargo</option>
                                     <option value="Sandık">Sandık</option>
+                                    <option value="Valiz">Valiz</option>
                                 </select>
 
                                 {{-- <input  class="check_user_type" data-width="100%"--}}

@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Backend\ItAndNotifications;
 
 use App\Http\Controllers\Controller;
+use App\Models\CargoCancellationApplication;
+use App\Models\Cargoes;
 use App\Models\User;
+use App\Notifications\TicketNotify;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\SubModules;
 use App\Models\RegioanalDirectorates;
+use Illuminate\Support\Facades\Validator;
 use function Symfony\Component\String\b;
 
 class CargoCancellationController extends Controller
@@ -146,16 +150,63 @@ class CargoCancellationController extends Controller
             })
             ->editColumn('application_reason', 'backend.it_and_notifications.cargo_cancellations.columns.reason')
             ->editColumn('tracking_no', 'backend.it_and_notifications.cargo_cancellations.columns.tracking_no')
-            ->editColumn('enter_result', 'backend.it_and_notifications.cargo_cancellations.columns.enter_result')
-            //            ->editColumn('priority', 'backend.system_support.admin.columns.priority')
-            //            ->editColumn('title', 'backend.system_support.admin.columns.title')
-            //            ->editColumn('detail', 'backend.system_support.admin.columns.detail')
-            //            ->editColumn('name_surname', 'backend.system_support.admin.columns.creator')
-            //            ->editColumn('redirected', function ($log) {
-            //                return $log->redirected == '1' ? '<b>Evet</b>' : '<b>Hayır</b>';
-            //            })
-            ->rawColumns(['application_reason', 'confirm', 'tracking_no', 'enter_result', 'name_surname', 'redirected'])
+            ->rawColumns(['application_reason', 'confirm', 'tracking_no', 'name_surname', 'redirected'])
             ->make(true);
+    }
+
+    public function setCargoCancellationApplicationResult(Request $request)
+    {
+        $rules = [
+            'id' => 'required',
+            'result' => 'required|in:1,-1,0',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails())
+            return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
+
+
+        $update = CargoCancellationApplication::find($request->id)
+            ->update([
+                'confirm' => $request->result,
+                'confirming_user' => Auth::id(),
+                'description' => $request->description,
+                'approval_at' => DB::raw('CURRENT_TIMESTAMP')
+            ]);
+
+        if ($update) {
+
+            $app = CargoCancellationApplication::find($request->id);
+            $cargo = DB::table('cargoes')
+                ->where('id', $app->cargo_id)
+                ->first();
+
+            if ($app->confirm == '1')
+                $trResult = 'onaylandı';
+            else if ($app->confirm == '-1')
+                $trResult = 'reddedildi';
+
+            if ($app->confirm != 0)
+                # Notification
+                User::find($app->user_id)
+                    ->notify(new TicketNotify('"' . TrackingNumberDesign($cargo->tracking_no) . '"' . ' takip numaralı kargo için oluşturmuş olduğunuz iptal başvurusu ' . $trResult . '.', route('systemSupport.TicketDetails', $app->id), $app->id));
+
+            if ($app->confirm == '1'){
+                $delete = Cargoes::find($cargo->id)
+                    ->delete();
+            }
+
+
+            return response()
+                ->json(['status' => 1], 200);
+
+
+        } else
+            return response()
+                ->json(['status' => -1, 'Bir hata oluştu, lütfen daha sonra tekrar deneyiniz!'], 200);
+
+        return $request->all();
     }
 
 }

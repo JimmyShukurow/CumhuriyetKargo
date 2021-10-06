@@ -6,7 +6,6 @@
 
 @section('title', 'Kargo İptal Paneli')
 
-
 @section('content')
 
     <div class="app-main__inner">
@@ -34,18 +33,6 @@
                                     <option selected value="{{$rd->id}}">{{$rd->name}}</option>
                                 @endforeach
                             </optgroup>
-                        </select>
-                    </div>
-
-                    <div class="d-inline-block pr-1">
-                        <select id="department" type="select" class="custom-select">
-                            @if(count($data['departments']) > 1)
-                                <option value="">Tüm Departmanlar</option>
-                            @endif
-                            @foreach($data['departments'] as $department)
-                                <option {{$department->department_name == 'SİSTEM DESTEK' ? 'selected' : ''}}
-                                        value="{{$department->id}}">{{$department->department_name}}</option>
-                            @endforeach
                         </select>
                     </div>
 
@@ -219,7 +206,6 @@
                         <th>Onaylayan</th>
                         <th>Son İşlem Tarihi</th>
                         <th>Oluşturulma Tarihi</th>
-                        <th>İşlem</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -282,7 +268,6 @@
             }
             text = text.substring(0, text.length - 2);
 
-            console.log(text);
             return text;
         }
     </script>
@@ -337,7 +322,7 @@
                     ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
                 ],
                 order: [
-                    6, 'desc'
+                    9, 'desc'
                 ],
                 language: {
                     "sDecimal": ",",
@@ -434,7 +419,6 @@
                     {data: 'confirming_user_name_surname', name: 'confirming_user_name_surname'},
                     {data: 'approval_at', name: 'approval_at'},
                     {data: 'created_at', name: 'created_at'},
-                    {data: 'enter_result', name: 'enter_result'},
                 ],
                 scrollY: false,
             });
@@ -454,9 +438,11 @@
 
         pageRowCount();
 
+        var appointmentID = null;
         $(document).on('dblclick', '.main-cargo-tracking_no', function () {
             let tracking_no = $(this).attr('tracking-no')
-            let id = $(this).prop('id')
+            let id = $(this).prop('id');
+            appointmentID = $(this).attr('appointment-id');
             detailsID = id;
             cargoInfo(id);
         });
@@ -474,7 +460,6 @@
         function cargoInfo(user) {
 
             $('#ModalCargoDetails').modal();
-
 
             $('#ModalCargoDetails').block({
                 message: $('<div class="loader mx-auto">\n' +
@@ -527,6 +512,7 @@
                     let cancellations = response.cancellation_applications;
 
                     $('#titleTrackingNo').text(cargo.tracking_no);
+                    $('#cancelAppTrackingNo').val(cargo.tracking_no);
 
                     $('#senderTcknVkn').text(sender.tckn);
                     $('#senderCurrentCode').text(sender.current_code);
@@ -656,7 +642,13 @@
 
                         $.each(cancellations, function (key, val) {
 
-
+                            let background = "";
+                            if (val['id'] == appointmentID) {
+                                background = "bg-warning";
+                                $('#cancelAppReason').val(val['application_reason']);
+                                $('#cancelAppResult').val('' + val['confirm'] + '');
+                                $('#canelAppResultDescription').val(val['description']);
+                            }
                             val['approval_at'] = val['approval_at'] == null ? '' : val['approval_at'];
                             val['confirming_user_name_surname'] = val['confirming_user_name_surname'] == null ? '' : val['confirming_user_name_surname'];
                             val['confirming_user_display_name'] = val['confirming_user_display_name'] == null ? '' : ' (' + val['confirming_user_display_name'] + ')';
@@ -671,7 +663,7 @@
                                 confirm_status = '<b class="text-danger">' + 'Reddedildi' + '</b>';
 
                             $('#tbodyCargoCancellationApplications').append(
-                                '<tr>' +
+                                '<tr class="' + background + '">' +
                                 '<td class="font-weight-bold">' + cargo.tracking_no + '</td>' +
                                 '<td class="font-weight-bold">' + val['name_surname'] + " (" + val['display_name'] + ")" + '</td>' +
                                 '<td title="' + val['application_reason'] + '">' + val['application_reason'].substring(0, 35) + '</td>' +
@@ -706,6 +698,71 @@
 
             $('#ModalAgencyDetail').modal();
         }
+
+        $(document).on('click', '#btnSetResult', function () {
+            $('#ModalSetAppResult').modal();
+        });
+
+        $(document).on('click', '#btnUpdateAppResult', function () {
+
+            $('#ModalSetAppResult').block({
+                message: $('<div class="loader mx-auto">\n' +
+                    '                            <div class="ball-grid-pulse">\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                            </div>\n' +
+                    '                        </div>')
+            });
+            $('.blockUI.blockMsg.blockElement').css('width', '100%');
+            $('.blockUI.blockMsg.blockElement').css('border', '0px');
+            $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+
+            $.ajax('{{route('cargoCancel.setCargoCancellationApplicationResult')}}', {
+                method: 'POST',
+                data: {
+                    _token: token,
+                    id: appointmentID,
+                    result: $('#cancelAppResult').val(),
+                    description: $('#canelAppResultDescription').val()
+                },
+                cache: false
+            }).done(function (response) {
+
+                if (response.status == -1) {
+                    ToastMessage('error', response.message, 'Hata!');
+                    return false;
+                } else if (response.status == 1) {
+
+                    ToastMessage('success', 'Sonuç kaydedildi!', 'İşlem Başarılı!');
+                    $('#ModalSetAppResult').modal('hide');
+
+                    cargoInfo(detailsID);
+                    oTable.ajax.reload();
+
+                } else if (response.status == 0) {
+                    $.each(response.errors, function (index, value) {
+                        ToastMessage('error', value, 'Hata!')
+                    });
+                }
+
+                $('#ModalSetAppResult').unblock();
+                return false;
+            }).error(function (jqXHR, exception) {
+                ajaxError(jqXHR.status);
+            }).always(function () {
+                $('#ModalSetAppResult').unblock();
+            });
+
+        });
+
 
     </script>
 
@@ -746,8 +803,8 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
+
                             <ul class="list-group list-group-flush">
 
                                 <div class="main-card mb-12 card">
@@ -1130,6 +1187,23 @@
 
                                 </div>
 
+                                <li class="p-0 list-group-item">
+                                    <div class="grid-menu grid-menu-2col">
+                                        <div class="no-gutters row">
+                                            <div class="col-sm-12">
+                                                <div class="p-1">
+                                                    <button
+                                                        id="btnSetResult"
+                                                        class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-info">
+                                                        <i class="pe-7s-check text-info opacity-7 btn-icon-wrapper mb-2"> </i>
+                                                        Sonuç Gir
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
                             </ul>
                         </div>
                     </div>
@@ -1141,4 +1215,65 @@
             </div>
         </div>
     </div>
+
+    <!-- Large modal => Modal Set App Result -->
+    <div class="modal fade bd-example-modal-lg" id="ModalSetAppResult" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalGiveRolePermissionLabel">İptal Başvurusu Sonuç Gir</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="modalBodyCargoMovementsDetails" style="overflow-x: hidden; max-height: 75vh;"
+                     class="modal-body">
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label for="cancelAppTrackingNo">Kargo Takip No:</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-sm" readonly
+                                       id="cancelAppTrackingNo">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="cancelAppReason">İptal Başvuru Nedeni:</label>
+                            <div class="form-group">
+                                <textarea name="" readonly id="cancelAppReason" class="form-control form-control-sm"
+                                          cols="30"
+                                          rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="cancelAppResult">Sonuç:</label>
+                            <div class="form-group">
+                                <select name="" id="cancelAppResult" class="form-control form-control-sm">
+                                    <option value="0">Onay Bekliyor</option>
+                                    <option value="-1">Reddedildi</option>
+                                    <option value="1">Onaylandı</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="canelAppResultDescription">Sonuç Açıklaması:</label>
+                            <div class="form-group">
+                                <textarea name="" id="canelAppResultDescription"
+                                          class="form-control form-control-sm"
+                                          cols="30"
+                                          rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                    <button id="btnUpdateAppResult" type="button" class="btn btn-primary">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection

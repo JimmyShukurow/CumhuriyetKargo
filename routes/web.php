@@ -92,7 +92,9 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
         Route::group(['as' => 'cargoCancel.'], function () {
             Route::get('CargoCancellations', [CargoCancellationController::class, 'index'])->name('index');
-                Route::get('/GetCancellations', [CargoCancellationController::class, 'getCancellations'])->name('getCancellations');
+            Route::get('/GetCancellations', [CargoCancellationController::class, 'getCancellations'])->name('getCancellations');
+            Route::post('SetCargoCancellationApplicationResult', [CargoCancellationController::class, 'setCargoCancellationApplicationResult'])
+                ->name('setCargoCancellationApplicationResult');
         });
 
     });

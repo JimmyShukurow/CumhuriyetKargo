@@ -436,7 +436,7 @@ function cargoInfo(user) {
 
             }
 
-
+            $('#tbodySentMessages').html('');
             $.each(sms, function (key, val) {
 
                 let result = val['result'] == '1' ? '<b class="text-success">' + 'Başarılı' + '</b>' : '<b class="text-danger">' + 'Başarısız' + '</b>';

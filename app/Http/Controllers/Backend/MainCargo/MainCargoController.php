@@ -22,11 +22,13 @@ use App\Models\SmsContent;
 use App\Models\TransshipmentCenterDistricts;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
+use App\Notifications\TicketNotify;
 use Brick\Math\Exception\DivisionByZeroException;
 use Carbon\Carbon;
 use Faker\Provider\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -1606,7 +1608,6 @@ class MainCargoController extends Controller
                     ->first();
                 $data['sender']->current_code = CurrentCodeDesign($data['sender']->current_code);
 
-
                 $data['movements'] = DB::table('cargo_movements')
                     ->selectRaw('cargo_movements.*, number_of_pieces,  cargo_movements.group_id as testmebitch, (SELECT Count(*) FROM cargo_movements where cargo_movements.group_id = testmebitch) as current_pieces')
                     ->groupBy('group_id')
@@ -1618,6 +1619,7 @@ class MainCargoController extends Controller
                     ->select(['current_code', 'tckn', 'category'])
                     ->where('id', $data['cargo']->receiver_id)
                     ->first();
+
                 $data['receiver']->current_code = CurrentCodeDesign($data['receiver']->current_code);
 
                 $data['creator'] = DB::table('view_users_all_info')
@@ -1789,6 +1791,11 @@ class MainCargoController extends Controller
                 break;
             # INDEX TRANSACTION END
 
+            case 'SetCargoCancellationApplicationResult':
+
+
+                break;
+
             default:
                 return 'no -case';
                 break;
@@ -1826,7 +1833,6 @@ class MainCargoController extends Controller
         $cargoes = DB::table('cargoes')
             ->join('users', 'users.id', '=', 'cargoes.creator_user_id')
             ->join('currents', 'currents.id', '=', 'cargoes.sender_id')
-//            ->join('currents', 'currents.id', '=', 'cargoes.receiver_id')
             ->select(['cargoes.*', 'users.name_surname'])
             ->whereRaw($cargoType ? "cargo_type='" . $cargoType . "'" : '1 > 0')
             ->whereRaw($cargoContent ? "cargo_content='" . $cargoContent . "'" : '1 > 0')
@@ -1926,7 +1932,6 @@ class MainCargoController extends Controller
                 return response()->json([], 509);
             }
         }
-
 
         if ($currentDistrict) {
             $district = Districts::find($currentDistrict);
