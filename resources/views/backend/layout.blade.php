@@ -122,6 +122,7 @@
                 <div class="search-wrapper">
                     <div class="input-holder">
                         <input type="text" class="search-input" placeholder="Type to search">
+
                         <button class="search-icon"><span></span></button>
                     </div>
                     <button class="close"></button>
@@ -1230,6 +1231,8 @@
 <script src="/backend/assets/scripts/general.js"></script>
 <script src="/backend/assets/scripts/js-snackbar.js"></script>
 <script type="text/javascript" src="/backend/assets/scripts/main.8d288f825d8dffbbe55e.js?v=1.0.0.0"></script>
+<script src="/backend/assets/scripts/select2.js"></script>
+
 <script>
     @if(\Illuminate\Support\Facades\Session::exists('virtual-login'))
     $(document).on('click', '#virtualCloseBtn', function () {

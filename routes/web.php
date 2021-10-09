@@ -95,6 +95,10 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
             Route::get('/GetCancellations', [CargoCancellationController::class, 'getCancellations'])->name('getCancellations');
             Route::post('SetCargoCancellationApplicationResult', [CargoCancellationController::class, 'setCargoCancellationApplicationResult'])
                 ->name('setCargoCancellationApplicationResult');
+
+            Route::post('BackupCargo', [CargoCancellationController::class, 'backupCargo'])
+                ->name('backupCargo');
+
         });
 
     });

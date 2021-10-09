@@ -46,46 +46,47 @@
                 <form method="POST" id="search-form">
 
                     <div class="form-row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="status">Durum</label>
-                                <select name="status" id="status" class="form-control">
-                                    <option value="">Seçiniz</option>
-                                    <option value="AÇIK">Açık</option>
-                                    <option value="BEKLEMEDE">Beklemede</option>
-                                    <option value="KAPALI">Kapalı</option>
-                                    <option value="CEVAPLANDI">Cevaplandı</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="priority">Öncelik</label>
-                                <select name="priority" id="priority" class="form-control">
-                                    <option value="">Seçiniz</option>
-                                    <option value="Düşük">Düşük</option>
-                                    <option value="Normal">Normal</option>
-                                    <option value="Yüksek">Yüksek</option>
-                                    <option value="Çok Yüksek">Çok Yüksek</option>
-                                    <option value="Acil">Acil</option>
-                                    <option value="Kritik">Kritik</option>
-                                </select>
-                            </div>
+
+                        <div class="col-md-2">
+                            <label for="receiverCode">Kargo Takip No:</label>
+                            <input type="text" data-inputmask="'mask': '99999 99999 99999'"
+                                   placeholder="_____ _____ _____" type="text" id="trackingNo"
+                                   class="form-control input-mask-trigger form-control-sm niko-filter">
                         </div>
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="name_surname">Ad Soyad</label>
-                                <input type="text" class="form-control" placeholder="Oluşturan Kişi Ad Soyad"
+                                <label for="name_surname">B. Yapan Ad Soyad</label>
+                                <input type="text" class="form-control form-control-sm"
+                                       placeholder="Oluşturan Kişi Ad Soyad"
                                        name="name_surname" id="name_surname">
                             </div>
                         </div>
 
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="title">Acente</label>
+                                <input type="text" class="form-control form-control-sm"
+                                       placeholder="Ticket Başlığı Girin"
+                                       name="title" id="title">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="title">Başvuru Nedeni</label>
+                                <input type="text" class="form-control form-control-sm"
+                                       placeholder="Ticket Başlığı Girin"
+                                       name="title" id="title">
+                            </div>
+                        </div>
+
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="title">Başlık</label>
-                                <input type="text" class="form-control" placeholder="Ticket Başlığı Girin"
-                                       name="title" id="title">
+                                <label for="name_surname">Onaylayan Ad Soyad</label>
+                                <input type="text" class="form-control form-control-sm"
+                                       placeholder="Oluşturan Kişi Ad Soyad"
+                                       name="name_surname" id="name_surname">
                             </div>
                         </div>
                     </div>
@@ -97,36 +98,36 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="ticket_no">Ticket No</label>
-                                <input type="text" class="form-control" placeholder="Ticket numarası ile sorgulayın"
-                                       name="ticket_no" id="ticket_no">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="redirected">Yönlendirildi</label>
-                                <select name="redirected" id="redirected" class="form-control">
-                                    <option value="">Seçiniz</option>
-                                    <option value="1">Evet</option>
-                                    <option value="0">Hayır</option>
-                                </select>
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="start_date">Başlangıç Tarih</label>
-                                <input type="date" name="start_date" value="{{date('Y-m-d')}}" class="form-control"
+                                <label for="start_date">Oluşturma Başlangıç Tarih</label>
+                                <input type="date" name="start_date" value="{{date('Y-m-d')}}"
+                                       class="form-control form-control-sm"
                                        id="start_date">
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="finish_date">Bitiş Tarih</label>
-                                <input type="date" name="finish_date" value="{{date('Y-m-d')}}" class="form-control"
+                                <label for="finish_date">Oluşturma Bitiş Tarih</label>
+                                <input type="date" name="finish_date" value="{{date('Y-m-d')}}"
+                                       class="form-control form-control-sm"
+                                       id="finish_date">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="start_date">Son İşlem Başlangıç Tarih</label>
+                                <input type="date" name="start_date" value="{{date('Y-m-d')}}"
+                                       class="form-control form-control-sm"
+                                       id="start_date">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="finish_date">Son İşlem Bitiş Tarih</label>
+                                <input type="date" name="finish_date" value="{{date('Y-m-d')}}"
+                                       class="form-control form-control-sm"
                                        id="finish_date">
                             </div>
                         </div>
@@ -135,16 +136,25 @@
 
                     <div class="row mt-3">
 
-
                         <div class="col-md-12 text-center">
                             <button id="btn-submit" type="submit" class="btn btn-primary ml-5">Ara</button>
                             <input type="reset" class="btn btn-secondary">
 
-                            <div style="display: inline-block; float: right;" class="form-check">
-                                <input style="cursor: pointer;" type="checkbox" id="date_filter"
+
+                            <div style="display: inline-block; float: right;" class="form-check ml-3">
+                                <input style="cursor: pointer;" type="checkbox" id="last_proccess_date_filter"
                                        class="form-check-input">
-                                <label style="cursor: pointer;" for="date_filter">Tarih Filtresi</label>
+                                <label style="cursor: pointer;" for="last_proccess_date_filter">Son İşlem Tarih
+                                    Filtresi</label>
                             </div>
+
+                            <div style="display: inline-block; float: right;" class="form-check">
+                                <input style="cursor: pointer;" type="checkbox" id="creating_date_filter"
+                                       class="form-check-input">
+                                <label style="cursor: pointer;" for="creating_date_filter">Oluşturma Tarih
+                                    Filtresi</label>
+                            </div>
+
                         </div>
                     </div>
 
@@ -158,34 +168,22 @@
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
                         class="header-icon pe-7s-ticket mr-3 text-muted opacity-6"> </i>Kargo İptalleri
 
-                    <button id="CountAcik" type="button" data-title="Durumu açık olan ticketlar."
+                    <button id="CountAcik" type="button" data-title="Onaylanan başvurular."
                             data-toggle="popover-custom-bg"
                             data-bg-class="text-light bg-premium-dark"
                             class="mr-2 ml-2  btn btn-sm btn-success">0
                     </button>
 
-                    <button id="CountBeklemede" type="button" data-title="Durumu beklemede olan ticketlar."
+                    <button id="CountBeklemede" type="button" data-title="Reddedilen başvurular."
                             data-toggle="popover-custom-bg"
                             data-bg-class="text-light bg-premium-dark"
-                            class="mr-2 ml-2  btn btn-sm btn-warning">0
+                            class="mr-2 ml-2  btn btn-sm btn-danger">0
                     </button>
 
-                    <button id="CountKapali" type="button" data-title="Durumu kapalı olan ticketlar."
+                    <button id="CountKapali" type="button" data-title="Onay bekleyen başvurular."
                             data-toggle="popover-custom-bg"
                             data-bg-class="text-light bg-premium-dark"
-                            class="mr-2 ml-2  btn btn-sm btn-dark">0
-                    </button>
-
-                    <button id="CountCevaplandi" type="button" data-title="Durumu cevaplandı olan ticketlar."
-                            data-toggle="popover-custom-bg"
-                            data-bg-class="text-light bg-premium-dark"
-                            class="mr-2 ml-2  btn btn-sm btn-alternate">0
-                    </button>
-
-                    <button id="CountTotal" type="button" data-title="Total ticket adeti."
-                            data-toggle="popover-custom-bg"
-                            data-bg-class="text-light bg-premium-dark"
-                            class="mr-2 ml-2  btn btn-sm btn-primary">0
+                            class="mr-2 ml-2  btn btn-sm btn-info">0
                     </button>
 
                 </div>
@@ -247,7 +245,6 @@
                     oTable.draw();
                     pageRowCount();
                 }
-
             });
 
         });
@@ -480,7 +477,8 @@
             $('.blockUI.blockMsg.blockElement').css('border', '0px');
             $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
-            $.ajax('/MainCargo/AjaxTransactions/GetCargoInfo', {
+
+            $.ajax('/MainCargo/AjaxTransactions/GetAllCargoInfo', {
                 method: 'POST',
                 data: {
                     _token: token,
@@ -512,6 +510,18 @@
                     let cancellations = response.cancellation_applications;
 
                     $('#titleTrackingNo').text(cargo.tracking_no);
+
+                    if (cargo.deleted_at != null) {
+                        $('#titleTrackingNo').text($('#titleTrackingNo').text() + " ##SİLİNDİ##");
+                        $('#titleTrackingNo').addClass('text-warning');
+                        $('li#SetResult').hide();
+                        $('li#CargoRestore').show();
+                    } else {
+                        $('li#SetResult').show();
+                        $('li#CargoRestore').hide();
+                        $('#titleTrackingNo').removeClass('text-warning');
+                    }
+
                     $('#cancelAppTrackingNo').val(cargo.tracking_no);
 
                     $('#senderTcknVkn').text(sender.tckn);
@@ -662,12 +672,16 @@
                             else if (val['confirm'] == '-1')
                                 confirm_status = '<b class="text-danger">' + 'Reddedildi' + '</b>';
 
+                            if (val['description'] == null)
+                                val['description'] = "";
+
                             $('#tbodyCargoCancellationApplications').append(
-                                '<tr class="' + background + '">' +
+                                '<tr>' +
                                 '<td class="font-weight-bold">' + cargo.tracking_no + '</td>' +
                                 '<td class="font-weight-bold">' + val['name_surname'] + " (" + val['display_name'] + ")" + '</td>' +
                                 '<td title="' + val['application_reason'] + '">' + val['application_reason'].substring(0, 35) + '</td>' +
                                 '<td>' + confirm_status + '</td>' +
+                                '<td title="' + val['description'] + '">' + val['description'].substring(0, 20) + '</td>' +
                                 '<td class="font-weight-bold">' + val['confirming_user_name_surname'] + val['confirming_user_display_name'] + '</td>' +
                                 '<td class="font-weight-bold text-center">' + val['approval_at'] + '</td>' +
                                 '<td class="font-weight-bold text-center">' + val['created_at'] + '</td>' +
@@ -702,6 +716,7 @@
         $(document).on('click', '#btnSetResult', function () {
             $('#ModalSetAppResult').modal();
         });
+
 
         $(document).on('click', '#btnUpdateAppResult', function () {
 
@@ -763,6 +778,64 @@
 
         });
 
+
+        $(document).on('click', '#btnCargoRestore', function () {
+
+            $('#ModalSetAppResult').block({
+                message: $('<div class="loader mx-auto">\n' +
+                    '                            <div class="ball-grid-pulse">\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                            </div>\n' +
+                    '                        </div>')
+            });
+            $('.blockUI.blockMsg.blockElement').css('width', '100%');
+            $('.blockUI.blockMsg.blockElement').css('border', '0px');
+            $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+
+            $.ajax('{{route('cargoCancel.backupCargo')}}', {
+                method: 'POST',
+                data: {
+                    _token: token,
+                    id: appointmentID,
+                },
+                cache: false
+            }).done(function (response) {
+
+                if (response.status == -1) {
+                    ToastMessage('error', response.message, 'Hata!');
+                    return false;
+                } else if (response.status == 1) {
+
+                    ToastMessage('success', 'Kargo geri yüklendi!', 'İşlem Başarılı!');
+                    $('#ModalSetAppResult').modal('hide');
+
+                    cargoInfo(detailsID);
+                    oTable.ajax.reload();
+
+                } else if (response.status == 0) {
+                    $.each(response.errors, function (index, value) {
+                        ToastMessage('error', value, 'Hata!')
+                    });
+                }
+
+                $('#ModalSetAppResult').unblock();
+                return false;
+            }).error(function (jqXHR, exception) {
+                ajaxError(jqXHR.status);
+            }).always(function () {
+                $('#ModalSetAppResult').unblock();
+            });
+
+        });
 
     </script>
 
@@ -1171,6 +1244,7 @@
                                                             <th>Başvuru Yapan</th>
                                                             <th>İptal Nedeni</th>
                                                             <th>Sonuç</th>
+                                                            <th>Açıklama</th>
                                                             <th>Sonuç Giren</th>
                                                             <th>Sonuç Giriş Zamanı</th>
                                                             <th>Başvuru Kayıt Zamanı</th>
@@ -1187,7 +1261,7 @@
 
                                 </div>
 
-                                <li class="p-0 list-group-item">
+                                <li id="SetResult" class="p-0 list-group-item">
                                     <div class="grid-menu grid-menu-2col">
                                         <div class="no-gutters row">
                                             <div class="col-sm-12">
@@ -1197,6 +1271,23 @@
                                                         class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-info">
                                                         <i class="pe-7s-check text-info opacity-7 btn-icon-wrapper mb-2"> </i>
                                                         Sonuç Gir
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li id="CargoRestore" class="p-0 list-group-item">
+                                    <div class="grid-menu grid-menu-2col">
+                                        <div class="no-gutters row">
+                                            <div class="col-sm-12">
+                                                <div class="p-1">
+                                                    <button
+                                                        id="btnCargoRestore"
+                                                        class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success">
+                                                        <i class="pe-7s-check text-s opacity-7 btn-icon-wrapper mb-2"> </i>
+                                                        Kargoyu Geri Yükle
                                                     </button>
                                                 </div>
                                             </div>
@@ -1260,13 +1351,10 @@
                             <label for="canelAppResultDescription">Sonuç Açıklaması:</label>
                             <div class="form-group">
                                 <textarea name="" id="canelAppResultDescription"
-                                          class="form-control form-control-sm"
-                                          cols="30"
-                                          rows="5"></textarea>
+                                          class="form-control form-control-sm" cols="30" rows="5"></textarea>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>

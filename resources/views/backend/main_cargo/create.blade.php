@@ -221,7 +221,7 @@
                                     <option value="Koli">Koli</option>
                                     <option value="Çuval">Çuval</option>
                                     <option value="Rulo">Rulo</option>
-                                    <option value="Palet Kargo">Palet Kargo</option>
+                                    <option value="Palet">Palet</option>
                                     <option value="Sandık">Sandık</option>
                                     <option value="Valiz">Valiz</option>
                                 </select>

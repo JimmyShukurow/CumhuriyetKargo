@@ -883,6 +883,7 @@
                                                             <th>Başvuru Yapan</th>
                                                             <th>İptal Nedeni</th>
                                                             <th>Sonuç</th>
+                                                            <th>Açıklama</th>
                                                             <th>Sonuç Giren</th>
                                                             <th>Sonuç Giriş Zamanı</th>
                                                             <th>Başvuru Kayıt Zamanı</th>
@@ -1121,6 +1122,8 @@
                                 <select name="" id="reason" class="form-control">
                                     <option value="Gönderici Bilgileri Hatalı">Gönderici Bilgileri Hatalı</option>
                                     <option value="Alıcı Bilgileri Hatalı">Alıcı Bilgileri Hatalı</option>
+                                    <option value="Kargo Ebat Bilgileri Hatalı">Kargo Ebat Bilgileri Hatalı</option>
+                                    <option value="Ödeme Tipi Hatalı">Ödeme Tipi Hatalı</option>
                                     <option value="Müşteri İade">Müşteri İade</option>
                                 </select>
                             </div>

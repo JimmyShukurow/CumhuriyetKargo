@@ -192,7 +192,7 @@ class CargoCancellationController extends Controller
                 User::find($app->user_id)
                     ->notify(new TicketNotify('"' . TrackingNumberDesign($cargo->tracking_no) . '"' . ' takip numaralı kargo için oluşturmuş olduğunuz iptal başvurusu ' . $trResult . '.', route('systemSupport.TicketDetails', $app->id), $app->id));
 
-            if ($app->confirm == '1'){
+            if ($app->confirm == '1') {
                 $delete = Cargoes::find($cargo->id)
                     ->delete();
             }
@@ -208,5 +208,37 @@ class CargoCancellationController extends Controller
 
         return $request->all();
     }
+
+
+    public function backupCargo(Request $request)
+    {
+        // $cargo = Cargoes::find($request->id);
+        $app = CargoCancellationApplication::find($request->id);
+
+        $cargo = DB::table('cargoes')
+            ->where('id', $app->cargo_id)
+            ->first();
+
+        $statement = Cargoes::onlyTrashed()
+            ->where('id', $app->cargo_id)
+            ->restore();
+
+        $appointment = CargoCancellationApplication::find($request->id)
+            ->update([
+                'confirm' => '0',
+                'description' => '### KARGO GERİ YÜKLENDİ ###',
+                'confirming_user' => Auth::id(),
+            ]);
+
+        if ($statement)
+            return response()
+                ->json(['status' => 1], 200);
+        else
+            return response()
+                ->json(['status' => -1], 200);
+
+        return $request->all();
+    }
+
 
 }

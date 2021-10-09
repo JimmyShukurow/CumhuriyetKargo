@@ -474,12 +474,16 @@ function cargoInfo(user) {
                     else if (val['confirm'] == '-1')
                         confirm_status = '<b class="text-danger">' + 'Reddedildi' + '</b>';
 
+                    if (val['description'] == null)
+                        val['description'] = "";
+
                     $('#tbodyCargoCancellationApplications').append(
                         '<tr>' +
                         '<td class="font-weight-bold">' + cargo.tracking_no + '</td>' +
                         '<td class="font-weight-bold">' + val['name_surname'] + " (" + val['display_name'] + ")" + '</td>' +
                         '<td title="' + val['application_reason'] + '">' + val['application_reason'].substring(0, 35) + '</td>' +
                         '<td>' + confirm_status + '</td>' +
+                        '<td title="' + val['description'] + '">' + val['description'].substring(0, 20) + '</td>' +
                         '<td class="font-weight-bold">' + val['confirming_user_name_surname'] + val['confirming_user_display_name'] + '</td>' +
                         '<td class="font-weight-bold text-center">' + val['approval_at'] + '</td>' +
                         '<td class="font-weight-bold text-center">' + val['created_at'] + '</td>' +
