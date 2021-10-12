@@ -54,7 +54,7 @@
                                    class="form-control input-mask-trigger form-control-sm niko-filter">
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="name_surname">B. Yapan Ad Soyad</label>
                                 <input type="text" class="form-control form-control-sm"
@@ -65,28 +65,38 @@
 
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label for="title">Acente</label>
-                                <input type="text" class="form-control form-control-sm"
-                                       placeholder="Ticket Başlığı Girin"
-                                       name="title" id="title">
+                                <label for="agency">Acente</label>
+                                <input type="text" class="form-control form-control-sm" id="agency">
                             </div>
                         </div>
 
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label for="title">Başvuru Nedeni</label>
-                                <input type="text" class="form-control form-control-sm"
-                                       placeholder="Ticket Başlığı Girin"
-                                       name="title" id="title">
+                                <label for="confirm">Onay Durumu</label>
+                                <select name="confirm" id="confirm" class="form-control form-control-sm">
+                                    <option value="">Tümü</option>
+                                    <option value="0">Onay Bekliyor</option>
+                                    <option value="1">Onaylandı</option>
+                                    <option value="-1">Reddedildi</option>
+                                </select>
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group">
-                                <label for="name_surname">Onaylayan Ad Soyad</label>
+                                <label for="appointment_reason">Başvuru Nedeni</label>
                                 <input type="text" class="form-control form-control-sm"
-                                       placeholder="Oluşturan Kişi Ad Soyad"
-                                       name="name_surname" id="name_surname">
+                                       placeholder="İptal Başvuru Nedeni"
+                                       name="title" id="appointment_reason">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="confirming_name_surname">Onaylayan Ad Soyad</label>
+                                <input type="text" class="form-control form-control-sm"
+                                       placeholder="Onaylayan Kişi Ad Soyad"
+                                       name="confirming_name_surname" id="confirming_name_surname">
                             </div>
                         </div>
                     </div>
@@ -98,37 +108,37 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="start_date">Oluşturma Başlangıç Tarih</label>
-                                <input type="date" name="start_date" value="{{date('Y-m-d')}}"
+                                <label for="creating_start_date">Oluşturma Başlangıç Tarih</label>
+                                <input type="date" name="creating_start_date" value="{{date('Y-m-d')}}"
                                        class="form-control form-control-sm"
-                                       id="start_date">
+                                       id="creating_start_date">
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="finish_date">Oluşturma Bitiş Tarih</label>
-                                <input type="date" name="finish_date" value="{{date('Y-m-d')}}"
+                                <label for="creating_finish_date">Oluşturma Bitiş Tarih</label>
+                                <input type="date" name="creating_finish_date" value="{{date('Y-m-d')}}"
                                        class="form-control form-control-sm"
-                                       id="finish_date">
+                                       id="creating_finish_date">
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="start_date">Son İşlem Başlangıç Tarih</label>
-                                <input type="date" name="start_date" value="{{date('Y-m-d')}}"
+                                <label for="last_proccess_start_date">Son İşlem Başlangıç Tarih</label>
+                                <input type="date" name="last_proccess_start_date" value="{{date('Y-m-d')}}"
                                        class="form-control form-control-sm"
-                                       id="start_date">
+                                       id="last_proccess_start_date">
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="finish_date">Son İşlem Bitiş Tarih</label>
-                                <input type="date" name="finish_date" value="{{date('Y-m-d')}}"
+                                <label for="last_proccess_finish_date">Son İşlem Bitiş Tarih</label>
+                                <input type="date" name="last_proccess_finish_date" value="{{date('Y-m-d')}}"
                                        class="form-control form-control-sm"
-                                       id="finish_date">
+                                       id="last_proccess_finish_date">
                             </div>
                         </div>
 
@@ -139,7 +149,6 @@
                         <div class="col-md-12 text-center">
                             <button id="btn-submit" type="submit" class="btn btn-primary ml-5">Ara</button>
                             <input type="reset" class="btn btn-secondary">
-
 
                             <div style="display: inline-block; float: right;" class="form-check ml-3">
                                 <input style="cursor: pointer;" type="checkbox" id="last_proccess_date_filter"
@@ -191,7 +200,7 @@
             <div style="min-height: 70vh;overflow-x: auto;" class="card-body">
 
                 <table style="white-space: nowrap;"
-                       class="NikolasDataTable table-hover  align-middle mb-0 table table-bordered table-striped ">
+                       class="NikolasDataTable table-hover  table table-bordered Table20Padding">
                     <thead>
                     <tr>
                         <th></th>
@@ -209,6 +218,20 @@
                     <tbody>
 
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <th></th>
+                        <th>KTNO</th>
+                        <th>B. Yapan</th>
+                        <th>Acente</th>
+                        <th>Bölge</th>
+                        <th>Başvuru Nedeni</th>
+                        <th>Onay Durumu</th>
+                        <th>Onaylayan</th>
+                        <th>Son İşlem Tarihi</th>
+                        <th>Oluşturulma Tarihi</th>
+                    </tr>
+                    </tfoot>
                 </table>
 
             </div>
@@ -286,7 +309,7 @@
                 title: $('#title').val(),
                 start_date: $('#start_date').val(),
                 finish_date: $('#finish_date').val(),
-                date_filter: dateFilter,
+                date_filter: false,
                 selected_regions: getSelectedRegions(),
                 x_token: $('#x_token').val(),
                 ticket_no: $('#ticket_no').val(),
@@ -303,11 +326,17 @@
         }
 
         var oTable;
-        var dateFilter = $('#date_filter').prop("checked");
+        var creatingDateFilter = false;
+        var lastProccessDateFilter = false;
 
-        $('#date_filter').change(function () {
-            dateFilter = $('#date_filter').prop("checked");
+        $('#creating_date_filter').click(function () {
+            creatingDateFilter = $('#creating_date_filter').prop("checked");
         });
+
+        $('#last_proccess_date_filter').click(function () {
+            lastProccessDateFilter = $('#last_proccess_date_filter').prop("checked");
+        });
+
 
         // and The Last Part: NikoStyle
         $(document).ready(function () {
@@ -386,18 +415,22 @@
                 ajax: {
                     url: '{!! route('cargoCancel.getCancellations') !!}',
                     data: function (d) {
-                        d.department = $('#department').val();
-                        d.status = $('#status').val();
-                        d.priority = $('#priority').val();
+                        d.ctn = $('#trackingNo').val();
                         d.name_surname = $('#name_surname').val();
-                        d.title = $('#title').val();
-                        d.start_date = $('#start_date').val();
-                        d.finish_date = $('#finish_date').val();
-                        d.date_filter = dateFilter;
+                        d.agency = $('#agency').val();
+                        d.appointment_reason = $('#appointment_reason').val();
+                        d.confirm = $('#confirm').val();
+                        d.confirming_name_surname = $('#confirming_name_surname').val();
+                        d.creating_start_date = $('#creating_start_date').val();
+                        d.creating_finish_date = $('#creating_finish_date').val();
+                        d.last_proccess_start_date = $('#last_proccess_start_date').val();
+                        d.creating_finish_date = $('#creating_finish_date').val();
+                        d.last_proccess_start_date = $('#last_proccess_start_date').val();
+                        d.last_proccess_finish_date = $('#last_proccess_finish_date').val();
+                        d.creating_date_filter = creatingDateFilter;
+                        d.last_proccess_date_filter = lastProccessDateFilter;
                         d.selected_region = getSelectedRegions();
                         d.x_token = $('#x_token').val();
-                        d.ticket_no = $('#ticket_no').val();
-                        d.redirected = $('#redirected').val();
                     },
                     error: function (xhr, error, code) {
                         if (code == "Too Many Requests") {
@@ -418,6 +451,7 @@
                     {data: 'created_at', name: 'created_at'},
                 ],
                 scrollY: false,
+                scrollX: false,
             });
         });
 
@@ -676,7 +710,7 @@
                                 val['description'] = "";
 
                             $('#tbodyCargoCancellationApplications').append(
-                                '<tr>' +
+                                '<tr class="' + background + '">' +
                                 '<td class="font-weight-bold">' + cargo.tracking_no + '</td>' +
                                 '<td class="font-weight-bold">' + val['name_surname'] + " (" + val['display_name'] + ")" + '</td>' +
                                 '<td title="' + val['application_reason'] + '">' + val['application_reason'].substring(0, 35) + '</td>' +
