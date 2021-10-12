@@ -112,6 +112,75 @@ class CargoCancellationController extends Controller
             ->make(true);
     }
 
+    public function pageRowCount(Request $request)
+    {
+        $creatingStartDate = $request->has('creating_start_date') ? $request->creating_start_date . ' 00:00:00' : date('Y-m-d') . ' 00:00:00';
+        $creatingFinishDate = $request->has('creating_finish_date') ? $request->creating_finish_date . ' 23:59:59' : date('Y-m-d') . ' 23:59:59';
+        $lastProccessStartDate = $request->has('last_proccess_start_date') ? $request->last_proccess_start_date . ' 00:00:00' : date('Y-m-d') . ' 00:00:00';
+        $lastProccessFinishDate = $request->has('last_proccess_finish_date') ? $request->last_proccess_finish_date . ' 23:59:59' : date('Y-m-d') . ' 23:59:59';
+        $agency = $request->agency;
+        $confirm = $request->confirm;
+        $appointment_reason = $request->appointment_reason;
+        $confirming_name_surname = $request->confirming_name_surname;
+        $ctn = str_replace([' ', '_'], ['', ''], $request->ctn);
+        $name_surname = $request->name_surname;
+        $creating_date_filter = $request->creating_date_filter;
+        $last_proccess_date_filter = $request->last_proccess_date_filter;
+        $regionArray = $request->selected_region != '' ? $request->selected_region : 'null';
+
+        $tickets['confirmed'] = DB::table('view_cargo_cancellation_app_detail')
+            ->select(['view_cargo_cancellation_app_detail.*', 'cargoes.tracking_no', 'cargoes.id as cargo_id', 'view_agency_region.regional_directorates', 'view_agency_region.agency_name'])
+            ->join('view_agency_region', 'view_agency_region.id', '=', 'view_cargo_cancellation_app_detail.agency_code')
+            ->join('cargoes', 'cargoes.id', '=', 'view_cargo_cancellation_app_detail.cargo_id')
+            ->whereRaw($creating_date_filter == 'true' ? "view_cargo_cancellation_app_detail.created_at between '" . $creatingStartDate . "'  and '" . $creatingFinishDate . "'" : '1 > 0')
+            ->whereRaw($last_proccess_date_filter == 'true' ? "view_cargo_cancellation_app_detail.approval_at between '" . $lastProccessStartDate . "'  and '" . $lastProccessFinishDate . "'" : '1 > 0')
+            ->whereRaw($ctn ? 'cargoes.tracking_no=' . $ctn : '1 > 0')
+            ->whereRaw($confirm != '' ? "view_cargo_cancellation_app_detail.confirm='" . $confirm . "'" : '1 > 0')
+            ->whereRaw($agency ? 'view_agency_region.agency_name like \'%' . $agency . '%\'' : '1 > 0')
+            ->whereRaw($appointment_reason ? 'view_cargo_cancellation_app_detail.application_reason like \'%' . $appointment_reason . '%\'' : '1 > 0')
+            ->whereRaw($name_surname ? 'view_cargo_cancellation_app_detail.name_surname like \'%' . $name_surname . '%\'' : '1 > 0')
+            ->whereRaw($confirming_name_surname ? 'view_cargo_cancellation_app_detail.confirming_user_name_surname like \'%' . $confirming_name_surname . '%\'' : '1 > 0')
+            ->whereRaw('view_agency_region.regional_directorate_id in (' . $regionArray . ')')
+            ->where('view_cargo_cancellation_app_detail.confirm', '1')
+            ->count();
+
+        $tickets['rejected'] = DB::table('view_cargo_cancellation_app_detail')
+            ->select(['view_cargo_cancellation_app_detail.*', 'cargoes.tracking_no', 'cargoes.id as cargo_id', 'view_agency_region.regional_directorates', 'view_agency_region.agency_name'])
+            ->join('view_agency_region', 'view_agency_region.id', '=', 'view_cargo_cancellation_app_detail.agency_code')
+            ->join('cargoes', 'cargoes.id', '=', 'view_cargo_cancellation_app_detail.cargo_id')
+            ->whereRaw($creating_date_filter == 'true' ? "view_cargo_cancellation_app_detail.created_at between '" . $creatingStartDate . "'  and '" . $creatingFinishDate . "'" : '1 > 0')
+            ->whereRaw($last_proccess_date_filter == 'true' ? "view_cargo_cancellation_app_detail.approval_at between '" . $lastProccessStartDate . "'  and '" . $lastProccessFinishDate . "'" : '1 > 0')
+            ->whereRaw($ctn ? 'cargoes.tracking_no=' . $ctn : '1 > 0')
+            ->whereRaw($confirm != '' ? "view_cargo_cancellation_app_detail.confirm='" . $confirm . "'" : '1 > 0')
+            ->whereRaw($agency ? 'view_agency_region.agency_name like \'%' . $agency . '%\'' : '1 > 0')
+            ->whereRaw($appointment_reason ? 'view_cargo_cancellation_app_detail.application_reason like \'%' . $appointment_reason . '%\'' : '1 > 0')
+            ->whereRaw($name_surname ? 'view_cargo_cancellation_app_detail.name_surname like \'%' . $name_surname . '%\'' : '1 > 0')
+            ->whereRaw($confirming_name_surname ? 'view_cargo_cancellation_app_detail.confirming_user_name_surname like \'%' . $confirming_name_surname . '%\'' : '1 > 0')
+            ->whereRaw('view_agency_region.regional_directorate_id in (' . $regionArray . ')')
+            ->where('view_cargo_cancellation_app_detail.confirm', '-1')
+            ->count();
+
+        $tickets['waiting'] = DB::table('view_cargo_cancellation_app_detail')
+            ->select(['view_cargo_cancellation_app_detail.*', 'cargoes.tracking_no', 'cargoes.id as cargo_id', 'view_agency_region.regional_directorates', 'view_agency_region.agency_name'])
+            ->join('view_agency_region', 'view_agency_region.id', '=', 'view_cargo_cancellation_app_detail.agency_code')
+            ->join('cargoes', 'cargoes.id', '=', 'view_cargo_cancellation_app_detail.cargo_id')
+            ->whereRaw($creating_date_filter == 'true' ? "view_cargo_cancellation_app_detail.created_at between '" . $creatingStartDate . "'  and '" . $creatingFinishDate . "'" : '1 > 0')
+            ->whereRaw($last_proccess_date_filter == 'true' ? "view_cargo_cancellation_app_detail.approval_at between '" . $lastProccessStartDate . "'  and '" . $lastProccessFinishDate . "'" : '1 > 0')
+            ->whereRaw($ctn ? 'cargoes.tracking_no=' . $ctn : '1 > 0')
+            ->whereRaw($confirm != '' ? "view_cargo_cancellation_app_detail.confirm='" . $confirm . "'" : '1 > 0')
+            ->whereRaw($agency ? 'view_agency_region.agency_name like \'%' . $agency . '%\'' : '1 > 0')
+            ->whereRaw($appointment_reason ? 'view_cargo_cancellation_app_detail.application_reason like \'%' . $appointment_reason . '%\'' : '1 > 0')
+            ->whereRaw($name_surname ? 'view_cargo_cancellation_app_detail.name_surname like \'%' . $name_surname . '%\'' : '1 > 0')
+            ->whereRaw($confirming_name_surname ? 'view_cargo_cancellation_app_detail.confirming_user_name_surname like \'%' . $confirming_name_surname . '%\'' : '1 > 0')
+            ->whereRaw('view_agency_region.regional_directorate_id in (' . $regionArray . ')')
+            ->where('view_cargo_cancellation_app_detail.confirm', '0')
+            ->count();
+
+        return $tickets;
+
+    }
+
+
     public function setCargoCancellationApplicationResult(Request $request)
     {
         $rules = [
@@ -180,7 +249,7 @@ class CargoCancellationController extends Controller
 
         $appointment = CargoCancellationApplication::find($request->id)
             ->update([
-                'confirm' => '0',
+                'confirm' => '-1',
                 'description' => '### KARGO GERİ YÜKLENDİ ###',
                 'confirming_user' => Auth::id(),
             ]);

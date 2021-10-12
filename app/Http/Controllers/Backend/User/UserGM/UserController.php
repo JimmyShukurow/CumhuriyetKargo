@@ -354,7 +354,7 @@ class UserController extends Controller
 
             if ($update) {
                 $smsContent = SmsContent::where('key', 'reset_password_info')->first();
-                $sms = str_replace(['[name_surname]', '[password]'], [tr_strtoupper($user->name_surname), $password], $smsContent->content);
+                $sms = str_replace(['[name_surname]', '[email]', '[password]'], [tr_strtoupper($user->name_surname), $user->email, $password], $smsContent->content);
                 SendSMS($sms, CharacterCleaner($user->phone), 'Şifre Sıfırlama', 'CUMHURIYETK');
                 $role = Roles::where('id', Auth::user()->role_id)->first();
                 $properties = ['Şifreyi Sıfırlayan' => Auth::user()->name_surname, 'Yetkisi' => $role->display_name, 'Şifresi Sıfırlanan Kullanıcı' => $user->name_surname];

@@ -25,6 +25,7 @@ use App\Models\User;
 use App\Notifications\TicketNotify;
 use Brick\Math\Exception\DivisionByZeroException;
 use Carbon\Carbon;
+use Carbon\Traits\Creator;
 use Faker\Provider\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,7 +40,7 @@ class MainCargoController extends Controller
     public function searchCargo()
     {
         $data['cities'] = Cities::all();
-        return view('backend.serach-cargo.index', compact(['data']));
+        return view('backend.main_cargo.search_cargo.index', compact(['data']));
     }
 
     public function index()
@@ -117,7 +118,7 @@ class MainCargoController extends Controller
 
         $daily['total_desi'] = round($daily['total_desi'], 2);
 
-        return view('backend.main_cargo.index', compact(['data', 'daily']));
+        return view('backend.main_cargo.main.index', compact(['data', 'daily']));
     }
 
     public function newCargo()
@@ -175,7 +176,7 @@ class MainCargoController extends Controller
 
         $data['collectible_cargo'] = Settings::where('key', 'collectible_cargo')->first();
 
-        return view('backend.main_cargo.create', compact(['data', 'fee', 'agency', 'tc']));
+        return view('backend.main_cargo.main.create', compact(['data', 'fee', 'agency', 'tc']));
     }
 
     public function ajaxTransacrtions(Request $request, $transaction)
@@ -1870,6 +1871,86 @@ class MainCargoController extends Controller
 
                 break;
 
+            case 'GetCancelledCargoInfo':
+
+                $data['cargo'] = DB::table('cargoes')
+                    ->where('id', $request->id)
+                    ->whereRaw('deleted_at is not null')
+                    ->first();
+
+                if ($data['cargo'] == null)
+                    return response()
+                        ->json(['status' => 0, 'message' => 'Kargo Bulunamadı!'], 200);
+
+                $data['cargo']->tracking_no = TrackingNumberDesign($data['cargo']->tracking_no);
+                $data['cargo']->distance = getDotter($data['cargo']->distance);
+
+                $data['sender'] = DB::table('currents')
+                    ->select(['current_code', 'tckn', 'category'])
+                    ->where('id', $data['cargo']->sender_id)
+                    ->first();
+                $data['sender']->current_code = CurrentCodeDesign($data['sender']->current_code);
+
+                $data['movements'] = DB::table('cargo_movements')
+                    ->selectRaw('cargo_movements.*, number_of_pieces,  cargo_movements.group_id as testmebitch, (SELECT Count(*) FROM cargo_movements where cargo_movements.group_id = testmebitch) as current_pieces')
+                    ->groupBy('group_id')
+                    ->join('cargoes', 'cargoes.tracking_no', '=', 'cargo_movements.ctn')
+                    ->where('ctn', '=', str_replace(' ', '', $data['cargo']->tracking_no))
+                    ->get();
+
+                $data['receiver'] = DB::table('currents')
+                    ->select(['current_code', 'tckn', 'category'])
+                    ->where('id', $data['cargo']->receiver_id)
+                    ->first();
+
+                $data['receiver']->current_code = CurrentCodeDesign($data['receiver']->current_code);
+
+                $data['creator'] = DB::table('view_users_all_info')
+                    ->select(['name_surname', 'display_name'])
+                    ->where('id', $data['cargo']->creator_user_id)
+                    ->first();
+
+                $data['departure'] = DB::table('agencies')
+                    ->select(['agency_code', 'agency_name', 'city', 'district'])
+                    ->where('id', $data['cargo']->departure_agency_code)
+                    ->first();
+
+                $data['departure_tc'] = DB::table('transshipment_centers')
+                    ->select(['city', 'tc_name'])
+                    ->where('id', $data['cargo']->departure_tc_code)
+                    ->first();
+
+                $data['arrival'] = DB::table('agencies')
+                    ->select(['agency_code', 'agency_name', 'city', 'district'])
+                    ->where('id', $data['cargo']->arrival_agency_code)
+                    ->first();
+
+                $data['arrival_tc'] = DB::table('transshipment_centers')
+                    ->select(['city', 'tc_name'])
+                    ->where('id', $data['cargo']->arrival_tc_code)
+                    ->first();
+
+                $data['sms'] = DB::table('sent_sms')
+                    ->select('id', 'heading', 'subject', 'phone', 'sms_content', 'result')
+                    ->where('ctn', str_replace(' ', '', $data['cargo']->tracking_no))
+                    ->get();
+
+                $data['add_services'] = DB::table('cargo_add_services')
+                    ->select(['service_name', 'price'])
+                    ->where('cargo_tracking_no', str_replace(' ', '', $data['cargo']->tracking_no))
+                    ->get();
+
+                $data['cancellation_applications'] = DB::table('view_cargo_cancellation_app_detail')
+                    ->where('cargo_id', $data['cargo']->id)
+                    ->get();
+
+                $data['status'] = 1;
+
+                return response()
+                    ->json($data, 200);
+
+                break;
+
             default:
                 return 'no -case';
                 break;
@@ -1970,8 +2051,8 @@ class MainCargoController extends Controller
             ->editColumn('check', function ($t) {
                 return '<span class="unselectable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
             })
-            ->addColumn('tracking_no', 'backend.main_cargo.columns.tracking_no')
-            ->addColumn('edit', 'backend.main_cargo.columns.edit')
+            ->addColumn('tracking_no', 'backend.main_cargo.main.columns.tracking_no')
+            ->addColumn('edit', 'backend.main_cargo.main.columns.edit')
             ->rawColumns(['edit', 'tracking_no', 'check', 'status_for_human', 'total_price', 'collectible', 'payment_type', 'collection_fee', 'status', 'name_surname', 'created_at'])
             ->make(true);
     }
@@ -1986,12 +2067,10 @@ class MainCargoController extends Controller
         $currentName = $request->senderName;
         $receiverCity = $request->receiverCity;
         $receiverName = $request->receiverName;
-
         $receiverDistrict = $request->receiverDistrict;
         $receiverPhone = $request->receiverPhone;
         $currentDistrict = $request->senderDistrict;
         $currentPhone = $request->senderPhone;
-
         $finishDate = $request->finishDate;
         $startDate = $request->startDate;
         $filterByDAte = $request->filterByDAte;
@@ -1999,27 +2078,28 @@ class MainCargoController extends Controller
         $finishDate = new Carbon($finishDate);
         $startDate = new Carbon($startDate);
 
-        $diff = $startDate->diffInDays($finishDate);
 
-        if ($filterByDAte) {
-            if ($diff >= 60) {
-                return response()->json([], 509);
+        if ($filterByDAte == "true") {
+            $diff = $startDate->diffInDays($finishDate);
+            if ($filterByDAte) {
+                if ($diff >= 30) {
+                    return response()->json([], 509);
+                }
             }
         }
+
 
         if ($currentDistrict) {
             $district = Districts::find($currentDistrict);
             $currentDistrict = $district->district_name;
-        } else {
+        } else
             $currentDistrict = false;
-        }
 
         if ($receiverDistrict) {
             $district = Districts::find($receiverDistrict);
             $receiverDistrict = $district->district_name;
-        } else {
+        } else
             $receiverDistrict = false;
-        }
 
         $cargoes = DB::table('cargoes')
             ->join('users', 'users.id', '=', 'cargoes.creator_user_id')
@@ -2037,15 +2117,18 @@ class MainCargoController extends Controller
             ->whereRaw($currentPhone ? "sender_phone='" . $currentPhone . "'" : '1 > 0')
             ->whereRaw($receiverDistrict ? "receiver_district='" . $receiverDistrict . "'" : '1 > 0')
             ->whereRaw($receiverName ? "receiver_name like '%" . $receiverName . "%'" : '1 > 0')
-            ->whereRaw('cargoes.deleted_at is null');
-
+            ->whereRaw($filterByDAte == "true" ? "cargoes.created_at between '" . $startDate . "'  and '" . $finishDate . "'" : '1 > 0')
+            ->whereRaw('cargoes.deleted_at is null')
+            ->limit(100)
+            ->orderByDesc('created_at')
+            ->get();
 
         return datatables()->of($cargoes)
+            ->editColumn('free', function () {
+                return '';
+            })
             ->setRowId(function ($cargoes) {
                 return "cargo-item-" . $cargoes->id;
-            })
-            ->editColumn('tracking_no', function ($cargoes) {
-                return TrackingNumberDesign($cargoes->tracking_no);
             })
             ->editColumn('payment_type', function ($cargoes) {
                 return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . $cargoes->payment_type . '</b>' : '<b class="text-dark">' . $cargoes->payment_type . '</b>';
@@ -2057,7 +2140,7 @@ class MainCargoController extends Controller
                 return substr($cargoes->receiver_address, 0, 30);
             })
             ->editColumn('agency_name', function ($cargoes) {
-                return $cargoes->city_name . '/' . $cargoes->district_name . '-' . $cargoes->agency_name . ' <b class="text-primary">(' . $cargoes->user_name_surname . ')</b>';
+                return $cargoes->agency_name;
             })
             ->editColumn('sender_name', function ($cargoes) {
                 return substr($cargoes->sender_name, 0, 30);
@@ -2077,9 +2160,6 @@ class MainCargoController extends Controller
             ->editColumn('status', function ($cargoes) {
                 return '<b class="text-dark">' . $cargoes->status . '</b>';
             })
-//            ->editColumn('name_surname', function ($cargoes) {
-//                return '<b class="text-dark">' . $cargoes->name_surname . '</b>';
-//            })
             ->editColumn('created_at', function ($cargoes) {
                 return '<b class="text-primary">' . $cargoes->created_at . '</b>';
             })
@@ -2087,7 +2167,8 @@ class MainCargoController extends Controller
                 return '<b class="text-success">' . $cargoes->status_for_human . '</b>';
             })
             ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
-            ->rawColumns(['edit', 'cargo_type', 'agency_name', 'status_for_human', 'total_price', 'collectible', 'payment_type', 'collection_fee', 'status', 'name_surname', 'created_at'])
+            ->addColumn('tracking_no', 'backend.main_cargo.search_cargo.columns.tracking_no')
+            ->rawColumns(['tracking_no', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 
@@ -2095,13 +2176,13 @@ class MainCargoController extends Controller
     {
         $ctn = str_replace(' ', '', $ctn);
 
-        $templateProccessor = new TemplateProcessor('backend/word-template/StatementOfResposibility.docx');
+        $templateProccessor = new TemplateProcessor('backend / word - template / StatementOfResposibility . docx');
 
         $cargo = Cargoes::where('tracking_no', $ctn)->first();
         $sender = Currents::find($cargo->sender_id);
 
         $templateProccessor
-            ->setValue('date', date('d/m/Y'));
+            ->setValue('date', date('d / m / Y'));
         $templateProccessor
             ->setValue('name', $cargo->sender_name);
         $templateProccessor
@@ -2113,7 +2194,7 @@ class MainCargoController extends Controller
         $templateProccessor
             ->setValue('ctn', TrackingNumberDesign($cargo->tracking_no));
 
-        $fileName = 'ST-' . substr($cargo->sender_name, 0, 30) . '.docx';
+        $fileName = 'ST - ' . substr($cargo->sender_name, 0, 30) . ' . docx';
 
         $templateProccessor
             ->saveAs($fileName);
@@ -2122,6 +2203,129 @@ class MainCargoController extends Controller
             ->download($fileName)
             ->deleteFileAfterSend(true);
     }
+
+    public function cancelledCargoesIndex()
+    {
+        $data['cities'] = Cities::all();
+        return view('backend.main_cargo.cancelled_cargoes.index', compact(['data']));
+    }
+
+    public function getCancelledCargoes(Request $request)
+    {
+        $trackingNo = str_replace([' ', '_'], ['', ''], $request->trackingNo);
+        $cargoType = $request->cargoType;
+        $currentCity = $request->senderCity;
+        $currentCode = str_replace([' ', '_'], ['', ''], $request->senderCurrentCode);
+        $receiverCurrentCode = str_replace([' ', '_'], ['', ''], $request->receiverCurrentCode);
+        $currentName = $request->senderName;
+        $receiverCity = $request->receiverCity;
+        $receiverName = $request->receiverName;
+        $receiverDistrict = $request->receiverDistrict;
+        $receiverPhone = $request->receiverPhone;
+        $currentDistrict = $request->senderDistrict;
+        $currentPhone = $request->senderPhone;
+        $finishDate = $request->finishDate;
+        $startDate = $request->startDate;
+        $filterByDAte = $request->filterByDAte;
+
+        $finishDate = new Carbon($finishDate);
+        $startDate = new Carbon($startDate);
+
+
+        if ($filterByDAte == "true") {
+            $diff = $startDate->diffInDays($finishDate);
+            if ($filterByDAte) {
+                if ($diff >= 30) {
+                    return response()->json([], 509);
+                }
+            }
+        }
+
+
+        if ($currentDistrict) {
+            $district = Districts::find($currentDistrict);
+            $currentDistrict = $district->district_name;
+        } else
+            $currentDistrict = false;
+
+        if ($receiverDistrict) {
+            $district = Districts::find($receiverDistrict);
+            $receiverDistrict = $district->district_name;
+        } else
+            $receiverDistrict = false;
+
+        $cargoes = DB::table('cargoes')
+            ->join('users', 'users.id', '=', 'cargoes.creator_user_id')
+            ->join('agencies', 'agencies.id', '=', 'users.agency_code')
+            ->select(['cargoes.*', 'agencies.city as city_name', 'agencies.district as district_name', 'agencies.agency_name', 'users.name_surname as user_name_surname'])
+            ->whereRaw($cargoType ? "cargo_type='" . $cargoType . "'" : '1 > 0')
+            ->whereRaw($currentCity ? "sender_city='" . $currentCity . "'" : '1 > 0')
+            ->whereRaw($currentDistrict ? "sender_district='" . $currentDistrict . "'" : '1 > 0')
+            ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
+            ->whereRaw($receiverCurrentCode ? 'current_code=' . $receiverCurrentCode : '1 > 0')
+            ->whereRaw($trackingNo ? 'tracking_no=' . $trackingNo : '1 > 0')
+            ->whereRaw($currentName ? "sender_name like '" . $currentName . "%'" : '1 > 0')
+            ->whereRaw($receiverCity ? "receiver_city='" . $receiverCity . "'" : '1 > 0')
+            ->whereRaw($receiverPhone ? "receiver_phone='" . $receiverPhone . "'" : '1 > 0')
+            ->whereRaw($currentPhone ? "sender_phone='" . $currentPhone . "'" : '1 > 0')
+            ->whereRaw($receiverDistrict ? "receiver_district='" . $receiverDistrict . "'" : '1 > 0')
+            ->whereRaw($receiverName ? "receiver_name like '%" . $receiverName . "%'" : '1 > 0')
+            ->whereRaw($filterByDAte == "true" ? "cargoes.created_at between '" . $startDate . "'  and '" . $finishDate . "'" : '1 > 0')
+            ->whereRaw('cargoes.deleted_at is not null')
+            ->where('cargoes.departure_agency_code', Auth::user()->agency_code)
+            ->limit(100)
+            ->orderByDesc('created_at')
+            ->get();
+
+        return datatables()->of($cargoes)
+            ->editColumn('free', function () {
+                return '';
+            })
+            ->setRowId(function ($cargoes) {
+                return "cargo-item-" . $cargoes->id;
+            })
+            ->editColumn('payment_type', function ($cargoes) {
+                return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . $cargoes->payment_type . '</b>' : '<b class="text-dark">' . $cargoes->payment_type . '</b>';
+            })
+            ->editColumn('cargo_type', function ($cargoes) {
+                return $cargoes->cargo_type == 'Koli' ? '<b class="text-primary">' . $cargoes->cargo_type . '</b>' : '<b class="text-success">' . $cargoes->cargo_type . '</b>';
+            })
+            ->editColumn('receiver_address', function ($cargoes) {
+                return substr($cargoes->receiver_address, 0, 30);
+            })
+            ->editColumn('agency_name', function ($cargoes) {
+                return $cargoes->agency_name;
+            })
+            ->editColumn('sender_name', function ($cargoes) {
+                return substr($cargoes->sender_name, 0, 30);
+            })
+            ->editColumn('receiver_name', function ($cargoes) {
+                return substr($cargoes->receiver_name, 0, 30);
+            })
+            ->editColumn('collectible', function ($cargoes) {
+                return $cargoes->collectible == '1' ? '<b class="text-success">Evet</b>' : '<b class="text-danger">Hayır</b>';
+            })
+            ->editColumn('total_price', function ($cargoes) {
+                return '<b class="text-primary">' . $cargoes->total_price . '₺' . '</b>';
+            })
+            ->editColumn('collection_fee', function ($cargoes) {
+                return '<b class="text-primary">' . $cargoes->collection_fee . '₺' . '</b>';
+            })
+            ->editColumn('status', function ($cargoes) {
+                return '<b class="text-dark">' . $cargoes->status . '</b>';
+            })
+            ->editColumn('created_at', function ($cargoes) {
+                return '<b class="text-primary">' . $cargoes->created_at . '</b>';
+            })
+            ->editColumn('status_for_human', function ($cargoes) {
+                return '<b class="text-success">' . $cargoes->status_for_human . '</b>';
+            })
+            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
+            ->addColumn('tracking_no', 'backend.main_cargo.search_cargo.columns.tracking_no')
+            ->rawColumns(['tracking_no', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->make(true);
+    }
+
 
 }
 

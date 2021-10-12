@@ -63,8 +63,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::get('Customers/GetAllCustomers', [SenderCurrentController::class, 'getAllCustomers'])->name('customer.gm.getAllCustomers');
     Route::get('Customers', [SenderCurrentController::class, 'customersIndex'])->name('customers.index');
     Route::get('Customers/GetAllCustomers', [SenderCurrentController::class, 'getAllCustomers'])->name('customer.gm.getAllCustomers');
-    Route::get('SearchCargo', [MainCargoController::class, 'searchCargo'])->name('mainCargo.search');
-    Route::get('SearchGlobalCargo', [MainCargoController::class, 'getGlobalCargoes'])->name('mainCargo.getGlobalCargoes');
+
 
     Route::resource('VariousCars', VariousController::class)
         ->middleware('TransferCarsMid');
@@ -95,6 +94,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
             Route::get('/GetCancellations', [CargoCancellationController::class, 'getCancellations'])->name('getCancellations');
             Route::post('SetCargoCancellationApplicationResult', [CargoCancellationController::class, 'setCargoCancellationApplicationResult'])
                 ->name('setCargoCancellationApplicationResult');
+            Route::post('PageRowCount', [CargoCancellationController::class, 'pageRowCount'])
+                ->name('pageRowCount');
 
             Route::post('BackupCargo', [CargoCancellationController::class, 'backupCargo'])
                 ->name('backupCargo');
@@ -112,6 +113,15 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
             ->middleware('throttle:20,1');
         Route::post('AjaxTransactions/{transaction}', [MainCargoController::class, 'ajaxTransacrtions']);
         Route::get('StatementOfResponsibility/{ctn}', [MainCargoController::class, 'statementOfResponsibility']);
+
+
+        Route::get('SearchCargo', [MainCargoController::class, 'searchCargo'])->name('search');
+        Route::get('SearchGlobalCargo', [MainCargoController::class, 'getGlobalCargoes'])->name('getGlobalCargoes');
+
+        Route::get('CancelledCargoes', [MainCargoController::class, 'cancelledCargoesIndex'])
+            ->name('cancelledCargoes');
+        Route::get('GetCancelledCargoes', [MainCargoController::class, 'getCancelledCargoes']);
+
     });
 
     Route::group(['prefix' => 'Operation'], function () {

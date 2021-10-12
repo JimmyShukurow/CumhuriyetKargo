@@ -177,19 +177,19 @@
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
                         class="header-icon pe-7s-ticket mr-3 text-muted opacity-6"> </i>Kargo İptalleri
 
-                    <button id="CountAcik" type="button" data-title="Onaylanan başvurular."
+                    <button id="CountConfirmed" type="button" data-title="Onaylanan başvurular."
                             data-toggle="popover-custom-bg"
                             data-bg-class="text-light bg-premium-dark"
                             class="mr-2 ml-2  btn btn-sm btn-success">0
                     </button>
 
-                    <button id="CountBeklemede" type="button" data-title="Reddedilen başvurular."
+                    <button id="CountRejected" type="button" data-title="Reddedilen başvurular."
                             data-toggle="popover-custom-bg"
                             data-bg-class="text-light bg-premium-dark"
                             class="mr-2 ml-2  btn btn-sm btn-danger">0
                     </button>
 
-                    <button id="CountKapali" type="button" data-title="Onay bekleyen başvurular."
+                    <button id="CountWaiting" type="button" data-title="Onay bekleyen başvurular."
                             data-toggle="popover-custom-bg"
                             data-bg-class="text-light bg-premium-dark"
                             class="mr-2 ml-2  btn btn-sm btn-info">0
@@ -208,7 +208,6 @@
                         <th>B. Yapan</th>
                         <th>Acente</th>
                         <th>Bölge</th>
-                        <th>Başvuru Nedeni</th>
                         <th>Onay Durumu</th>
                         <th>Onaylayan</th>
                         <th>Son İşlem Tarihi</th>
@@ -225,7 +224,6 @@
                         <th>B. Yapan</th>
                         <th>Acente</th>
                         <th>Bölge</th>
-                        <th>Başvuru Nedeni</th>
                         <th>Onay Durumu</th>
                         <th>Onaylayan</th>
                         <th>Son İşlem Tarihi</th>
@@ -300,26 +298,29 @@
     <script>
 
         function pageRowCount() {
-            $.post('{{route('admin.systemSupport.pageRowCount')}}', {
+            $.post('{{route('cargoCancel.pageRowCount')}}', {
                 _token: token,
-                department: $('#department').val(),
-                status: $('#status').val(),
-                priority: $('#priority').val(),
+                ctn: $('#trackingNo').val(),
                 name_surname: $('#name_surname').val(),
-                title: $('#title').val(),
-                start_date: $('#start_date').val(),
-                finish_date: $('#finish_date').val(),
-                date_filter: false,
-                selected_regions: getSelectedRegions(),
+                agency: $('#agency').val(),
+                appointment_reason: $('#appointment_reason').val(),
+                confirm: $('#confirm').val(),
+                confirming_name_surname: $('#confirming_name_surname').val(),
+                creating_start_date: $('#creating_start_date').val(),
+                creating_finish_date: $('#creating_finish_date').val(),
+                last_proccess_start_date: $('#last_proccess_start_date').val(),
+                creating_finish_date: $('#creating_finish_date').val(),
+                last_proccess_start_date: $('#last_proccess_start_date').val(),
+                last_proccess_finish_date: $('#last_proccess_finish_date').val(),
+                creating_date_filter: creatingDateFilter,
+                last_proccess_date_filter: lastProccessDateFilter,
+                selected_region: getSelectedRegions,
                 x_token: $('#x_token').val(),
-                ticket_no: $('#ticket_no').val(),
-                redirected: $('#redirected').val(),
+
             }).success(function (response) {
-                $('#CountAcik').html(response.acik);
-                $('#CountBeklemede').html(response.beklemede);
-                $('#CountKapali').html(response.kapali);
-                $('#CountCevaplandi').html(response.cevaplandi);
-                $('#CountTotal').html(response.all);
+                $('#CountConfirmed').html(response.confirmed);
+                $('#CountWaiting').html(response.waiting);
+                $('#CountRejected').html(response.rejected);
             }).error(function () {
                 ToastMessage('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!', 'Hata!');
             });
@@ -348,7 +349,7 @@
                     ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
                 ],
                 order: [
-                    9, 'desc'
+                    8, 'desc'
                 ],
                 language: {
                     "sDecimal": ",",
@@ -444,14 +445,11 @@
                     {data: 'name_surname', name: 'name_surname'},
                     {data: 'agency_name', name: 'agency_name'},
                     {data: 'regional_directorates', name: 'regional_directorates'},
-                    {data: 'application_reason', name: 'application_reason'},
                     {data: 'confirm', name: 'confirm'},
                     {data: 'confirming_user_name_surname', name: 'confirming_user_name_surname'},
                     {data: 'approval_at', name: 'approval_at'},
                     {data: 'created_at', name: 'created_at'},
                 ],
-                scrollY: false,
-                scrollX: false,
             });
         });
 
@@ -795,6 +793,7 @@
 
                     cargoInfo(detailsID);
                     oTable.ajax.reload();
+                    pageRowCount();
 
                 } else if (response.status == 0) {
                     $.each(response.errors, function (index, value) {
@@ -854,6 +853,7 @@
 
                     cargoInfo(detailsID);
                     oTable.ajax.reload();
+                    pageRowCount();
 
                 } else if (response.status == 0) {
                     $.each(response.errors, function (index, value) {

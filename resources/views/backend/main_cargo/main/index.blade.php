@@ -1058,7 +1058,7 @@
         </div>
     </div>
 
-    <!-- Large modal => Modal Barcode -->
+    <!-- Large modal => Modal Movements Detail -->
     <div class="modal fade bd-example-modal-lg" id="ModalMovementsDetail" tabindex="-1" role="dialog"
          aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
