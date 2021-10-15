@@ -97,6 +97,7 @@ function printWindow(selector, title) {
 }
 
 function printBarcode(selector) {
+    $('.barcode-divider').hide();
     var divContents = $(selector).html();
     var $cssLink = $('link');
     var printWindow = window.open('', '', 'height=' + window.outerHeight * 0.6 + ', width=' + window.outerWidth * 0.6);
@@ -115,6 +116,7 @@ function printBarcode(selector) {
             printWindow.close();
         }, 100);
     }
+    $('.barcode-divider').show();
 }
 
 function roundLikePHP(num, dec) {
@@ -206,3 +208,8 @@ var SnackMessage = function (message, type, position = 'tr') {
         fixed: true
     });
 };
+
+
+function clicker(selector) {
+    $(selector).click();
+}

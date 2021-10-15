@@ -930,11 +930,29 @@
 
                                             <div class="col-sm-4">
                                                 <div class="p-1">
-                                                    <button id="btnCargoPrintBarcode" tracking-no="324123123"
-                                                            class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-alternate">
-                                                        <i class="lnr-printer text-alternate opacity-7 btn-icon-wrapper mb-2"> </i>
+                                                    <button style="display: none;" id="btnCargoPrintBarcode"></button>
+                                                    <button style="display: none;"
+                                                            id="btnCargoPrintPartBarcode"></button>
+                                                    <button
+                                                        aria-haspopup="true" aria-expanded="false"
+                                                        data-toggle="dropdown"
+                                                        class="dropdown-toggle btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-alternate">
+                                                        <i class="lnr-printer text-alternate opacity-7 btn-icon-wrapper mb-2"></i>
                                                         Barkod Yazdır
                                                     </button>
+                                                    <div tabindex="-1" role="menu" aria-hidden="true"
+                                                         class="dropdown-menu-hover-link dropdown-menu">
+                                                        <h6 tabindex="-1" class="dropdown-header">Barkod Yazdır</h6>
+                                                        <button type="button" onclick="clicker('#btnCargoPrintBarcode')"
+                                                                tabindex="0" class="dropdown-item">
+                                                            <i class="dropdown-icon pe-7s-news-paper print-all-barcodes"></i>
+                                                            <span>Tüm Parçaları Yazdır</span>
+                                                        </button>
+                                                        <button type="button" tabindex="0" class="dropdown-item">
+                                                            <i class="dropdown-icon lnr-file-empty"></i>
+                                                            <span>Belirli Parçalı Yazdır (Özel)</span>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -953,7 +971,6 @@
         </div>
     </div>
 
-
     <!-- Large modal => Modal Barcode -->
     <div class="modal fade bd-example-modal-lg" id="ModalShowBarcode" tabindex="-1" role="dialog"
          aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -965,19 +982,19 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div style="overflow-x: hidden; max-height: 75vh;" id="ModalBarcodes"
+                <div style="overflow-x: hidden; max-height: 60vh;" id="ModalBarcodes"
                      class="modal-body">
-                    <div id="ContainerBarcodes" style="background: #fff !important; max-width: 475px; color: #000 !important;"
+                    <div id="ContainerBarcodes"
                          class="container">
-                        <div class="row">
-                            <div style="z-index: 99;" class="col-6">
+                        <div class="row barcode-row">
+                            <div  class="col-6">
                                 <h5 class="font-weight-bold barcode-slogan">Cumhuriyet Kargo - Sevgi ve Değer
                                     Taşıyoruz..</h5>
                                 <h4 class="font-weight-bold  text-dark m-0 barcodeDepartureTC">VAN Gölü</h4>
                                 <b class="barcodeDepartureAgency">EVREN</b>
                             </div>
 
-                            <div style="z-index: 0;" class="col-6">
+                            <div class="col-6">
                                 <h3 class="p-0 m-0 barcodePaymentType">HL 102856 AÖ</h3>
                                 <h6 class="m-0 labelTrackingNo">GönderiNo: <b class="barcodeTrackingNo">145646
                                         749879 87968</b>
@@ -1052,9 +1069,10 @@
                         </div>
                         <div class="barcode-divider"></div>
                     </div>
-
                 </div>
                 <div class="modal-footer">
+                    <label id="modalBarcodeFooterLabel" style="float: left;width: 100%;"><b id="barcodeCount">5</b> Adet
+                        barkod hazırlandı.</label>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
                     <button type="button" id="btnPrintBarcode" class="btn btn-primary">Yazdır</button>
                 </div>

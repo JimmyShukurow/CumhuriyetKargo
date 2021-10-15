@@ -659,9 +659,27 @@ function InsertDebits($ctn, $cargoID, $partNo, $userID, $movementID)
     return $insert == true ? true : false;
 }
 
-function crypteTrackingNo($cargoID)
+function crypteTrackingNo($number)
 {
+    $replacers = array(
+        '@' =>'0',
+        'DY' =>'1',
+        'GU' =>'2',
+        '%' =>'3',
+        'OS' =>'4',
+        '&' =>'5',
+        'G' =>'6',
+        '$' =>'7',
+        'ZO' =>'8',
+        'Z' =>'9',
+        'T#' =>' '
+    );
 
+    $val = "";
+    for ($i = 0; $i < strlen($number); $i++)
+        $val = $val . array_search($number[$i], $replacers);
+
+    return $val;
 }
 
 

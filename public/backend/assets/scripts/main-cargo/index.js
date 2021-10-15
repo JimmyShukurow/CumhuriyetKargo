@@ -454,8 +454,8 @@ function cargoInfo(user) {
 
             $('#tbodyCargoCancellationApplications').html('');
 
-            if (movements.length == 0)
-                $('#tbodyCargoCancellationApplications').html('<tr><td colspan="5" class="text-center">Burda hiç veri yok.</td></tr>');
+            if (cancellations.length == 0)
+                $('#tbodyCargoCancellationApplications').html('<tr><td colspan="8" class="text-center">Burda hiç veri yok.</td></tr>');
             else {
 
                 $.each(cancellations, function (key, val) {
@@ -585,9 +585,18 @@ $('#btnPrintSelectedBarcode').click(function () {
     $('#ModalShowBarcode').modal();
 });
 
+$(document).on('click', '.print-all-barcodes', function () {
+    alert('test');
+});
+
+function sayHello() {
+    alert('hello');
+}
+
 
 $(document).on('click', '#btnCargoPrintBarcode', function () {
 
+    let preparedBarcodCount = 0;
     $('#ModalShowBarcode').modal();
 
     let tracking_no = $(this).attr('tracking-no');
@@ -611,6 +620,7 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
     $('.blockUI.blockMsg.blockElement').css('border', '0px');
     $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
+    $('#modalBarcodeFooterLabel').html('Hazırlanıyor, lütfen bekleyiniz...');
 
     $.ajax('/MainCargo/AjaxTransactions/GetCargoInfo', {
         method: 'POST',
@@ -632,6 +642,7 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
             let arrival_tc = response.arrival_tc;
             let sms = response.sms;
             let add_services = response.add_services;
+            let part_details = response.part_details;
 
             let loop = cargo.number_of_pieces;
             console.log("Loop => " + loop);
@@ -644,17 +655,19 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
 
             $('#ContainerBarcodes').html('');
 
-            for (let i = 0; i < loop; i++) {
+            $.each(part_details, function (key, val) {
 
-                $('#ContainerBarcodes').append('<div class="row">\n' +
-                    '                            <div style="z-index: 99;" class="col-6">\n' +
+                preparedBarcodCount++;
+
+                $('#ContainerBarcodes').prepend('<div  class="row barcode-row">\n' +
+                    '                            <div class="col-6">\n' +
                     '                                <h5 class="font-weight-bold barcode-slogan">Cumhuriyet Kargo - Sevgi ve Değer\n' +
                     '                                    Taşıyoruz..</h5>\n' +
                     '                                <h4 class="font-weight-bold  text-dark m-0 barcodeDepartureTC">' + departure_tc.tc_name + " TRM." + '</h4>\n' +
                     '                                <b class="barcodeDepartureAgency">' + departure.agency_name + '</b>\n' +
                     '                            </div>\n' +
                     '\n' +
-                    '                            <div style="z-index: 0;" class="col-6">\n' +
+                    '                            <div class="col-6">\n' +
                     '                                <h3 class="p-0 m-0 barcodePaymentType">' + barcodePaymentType + '</h3>\n' +
                     '                                <h6 class="m-0 labelTrackingNo">GönderiNo: <b class="barcodeTrackingNo">\n' +
                     '                                        ' + cargo.tracking_no + '</b>\n' +
@@ -678,12 +691,12 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
                     '                                            <p class="barcodeRegDate font-weight-bold barcode-mini-text m-0">\n' +
                     '                                                ' + dateFormat(cargo.created_at).substring(0, 10) + '</p>\n' +
                     '                                            <p class="barcodeCargoType m-0  barcode-mini-text font-weight-bolder">\n' +
-                    '                                                KOLİ</p>\n' +
-                    '                                            <p class="m-0  barcode-mini-text">Kg:50</p>\n' +
-                    '                                            <p class="m-0  barcode-mini-text">Ds:50</p>\n' +
-                    '                                            <p class="m-0  barcode-mini-text">Kg/Ds:50</p>\n' +
-                    '                                            <p class="m-0  barcode-mini-text">Toplam:164</p>\n' +
-                    '                                            <p class="m-0 text-center font-weight-bold">2/2</p>\n' +
+                    '                                                ' + cargo.cargo_type + '</p>\n' +
+                    '                                            <p class="m-0  barcode-mini-text">Kg:' + val['weight'] + '</p>\n' +
+                    '                                            <p class="m-0  barcode-mini-text">Ds:' + val['desi'] + '</p>\n' +
+                    '                                            <p class="m-0  barcode-mini-text">Kg/Ds:' + val['desi'] + '</p>\n' +
+                    '                                            <p class="m-0  barcode-mini-text">Toplam:' + cargo.desi + '</p>\n' +
+                    '                                            <p class="m-0 text-center font-weight-bold">' + cargo.number_of_pieces + '/' + val['part_no'] + '</p>\n' +
                     '                                        </td>\n' +
                     '                                    </tr>\n' +
                     '                                    <tr>\n' +
@@ -706,16 +719,16 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
                     '                            </div>\n' +
                     '\n' +
                     '                            <div class="col-3 qr-barcode-cont">\n' +
-                    '                                <div class="qrcodes" id="qrcode-' + i + '"></div>\n' +
+                    '                                <div class="qrcodes" id="qrcode-' + val['part_no'] + '"></div>\n' +
                     '                            </div>\n' +
                     '\n' +
                     '                            <div class="col-12 text-right">\n' +
                     '                                <h3 class="font-weight-bold text-dark barcodeArrivalTC">\n' +
-                    '                                    VAN HATTI</h3>\n' +
+                    '                                    ' + arrival_tc.tc_name + " TRM." + '</h3>\n' +
                     '                            </div>\n' +
                     '\n' +
                     '                            <div class="col-12 code39-container">\n' +
-                    '                                <svg id="barcodeCode39-' + i + '" class="barcode"></svg>\n' +
+                    '                                <svg id="barcodeCode39-' + val['part_no'] + '" class="barcode"></svg>\n' +
                     '                            </div>\n' +
                     '\n' +
                     '                            <div class="col-12 text-right">\n' +
@@ -723,7 +736,7 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
                     '                            </div>\n' +
                     '\n' +
                     '                        </div>\n' +
-                    '                        <div class="barcode-divider"></div>'
+                    '<div style="clear: both;" class="barcode-divider"></div>'
                 );
 
                 // $('#barcodeDepartureTC').text(departure_tc.tc_name + " TRM.");
@@ -750,12 +763,13 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
                 // $('#barcodePaymentType').text(barcodePaymentType);
 
                 // D@56@HI@ECVHLDEOIIAB5S@
-                makeBarcodeCode39('#barcodeCode39-' + i, "D@56@HI@ECVHLDEOIIAB5S@", cargo.tracking_no);
-                makeBarcodeQRCode('qrcode-' + i, cargo.tracking_no);
+                makeBarcodeCode39('#barcodeCode39-' + val['part_no'], val['barcode_no'], cargo.tracking_no);
+                makeBarcodeQRCode('qrcode-' + val['part_no'], val['barcode_no']);
 
                 // makeBarcodeCode39('.barcode', "D@56@HI@ECVHLDEOIIAB5S@", cargo.tracking_no);
                 // makeBarcodeQRCode('qrcode', "D@56@HI@ECVHLDEOIIAB5S@");
-            }
+            });
+
 
         } else
             ToastMessage('error', response.message, 'Hata!');
@@ -764,6 +778,8 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
         ajaxError(jqXHR.status);
     }).always(function () {
         $('#ModalBarcodes').unblock();
+        $('#modalBarcodeFooterLabel').html("<b>" + preparedBarcodCount + "</b> adet barkod hazırlandı.");
+
     });
 
 });

@@ -1447,6 +1447,19 @@ class MainCargoController extends Controller
                                 break;
                         }
                     } else {
+
+                        $insert = CargoPartDetails::create([
+                            'cargo_id' => $CreateCargo->id,
+                            'tracking_no' => $ctn,
+                            'part_no' => 1,
+                            'width' => 0,
+                            'size' => 0,
+                            'height' => 0,
+                            'weight' => 0,
+                            'desi' => 0,
+                            'cubic_meter_volume' => 0
+                        ]);
+
                         # INSERT Movements START
                         $insert = InsertCargoMovement($ctn, $CreateCargo->id, Auth::id(), 1, $infoText, $info->status, $group_id);
                         #inert debit
@@ -1598,6 +1611,8 @@ class MainCargoController extends Controller
             # INDEX TRANSACTION START
             case 'GetCargoInfo':
 
+                $number = crypteTrackingNo('21');
+
                 $data['cargo'] = Cargoes::find($request->id);
 
                 if ($data['cargo'] == null)
@@ -1661,6 +1676,30 @@ class MainCargoController extends Controller
                     ->select(['service_name', 'price'])
                     ->where('cargo_tracking_no', str_replace(' ', '', $data['cargo']->tracking_no))
                     ->get();
+
+                $data['part_details'] = DB::table('cargo_part_details')
+                    ->where('tracking_no', str_replace(' ', '', $data['cargo']->tracking_no))
+                    ->get();
+
+                $newPartDetais = [];
+                foreach ($data['part_details'] as $key)
+                    $newPartDetais[] = [
+                        'cargo_id' => $key->cargo_id,
+                        'created_at' => $key->created_at,
+                        'cubic_meter_volume' => $key->cubic_meter_volume,
+                        'desi' => $key->desi,
+                        'height' => $key->height,
+                        'id' => $key->id,
+                        'part_no' => $key->part_no,
+                        'size' => $key->size,
+                        'tracking_no' => $key->tracking_no,
+                        'updated_at' => $key->updated_at,
+                        'weight' => $key->weight,
+                        'width' => $key->width,
+                        'barcode_no' => crypteTrackingNo(str_replace(' ', '', $data['cargo']->tracking_no) . ' ' . $key->part_no)
+                    ];
+
+                $data['part_details'] = $newPartDetais;
 
                 $data['cancellation_applications'] = DB::table('view_cargo_cancellation_app_detail')
                     ->where('cargo_id', $data['cargo']->id)

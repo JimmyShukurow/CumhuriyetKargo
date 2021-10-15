@@ -55,7 +55,19 @@ svg.barcode {
 
 .barcode-divider {
     width: 100%;
-    border: 10px solid red;
-    height: 5px;
-    margin: 10px;
+    border: 5px solid #000;
+    height: 2px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.barcode-row {
+    max-height: 400px;
+    max-width: 475px;
+    margin: 0 auto 10px;
+}
+
+#ContainerBarcodes {
+    background: #fff !important;
+    color: #000 !important;
 }
