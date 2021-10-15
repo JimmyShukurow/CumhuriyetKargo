@@ -603,7 +603,7 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
             '                                <div class="bg-white"></div>\n' +
             '                                <div class="bg-white"></div>\n' +
             '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
+            '                                 <div class="bg-white"></div>\n' +
             '                            </div>\n' +
             '                        </div>')
     });
@@ -633,26 +633,8 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
             let sms = response.sms;
             let add_services = response.add_services;
 
-            $('#barcodeDepartureTC').text(departure_tc.tc_name);
-            $('#barcodeDepartureAgency').text(departure.agency_name);
-            $('#barcodeTrackingNo').text(cargo.tracking_no);
-            $('#barcodeCargoTotalPrice').text(cargo.total_price + "₺");
-
-            $('#barcodeArrivalTC').text(arrival_tc.tc_name);
-            $('#barcodeArrivalAgency').text(arrival.agency_name);
-
-            $('#barcodeSenderName').text(cargo.sender_name);
-            $('#barcodeSenderCityDistrict').text(cargo.sender_city + "/" + cargo.sender_district);
-            $('#barcodeSenderPhone').text("TEL: " + cargo.sender_phone);
-
-
-            $('#barcodeReceiverName').text(cargo.receiver_name);
-            $('#barcodeReceiverAddress').text(cargo.receiver_address);
-            $('#barcodeReceiverCityDistrict').text(cargo.receiver_city + "/" + cargo.receiver_district);
-            $('#barcodeReceiverPhone').text("TEL: " + cargo.receiver_phone);
-
-            $('#barcodeRegDate').text(dateFormat(cargo.created_at).substring(0, 10));
-            $('#barcodeCargoType').text(cargo.cargo_type);
+            let loop = cargo.number_of_pieces;
+            console.log("Loop => " + loop);
 
             let barcodePaymentType = "HL 102856 ";
             if (cargo.payment_type == "Alıcı Ödemeli")
@@ -660,19 +642,123 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
             else if (cargo.payment_type == "Gönderici Ödemeli")
                 barcodePaymentType += 'GÖ';
 
-            $('#barcodePaymentType').text(barcodePaymentType);
+            $('#ContainerBarcodes').html('');
 
-            //      D@56@HI@ECVHLDEOIIAB5S@
+            for (let i = 0; i < loop; i++) {
 
-            // makeBarcodeCode39('.barcode', cargo.tracking_no);
-            // makeBarcodeQRCode('qrcode', cargo.tracking_no);
+                $('#ContainerBarcodes').append('<div class="row">\n' +
+                    '                            <div style="z-index: 99;" class="col-6">\n' +
+                    '                                <h5 class="font-weight-bold barcode-slogan">Cumhuriyet Kargo - Sevgi ve Değer\n' +
+                    '                                    Taşıyoruz..</h5>\n' +
+                    '                                <h4 class="font-weight-bold  text-dark m-0 barcodeDepartureTC">' + departure_tc.tc_name + " TRM." + '</h4>\n' +
+                    '                                <b class="barcodeDepartureAgency">' + departure.agency_name + '</b>\n' +
+                    '                            </div>\n' +
+                    '\n' +
+                    '                            <div style="z-index: 0;" class="col-6">\n' +
+                    '                                <h3 class="p-0 m-0 barcodePaymentType">' + barcodePaymentType + '</h3>\n' +
+                    '                                <h6 class="m-0 labelTrackingNo">GönderiNo: <b class="barcodeTrackingNo">\n' +
+                    '                                        ' + cargo.tracking_no + '</b>\n' +
+                    '                                </h6>\n' +
+                    '                                <b>ÜRÜN BEDELİ: <b class="barcodeCargoTotalPrice"></b></b>\n' +
+                    '                            </div>\n' +
+                    '\n' +
+                    '                            <div class="col-9 p-0">\n' +
+                    '                                <table class="shipmentReceiverInfo">\n' +
+                    '                                    <tr>\n' +
+                    '                                        <td class="barcode-mini-text text-center font-weight-bold vertical-rl">GÖN</td>\n' +
+                    '                                        <td>\n' +
+                    '                                            <p class="barcode-mini-text p-1 m-0 font-weight-bold barcodeSenderName">\n' +
+                    '                                                ' + cargo.sender_name + '</p>\n' +
+                    '                                            <p class="barcode-mini-text p-1 m-0 font-weight-bold">\n' +
+                    '                                                <span id="barcodeSenderCityDistrict">' + cargo.sender_city + "/" + cargo.sender_district + '</span>\n' +
+                    '                                                <span class="text-right barcodeSenderPhone">' + "TEL: " + cargo.sender_phone + '</span>\n' +
+                    '                                            </p>\n' +
+                    '                                        </td>\n' +
+                    '                                        <td class="cargoInfo" rowspan="2">\n' +
+                    '                                            <p class="barcodeRegDate font-weight-bold barcode-mini-text m-0">\n' +
+                    '                                                ' + dateFormat(cargo.created_at).substring(0, 10) + '</p>\n' +
+                    '                                            <p class="barcodeCargoType m-0  barcode-mini-text font-weight-bolder">\n' +
+                    '                                                KOLİ</p>\n' +
+                    '                                            <p class="m-0  barcode-mini-text">Kg:50</p>\n' +
+                    '                                            <p class="m-0  barcode-mini-text">Ds:50</p>\n' +
+                    '                                            <p class="m-0  barcode-mini-text">Kg/Ds:50</p>\n' +
+                    '                                            <p class="m-0  barcode-mini-text">Toplam:164</p>\n' +
+                    '                                            <p class="m-0 text-center font-weight-bold">2/2</p>\n' +
+                    '                                        </td>\n' +
+                    '                                    </tr>\n' +
+                    '                                    <tr>\n' +
+                    '                                        <td class="barcode-mini-text text-center font-weight-bold vertical-rl">ALICI\n' +
+                    '                                        </td>\n' +
+                    '                                        <td>\n' +
+                    '                                            <p class="barcodeReceiverName barcode-mini-text p-1 m-0 font-weight-bold">\n' +
+                    '                                                ' + cargo.receiver_name + '</p>\n' +
+                    '\n' +
+                    '                                            <p class="barcodeReceiverAddress barcode-mini-text p-1 m-0 font-weight-bold">\n' +
+                    '                                                ' + cargo.receiver_address + '</p>\n' +
+                    '                                            <p class="barcode-mini-text p-1 m-0 font-weight-bold">\n' +
+                    '                                                <span class="barcodeReceiverCityDistrict">' + cargo.receiver_city + "/" + cargo.receiver_district + '</span>\n' +
+                    '                                                <span class="barcodeReceiverPhone"\n' +
+                    '                                                      class="text-right">' + "TEL: " + cargo.receiver_phone + '</span>\n' +
+                    '                                            </p>\n' +
+                    '                                        </td>\n' +
+                    '                                    </tr>\n' +
+                    '                                </table>\n' +
+                    '                            </div>\n' +
+                    '\n' +
+                    '                            <div class="col-3 qr-barcode-cont">\n' +
+                    '                                <div class="qrcodes" id="qrcode-' + i + '"></div>\n' +
+                    '                            </div>\n' +
+                    '\n' +
+                    '                            <div class="col-12 text-right">\n' +
+                    '                                <h3 class="font-weight-bold text-dark barcodeArrivalTC">\n' +
+                    '                                    VAN HATTI</h3>\n' +
+                    '                            </div>\n' +
+                    '\n' +
+                    '                            <div class="col-12 code39-container">\n' +
+                    '                                <svg id="barcodeCode39-' + i + '" class="barcode"></svg>\n' +
+                    '                            </div>\n' +
+                    '\n' +
+                    '                            <div class="col-12 text-right">\n' +
+                    '                                <b class="barcodeArrivalAgency">' + arrival.agency_name + '</b>\n' +
+                    '                            </div>\n' +
+                    '\n' +
+                    '                        </div>\n' +
+                    '                        <div class="barcode-divider"></div>'
+                );
 
-            makeBarcodeCode39('.barcode', "D@56@HI@ECVHLDEOIIAB5S@");
-            makeBarcodeQRCode('qrcode', "D@56@HI@ECVHLDEOIIAB5S@");
+                // $('#barcodeDepartureTC').text(departure_tc.tc_name + " TRM.");
+                // $('#barcodeDepartureAgency').text(departure.agency_name);
+                // $('#barcodeTrackingNo').text(cargo.tracking_no);
+                // $('#barcodeCargoTotalPrice').text(cargo.total_price + "₺");
+                //
+                // $('#barcodeArrivalTC').text(arrival_tc.tc_name + " TRM.");
+                // $('#barcodeArrivalAgency').text(arrival.agency_name);
+                //
+                // $('#barcodeSenderName').text(cargo.sender_name);
+                // $('#barcodeSenderCityDistrict').text(cargo.sender_city + "/" + cargo.sender_district);
+                // $('#barcodeSenderPhone').text("TEL: " + cargo.sender_phone);
+                //
+                // $('#barcodeReceiverName').text(cargo.receiver_name);
+                // $('#barcodeReceiverAddress').text(cargo.receiver_address);
+                // $('#barcodeReceiverCityDistrict').text(cargo.receiver_city + "/" + cargo.receiver_district);
+                // $('#barcodeReceiverPhone').text("TEL: " + cargo.receiver_phone);
+                //
+                // $('#barcodeRegDate').text(dateFormat(cargo.created_at).substring(0, 10));
+                // $('#barcodeCargoType').text(cargo.cargo_type);
+                //
 
-        } else {
+                // $('#barcodePaymentType').text(barcodePaymentType);
+
+                // D@56@HI@ECVHLDEOIIAB5S@
+                makeBarcodeCode39('#barcodeCode39-' + i, "D@56@HI@ECVHLDEOIIAB5S@", cargo.tracking_no);
+                makeBarcodeQRCode('qrcode-' + i, cargo.tracking_no);
+
+                // makeBarcodeCode39('.barcode', "D@56@HI@ECVHLDEOIIAB5S@", cargo.tracking_no);
+                // makeBarcodeQRCode('qrcode', "D@56@HI@ECVHLDEOIIAB5S@");
+            }
+
+        } else
             ToastMessage('error', response.message, 'Hata!');
-        }
 
     }).error(function (jqXHR, exception) {
         ajaxError(jqXHR.status);
@@ -682,10 +768,10 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
 
 });
 
-function makeBarcodeCode39(selector, val) {
+function makeBarcodeCode39(selector, val, text) {
     JsBarcode(selector, val, {
         textPosition: "none",
-        text: " "
+        text: "Referans No: " + text.replace(' ', '').replace(' ', ''),
     });
 }
 
@@ -756,7 +842,6 @@ $(document).on('click', '#btnMakeCargoCancelAppointment', function () {
     });
     $('.blockUI.blockMsg.blockElement').css('background-color', '');
     $('.blockUI.blockMsg.blockElement').css('border', '0px');
-
 
     $.ajax('/MainCargo/AjaxTransactions/MakeCargoCancellationApplication', {
         method: 'POST',

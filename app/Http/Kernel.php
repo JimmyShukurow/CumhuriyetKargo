@@ -24,6 +24,7 @@ use App\Http\Middleware\Operation;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\CheckStatus;
 use App\Http\Middleware\MidsOfCont\AdminSystemSupportMid;
+use App\Http\Middleware\MidsOfCont\ItAndNotificationMidX;
 
 class Kernel extends HttpKernel
 {
@@ -107,6 +108,7 @@ class Kernel extends HttpKernel
         'LocalLocationMid' => LocalLocationMid::class,
         'GeneralServicesFeeMid' => GeneralServicesFeeMid::class,
         'SenderCurrentsMid' => SenderCurrentsMid::class,
+        'ItAndNotificationMidX' => ItAndNotificationMidX::class,
 
 
     ];

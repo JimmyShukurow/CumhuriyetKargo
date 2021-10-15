@@ -40,6 +40,8 @@ class MainCargoController extends Controller
     public function searchCargo()
     {
         $data['cities'] = Cities::all();
+
+        GeneralLog('Kargo sorgulama sayfası görüntülendi.');
         return view('backend.main_cargo.search_cargo.index', compact(['data']));
     }
 
@@ -118,6 +120,7 @@ class MainCargoController extends Controller
 
         $daily['total_desi'] = round($daily['total_desi'], 2);
 
+        GeneralLog('Kargolar Ana Menü görüntülendi.');
         return view('backend.main_cargo.main.index', compact(['data', 'daily']));
     }
 
@@ -176,6 +179,7 @@ class MainCargoController extends Controller
 
         $data['collectible_cargo'] = Settings::where('key', 'collectible_cargo')->first();
 
+        GeneralLog('Kargo oluştur sayfası görüntülendi.');
         return view('backend.main_cargo.main.create', compact(['data', 'fee', 'agency', 'tc']));
     }
 
@@ -2176,7 +2180,7 @@ class MainCargoController extends Controller
     {
         $ctn = str_replace(' ', '', $ctn);
 
-        $templateProccessor = new TemplateProcessor('backend / word - template / StatementOfResposibility . docx');
+        $templateProccessor = new TemplateProcessor('backend/word-template/StatementOfResposibility.docx');
 
         $cargo = Cargoes::where('tracking_no', $ctn)->first();
         $sender = Currents::find($cargo->sender_id);
@@ -2194,7 +2198,7 @@ class MainCargoController extends Controller
         $templateProccessor
             ->setValue('ctn', TrackingNumberDesign($cargo->tracking_no));
 
-        $fileName = 'ST - ' . substr($cargo->sender_name, 0, 30) . ' . docx';
+        $fileName = 'ST-' . substr($cargo->sender_name, 0, 30) . '.docx';
 
         $templateProccessor
             ->saveAs($fileName);
@@ -2207,6 +2211,8 @@ class MainCargoController extends Controller
     public function cancelledCargoesIndex()
     {
         $data['cities'] = Cities::all();
+
+        GeneralLog('İptal edilen kargolar sayfası görüntülendi.');
         return view('backend.main_cargo.cancelled_cargoes.index', compact(['data']));
     }
 

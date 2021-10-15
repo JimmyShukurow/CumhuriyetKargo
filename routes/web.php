@@ -89,7 +89,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
     Route::group(['prefix' => 'ItAndNotification'], function () {
 
-        Route::group(['as' => 'cargoCancel.'], function () {
+        Route::group(['as' => 'cargoCancel.', 'middleware' => 'ItAndNotificationMidX'], function () {
             Route::get('CargoCancellations', [CargoCancellationController::class, 'index'])->name('index');
             Route::get('/GetCancellations', [CargoCancellationController::class, 'getCancellations'])->name('getCancellations');
             Route::post('SetCargoCancellationApplicationResult', [CargoCancellationController::class, 'setCargoCancellationApplicationResult'])

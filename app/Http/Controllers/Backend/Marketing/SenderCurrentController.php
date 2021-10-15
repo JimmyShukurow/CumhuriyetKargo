@@ -601,7 +601,7 @@ class SenderCurrentController extends Controller
         $data['roles'] = Roles::all();
         $data['cities'] = Cities::all();
 
-        GeneralLog('GM Kullanıcılar sayfası görüntülendi.');
+        GeneralLog('Müşteriler sayfası görüntülendi.');
         return view('backend.customers.agency.index', compact(['data']));
     }
 

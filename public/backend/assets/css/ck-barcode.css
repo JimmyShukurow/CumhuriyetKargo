@@ -1,0 +1,61 @@
+.barcodeDepartureTC {
+    font-size: 1.4rem;
+}
+
+.labelTrackingNo {
+    font-size: 0.8rem;
+}
+
+.barcodeCargoTotalPrice {
+    font-size: 12px;
+}
+
+.shipmentReceiverInfo {
+    width: 100%;
+}
+
+.shipmentReceiverInfo, .shipmentReceiverInfo tr, .shipmentReceiverInfo td {
+    border: 1px solid black;
+}
+
+.barcodeSenderPhone {
+    float: right;
+}
+
+td.cargoInfo {
+    white-space: nowrap;
+}
+
+.barcodeReceiverPhone {
+    float: right;
+}
+
+.barcodeArrivalTC {
+    margin-top: 14px;
+    margin-bottom: 14px;
+    font-size: 2rem;
+    color: #000 !important;
+    text-align: left;
+}
+
+.code39-container {
+    height: 91px;
+}
+
+svg.barcode {
+    width: 100%;
+}
+
+.barcodeArrivalAgency {
+    font-size: 2rem;
+    margin-top: -8px !important;
+    text-align: right !important;
+    margin-right: 10px;
+}
+
+.barcode-divider {
+    width: 100%;
+    border: 10px solid red;
+    height: 5px;
+    margin: 10px;
+}

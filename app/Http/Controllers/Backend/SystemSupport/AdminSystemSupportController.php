@@ -298,7 +298,7 @@ class AdminSystemSupportController extends Controller
             'Creator District' => $ticket->branch_district,
             'Creator Branch Name' => $ticket->branch_name,
             'Creator Type' => $ticket->user_type,
-            'Link' => \route('admin.system_support.TicketDetails', [$ticket->id])
+            'Link' => \route('admin.systemSupport.TicketDetails', [$ticket->id])
         ];
         activity()
             ->withProperties($properties)

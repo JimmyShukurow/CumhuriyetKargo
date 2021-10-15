@@ -659,4 +659,9 @@ function InsertDebits($ctn, $cargoID, $partNo, $userID, $movementID)
     return $insert == true ? true : false;
 }
 
+function crypteTrackingNo($cargoID)
+{
+
+}
+
 

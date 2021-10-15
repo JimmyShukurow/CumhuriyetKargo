@@ -3,6 +3,7 @@
 @push('css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/backend/assets/css/app-main-block.css">
+    <link rel="stylesheet" href="/backend/assets/css/ck-barcode.css">
     <style>
         table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child:before, table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child:before {
             top: 6px;
@@ -476,7 +477,6 @@
     <script src="/backend/assets/scripts/delete-method.js"></script>
     <script src="/backend/assets/scripts/JsBarcode.js"></script>
     <script src="/backend/assets/scripts/QrCode.min.js"></script>
-
     <script src="/backend/assets/scripts/main-cargo/index.js"></script>
 @endsection
 
@@ -515,7 +515,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                             <ul class="list-group list-group-flush">
 
@@ -954,6 +953,7 @@
         </div>
     </div>
 
+
     <!-- Large modal => Modal Barcode -->
     <div class="modal fade bd-example-modal-lg" id="ModalShowBarcode" tabindex="-1" role="dialog"
          aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -967,49 +967,42 @@
                 </div>
                 <div style="overflow-x: hidden; max-height: 75vh;" id="ModalBarcodes"
                      class="modal-body">
-
-                    <div style="background: #fff !important; max-width: 475px; color: #000 !important;"
+                    <div id="ContainerBarcodes" style="background: #fff !important; max-width: 475px; color: #000 !important;"
                          class="container">
-
                         <div class="row">
                             <div style="z-index: 99;" class="col-6">
                                 <h5 class="font-weight-bold barcode-slogan">Cumhuriyet Kargo - Sevgi ve Değer
                                     Taşıyoruz..</h5>
-                                <h3 id="barcodeDepartureTC" class="font-weight-bold  text-dark m-0">VAN Gölü</h3>
-                                <b id="barcodeDepartureAgency">EVREN</b>
+                                <h4 class="font-weight-bold  text-dark m-0 barcodeDepartureTC">VAN Gölü</h4>
+                                <b class="barcodeDepartureAgency">EVREN</b>
                             </div>
 
-                            <div style="z-index: 99;" class="col-6">
-                                <h3 id="barcodePaymentType" class="p-0 m-0">HL 102856 AÖ</h3>
-                                <h6 style="font-size: 0.8rem;" class="m-0">GönderiNo: <b id="barcodeTrackingNo">145646
-                                        749879 87968</b></h6>
-                                <b style="font-size: 12px;">ÜRÜN BEDELİ: <b id="barcodeCargoTotalPrice">858₺</b></b>
+                            <div style="z-index: 0;" class="col-6">
+                                <h3 class="p-0 m-0 barcodePaymentType">HL 102856 AÖ</h3>
+                                <h6 class="m-0 labelTrackingNo">GönderiNo: <b class="barcodeTrackingNo">145646
+                                        749879 87968</b>
+                                </h6>
+                                <b>ÜRÜN BEDELİ: <b class="barcodeCargoTotalPrice">858₺</b></b>
                             </div>
-                            <div class="col-12 code39-container">
-                                <svg style="width: 100%;" class="barcode"></svg>
-                            </div>
-                            <div class="col-12 text-center">
-                                <h3 id="barcodeArrivalTC" style="margin-top: -18px;" class="font-weight-bold text-dark">
-                                    VAN HATTI</h3>
-                                <b id="barcodeArrivalAgency">EVREN</b>
-                            </div>
+
+
                             <div class="col-9 p-0">
-                                <table style="width: 100%;" border="1">
+                                <table class="shipmentReceiverInfo">
                                     <tr>
                                         <td class="barcode-mini-text text-center font-weight-bold vertical-rl">GÖN</td>
                                         <td>
-                                            <p id="barcodeSenderName"
-                                               class="barcode-mini-text p-1 m-0 font-weight-bold">Kitaip yayın evi,
+                                            <p class="barcode-mini-text p-1 m-0 font-weight-bold barcodeSenderName">
+                                                Kitaip yayın evi,
                                                 Basım DAĞ. Reklam Tic. LTD ŞTİ</p>
                                             <p class="barcode-mini-text p-1 m-0 font-weight-bold">
                                                 <span id="barcodeSenderCityDistrict">BAĞCILAR/İSTANBUL </span>
-                                                <span id="barcodeSenderPhone" style="float: right;" class="text-right">5354276824</span>
+                                                <span class="text-right barcodeSenderPhone">5354276824</span>
                                             </p>
                                         </td>
-                                        <td style="white-space: nowrap;" rowspan="2">
-                                            <p id="barcodeRegDate" class="font-weight-bold barcode-mini-text m-0">
+                                        <td class="cargoInfo" rowspan="2">
+                                            <p class="barcodeRegDate font-weight-bold barcode-mini-text m-0">
                                                 28.08.2021</p>
-                                            <p id="barcodeCargoType" class="m-0  barcode-mini-text font-weight-bolder">
+                                            <p class="barcodeCargoType m-0  barcode-mini-text font-weight-bolder">
                                                 KOLİ</p>
                                             <p class="m-0  barcode-mini-text">Kg:50</p>
                                             <p class="m-0  barcode-mini-text">Ds:50</p>
@@ -1022,31 +1015,43 @@
                                         <td class="barcode-mini-text text-center font-weight-bold vertical-rl">ALICI
                                         </td>
                                         <td>
-                                            <p id="barcodeReceiverName"
-                                               class="barcode-mini-text p-1 m-0 font-weight-bold">NURULLAH GÜÇ</p>
+                                            <p class="barcodeReceiverName barcode-mini-text p-1 m-0 font-weight-bold">
+                                                NURULLAH GÜÇ</p>
 
-                                            <p id="barcodeReceiverAddress"
-                                               class="barcode-mini-text p-1 m-0 font-weight-bold">Gülbahar Mah. Cemal
+                                            <p class="barcodeReceiverAddress barcode-mini-text p-1 m-0 font-weight-bold">
+                                                Gülbahar Mah. Cemal
                                                 Sururi Sk.
                                                 Halim Meriç İş Merkezi No:15/E K:4/22 Şişli/İstanbul</p>
                                             <p class="barcode-mini-text p-1 m-0 font-weight-bold">
-                                                <span id="barcodeReceiverCityDistrict">Şişli/İstanbul </span>
-                                                <span id="barcodeReceiverPhone" style="float: right;"
+                                                <span class="barcodeReceiverCityDistrict">Şişli/İstanbul </span>
+                                                <span class="barcodeReceiverPhone"
                                                       class="text-right">TEL: 5354276824</span>
                                             </p>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
+
                             <div class="col-3 qr-barcode-cont">
                                 <div class="qrcodes" id="qrcode"></div>
                             </div>
+
+                            <div class="col-12 text-right">
+                                <h3 class="font-weight-bold text-dark barcodeArrivalTC">
+                                    VAN HATTI</h3>
+                            </div>
+
+                            <div class="col-12 code39-container">
+                                <svg class="barcode"></svg>
+                            </div>
+
+                            <div class="col-12 text-right">
+                                <b class="barcodeArrivalAgency">EVREN</b>
+                            </div>
+
                         </div>
-
-                        <div class="divider"></div>
-
+                        <div class="barcode-divider"></div>
                     </div>
-
 
                 </div>
                 <div class="modal-footer">
