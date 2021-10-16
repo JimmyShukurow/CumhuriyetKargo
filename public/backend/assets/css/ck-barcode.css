@@ -64,10 +64,21 @@ svg.barcode {
 .barcode-row {
     max-height: 400px;
     max-width: 475px;
-    margin: 0 auto 10px;
+    margin: 0 auto 70px;
+}
+
+.barcode-row:last-child {
+    max-height: 400px;
+    max-width: 475px;
+    margin: 0 auto 0px;
 }
 
 #ContainerBarcodes {
     background: #fff !important;
     color: #000 !important;
 }
+
+.color-black{
+    color: #000 !important;
+}
+

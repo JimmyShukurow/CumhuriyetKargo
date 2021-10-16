@@ -690,12 +690,14 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
                     '                                        <td class="cargoInfo" rowspan="2">\n' +
                     '                                            <p class="barcodeRegDate font-weight-bold barcode-mini-text m-0">\n' +
                     '                                                ' + dateFormat(cargo.created_at).substring(0, 10) + '</p>\n' +
+                    '                                            <p class="barcodeRegDate text-center font-weight-bold barcode-mini-text m-0">\n' +
+                    '                                                ' + dateFormat(cargo.created_at).substring(11) + '</p>\n' +
                     '                                            <p class="barcodeCargoType m-0  barcode-mini-text font-weight-bolder">\n' +
                     '                                                ' + cargo.cargo_type + '</p>\n' +
-                    '                                            <p class="m-0  barcode-mini-text">Kg:' + val['weight'] + '</p>\n' +
-                    '                                            <p class="m-0  barcode-mini-text">Ds:' + val['desi'] + '</p>\n' +
-                    '                                            <p class="m-0  barcode-mini-text">Kg/Ds:' + val['desi'] + '</p>\n' +
-                    '                                            <p class="m-0  barcode-mini-text">Toplam:' + cargo.desi + '</p>\n' +
+                    '                                            <p class="m-0 font-weight-bold barcode-mini-text">Kg:' + val['weight'] + '</p>\n' +
+                    '                                            <p class="m-0 font-weight-bold barcode-mini-text">Ds:' + val['desi'] + '</p>\n' +
+                    '                                            <p class="m-0 font-weight-bold barcode-mini-text">Kg/Ds:' + val['desi'] + '</p>\n' +
+                    '                                            <p class="m-0 font-weight-bold barcode-mini-text">Toplam:' + cargo.desi + '</p>\n' +
                     '                                            <p class="m-0 text-center font-weight-bold">' + cargo.number_of_pieces + '/' + val['part_no'] + '</p>\n' +
                     '                                        </td>\n' +
                     '                                    </tr>\n' +
