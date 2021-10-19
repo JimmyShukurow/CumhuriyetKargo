@@ -662,17 +662,17 @@ function InsertDebits($ctn, $cargoID, $partNo, $userID, $movementID)
 function crypteTrackingNo($number)
 {
     $replacers = array(
-        '@' =>'0',
-        'DY' =>'1',
-        'GU' =>'2',
-        '%' =>'3',
-        'OS' =>'4',
-        '&' =>'5',
-        'G' =>'6',
-        '$' =>'7',
-        'ZO' =>'8',
-        'Z' =>'9',
-        'T#' =>' '
+        '@' => '0',
+        'DY' => '1',
+        'GU' => '2',
+        '%' => '3',
+        'OS' => '4',
+        '&' => '5',
+        'G' => '6',
+        '$' => '7',
+        'ZO' => '8',
+        'Z' => '9',
+        'T#' => ' '
     );
 
     $val = "";
@@ -680,6 +680,34 @@ function crypteTrackingNo($number)
         $val = $val . array_search($number[$i], $replacers);
 
     return $val;
+}
+
+function DesignInvoiceNumber()
+{
+    $letters = ['A', 'X', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'U', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'V', 'Y', 'X', 'Z'];
+    $invoiceNumber = "";
+
+    while (true) {
+        $rnd = rand(0, count($letters) - 1);
+        $rnd2 = rand(0, count($letters) - 1);
+
+        $prefix = $letters[$rnd] . $letters[$rnd2];
+        $realRandom = rand(123456, 987654);
+
+        $invoiceNumber = $prefix . ' ' . $realRandom;
+
+        #control Number
+        $cargo = DB::table('cargoes')
+            ->where('invoice_number', $invoiceNumber)
+            ->first();
+
+        if ($cargo != null)
+            continue;
+        else
+            break;
+    }
+
+    return $invoiceNumber;
 }
 
 

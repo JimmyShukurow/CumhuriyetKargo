@@ -1247,6 +1247,8 @@ class MainCargoController extends Controller
                     $desi = 0;
                 }
 
+                $invoiceNumber = DesignInvoiceNumber();
+
                 # start create new Cargo
                 $CreateCargo = Cargoes::create([
                     'receiver_id' => $receiver->id,
@@ -1282,6 +1284,7 @@ class MainCargoController extends Controller
                     'cargo_content' => tr_strtoupper($request->kargoIcerigi),
                     'cargo_content_ex' => tr_strtoupper($request->kargoIcerigiAciklama),
                     'tracking_no' => $ctn,
+                    'invoice_number' => $invoiceNumber,
                     'arrival_city' => $receiver->city,
                     'arrival_district' => $receiver->district,
                     'arrival_agency_code' => $arrivalAgency->id,
@@ -1610,8 +1613,6 @@ class MainCargoController extends Controller
 
             # INDEX TRANSACTION START
             case 'GetCargoInfo':
-
-                $number = crypteTrackingNo('21');
 
                 $data['cargo'] = Cargoes::find($request->id);
 
@@ -2011,6 +2012,7 @@ class MainCargoController extends Controller
         $cargoType = $request->cargoType;
         $trackingNo = str_replace([' ', '_'], [''], $request->trackingNo);
         $cargoContent = $request->cargoContent;
+        $invoiceNumber = $request->invoice_number;
         $collectible = $request->collectible;
         $currentCity = $request->currentCity;
         $currentCode = str_replace([' ', '_'], ['', ''], $request->currentCode);
@@ -2039,6 +2041,7 @@ class MainCargoController extends Controller
             ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
             ->whereRaw($receiverCode ? 'current_code=' . $receiverCode : '1 > 0')
             ->whereRaw($trackingNo ? 'tracking_no=' . $trackingNo : '1 > 0')
+            ->whereRaw($invoiceNumber ? "invoice_number='" . $invoiceNumber . "'" : '1 > 0')
             ->whereRaw($currentName ? "sender_name='" . $currentName . "'" : '1 > 0')
             ->whereRaw($paymentType ? "payment_type='" . $paymentType . "'" : '1 > 0')
             ->whereRaw($receiverCity ? "receiver_city='" . $receiverCity . "'" : '1 > 0')
@@ -2054,6 +2057,9 @@ class MainCargoController extends Controller
         return datatables()->of($cargoes)
             ->setRowId(function ($cargoes) {
                 return "cargo-item-" . $cargoes->id;
+            })
+            ->editColumn('invoice_number', function ($cargoes) {
+                return '<b class="text-info">' . $cargoes->invoice_number . '</b>';
             })
             ->editColumn('payment_type', function ($cargoes) {
                 return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . 'GÖ' . '</b>' : '<b class="text-dark">' . 'AÖ' . '</b>';
@@ -2096,7 +2102,7 @@ class MainCargoController extends Controller
             })
             ->addColumn('tracking_no', 'backend.main_cargo.main.columns.tracking_no')
             ->addColumn('edit', 'backend.main_cargo.main.columns.edit')
-            ->rawColumns(['edit', 'tracking_no', 'check', 'status_for_human', 'total_price', 'collectible', 'payment_type', 'collection_fee', 'status', 'name_surname', 'created_at'])
+            ->rawColumns(['edit', 'tracking_no', 'invoice_number', 'check', 'status_for_human', 'total_price', 'collectible', 'payment_type', 'collection_fee', 'status', 'name_surname', 'created_at'])
             ->make(true);
     }
 

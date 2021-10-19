@@ -121,6 +121,7 @@ $(document).ready(function () {
                 d.statusForHuman = $('#statusForHuman').val();
                 d.transporter = $('#transporter').val();
                 d.system = $('#system').val();
+                d.invoice_number = $('#invoice_number').val();
                 d.creatorUser = $('#creatorUser').val();
                 d.cargoContent = $('#cargoContent').val();
                 d.receiverCode = $('#receiverCode').val();
@@ -147,6 +148,7 @@ $(document).ready(function () {
             {data: 'free_btn', name: 'free_btn'},
             {data: 'check', name: 'check'},
             {data: 'tracking_no', name: 'tracking_no'},
+            {data: 'invoice_number', name: 'invoice_number'},
             {data: 'sender_name', name: 'sender_name'},
             {data: 'sender_city', name: 'sender_city'},
             {data: 'receiver_name', name: 'receiver_name'},
@@ -197,6 +199,7 @@ $('.niko-select-filter').change(delay(function (e) {
 $('.niko-filter').keyup(delay(function (e) {
     drawDT();
 }, 1000));
+
 $('#btnClearFilter').click(function () {
     $('#search-form').trigger("reset");
     $('#select2-creatorUser-container').text('Seçiniz');
@@ -331,7 +334,7 @@ function cargoInfo(user) {
             let cancellations = response.cancellation_applications;
 
             $('#titleTrackingNo').text(cargo.tracking_no);
-
+            $('#titleCargoInvoiceNumber').text(cargo.invoice_number);
             $('#senderTcknVkn').text(sender.tckn);
             $('#senderCurrentCode').text(sender.current_code);
             $('#senderCustomerType').text(sender.category);
@@ -647,7 +650,7 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
             let loop = cargo.number_of_pieces;
             console.log("Loop => " + loop);
 
-            let barcodePaymentType = "HL 102856 ";
+            let barcodePaymentType = cargo.invoice_number + " ";
             if (cargo.payment_type == "Alıcı Ödemeli")
                 barcodePaymentType += 'AÖ';
             else if (cargo.payment_type == "Gönderici Ödemeli")
@@ -655,11 +658,31 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
 
             $('#ContainerBarcodes').html('');
 
+            let className = "", elementStyle = "";
             $.each(part_details, function (key, val) {
 
                 preparedBarcodCount++;
 
-                $('#ContainerBarcodes').prepend('<div  class="row barcode-row">\n' +
+                if (loop == 1)
+                    className = "barcode-row-last-child";
+
+                else if (loop == preparedBarcodCount)
+                    className = "barcode-row-first-child";
+
+                else
+                    className = "";
+
+                if (loop > 1) {
+
+                    if (loop != preparedBarcodCount)
+                        elementStyle = "margin-top: 90px;";
+                    else
+                        elementStyle = "";
+
+                }
+
+
+                $('#ContainerBarcodes').prepend('<div style="' + elementStyle + '" class="row barcode-row ' + className + '">\n' +
                     '                            <div class="col-6">\n' +
                     '                                <h5 class="font-weight-bold barcode-slogan">Cumhuriyet Kargo - Sevgi ve Değer\n' +
                     '                                    Taşıyoruz..</h5>\n' +
@@ -734,8 +757,9 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
                     '                            </div>\n' +
                     '\n' +
                     '                            <div class="col-12 text-right">\n' +
-                    '                                <b class="barcodeArrivalAgency">' + arrival.agency_name + '</b>\n' +
+                    '                                <b class="barcodeArrivalAgency color-black">' + arrival.agency_name + '</b>\n' +
                     '                            </div>\n' +
+                    '                                <b style="position: relative; left: -130px; top: -214px; height: 2px;" class="vertical-rl">' + 'CUMHURİYET STANDART KARGO' + '</b>\n' +
                     '\n' +
                     '                        </div>\n' +
                     '<div style="clear: both;" class="barcode-divider"></div>'
@@ -765,13 +789,12 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
                 // $('#barcodePaymentType').text(barcodePaymentType);
 
                 // D@56@HI@ECVHLDEOIIAB5S@
-                makeBarcodeCode39('#barcodeCode39-' + val['part_no'], val['barcode_no'], cargo.tracking_no);
+                makeBarcodeCode39('#barcodeCode39-' + val['part_no'], val['barcode_no'], cargo.tracking_no + " " + val['part_no']);
                 makeBarcodeQRCode('qrcode-' + val['part_no'], val['barcode_no']);
 
                 // makeBarcodeCode39('.barcode', "D@56@HI@ECVHLDEOIIAB5S@", cargo.tracking_no);
                 // makeBarcodeQRCode('qrcode', "D@56@HI@ECVHLDEOIIAB5S@");
             });
-
 
         } else
             ToastMessage('error', response.message, 'Hata!');

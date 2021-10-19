@@ -359,6 +359,13 @@
                             </div>
 
                             <div class="col-md-2">
+                                <label for="receiverCode">Fatura NO:</label>
+                                <input type="text" data-inputmask="'mask': 'AA 999999'"
+                                       placeholder="__ ______" type="text" id="invoice_number"
+                                       class="form-control input-mask-trigger form-control-sm niko-filter">
+                            </div>
+
+                            <div class="col-md-2">
                                 <label for="receiverName">Alıcı Adı:</label>
                                 <input type="text" id="receiverName" class="form-control niko-filter form-control-sm">
                             </div>
@@ -406,6 +413,7 @@
                             <th class="free"></th>
                             <th class="check"></th>
                             <th>KTNO</th>
+                            <th>Fatura NO</th>
                             <th>Gönderici Adı</th>
                             <th>Gönderici İl</th>
                             <th>Alıcı Adı</th>
@@ -437,6 +445,7 @@
                             <th class="free"></th>
                             <th class="check"></th>
                             <th>KTNO</th>
+                            <th>Fatura NO</th>
                             <th>Gönderici Adı</th>
                             <th>Gönderici İl</th>
                             <th>Alıcı Adı</th>
@@ -511,7 +520,7 @@
                                         </div>
                                         <div>
                                             <h5 id="titleTrackingNo" class="menu-header-title">###</h5>
-                                            <h6 id="titleCreatorInfo" class="menu-header-subtitle">###/###</h6>
+                                            <h6 id="titleCargoInvoiceNumber" class="menu-header-subtitle">###/###</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -986,8 +995,9 @@
                      class="modal-body">
                     <div id="ContainerBarcodes"
                          class="container">
+
                         <div class="row barcode-row">
-                            <div  class="col-6">
+                            <div class="col-6">
                                 <h5 class="font-weight-bold barcode-slogan">Cumhuriyet Kargo - Sevgi ve Değer
                                     Taşıyoruz..</h5>
                                 <h4 class="font-weight-bold  text-dark m-0 barcodeDepartureTC">VAN Gölü</h4>
@@ -1126,7 +1136,7 @@
     <!-- Large modal => Modal Cargo Cancel Form -->
     <div class="modal fade bd-example-modal-lg" id="ModalCargoCancelForm" tabindex="-1" role="dialog"
          aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalGiveRolePermissionLabel">Kargo İptal Başvurusu</h5>

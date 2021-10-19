@@ -31,8 +31,8 @@ td.cargoInfo {
 }
 
 .barcodeArrivalTC {
-    margin-top: 14px;
-    margin-bottom: 14px;
+    margin-top: 1px;
+    margin-bottom: 1px;
     font-size: 2rem;
     color: #000 !important;
     text-align: left;
@@ -64,21 +64,36 @@ svg.barcode {
 .barcode-row {
     max-height: 400px;
     max-width: 475px;
-    margin: 0 auto 70px;
+    margin: 10px auto 50px;
 }
 
-.barcode-row:last-child {
-    max-height: 400px;
-    max-width: 475px;
-    margin: 0 auto 0px;
+/*.barcode-row-last-child {*/
+/*    margin: 10px auto -50px !important;*/
+/*}*/
+
+.barcode-row-first-child {
+    margin-top: 0px !important;
 }
+
+/*.barcode-row:last-child {*/
+/*    max-height: 400px;*/
+/*    max-width: 475px;*/
+/*    margin: 0 auto -40px !important;*/
+/*}*/
 
 #ContainerBarcodes {
     background: #fff !important;
     color: #000 !important;
 }
 
-.color-black{
+.color-black {
     color: #000 !important;
+
+    transform: rotate(7deg);
+    -ms-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
 }
 
+}
