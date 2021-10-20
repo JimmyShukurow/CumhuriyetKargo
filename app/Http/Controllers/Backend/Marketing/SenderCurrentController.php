@@ -313,9 +313,9 @@ class SenderCurrentController extends Controller
         ]);
 
         $cityDistrict = DB::table('view_city_district_neighborhoods')
-            ->where('city_id', intval($request->il))
-            ->where('district_id', intval($request->ilce))
-            ->where('neighborhood_id', intval($request->mahalle))
+            ->where('city_id', $request->il)
+            ->where('district_id', $request->ilce)
+            ->where('neighborhood_id', $request->mahalle)
             ->exists();
         if ($cityDistrict == null) {
             $request->flash();

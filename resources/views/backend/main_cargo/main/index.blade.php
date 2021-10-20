@@ -412,8 +412,8 @@
                         <tr>
                             <th class="free"></th>
                             <th class="check"></th>
-                            <th>KTNO</th>
                             <th>Fatura NO</th>
+                            <th>KTNO</th>
                             <th>Gönderici Adı</th>
                             <th>Gönderici İl</th>
                             <th>Alıcı Adı</th>
@@ -444,8 +444,8 @@
                         <tr>
                             <th class="free"></th>
                             <th class="check"></th>
-                            <th>KTNO</th>
                             <th>Fatura NO</th>
+                            <th>KTNO</th>
                             <th>Gönderici Adı</th>
                             <th>Gönderici İl</th>
                             <th>Alıcı Adı</th>
