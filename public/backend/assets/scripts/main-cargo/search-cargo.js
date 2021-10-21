@@ -19,7 +19,7 @@ $(document).ready(function () {
             [10, 25, 50, 100, 250, 500, -1],
             ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
         ],
-        order: [19, 'desc'],
+        order: [20, 'desc'],
         language: {
             "sDecimal": ",",
             "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
@@ -72,6 +72,7 @@ $(document).ready(function () {
             url: 'SearchGlobalCargo',
             data: function (d) {
                 d.trackingNo = $('#trackingNo').val();
+                d.invoiceNumber = $('#invoice_number').val();
                 d.cargoType = $('#cargoType').val();
                 d.receiverCurrentCode = $('#receiverCurrentCode').val();
                 d.senderCurrentCode = $('#senderCurrentCode').val();
@@ -101,6 +102,7 @@ $(document).ready(function () {
         },
         columns: [
             {data: 'free', name: 'free'},
+            {data: 'invoice_number', name: 'invoice_number'},
             {data: 'tracking_no', name: 'tracking_no'},
             {data: 'agency_name', name: 'agency_name'},
             {data: 'sender_name', name: 'sender_name'},
@@ -449,26 +451,27 @@ function cargoInfo(user) {
             let add_services = response.add_services;
             let movements = response.movements;
             let cancellations = response.cancellation_applications;
+            let part_details = response.part_details;
 
             $('#titleTrackingNo').text(cargo.tracking_no);
+            $('#titleCargoInvoiceNumber').text(cargo.invoice_number);
+            $('#senderTcknVkn').text(sender.tckn);
+            $('#senderCurrentCode').text(sender.current_code);
+            $('#senderCustomerType').text(sender.category);
+            $('#senderNameSurname').text(cargo.sender_name);
+            $('#senderPhone').text(cargo.sender_phone);
+            $('#senderCityDistrict').text(cargo.sender_city + "/" + cargo.sender_district);
+            $('#senderNeighborhood').text(cargo.sender_neighborhood);
+            $('#senderAddress').text(cargo.sender_address);
 
-            $('td#senderTcknVkn').text(sender.tckn);
-            $('td#senderCurrentCode').text(sender.current_code);
-            $('td#senderCustomerType').text(sender.category);
-            $('td#senderNameSurname').text(cargo.sender_name);
-            $('td#senderPhone').text(cargo.sender_phone);
-            $('td#senderCityDistrict').text(cargo.sender_city + "/" + cargo.sender_district);
-            $('td#senderNeighborhood').text(cargo.sender_neighborhood);
-            $('td#senderAddress').text(cargo.sender_address);
-
-            $('td#receiverTcknVkn').text(receiver.tckn);
-            $('td#receiverCurrentCode').text(receiver.current_code);
-            $('td#receiverCustomerType').text(receiver.category);
-            $('td#receiverNameSurname').text(cargo.receiver_name);
-            $('td#receiverPhone').text(cargo.receiver_phone);
-            $('td#receiverCityDistrict').text(cargo.receiver_city + "/" + cargo.receiver_district);
-            $('td#receiverNeighborhood').text(cargo.receiver_neighborhood);
-            $('td#receiverAddress').text(cargo.receiver_address);
+            $('#receiverTcknVkn').text(receiver.tckn);
+            $('#receiverCurrentCode').text(receiver.current_code);
+            $('#receiverCustomerType').text(receiver.category);
+            $('#receiverNameSurname').text(cargo.receiver_name);
+            $('#receiverPhone').text(cargo.receiver_phone);
+            $('#receiverCityDistrict').text(cargo.receiver_city + "/" + cargo.receiver_district);
+            $('#receiverNeighborhood').text(cargo.receiver_neighborhood);
+            $('#receiverAddress').text(cargo.receiver_address);
 
             $('#cargoTrackingNo').text(cargo.tracking_no);
             $('#cargoCreatedAt').text(dateFormat(cargo.created_at));
@@ -557,25 +560,28 @@ function cargoInfo(user) {
             }
 
             $('#tbodySentMessages').html('');
-            $.each(sms, function (key, val) {
+            if (sms.length == 0)
+                $('#tbodySentMessages').html('<tr><td colspan="5" class="text-center">Burda hiç veri yok.</td></tr>');
+            else
+                $.each(sms, function (key, val) {
 
-                let result = val['result'] == '1' ? '<b class="text-success">' + 'Başarılı' + '</b>' : '<b class="text-danger">' + 'Başarısız' + '</b>';
+                    let result = val['result'] == '1' ? '<b class="text-success">' + 'Başarılı' + '</b>' : '<b class="text-danger">' + 'Başarısız' + '</b>';
 
-                $('#tbodySentMessages').append(
-                    '<tr>' +
-                    '<td class="font-weight-bold">' + val['heading'] + '</td>' +
-                    '<td class="font-weight-bold">' + val['subject'] + '</td>' +
-                    '<td style="white-space: initial;">' + val['sms_content'] + '</td>' +
-                    '<td>' + val['phone'] + '</td>' +
-                    '<td class="font-weight-bold text-center">' + result + '</td>' +
-                    +'</tr>'
-                )
-            });
+                    $('#tbodySentMessages').append(
+                        '<tr>' +
+                        '<td class="font-weight-bold">' + val['heading'] + '</td>' +
+                        '<td class="font-weight-bold">' + val['subject'] + '</td>' +
+                        '<td style="white-space: initial;">' + val['sms_content'] + '</td>' +
+                        '<td>' + val['phone'] + '</td>' +
+                        '<td class="font-weight-bold text-center">' + result + '</td>' +
+                        +'</tr>'
+                    )
+                });
 
             $('#tbodyCargoCancellationApplications').html('');
 
-            if (movements.length == 0)
-                $('#tbodyCargoCancellationApplications').html('<tr><td colspan="5" class="text-center">Burda hiç veri yok.</td></tr>');
+            if (cancellations.length == 0)
+                $('#tbodyCargoCancellationApplications').html('<tr><td colspan="8" class="text-center">Burda hiç veri yok.</td></tr>');
             else {
 
                 $.each(cancellations, function (key, val) {
@@ -612,6 +618,34 @@ function cargoInfo(user) {
                 });
             }
 
+            let countCargoPart = 0, cargoDesiCount = 0;
+            $('#tbodyCargoPartDetails').html('');
+            if (part_details.length == 0)
+                $('#tbodyCargoPartDetails').html('<tr><td colspan="8" class="text-center">Burda hiç veri yok.</td></tr>');
+            else {
+                $.each(part_details, function (key, val) {
+
+                    $('#tbodyCargoPartDetails').prepend(
+                        '<tr>' +
+                        '<td class="font-weight-bold text-success">' + cargo.cargo_type + '</td>' +
+                        '<td class="font-weight-bold">' + val['part_no'] + '</td>' +
+                        '<td class="">' + val['width'] + '</td>' +
+                        '<td class="">' + val['size'] + '</td>' +
+                        '<td class="">' + val['height'] + '</td>' +
+                        '<td class="">' + val['weight'] + '</td>' +
+                        '<td class="font-weight-bold text-primary">' + val['desi'] + '</td>' +
+                        '<td class="text-alternate">' + val['cubic_meter_volume'] + '</td>' +
+                        +'</tr>'
+                    );
+                    countCargoPart = countCargoPart + 1;
+                    cargoDesiCount = cargoDesiCount + parseInt(val['desi']);
+                });
+
+                $('#tbodyCargoPartDetails').prepend(
+                    '<tr><td class="font-weight-bold text-center" colspan="8"> Toplam: <b class="text-primary">' + countCargoPart + ' Parça</b>, <b class="text-primary">' + cargoDesiCount + ' Desi</b>. </td></tr>'
+                );
+            }
+
 
             $('#btnCargoPrintBarcode').attr('tracking-no', cargo.id);
 
@@ -634,6 +668,7 @@ function cargoInfo(user) {
 
     $('#ModalAgencyDetail').modal();
 }
+
 
 $(document).on('click', '.btnMovementDetail', function () {
 

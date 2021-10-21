@@ -47,14 +47,21 @@
 
                     <div class="form-row">
 
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label for="receiverCode">Kargo Takip No:</label>
                             <input type="text" data-inputmask="'mask': '99999 99999 99999'"
                                    placeholder="_____ _____ _____" type="text" id="trackingNo"
                                    class="form-control input-mask-trigger form-control-sm niko-filter">
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-3">
+                            <label for="receiverCode">Fatura NO:</label>
+                            <input type="text" data-inputmask="'mask': 'AA 999999'"
+                                   placeholder="__ ______" type="text" id="invoice_number"
+                                   class="form-control input-mask-trigger form-control-sm niko-filter">
+                        </div>
+
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="name_surname">B. Yapan Ad Soyad</label>
                                 <input type="text" class="form-control form-control-sm"
@@ -63,14 +70,14 @@
                             </div>
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="agency">Acente</label>
                                 <input type="text" class="form-control form-control-sm" id="agency">
                             </div>
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="confirm">Onay Durumu</label>
                                 <select name="confirm" id="confirm" class="form-control form-control-sm">
@@ -82,7 +89,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="appointment_reason">Başvuru Nedeni</label>
                                 <input type="text" class="form-control form-control-sm"
@@ -91,7 +98,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="confirming_name_surname">Onaylayan Ad Soyad</label>
                                 <input type="text" class="form-control form-control-sm"
@@ -204,7 +211,7 @@
                     <thead>
                     <tr>
                         <th></th>
-                        <th>KTNO</th>
+                        <th>Fatura No</th>
                         <th>B. Yapan</th>
                         <th>Acente</th>
                         <th>Bölge</th>
@@ -220,7 +227,7 @@
                     <tfoot>
                     <tr>
                         <th></th>
-                        <th>KTNO</th>
+                        <th>Fatura No</th>
                         <th>B. Yapan</th>
                         <th>Acente</th>
                         <th>Bölge</th>
@@ -416,7 +423,7 @@
                 ajax: {
                     url: '{!! route('cargoCancel.getCancellations') !!}',
                     data: function (d) {
-                        d.ctn = $('#trackingNo').val();
+                        d.invoiceNumber = $('#invoice_number').val();
                         d.name_surname = $('#name_surname').val();
                         d.agency = $('#agency').val();
                         d.appointment_reason = $('#appointment_reason').val();
@@ -441,7 +448,7 @@
                 },
                 columns: [
                     {data: 'free', name: 'free'},
-                    {data: 'tracking_no', name: 'tracking_no'},
+                    {data: 'invoice_number', name: 'invoice_number'},
                     {data: 'name_surname', name: 'name_surname'},
                     {data: 'agency_name', name: 'agency_name'},
                     {data: 'regional_directorates', name: 'regional_directorates'},

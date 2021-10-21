@@ -71,6 +71,7 @@ $(document).ready(function () {
         ajax: {
             url: '/MainCargo/GetCancelledCargoes',
             data: function (d) {
+                d.invoiceNumber = $('#invoice_number').val();
                 d.trackingNo = $('#trackingNo').val();
                 d.cargoType = $('#cargoType').val();
                 d.receiverCurrentCode = $('#receiverCurrentCode').val();
@@ -101,6 +102,7 @@ $(document).ready(function () {
         },
         columns: [
             {data: 'free', name: 'free'},
+            {data: 'invoice_number', name: 'invoice_number'},
             {data: 'tracking_no', name: 'tracking_no'},
             {data: 'agency_name', name: 'agency_name'},
             {data: 'sender_name', name: 'sender_name'},
@@ -449,8 +451,10 @@ function cargoInfo(user) {
             let add_services = response.add_services;
             let movements = response.movements;
             let cancellations = response.cancellation_applications;
+            let part_details = response.part_details;
 
             $('#titleTrackingNo').text(cargo.tracking_no);
+            $('#titleCargoInvoiceNumber').text(cargo.invoice_number);
 
             $('td#senderTcknVkn').text(sender.tckn);
             $('td#senderCurrentCode').text(sender.current_code);
@@ -557,20 +561,24 @@ function cargoInfo(user) {
             }
 
             $('#tbodySentMessages').html('');
-            $.each(sms, function (key, val) {
+            if (sms.length == 0)
+                $('#tbodySentMessages').html('<tr><td colspan="5" class="text-center">Burda hiç veri yok.</td></tr>');
+            else
+                $.each(sms, function (key, val) {
 
-                let result = val['result'] == '1' ? '<b class="text-success">' + 'Başarılı' + '</b>' : '<b class="text-danger">' + 'Başarısız' + '</b>';
+                    let result = val['result'] == '1' ? '<b class="text-success">' + 'Başarılı' + '</b>' : '<b class="text-danger">' + 'Başarısız' + '</b>';
 
-                $('#tbodySentMessages').append(
-                    '<tr>' +
-                    '<td class="font-weight-bold">' + val['heading'] + '</td>' +
-                    '<td class="font-weight-bold">' + val['subject'] + '</td>' +
-                    '<td style="white-space: initial;">' + val['sms_content'] + '</td>' +
-                    '<td>' + val['phone'] + '</td>' +
-                    '<td class="font-weight-bold text-center">' + result + '</td>' +
-                    +'</tr>'
-                )
-            });
+                    $('#tbodySentMessages').append(
+                        '<tr>' +
+                        '<td class="font-weight-bold">' + val['heading'] + '</td>' +
+                        '<td class="font-weight-bold">' + val['subject'] + '</td>' +
+                        '<td style="white-space: initial;">' + val['sms_content'] + '</td>' +
+                        '<td>' + val['phone'] + '</td>' +
+                        '<td class="font-weight-bold text-center">' + result + '</td>' +
+                        +'</tr>'
+                    )
+                });
+
 
             $('#tbodyCargoCancellationApplications').html('');
 
@@ -612,15 +620,36 @@ function cargoInfo(user) {
                 });
             }
 
+            let countCargoPart = 0, cargoDesiCount = 0;
+            $('#tbodyCargoPartDetails').html('');
+            if (part_details.length == 0)
+                $('#tbodyCargoPartDetails').html('<tr><td colspan="8" class="text-center">Burda hiç veri yok.</td></tr>');
+            else {
+                $.each(part_details, function (key, val) {
+
+                    $('#tbodyCargoPartDetails').prepend(
+                        '<tr>' +
+                        '<td class="font-weight-bold text-success">' + cargo.cargo_type + '</td>' +
+                        '<td class="font-weight-bold">' + val['part_no'] + '</td>' +
+                        '<td class="">' + val['width'] + '</td>' +
+                        '<td class="">' + val['size'] + '</td>' +
+                        '<td class="">' + val['height'] + '</td>' +
+                        '<td class="">' + val['weight'] + '</td>' +
+                        '<td class="font-weight-bold text-primary">' + val['desi'] + '</td>' +
+                        '<td class="text-alternate">' + val['cubic_meter_volume'] + '</td>' +
+                        +'</tr>'
+                    );
+                    countCargoPart = countCargoPart + 1;
+                    cargoDesiCount = cargoDesiCount + parseInt(val['desi']);
+                });
+
+                $('#tbodyCargoPartDetails').prepend(
+                    '<tr><td class="font-weight-bold text-center" colspan="8"> Toplam: <b class="text-primary">' + countCargoPart + ' Parça</b>, <b class="text-primary">' + cargoDesiCount + ' Desi</b>. </td></tr>'
+                );
+            }
+
 
             $('#btnCargoPrintBarcode').attr('tracking-no', cargo.id);
-
-            // $('#numberOfPieces').text(cargo.number_of_pieces);
-            // $('#numberOfPieces').text(cargo.number_of_pieces);
-            // $('#numberOfPieces').text(cargo.number_of_pieces);
-            // $('#numberOfPieces').text(cargo.number_of_pieces);
-            // $('#numberOfPieces').text(cargo.number_of_pieces);
-            // $('#numberOfPieces').text(cargo.number_of_pieces);
 
         }
 

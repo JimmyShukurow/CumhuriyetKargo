@@ -902,6 +902,37 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
+
+                                                <hr>
+
+                                                <h3 class="text-dark text-center mb-4">Parça Detayları</h3>
+
+                                                <div style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
+                                                     class="cont">
+                                                    <table style="white-space: nowrap;" id="TableEmployees"
+                                                           class="Table30Padding table-bordered table-hover table table-striped mt-3">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Kargo Tipi</th>
+                                                            <th>Parça No</th>
+                                                            <th>En</th>
+                                                            <th>Boy</th>
+                                                            <th>Yükseklik</th>
+                                                            <th>KG</th>
+                                                            <th>Desi</th>
+                                                            <th>Hacim m<sup>3</sup></th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="tbodyCargoPartDetails">
+                                                        <tr>
+                                                            <td class="text-center" colspan="8">Burda hiç veri yok.</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <hr>
+
                                             </div>
                                         </div>
                                     </div>
@@ -991,7 +1022,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div style="overflow-x: hidden; max-height: 60vh;" id="ModalBarcodes"
+                <div style="overflow-x: hidden;min-height: 30vh; max-height: 60vh;" id="ModalBarcodes"
                      class="modal-body">
                     <div id="ContainerBarcodes"
                          class="container">

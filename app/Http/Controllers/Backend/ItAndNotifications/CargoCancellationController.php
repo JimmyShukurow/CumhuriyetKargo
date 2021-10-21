@@ -63,18 +63,19 @@ class CargoCancellationController extends Controller
         $appointment_reason = $request->appointment_reason;
         $confirming_name_surname = $request->confirming_name_surname;
         $ctn = str_replace([' ', '_'], ['', ''], $request->ctn);
+        $invoiceNumber = $request->invoiceNumber;
         $name_surname = $request->name_surname;
         $creating_date_filter = $request->creating_date_filter;
         $last_proccess_date_filter = $request->last_proccess_date_filter;
         $regionArray = $request->selected_region != '' ? $request->selected_region : 'null';
 
         $tickets = DB::table('view_cargo_cancellation_app_detail')
-            ->select(['view_cargo_cancellation_app_detail.*', 'cargoes.tracking_no', 'cargoes.id as cargo_id', 'view_agency_region.regional_directorates', 'view_agency_region.agency_name'])
+            ->select(['view_cargo_cancellation_app_detail.*', 'cargoes.tracking_no', 'cargoes.invoice_number', 'cargoes.id as cargo_id', 'view_agency_region.regional_directorates', 'view_agency_region.agency_name'])
             ->join('view_agency_region', 'view_agency_region.id', '=', 'view_cargo_cancellation_app_detail.agency_code')
             ->join('cargoes', 'cargoes.id', '=', 'view_cargo_cancellation_app_detail.cargo_id')
             ->whereRaw($creating_date_filter == 'true' ? "view_cargo_cancellation_app_detail.created_at between '" . $creatingStartDate . "'  and '" . $creatingFinishDate . "'" : '1 > 0')
             ->whereRaw($last_proccess_date_filter == 'true' ? "view_cargo_cancellation_app_detail.approval_at between '" . $lastProccessStartDate . "'  and '" . $lastProccessFinishDate . "'" : '1 > 0')
-            ->whereRaw($ctn ? 'cargoes.tracking_no=' . $ctn : '1 > 0')
+            ->whereRaw($invoiceNumber ? "cargoes.invoice_number='" . $invoiceNumber . "'" : '1 > 0')
             ->whereRaw($confirm != '' ? "view_cargo_cancellation_app_detail.confirm='" . $confirm . "'" : '1 > 0')
             ->whereRaw($agency ? 'view_agency_region.agency_name like \'%' . $agency . '%\'' : '1 > 0')
             ->whereRaw($appointment_reason ? 'view_cargo_cancellation_app_detail.application_reason like \'%' . $appointment_reason . '%\'' : '1 > 0')
@@ -108,7 +109,8 @@ class CargoCancellationController extends Controller
             })
             ->editColumn('application_reason', 'backend.it_and_notifications.cargo_cancellations.columns.reason')
             ->editColumn('tracking_no', 'backend.it_and_notifications.cargo_cancellations.columns.tracking_no')
-            ->rawColumns(['application_reason', 'confirm', 'tracking_no', 'name_surname', 'redirected'])
+            ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
+            ->rawColumns(['application_reason', 'invoice_number', 'confirm', 'tracking_no', 'name_surname', 'redirected'])
             ->make(true);
     }
 

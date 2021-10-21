@@ -1614,7 +1614,6 @@ class MainCargoController extends Controller
             # INDEX TRANSACTION START
             case 'GetCargoInfo':
 
-
                 $data['cargo'] = Cargoes::find($request->id);
 
                 if ($data['cargo'] == null)
@@ -1623,6 +1622,8 @@ class MainCargoController extends Controller
 
                 $data['cargo']->tracking_no = TrackingNumberDesign($data['cargo']->tracking_no);
                 $data['cargo']->distance = getDotter($data['cargo']->distance);
+
+                $data['cargo']->created_at = dateFormatForJsonOutput($data['cargo']->created_at);
 
                 $data['sender'] = DB::table('currents')
                     ->select(['current_code', 'tckn', 'category'])
@@ -1955,6 +1956,7 @@ class MainCargoController extends Controller
                     ->where('id', $request->id)
                     ->first();
 
+
                 if ($data['cargo'] == null)
                     return response()
                         ->json(['status' => 0, 'message' => 'Kargo Bulunamadı!'], 200);
@@ -2101,6 +2103,31 @@ class MainCargoController extends Controller
                     ->where('cargo_id', $data['cargo']->id)
                     ->get();
 
+                $data['part_details'] = DB::table('cargo_part_details')
+                    ->where('tracking_no', str_replace(' ', '', $data['cargo']->tracking_no))
+                    ->get();
+
+                $newPartDetais = [];
+                foreach ($data['part_details'] as $key)
+                    $newPartDetais[] = [
+                        'cargo_id' => $key->cargo_id,
+                        'created_at' => $key->created_at,
+                        'cubic_meter_volume' => $key->cubic_meter_volume,
+                        'desi' => $key->desi,
+                        'height' => $key->height,
+                        'id' => $key->id,
+                        'part_no' => $key->part_no,
+                        'size' => $key->size,
+                        'tracking_no' => $key->tracking_no,
+                        'updated_at' => $key->updated_at,
+                        'weight' => $key->weight,
+                        'width' => $key->width,
+                        'barcode_no' => crypteTrackingNo(str_replace(' ', '', $data['cargo']->tracking_no) . ' ' . $key->part_no)
+                    ];
+
+                $data['part_details'] = $newPartDetais;
+
+
                 $data['status'] = 1;
 
                 return response()
@@ -2223,6 +2250,7 @@ class MainCargoController extends Controller
     public function getGlobalCargoes(Request $request)
     {
         $trackingNo = str_replace([' ', '_'], ['', ''], $request->trackingNo);
+        $invoiceNumber = $request->invoiceNumber;
         $cargoType = $request->cargoType;
         $currentCity = $request->senderCity;
         $currentCode = str_replace([' ', '_'], ['', ''], $request->senderCurrentCode);
@@ -2273,6 +2301,7 @@ class MainCargoController extends Controller
             ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
             ->whereRaw($receiverCurrentCode ? 'current_code=' . $receiverCurrentCode : '1 > 0')
             ->whereRaw($trackingNo ? 'tracking_no=' . $trackingNo : '1 > 0')
+            ->whereRaw($invoiceNumber ? "invoice_number='" . $invoiceNumber . "'" : '1 > 0')
             ->whereRaw($currentName ? "sender_name like '" . $currentName . "%'" : '1 > 0')
             ->whereRaw($receiverCity ? "receiver_city='" . $receiverCity . "'" : '1 > 0')
             ->whereRaw($receiverPhone ? "receiver_phone='" . $receiverPhone . "'" : '1 > 0')
@@ -2330,7 +2359,8 @@ class MainCargoController extends Controller
             })
             ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
             ->addColumn('tracking_no', 'backend.main_cargo.search_cargo.columns.tracking_no')
-            ->rawColumns(['tracking_no', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
+            ->rawColumns(['tracking_no', 'invoice_number', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 
@@ -2377,6 +2407,7 @@ class MainCargoController extends Controller
     public function getCancelledCargoes(Request $request)
     {
         $trackingNo = str_replace([' ', '_'], ['', ''], $request->trackingNo);
+        $invoiceNumber = $request->invoiceNumber;
         $cargoType = $request->cargoType;
         $currentCity = $request->senderCity;
         $currentCode = str_replace([' ', '_'], ['', ''], $request->senderCurrentCode);
@@ -2428,6 +2459,7 @@ class MainCargoController extends Controller
             ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
             ->whereRaw($receiverCurrentCode ? 'current_code=' . $receiverCurrentCode : '1 > 0')
             ->whereRaw($trackingNo ? 'tracking_no=' . $trackingNo : '1 > 0')
+            ->whereRaw($invoiceNumber ? "invoice_number='" . $invoiceNumber . "'" : '1 > 0')
             ->whereRaw($currentName ? "sender_name like '" . $currentName . "%'" : '1 > 0')
             ->whereRaw($receiverCity ? "receiver_city='" . $receiverCity . "'" : '1 > 0')
             ->whereRaw($receiverPhone ? "receiver_phone='" . $receiverPhone . "'" : '1 > 0')
@@ -2486,7 +2518,8 @@ class MainCargoController extends Controller
             })
             ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
             ->addColumn('tracking_no', 'backend.main_cargo.search_cargo.columns.tracking_no')
-            ->rawColumns(['tracking_no', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
+            ->rawColumns(['tracking_no', 'invoice_number', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 

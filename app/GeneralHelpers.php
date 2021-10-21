@@ -4,6 +4,7 @@ use App\Models\CargoMovements;
 use App\Models\Cities;
 use App\Models\Currents;
 use App\Models\Settings;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Tickets;
@@ -708,6 +709,14 @@ function DesignInvoiceNumber()
     }
 
     return $invoiceNumber;
+}
+
+function dateFormatForJsonOutput($date)
+{
+    $date = Carbon::parse($date);
+    $date = $date->addHour(3);
+
+    return $date;
 }
 
 
