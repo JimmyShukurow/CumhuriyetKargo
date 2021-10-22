@@ -8,9 +8,13 @@ use App\Models\Cities;
 use App\Models\Districts;
 use App\Models\LocalLocation;
 use App\Models\Neighborhoods;
+use App\Models\RegioanalDirectorates;
+use App\Models\RegionalDistricts;
+use App\Models\TransshipmentCenters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Yajra\DataTables\DataTables;
 
 class LocalLocationController extends Controller
 {
@@ -192,5 +196,96 @@ class LocalLocationController extends Controller
             ->make(true);
     }
 
+    public function locationReport(Request $request)
+    {
+        $districts = 4350;
+        $data['regional_districts'] = $regional_districts = RegionalDistricts::count();
+        $data['idle_districts_quantity'] = $districts - $regional_districts;
+
+        $data['city_names'] = Cities::all();
+        $data['agencies'] = Agencies::all();
+        $data['cities'] = Cities::count();
+        $data['agency_quantity'] = Agencies::count();
+        $data['total_districts'] = $districts = Districts::count();
+        $data['total_neighborhood'] = $neighborhoods = Neighborhoods::count();
+
+        $data['local_location_completed_agencies'] = DB::table('local_locations')
+            ->join('agencies', 'agencies.id', '=', 'local_locations.agency_code')
+            ->select(['local_locations.*', 'agencies.deleted_at'])
+            ->havingRaw('agencies.deleted_at is null')
+            ->groupBy('agency_code')
+            ->count();
+
+        $data['local_location_not_completed_agencies'] = $data['agency_quantity'] - $data['local_location_completed_agencies'];
+        $data['total_local_locations'] = DB::table('local_locations')
+            ->count();
+
+        $data['total_not_local_locations'] = $data['total_neighborhood'] - $data['total_local_locations'];
+
+        $data['ab_locations'] = DB::table('local_locations')
+            ->where('area_type', 'AB')
+            ->count();
+        $data['mb_locations'] = DB::table('local_locations')
+            ->where('area_type', 'MB')
+            ->count();
+
+        $data['at_cities'] = DB::table('local_locations')
+            ->groupBy('city')
+            ->count();
+        $data['at_out_cities'] = $data['cities'] - $data['at_cities'];
+
+        $data['at_districts'] = DB::table('local_locations')
+            ->groupBy('district')
+            ->count();
+
+        $data['at_out_districts'] = $districts - $data['at_districts'];
+
+        $data['distributor_agencies'] = DB::table('view_most_distributor_agencies')
+            ->orderByDesc('covered_neighborhoods')
+            ->limit(15)
+            ->get();
+
+        GeneralLog('Lokasyon Rapor (Mahalli) görüntülendi.');
+        return view('backend.operation.local_location.report', compact('data'));
+    }
+
+
+    public function GetTrGeneralLocations(Request $request)
+    {
+
+        $city = $request->city;
+        $district = $request->district;
+        $agency = $request->agency;
+        $area_type = $request->area_type;
+
+
+        $city = $city ? Cities::find($city) : false;
+        $district = $district ? Districts::find($district) : false;
+
+
+        $data = DB::table('view_tr_general_local_location')
+            ->whereRaw($agency ? 'agency_id=' . $agency : ' 1 > 0')
+            ->whereRaw($city ? "city_name like '%" . $city->city_name . "%'" : ' 1 > 0')
+            ->whereRaw($district ? "district_name like '%" . $district->district_name . "%'" : ' 1 > 0')
+            ->whereRaw($area_type ? "area_type like '%" . $area_type . "%'" : ' 1 > 0');
+
+        return DataTables::of($data)
+            ->editColumn('area_type', function ($key) {
+                if ($key->area_type == 'AT-DIŞI')
+                    return '<b class="text-danger">' . $key->area_type . '</b>';
+                else if ($key->area_type == 'MB')
+                    return '<b class="text-info">Mobil Bölge</b>';
+                else if ($key->area_type == 'AB')
+                    return '<b class="text-success">Ana Bölge</b>';
+            })
+            ->editColumn('agency', function ($key) {
+                if ($key->agency_id != '') {
+                    $agency = Agencies::find($key->agency_id);
+                    return '<b class="text-success">' . $agency->city . ' - ' . $agency->agency_name . '</b>';
+                }
+            })
+            ->rawColumns(['area_type', 'agency'])
+            ->make(true);
+    }
 
 }

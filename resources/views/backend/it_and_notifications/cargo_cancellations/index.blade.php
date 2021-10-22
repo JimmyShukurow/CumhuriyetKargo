@@ -732,13 +732,6 @@
 
                     $('#btnCargoPrintBarcode').attr('tracking-no', cargo.id);
 
-                    // $('#numberOfPieces').text(cargo.number_of_pieces);
-                    // $('#numberOfPieces').text(cargo.number_of_pieces);
-                    // $('#numberOfPieces').text(cargo.number_of_pieces);
-                    // $('#numberOfPieces').text(cargo.number_of_pieces);
-                    // $('#numberOfPieces').text(cargo.number_of_pieces);
-                    // $('#numberOfPieces').text(cargo.number_of_pieces);
-
                 }
 
                 $('#ModalCargoDetails').unblock();
@@ -874,6 +867,71 @@
                 ajaxError(jqXHR.status);
             }).always(function () {
                 $('#ModalSetAppResult').unblock();
+            });
+
+        });
+
+        $(document).on('click', '.btnMovementDetail', function () {
+
+            let group_id = $(this).attr('group_id');
+
+            $('#ModalMovementsDetail').modal();
+
+            $('#modalBodyCargoMovementsDetails').block({
+                message: $('<div class="loader mx-auto">\n' +
+                    '                            <div class="ball-grid-pulse">\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                            </div>\n' +
+                    '                        </div>')
+            });
+            $('.blockUI.blockMsg.blockElement').css('width', '100%');
+            $('.blockUI.blockMsg.blockElement').css('border', '0px');
+            $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+
+            $.ajax('/MainCargo/AjaxTransactions/GetCargoMovementDetails', {
+                method: 'POST',
+                data: {
+                    _token: token,
+                    group_id: group_id
+                }
+            }).done(function (response) {
+
+                $('#tbodyCargoMovementDetails').html('');
+
+                if (response.length == 0)
+                    $('#tbodyCargoMovementDetails').html('<tr><td colspan="5" class="text-center">Burda hiç veri yok.</td></tr>');
+                else {
+                    $.each(response, function (key, val) {
+
+                        let result = val['number_of_pieces'] == val['current_pieces'] ? 'text-success' : 'text-danger';
+
+                        $('#tbodyCargoMovementDetails').append(
+                            '<tr>' +
+                            '<td>' + val['status'] + '</td>' +
+                            '<td>' + val['info'] + '</td>' +
+                            '<td class="text-dark font-weight-bold">' + val['part_no'] + '</td>' +
+                            '<td>' + val['created_at'] + '</td>' +
+                            +'</tr>'
+                        );
+
+                    });
+
+                }
+
+
+            }).error(function (jqXHR, exception) {
+                ajaxError(jqXHR.status);
+            }).always(function () {
+                $('#modalBodyCargoMovementsDetails').unblock();
             });
 
         });
@@ -1400,6 +1458,48 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
                     <button id="btnUpdateAppResult" type="button" class="btn btn-primary">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Large modal => Modal Movements Detail -->
+    <div class="modal fade bd-example-modal-lg" id="ModalMovementsDetail" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalGiveRolePermissionLabel">Hareket Detayları</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="modalBodyCargoMovementsDetails" style="overflow-x: hidden; max-height: 75vh;"
+                     class="modal-body">
+
+                    <div style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
+                         class="cont">
+                        <table style="white-space: nowrap" id="TableEmployees"
+                               class="Table30Padding table table-striped mt-3">
+                            <thead>
+                            <tr>
+                                <th>Durum</th>
+                                <th>Bilgi</th>
+                                <th>Parça Numarası</th>
+                                <th>İşlem Zamanı</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbodyCargoMovementDetails">
+                            <tr>
+                                <td colspan="4" class="text-center">Burda hiç veri yok.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
                 </div>
             </div>
         </div>

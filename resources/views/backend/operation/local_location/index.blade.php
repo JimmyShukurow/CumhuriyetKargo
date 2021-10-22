@@ -96,7 +96,7 @@
                                 <option value="">Seçiniz</option>
                                 @foreach($data['agencies'] as $key)
                                     <option
-                                        value="{{$key->id}}">{{$key->agency_name . ' ACENTE'}}</option>
+                                        value="{{$key->id}}">{{$key->agency_name . ' ŞUBE'}}</option>
                                 @endforeach
                             </select>
                         </div>

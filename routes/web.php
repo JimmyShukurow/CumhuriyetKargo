@@ -99,9 +99,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
             Route::post('BackupCargo', [CargoCancellationController::class, 'backupCargo'])
                 ->name('backupCargo');
-
         });
-
     });
 
 
@@ -127,6 +125,10 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::group(['prefix' => 'Operation'], function () {
         Route::group(['middleware' => 'LocalLocationMid'], function () {
             Route::resource('LocalLocation', LocalLocationController::class);
+            Route::get('LocationLocationReport', [LocalLocationController::class, 'locationReport'])->name('location.report');
+            Route::get('LocalLocationGetTrGeneralLocations', [LocalLocationController::class, 'GetTrGeneralLocations'])
+                ->name('location.GetTrGeneralLocations');
+
             Route::get('GetLocations', [LocalLocationController::class, 'getLocation'])->name('operation.getLocation');
             Route::post('GetNeighborhoodsOfAgency', [LocalLocationController::class, 'getNeighborhoodsOfAgency']);
         });

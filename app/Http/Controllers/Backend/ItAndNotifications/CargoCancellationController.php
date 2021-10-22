@@ -109,7 +109,7 @@ class CargoCancellationController extends Controller
             })
             ->editColumn('application_reason', 'backend.it_and_notifications.cargo_cancellations.columns.reason')
             ->editColumn('tracking_no', 'backend.it_and_notifications.cargo_cancellations.columns.tracking_no')
-            ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
+            ->addColumn('invoice_number', 'backend.it_and_notifications.cargo_cancellations.columns.invoice_number')
             ->rawColumns(['application_reason', 'invoice_number', 'confirm', 'tracking_no', 'name_surname', 'redirected'])
             ->make(true);
     }

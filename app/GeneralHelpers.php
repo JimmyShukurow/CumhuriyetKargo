@@ -60,6 +60,13 @@ function getDotter($TotalCiro)
     return $TotalCiro;
 }
 
+function getWithK($count)
+{
+    $returner = $count / 1000;
+    $returner = round($returner, 1);
+    return $returner . 'B';
+}
+
 function urlCharacters($text)
 {
     $search = array("undefined", "%C4%9F", "%C4%9E", "%20", "%C3%BC", "%C3%9C", "%C5%9F", "%C5%9E", "%C4%B0", "%C3%B6", "%C3%96", "%C3%A7", "%C3%87");
