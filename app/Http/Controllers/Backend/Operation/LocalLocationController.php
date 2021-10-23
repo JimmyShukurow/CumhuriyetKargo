@@ -53,8 +53,6 @@ class LocalLocationController extends Controller
     public function store(Request $request)
     {
 
-//        return $request->all();
-
         $insert = false;
         $city = Cities::find($request->city_id);
         $district = Districts::find($request->district_id);
@@ -79,6 +77,7 @@ class LocalLocationController extends Controller
                     'city' => $city->city_name,
                     'district' => $district->district_name,
                     'neighborhood' => $neighborhood->neighborhood_name,
+                    'neighborhood_id' => $n_id,
                     'area_type' => $area_type,
                 ]);
             }
@@ -164,7 +163,6 @@ class LocalLocationController extends Controller
 
     public function getLocation(Request $request)
     {
-
         #getLocation
         if ($request->city)
             $city = Cities::find($request->city);
@@ -249,19 +247,15 @@ class LocalLocationController extends Controller
         return view('backend.operation.local_location.report', compact('data'));
     }
 
-
     public function GetTrGeneralLocations(Request $request)
     {
-
         $city = $request->city;
         $district = $request->district;
         $agency = $request->agency;
         $area_type = $request->area_type;
 
-
         $city = $city ? Cities::find($city) : false;
         $district = $district ? Districts::find($district) : false;
-
 
         $data = DB::table('view_tr_general_local_location')
             ->whereRaw($agency ? 'agency_id=' . $agency : ' 1 > 0')
