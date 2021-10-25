@@ -926,7 +926,6 @@ $('#btnPrintSelectedBarcode').click(function () {
     let cargoesDataTable = $('#CargoesTable').DataTable();
     let selectedItems = cargoesDataTable.rows({selected: true}).data();
 
-
     if (selectedItems.length == 0) {
         ToastMessage('error', 'Lütfen barkodu basılacak kargoları seçin!', 'Hata!')
         return false;
@@ -973,7 +972,9 @@ $('#btnPrintSelectedBarcode').click(function () {
     }).done(function (response) {
 
 
-        $.each(response, function (key, cargoX) {
+        let total_part_count = response.total_count;
+
+        $.each(response.cargoes, function (key, cargoX) {
 
             let cargo = cargoX.cargo;
             let sender = cargoX.sender;
@@ -996,26 +997,27 @@ $('#btnPrintSelectedBarcode').click(function () {
             else if (cargo.payment_type == "Gönderici Ödemeli")
                 barcodePaymentType += 'GÖ';
 
-
             let className = "", elementStyle = "", cumhuriyetCargoType = "";
             $.each(part_details, function (key, val) {
 
                 preparedBarcodCount++;
 
-                if (loop == 1)
-                    className = "barcode-row-last-child";
+                // if (preparedBarcodCount == 1)
+                //     className = "barcode-row-last-child";
 
-                else if (loop == preparedBarcodCount)
-                    className = "barcode-row-first-child";
+                // else if (loop == preparedBarcodCount)
+                //     className = "barcode-row-first-child";
 
+
+                if (preparedBarcodCount != total_part_count)
+                    elementStyle = "margin-top: 90px;";
                 else
-                    className = "";
+                    elementStyle = "";
 
-                // if (loop > 1)
-                //     if (loop != preparedBarcodCount)
-                //         elementStyle = "margin-top: 90px;";
-                //     else
-                //         elementStyle = "";
+                // if (preparedBarcodCount > 1)
+                //     elementStyle = "margin-top: 90px;";
+                // else
+                //     elementStyle = "";
 
                 if (cargo.collectible == 1)
                     cumhuriyetCargoType = "TAHSİLATLI";

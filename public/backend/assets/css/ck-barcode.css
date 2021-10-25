@@ -32,7 +32,7 @@ td.cargoInfo {
 
 .barcodeArrivalTC {
     margin-top: 1px;
-    margin-bottom: 1px;
+    margin-bottom: 5px;
     font-size: 2rem;
     color: #000 !important;
     text-align: left;
@@ -88,7 +88,6 @@ svg.barcode {
 
 .color-black {
     color: #000 !important;
-
     transform: rotate(7deg);
     -ms-transform: rotate(270deg);
     -moz-transform: rotate(270deg);
@@ -96,4 +95,3 @@ svg.barcode {
     -o-transform: rotate(270deg);
 }
 
-}

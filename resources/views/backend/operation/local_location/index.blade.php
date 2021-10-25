@@ -181,7 +181,6 @@
                 $('#cb-select-all-ab').prop('checked', false);
             }
 
-
         });
 
 

@@ -834,6 +834,7 @@ class MainCargoController extends Controller
                 break;
 
             case 'CreateCargo':
+
                 $rules = [
                     'gondericiCariKodu' => 'required',
                     'aliciCariKodu' => 'required',
@@ -1721,6 +1722,7 @@ class MainCargoController extends Controller
                 $idsArray = explode(',', $idsString);
 
                 $cargoes = [];
+                $CargoPartCount = 0;
 
                 foreach ($idsArray as $key) {
 
@@ -1795,6 +1797,10 @@ class MainCargoController extends Controller
                         ->where('tracking_no', str_replace(' ', '', $data['cargo']->tracking_no))
                         ->get();
 
+                    $CargoPartCount += DB::table('cargo_part_details')
+                        ->where('tracking_no', str_replace(' ', '', $data['cargo']->tracking_no))
+                        ->count();
+
                     $newPartDetais = [];
                     foreach ($data['part_details'] as $key)
                         $newPartDetais[] = [
@@ -1822,8 +1828,9 @@ class MainCargoController extends Controller
                     $cargoes[] = $data;
                 }
 
+
                 return response()
-                    ->json($cargoes, 200);
+                    ->json(['cargoes' => $cargoes, 'total_count' => $CargoPartCount], 200);
 
                 break;
 

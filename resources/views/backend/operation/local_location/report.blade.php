@@ -249,7 +249,6 @@
 
             </div>
 
-
             <div class="row">
 
                 <div class="col-md-6 col-lg-6">
@@ -466,9 +465,17 @@
                     <div class="mb-3 card">
                         <div class="tabs-lg-alternate card-header">
                             <ul class="nav nav-justified">
-                                <li class="nav-item">
 
-                                    <a data-toggle="tab" href="#idle-districts" class="nav-link show active">
+                                <li class="nav-item">
+                                    <a data-toggle="tab" href="#idle-agiencies-region" class="nav-link showa ctive">
+                                        <div class="widget-number">Acente Lokasyon Statü</div>
+                                        <div class="tab-subheading">Acentelerin mahalli lokasyon çalılma statüleri.
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a data-toggle="tab" href="#idle-districts" class="nav-link show ">
                                         <div class="widget-number">CK Mahalli Lokasyon</div>
                                         <div class="tab-subheading">
                                             Türkiye geneli mahalleler ve AT-DIŞI, Ana Bölge, Mobil Bölge
@@ -476,28 +483,90 @@
                                         </div>
                                     </a>
                                 </li>
-{{--                                <li class="nav-item">--}}
-                                {{--                                    <a data-toggle="tab" href="#idle-agiencies-region" class="nav-link show">--}}
-                                {{--                                        <div class="widget-number">Verilmeyen Acenteler</div>--}}
-                                {{--                                        <div class="tab-subheading">Herhangi bir bölge müdürlüğüne bağlı olmayan--}}
-                                {{--                                            acenteler--}}
-                                {{--                                        </div>--}}
-                                {{--                                    </a>--}}
-                                {{--                                </li>--}}
-                                {{--                                <li class="nav-item">--}}
-                                {{--                                    <a data-toggle="tab" href="#idle-agencies-tc" class="nav-link show">--}}
-                                {{--                                        <div class="widget-number text-danger">Aktarması Olmayan Acenteler</div>--}}
-                                {{--                                        <div class="tab-subheading">--}}
-                                {{--                                        <span class="pr-2 opactiy-6">--}}
-                                {{--                                        <i class="fa fa-bullhorn"></i>--}}
-                                {{--                                         </span>Herhangi bir transfer merkezine bağlı olmayan acenteler.--}}
-                                {{--                                        </div>--}}
-                                {{--                                    </a>--}}
-                                {{--                                </li>--}}
+
                             </ul>
                         </div>
                         <div class="tab-content">
-                            <div class="tab-pane show active" id="idle-districts" role="tabpanel">
+                            <div class="tab-pane show active" id="idle-agiencies-region" role="tabpanel">
+                                <div class="card-body">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="a_l_city">İl</label>
+                                                    <select name="" id="a_l_city"
+                                                            class="form-control niko-select-filter form-control-sm">
+                                                        <option value="">Seçiniz</option>
+                                                        @foreach($data['city_names'] as $city)
+                                                            <option id="{{$city->id}}" data="{{$city->city_name}}"
+                                                                    value="{{$city->id}}">{{$city->city_name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="a_l_district">İlçe</label>
+                                                    <select disabled name="" id="a_l_district"
+                                                            class="form-control niko-select-filter form-control-sm">
+                                                        <option value="">Seçiniz</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="a_l_agency_name">Acente</label>
+                                                    <input type="text" class="form-control change-filter form-control-sm"
+                                                           id="a_l_agency_name">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="area_type">Lokasyon Yapıldı</label>
+                                                    <select name="" id="a_l_location_done"
+                                                            class="form-control niko-select-filter form-control-sm">
+                                                        <option value="">Tümü</option>
+                                                        <option value="1">Evet</option>
+                                                        <option value="0">Hayır</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <table id="AgencyLocationStatus"
+                                               style="white-space: nowrap; "
+                                               class="table table-hover table-striped  table-bordered TableNoPadding NikolasDataTable IdleAgenciesRegion table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>İl</th>
+                                                <th>İlçe</th>
+                                                <th>Acente İsmi</th>
+                                                <th>Dağıtım Alanı</th>
+                                                <th>Şube Kodu</th>
+                                                <th>Detay</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                <th>İl</th>
+                                                <th>İlçe</th>
+                                                <th>Acente İsmi</th>
+                                                <th>Şube Kodu</th>
+                                                <th>Dağıtım Alanı</th>
+                                                <th>Detay</th>
+                                            </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane show" id="idle-districts" role="tabpanel">
                                 <div class="card-body">
                                     <div class="card-body">
                                         <div class="row">
@@ -579,72 +648,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane show" id="idle-agiencies-region" role="tabpanel">
-                                <div class="card-body">
-                                    <div class="card-body">
-                                        <table id="TableRolePermissions"
-                                               style="white-space: nowrap; "
-                                               class="table table-hover table-striped  table-bordered TableNoPadding NikolasDataTable IdleAgenciesRegion table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>İl</th>
-                                                <th>İlçe</th>
-                                                <th>Acente İsmi</th>
-                                                <th>Acente Sahibi</th>
-                                                <th>Bölge</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                            <tfoot>
-                                            <tr>
-                                                <th>İl</th>
-                                                <th>İlçe</th>
-                                                <th>Acente İsmi</th>
-                                                <th>Acente Sahibi</th>
-                                                <th>Bölge</th>
-                                            </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane show" id="idle-agencies-tc" role="tabpanel">
-                                <div class="card-body">
-                                    <div class="card-body">
-                                        <div class="card-body">
-                                            <table id="TableRolePermissions"
-                                                   style="white-space: nowrap; "
-                                                   class="table table-hover table-striped  table-bordered TableNoPadding NikolasDataTable IdleAgenciesTC"
-                                                   role="grid">
-                                                <thead>
-
-                                                <tr>
-                                                    <th>İl</th>
-                                                    <th>İlçe</th>
-                                                    <th>Acente İsmi</th>
-                                                    <th>Acente Sahibi</th>
-                                                    <th>Bağlı Old. Aktarma</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                </tbody>
-                                                <tfoot>
-                                                <tr>
-                                                    <th>İl</th>
-                                                    <th>İlçe</th>
-                                                    <th>Acente İsmi</th>
-                                                    <th>Acente Sahibi</th>
-                                                    <th>Bağlı Old. Aktarma</th>
-                                                </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -659,6 +662,10 @@
             <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
             <script src="/backend/assets/scripts/circle-progress.min.js"></script>
             <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
+            <script src="/backend/assets/scripts/jquery.blockUI.js"></script>
+            <script src="/backend/assets/scripts/city-districts-point.js"></script>
+
+
             <script>
                 var options777 = {
                     chart: {
@@ -1134,7 +1141,6 @@
             </script>
 
             <script>
-
                 $(document).ready(function () {
 
                     $('#district').prop('disabled', true)
@@ -1259,8 +1265,8 @@
                         }
                     ],
                     responsive: false,
-                    processing: true,
-                    serverSide: true,
+                    processing: false,
+                    serverSide: false,
                     ajax: {
                         url: '{!! route('location.GetTrGeneralLocations') !!}',
                         data: function (d) {
@@ -1286,6 +1292,92 @@
                     scrollY: false
                 });
 
+                var oTable = $('.NikolasDataTable#AgencyLocationStatus').DataTable({
+                    pageLength: 10,
+                    lengthMenu: [
+                        [10, 25, 50, 100, 250, 500, -1],
+                        ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
+                    ],
+                    language: {
+                        "sDecimal": ",",
+                        "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
+                        "sInfo": "_TOTAL_ kayıttan _START_ - _END_ kayıtlar gösteriliyor",
+                        "sInfoEmpty": "Kayıt yok",
+                        "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
+                        "sInfoPostFix": "",
+                        "sInfoThousands": ".",
+                        "sLengthMenu": "_MENU_",
+                        "sLoadingRecords": "Yükleniyor...",
+                        "sProcessing": "<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>",
+                        "sSearch": "",
+                        "sZeroRecords": "Eşleşen kayıt bulunamadı",
+                        "oPaginate": {
+                            "sFirst": "İlk",
+                            "sLast": "Son",
+                            "sNext": "Sonraki",
+                            "sPrevious": "Önceki"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": artan sütun sıralamasını aktifleştir",
+                            "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
+                        },
+                        "select": {
+                            "rows": {
+                                "_": "%d kayıt seçildi",
+                                "0": "",
+                                "1": "1 kayıt seçildi"
+                            }
+                        }
+                    },
+                    dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col"f>>rtip',
+                    buttons: [
+                        'copy',
+                        'pdf',
+                        'csv',
+                        'print',
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3, 4]
+                            },
+                            title: "CK-Acente Lokasyon Statü - {{date('d/m/Y H:i')}}"
+                        },
+                        {
+                            text: 'Yenile',
+                            action: function (e, dt, node, config) {
+                                dt.ajax.reload();
+                            }
+                        }
+                    ],
+                    responsive: false,
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: '{!! route('location.getAgencyLocationStatus') !!}',
+                        data: function (d) {
+                            d.city = $('#a_l_city').val();
+                            d.district = $('#a_l_district').val();
+                            d.agency = $('#a_l_agency_name').val();
+                            d.location_done = $('#a_l_location_done').val();
+                        },
+                        error: function (xhr, error, code) {
+                            ajaxError(xhr.status);
+                        },
+                        complete: function () {
+                            SnackMessage('Tamamlandı!', 'info', 'bl');
+                        }
+                    },
+                    columns: [
+                        {data: 'city', name: 'city'},
+                        {data: 'district', name: 'district'},
+                        {data: 'agency_name', name: 'agency_name'},
+                        {data: 'location_count', name: 'location_count'},
+                        {data: 'agency_code', name: 'agency_code'},
+                        {data: 'details', name: 'details'},
+                    ],
+                    scrollY: false
+                });
+
                 function drawDT() {
                     oTable.draw();
                 }
@@ -1295,9 +1387,129 @@
                 }, 1000));
 
 
+                $('.change-filter').keyup(delay(function (e) {
+                    drawDT();
+                }, 1000));
+
+
                 $(document).ready(function () {
                     $('#city').trigger('change');
                 });
 
+                $(document).on('change', '#a_l_city', function () {
+                    getDistricts('#a_l_city', '#a_l_district');
+                });
+
+                $(document).on('click', '.location-detail', function () {
+                    let agencyID = $(this).attr('agency-id');
+                    $('#ModalAgencyLocation').modal();
+
+                    $('#modalBodyAgencyLocation').block({
+                        message: $('<div class="loader mx-auto">\n' +
+                            '                            <div class="ball-grid-pulse">\n' +
+                            '                                <div class="bg-white"></div>\n' +
+                            '                                <div class="bg-white"></div>\n' +
+                            '                                <div class="bg-white"></div>\n' +
+                            '                                <div class="bg-white"></div>\n' +
+                            '                                <div class="bg-white"></div>\n' +
+                            '                                <div class="bg-white"></div>\n' +
+                            '                                <div class="bg-white"></div>\n' +
+                            '                                <div class="bg-white"></div>\n' +
+                            '                                <div class="bg-white"></div>\n' +
+                            '                            </div>\n' +
+                            '                        </div>')
+                    });
+
+                    $('.blockUI.blockMsg.blockElement').css('width', '100%');
+                    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+                    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+                    $.ajax('{{route('location.getAgencyLocations')}}', {
+                        method: 'POST',
+                        data: {
+                            _token: token,
+                            agency_id: agencyID
+                        }
+                    }).done(function (response) {
+
+                        if (response.status == 0)
+                            ToastMessage('error', response.message, 'HATA!');
+                        else if (response.status == 1) {
+
+                            $('#ModalAgencyLocationHeader').text(response.agency);
+
+                            $('#tbodyAgencyLocations').html('');
+
+                            if (response.locations.length == 0)
+                                $('#tbodyAgencyLocations').html('<tr class="text-center"><td colspan="4">Burda hiç veri yok!</td></tr>');
+                            else
+                                $.each(response.locations, function (key, val) {
+                                    $('#tbodyAgencyLocations').append(
+                                        '<tr>' +
+                                        '<td>' + val['city'] + '</td>' +
+                                        '<td>' + val['district'] + '</td>' +
+                                        '<td>' + val['neighborhood'] + '</td>' +
+                                        '<td>' + val['area_type'] + '</td>' +
+                                        '</tr>'
+                                    );
+                                });
+                        }
+
+                    }).error(function (jqXHR, exception) {
+                        ajaxError(jqXHR.status)
+                    }).always(function () {
+                        $('#modalBodyAgencyLocation').unblock();
+                    });
+
+
+                });
             </script>
+    @endsection
+
+
+    @section('modals')
+        <!-- Large modal -->
+            <div class="modal fade" id="ModalAgencyLocation" tabindex="-1" role="dialog"
+                 aria-labelledby="myLargeModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog ">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalAgencyLocationHeader">Lokasyon Bilgileri</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div id="modalBodyAgencyLocation" class="modal-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div style="max-height: 400px; overflow-y: auto;" class="cont">
+                                        <table class="table table-bordered table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>İl</th>
+                                                <th>İlçe</th>
+                                                <th>Mahalle</th>
+                                                <th>Bölge Tipi</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="tbodyAgencyLocations">
+                                            <tr class="text-center">
+                                                <td colspan="4">Burda hiç veri yok!</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">İptal Et</button>
+                            <button type="button" class="btn btn-primary" id="SaveBtn">Kaydet</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 @endsection

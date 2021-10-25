@@ -249,37 +249,84 @@ class LocalLocationController extends Controller
 
     public function GetTrGeneralLocations(Request $request)
     {
+//        $city = $request->city;
+//        $district = $request->district;
+//        $agency = $request->agency;
+//        $area_type = $request->area_type;
+//
+//        $city = $city ? Cities::find($city) : false;
+//        $district = $district ? Districts::find($district) : false;
+//
+//        $data = DB::table('view_tr_general_local_location')
+//            ->whereRaw($agency ? 'agency_id=' . $agency : ' 1 > 0')
+//            ->whereRaw($city ? "city_name like '%" . $city->city_name . "%'" : ' 1 > 0')
+//            ->whereRaw($district ? "district_name like '%" . $district->district_name . "%'" : ' 1 > 0')
+//            ->whereRaw($area_type ? "area_type like '%" . $area_type . "%'" : ' 1 > 0');
+//
+//        return DataTables::of($data)
+//            ->editColumn('area_type', function ($key) {
+//                if ($key->area_type == 'AT-DIŞI')
+//                    return '<b class="text-danger">' . $key->area_type . '</b>';
+//                else if ($key->area_type == 'MB')
+//                    return '<b class="text-info">Mobil Bölge</b>';
+//                else if ($key->area_type == 'AB')
+//                    return '<b class="text-success">Ana Bölge</b>';
+//            })
+//            ->editColumn('agency', function ($key) {
+//                if ($key->agency_id != '') {
+//                    $agency = Agencies::find($key->agency_id);
+//                    return '<b class="text-success">' . $agency->city . ' - ' . $agency->agency_name . '</b>';
+//                }
+//            })
+//            ->rawColumns(['area_type', 'agency'])
+//            ->make(true);
+    }
+
+    public function getAgencyLocationStatus(Request $request)
+    {
         $city = $request->city;
         $district = $request->district;
         $agency = $request->agency;
-        $area_type = $request->area_type;
+        $locationdone = $request->location_done;
 
         $city = $city ? Cities::find($city) : false;
         $district = $district ? Districts::find($district) : false;
 
-        $data = DB::table('view_tr_general_local_location')
-            ->whereRaw($agency ? 'agency_id=' . $agency : ' 1 > 0')
-            ->whereRaw($city ? "city_name like '%" . $city->city_name . "%'" : ' 1 > 0')
-            ->whereRaw($district ? "district_name like '%" . $district->district_name . "%'" : ' 1 > 0')
-            ->whereRaw($area_type ? "area_type like '%" . $area_type . "%'" : ' 1 > 0');
+        $data = DB::table('view_agency_location_counts')
+//            ->whereRaw($agency ? 'agency_id=' . $agency : ' 1 > 0')
+            ->whereRaw($city ? "city like '%" . $city->city_name . "%'" : ' 1 > 0')
+            ->whereRaw($district ? "district like '%" . $district->district_name . "%'" : ' 1 > 0')
+            ->whereRaw($locationdone == '0' ? 'location_count = 0' : ' 1 > 0')
+            ->whereRaw($locationdone == '1' ? 'location_count > 0' : ' 1 > 0')
+            ->whereRaw($agency ? "agency_name like '%" . $agency . "%'" : ' 1 > 0');
 
         return DataTables::of($data)
-            ->editColumn('area_type', function ($key) {
-                if ($key->area_type == 'AT-DIŞI')
-                    return '<b class="text-danger">' . $key->area_type . '</b>';
-                else if ($key->area_type == 'MB')
-                    return '<b class="text-info">Mobil Bölge</b>';
-                else if ($key->area_type == 'AB')
-                    return '<b class="text-success">Ana Bölge</b>';
+            ->editColumn('details', function ($data) {
+                return '<button agency-id="' . $data->id . '" class="btn btn-danger location-detail btn-sm">Detay</button>';
             })
-            ->editColumn('agency', function ($key) {
-                if ($key->agency_id != '') {
-                    $agency = Agencies::find($key->agency_id);
-                    return '<b class="text-success">' . $agency->city . ' - ' . $agency->agency_name . '</b>';
-                }
-            })
-            ->rawColumns(['area_type', 'agency'])
+            ->rawColumns(['area_type', 'details'])
             ->make(true);
+    }
+
+    public function getAgencyLocations(Request $request)
+    {
+        $agency = Agencies::find($request->agency_id);
+
+        if ($agency == null)
+            return response()
+                ->json(['status' => 0, 'message' => 'Acente Bulunamadı!'], 200);
+
+        $locations = DB::table('local_locations')
+            ->where('agency_code', $agency->id)
+            ->get();
+
+
+        return response()
+            ->json([
+                'status' => 1,
+                'locations' => $locations,
+                'agency' => '#' . $agency->agency_code . ' - ' . $agency->agency_name . ' ŞUBE'
+            ], 200);
     }
 
 }
