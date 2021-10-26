@@ -467,7 +467,7 @@
                             <ul class="nav nav-justified">
 
                                 <li class="nav-item">
-                                    <a data-toggle="tab" href="#idle-agiencies-region" class="nav-link showa ctive">
+                                    <a data-toggle="tab" href="#idle-agiencies-region" class="nav-link showa active">
                                         <div class="widget-number">Acente Lokasyon Statü</div>
                                         <div class="tab-subheading">Acentelerin mahalli lokasyon çalılma statüleri.
                                         </div>

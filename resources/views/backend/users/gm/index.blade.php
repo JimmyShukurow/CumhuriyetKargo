@@ -341,6 +341,7 @@
                 cache: false
             }).done(function (response) {
                 var user = response.user;
+                var creator = response.creator;
 
                 $('#agencyName').html(user.name_surname + " (" + user.display_name + ")");
                 $('#agencyCityDistrict').html(user.branch_city + '/' + user.branch_district + ' - ' + user.branch_name + ' ' + user.user_type);
@@ -350,6 +351,7 @@
                 $('#general-status').html(user.status == 0 ? 'Pasif' : 'Aktif');
                 $('#statusDescription').html(user.status_description);
                 $('#regDate').html(user.created_at);
+                $('#creatorUserInfo').html('<b class="text-alternate">#' + creator.id + '</b> ' + creator.name_surname + ' (<b class="text-primary">' + creator.display_name + '</b>)');
 
                 var counter = 0;
                 array = [];
@@ -636,6 +638,10 @@
                                                 <tr>
                                                     <td class="static">Kayıt Tarihi</td>
                                                     <td id="regDate"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Oluşturan Kullanıcı</td>
+                                                    <td class="font-weight-bold" id="creatorUserInfo"></td>
                                                 </tr>
                                                 </tbody>
                                             </table>

@@ -2264,7 +2264,7 @@ class MainCargoController extends Controller
         $receiverCurrentCode = str_replace([' ', '_'], ['', ''], $request->receiverCurrentCode);
         $currentName = $request->senderName;
         $receiverCity = $request->receiverCity;
-        $receiverName = $request->receiverName;
+        $receiverName = tr_strtoupper($request->receiverName);
         $receiverDistrict = $request->receiverDistrict;
         $receiverPhone = $request->receiverPhone;
         $currentDistrict = $request->senderDistrict;

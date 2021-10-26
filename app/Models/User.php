@@ -29,7 +29,9 @@ class User extends Authenticatable
         'user_image',
         'agency_code',
         'tc_code',
-        'user_type'
+        'user_type',
+        'creator_user',
+        'deleting_user'
     ];
 
     /**
@@ -51,7 +53,9 @@ class User extends Authenticatable
         'user_image',
         'agency_code',
         'tc_code',
-        'user_type'
+        'user_type',
+        'creator_user',
+        'deleting_user'
     ];
 
     /**
@@ -80,12 +84,12 @@ class User extends Authenticatable
     }
 
 
-    public function authUserToken(){
+    public function authUserToken()
+    {
 
         return $this->hasMany('App\Models\OauthAccessToken');
 
     }
-
 
 
 }

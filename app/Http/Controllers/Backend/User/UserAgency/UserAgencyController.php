@@ -87,14 +87,15 @@ class UserAgencyController extends Controller
             'password' => Hash::make($password),
             'role_id' => $request->role,
             'agency_code' => Auth::user()->agency_code,
-            'user_type' => 'Acente'
+            'user_type' => 'Acente',
+            'creator_user' => Auth::id()
         ]);
 
         if ($insert) {
 
             $smsContent = SmsContent::where('key', 'user_reg')->first();
             $sms = str_replace(['[name_surname]', '[email]', '[password]'], [tr_strtoupper($request->name_surname), $email, $password], $smsContent->content);
-            SendSMS($sms, CharacterCleaner($request->phone),'Kullanıcı Kayıt', 'CUMHURIYETK');
+            SendSMS($sms, CharacterCleaner($request->phone), 'Kullanıcı Kayıt', 'CUMHURIYETK');
 
             $properties = array(['Ad Soyad' => tr_strtoupper($request->name_surname), 'E-Posta' => $email, 'Yetki' => $role->display_name]);
             GeneralLog('Kullanıcı oluşturuldu.', $properties);
@@ -198,15 +199,20 @@ class UserAgencyController extends Controller
     public function destroy($id)
     {
         # Control
-        $user = User::where('id', $id)->first();
+        $user = User::where($id);
         if ($user === null || ($user->agency_code != Auth::user()->agency_code) || ($id == Auth::id()))
             return 0;
 
-        $destroy = User::find(intval($id))->delete();
-        if ($destroy) {
-            return 1;
+        $update = User::find($id)
+            ->update(['deleting_user' => Auth::id()]);
+
+        if ($update) {
+            $destroy = User::find(intval($id))->delete();
+            if ($destroy)
+                return 1;
+            else
+                return 0;
         }
-        return 0;
     }
 
     public function agencyPasswordReset($id)

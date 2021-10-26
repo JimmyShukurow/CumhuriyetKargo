@@ -17,22 +17,10 @@
                         </i>
                     </div>
                     <div>Kim Kimdir?
-                        <div class="page-title-subheading">Bu modül üzerinden sistemdeki tüm kullanıcıları
-                            listleyebilir, işlem yapabl irsiniz.
+                        <div class="page-title-subheading">Bu modül üzerinden sisteme kayıtlı tüm <b>Cumhuriyet
+                                Kargo</b>
+                            çalışanlarını görüntüleyebilirsiniz.
                         </div>
-                    </div>
-                </div>
-                <div class="page-title-actions">
-                    <div class="d-inline-block dropdown">
-                        <a href="{{ route('user.gm.AddUser') }}">
-                            <button type="button" aria-haspopup="true" aria-expanded="false"
-                                    class="btn-shadow btn btn-info">
-                                <span class="btn-icon-wrapper pr-2 opacity-7">
-                                    <i class="fa fa-plus fa-w-20"></i>
-                                </span>
-                                Yeni Kullanıcı Ekle
-                            </button>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -323,12 +311,17 @@
                 $('#email').html(user.email);
                 $('td#name_surname').html(user.name_surname);
                 $('#authority').html(user.display_name);
-                $('td#phone').html(director.phone);
-                $('#district').html(region.name + ' BÖLGE MÜDÜRLÜĞÜ');
+
+                if (director != null) {
+                    $('td#phone').html(director.phone);
+                    $('#dependency').html(director.name_surname + " (" + director.display_name + ")");
+                }
+
+                if (region != null)
+                    $('#district').html(region.name + ' BÖLGE MÜDÜRLÜĞÜ');
 
                 let fakeTitle = user.user_type == 'Aktarma' ? 'TRANSFER MERKEZİ' : 'ACENTE';
 
-                $('#dependency').html(director.name_surname + " (" + director.display_name + ")");
                 $('#place').html(user.branch_city + '/' + user.branch_district + ' - ' + user.branch_name + ' ' + fakeTitle);
 
                 var counter = 0;

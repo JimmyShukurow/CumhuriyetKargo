@@ -87,7 +87,8 @@ class UserTCController extends Controller
             'password' => Hash::make($password),
             'role_id' => $request->role,
             'tc_code' => Auth::user()->tc_code,
-            'user_type' => 'Aktarma'
+            'user_type' => 'Aktarma',
+            'creator_user' => Auth::id()
         ]);
 
         if ($insert) {
@@ -198,15 +199,21 @@ class UserTCController extends Controller
     public function destroy($id)
     {
         # Control
-        $user = User::where('id', $id)->first();
+        $user = User::find($id);
         if ($user === null || ($user->tc_code != Auth::user()->tc_code) || ($id == Auth::id()))
             return 0;
 
-        $destroy = User::find(intval($id))->delete();
-        if ($destroy) {
-            return 1;
+        $update = User::find($id)
+            ->update(['deleting_user' => Auth::id()]);
+
+        if ($update) {
+
+            $destroy = User::find(intval($id))->delete();
+            if ($destroy)
+                return 1;
+            else
+                return 0;
         }
-        return 0;
     }
 
     public function tcPasswordReset($id)

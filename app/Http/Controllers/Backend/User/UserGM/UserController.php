@@ -45,20 +45,14 @@ class UserController extends Controller
     {
         $status = $request->status == 'Aktif' ? '1' : '0';
 
-        if (($request->name_surname && $request->name_surname != '') || ($request->agency && $request->agency != '')
-            || ($request->tc && $request->tc != '') || ($request->role && $request->role != '') || ($request->status && $request->status != '')
-            || ($request->user_type && $request->user_type != '')) {
-            $users = DB::table('view_users_all_info')
-                ->whereRaw($request->filled('agency') ? 'agency_code=' . $request->agency : '1 > 0')
-                ->whereRaw($request->filled('tc') ? 'tc_code=' . $request->tc : '1 > 0')
-                ->whereRaw($request->filled('role') ? 'role_id=' . $request->role : '1 > 0')
-                ->whereRaw($request->filled('status') ? "view_users_all_info.`status`='" . $status . "'" : '1 > 0')
-                ->whereRaw($request->filled('user_type') ? "user_type='" . $request->user_type . "'" : '1 > 0')
-                ->whereRaw($request->filled('name_surname') ? "name_surname like '%" . $request->name_surname . "%'" : '1 > 0');
-        } else {
-            $users = DB::table('view_users_all_info')
-                ->get();
-        }
+        $users = DB::table('view_users_all_info')
+            ->whereRaw($request->agency ? 'agency_code=' . $request->agency : '1 > 0')
+            ->whereRaw($request->tc ? 'tc_code=' . $request->tc : '1 > 0')
+            ->whereRaw($request->role ? 'role_id=' . $request->role : '1 > 0')
+            ->whereRaw($request->status ? "view_users_all_info.`status`='" . $status . "'" : '1 > 0')
+            ->whereRaw($request->user_type ? "user_type='" . $request->user_type . "'" : '1 > 0')
+            ->whereRaw($request->name_surname ? "name_surname like '%" . $request->name_surname . "%'" : '1 > 0');
+
         return datatables()->of($users)
             ->setRowId(function ($user) {
                 return "user-item-" . $user->id;
@@ -120,7 +114,8 @@ class UserController extends Controller
             'role_id' => $request->role,
             'agency_code' => $agency,
             'tc_code' => $tc,
-            'user_type' => $type
+            'user_type' => $type,
+            'creator_user' => Auth::id()
         ]);
 
         if ($insert) {
@@ -158,6 +153,14 @@ class UserController extends Controller
             ->limit(30)
             ->orderBy('created_at', 'desc')
             ->get();
+
+        $user = DB::table('users')
+            ->where('id', $data['user']->id)
+            ->first();
+
+        $data['creator'] = DB::table('view_users_all_info')
+            ->where('id', $user->creator_user)
+            ->first();
 
         return response()->json($data, 200);
 
@@ -260,11 +263,16 @@ class UserController extends Controller
 
     public function destroyUser(Request $request)
     {
-        $destroy = User::find(intval($request->destroy_id))->delete();
-        if ($destroy) {
-            return 1;
+        $update = User::find($request->destroy_id)
+            ->update(['deleting_user' => Auth::id()]);
+
+        if ($update) {
+            $destroy = User::find(intval($request->destroy_id))->delete();
+            if ($destroy)
+                return 1;
+            else
+                return 0;
         }
-        return 0;
     }
 
     public function userLogs()

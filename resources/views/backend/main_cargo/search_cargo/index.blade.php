@@ -72,19 +72,13 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label for="receiverCity">Kargo Tipi:</label>
+                            <label for="cargoType">Kargo Tipi:</label>
                             <select id="cargoType"
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
-                                <option value="Dosya">Dosya</option>
-                                <option value="Mi">Mi</option>
-                                <option value="Paket">Paket</option>
-                                <option value="Koli">Koli</option>
-                                <option value="Çuval">Çuval</option>
-                                <option value="Rulo">Rulo</option>
-                                <option value="Palet">Palet</option>
-                                <option value="Sandık">Sandık</option>
-                                <option value="Valiz">Valiz</option>
+                                @foreach(allCargoTypes() as $key)
+                                    <option value="{{$key}}">{{$key}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">

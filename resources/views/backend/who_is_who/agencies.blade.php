@@ -274,7 +274,13 @@
         $(document).on('click', '.agency-detail', function () {
             $('#ModalUserDetail').modal();
 
-            $('#ModalBodyUserDetail.modal-body').block({
+            detailsID = $(this).prop('id');
+            agencyPost($(this).prop('id'));
+        });
+
+
+        function agencyPost(agency_id) {
+            $('#modalBodyAgencyDetail').block({
                 message: $('<div class="loader mx-auto">\n' +
                     '                            <div class="ball-pulse-sync">\n' +
                     '                                <div class="bg-warning"></div>\n' +
@@ -287,23 +293,19 @@
             $('.blockUI.blockMsg.blockElement').css('border', '0px');
             $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
-            detailsID = $(this).prop('id');
-            agencyPost($(this).prop('id'));
-        });
+            $('#ModalAgencyDetail').modal();
 
-
-        function agencyPost(agency_id) {
-
-
-            $.post('{{ route('whois.agencyInfo') }}', {
-                _token: token,
-                agency_id: agency_id
-            }, function (response) {
-
+            $.ajax('{{ route('whois.agencyInfo') }}', {
+                method: 'POST',
+                data: {
+                    _token: token,
+                    agency_id: agency_id
+                }
+            }).done(function (response) {
 
                 var employee = response.employees;
 
-                $('#agencyName').html(response.agency[0].agency_name + " ACENTE");
+                $('h5#agencyName').html(response.agency[0].agency_name + " ACENTE");
                 $('#agencyCityDistrict').html(response.agency[0].city + "/" + response.agency[0].district);
 
                 $('#cityDistrict').html(response.agency[0].city + "/" + response.agency[0].district);
@@ -318,6 +320,7 @@
                 $('#agencyCode').html(response.agency[0].agency_code);
                 $('#updatedDate').html(response.agency[0].updated_at);
 
+                $('#tbodyEmployees').html('');
                 if (employee.length == 0) {
                     $('#tbodyEmployees').append(
                         '<tr>' +
@@ -326,19 +329,28 @@
                     );
                 } else {
                     $.each(employee, function (key, value) {
+
+                        let email = value['email'];
+                        let character = email.indexOf('@');
+                        email = email.substring(0, character) + "@cumh...com.tr";
+
+
                         $('#tbodyEmployees').append(
                             '<tr>' +
                             '<td>' + (value['name_surname']) + '</td>' +
-                            '<td>' + (value['email']) + '</td>' +
+                            '<td title="' + (value['email']) + '">' + (email) + '</td>' +
                             '<td>' + (value['display_name']) + '</td>' +
                             '<td>' + (value['phone']) + '</td>' +
                             +'</tr>'
                         );
                     });
                 }
+            }).error(function (jqXHR, exception) {
+                ajaxError(jqXHR.status)
+            }).always(function () {
+                $('#modalBodyAgencyDetail').unblock();
             });
 
-            $('#ModalAgencyDetail').modal();
         }
 
     </script>
@@ -356,7 +368,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div id="modalBodyAgencyDetail" class="modal-body">
 
                     {{-- CARD START --}}
                     <div class="col-md-12">
@@ -448,9 +460,9 @@
 
                                         <h4 class="mt-3">Acente Çalışanları</h4>
 
-                                        <div style="overflow-x: scroll" class="cont">
+                                        <div style="overflow: auto; max-height: 150px;" class="cont">
                                             <table style="white-space: nowrap" id="TableEmployees"
-                                                   class="TableNoPadding table table-striped mt-3">
+                                                   class="Table20Padding  table table-bordered table-striped mt-3">
                                                 <thead>
                                                 <tr>
                                                     <th>Ad Soyad</th>

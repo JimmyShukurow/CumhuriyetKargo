@@ -726,4 +726,10 @@ function dateFormatForJsonOutput($date)
     return $date;
 }
 
+function allCargoTypes()
+{
+    $CargoTypes = ['Dosya', 'Mi', 'Paket', 'Koli', 'Çuval', 'Rulo', 'Palet', 'Sandık', 'Valiz'];
+    return $CargoTypes;
+}
+
 

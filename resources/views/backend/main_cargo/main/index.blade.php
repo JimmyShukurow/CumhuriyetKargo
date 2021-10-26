@@ -275,8 +275,8 @@
                                 <select name="cargoType" id="cargoType"
                                         class="form-control form-control-sm niko-select-filter">
                                     <option value="">Seçiniz</option>
-                                    @foreach($data['cargo_types'] as $key)
-                                        <option value="{{$key->cargo_type}}">{{$key->cargo_type}}</option>
+                                    @foreach(allCargoTypes() as $key)
+                                        <option value="{{$key}}">{{$key}}</option>
                                     @endforeach
                                 </select>
                             </div>
