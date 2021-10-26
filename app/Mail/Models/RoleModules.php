@@ -11,7 +11,7 @@ class RoleModules extends Model
     use HasFactory, LogsActivity;
 
     protected $fillable = ['role_id', 'sub_module_id'];
-    protected $logAttribute = ['role_id', 'sub_module_id'];
+    protected static $logAttributes = ['role_id', 'sub_module_id'];
     protected $table = 'role_modules';
 
     public function getDescriptionForEvent(string $eventName): string

@@ -457,7 +457,6 @@
                     </div>
                 </div>
 
-
             </div>
 
             <div class="row">
@@ -518,7 +517,8 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="a_l_agency_name">Acente</label>
-                                                    <input type="text" class="form-control change-filter form-control-sm"
+                                                    <input type="text"
+                                                           class="form-control change-filter form-control-sm"
                                                            id="a_l_agency_name">
                                                 </div>
                                             </div>
@@ -1106,15 +1106,14 @@
 
 
                     $('.circle-at-disi-mahalleler').circleProgress({
-                        value: {{ '.' .round(($data['at_out_districts']  / $data['total_districts']) * 100, 0) }},
+                        value: {{ '.' .round(($data['total_not_local_locations']  / $data['total_neighborhood']) * 100, 0) }},
                         size: 46,
                         lineCap: 'round',
                         fill: {color: '#d92550'}
 
                     }).on('circle-animation-progress', function (event, progress, stepValue) {
-                        $(this).find('small').html('<span>%' + {{ round(($data['at_out_districts']  / $data['total_districts']) * 100, 0) }} + '<span>');
+                        $(this).find('small').html('<span>%' + {{ round(($data['total_not_local_locations']  / $data['total_neighborhood']) * 100, 0) }} + '<span>');
                     });
-
 
                     $('.circle-ab-mahalleler ').circleProgress({
                         value: {{ '.' .round(($data['ab_locations']  / $data['total_local_locations']) * 100, 0) }},
@@ -1276,10 +1275,10 @@
                             d.area_type = $('#area_type').val();
                         },
                         error: function (xhr, error, code) {
-                            ajaxError(xhr.status);
+                            // ajaxError(xhr.status);
                         },
                         complete: function () {
-                            SnackMessage('Tamamlandı!', 'info', 'bl');
+                            SnackMessage('Tamamlandı!', 'danger', 'bl');
                         }
                     },
                     columns: [
@@ -1364,7 +1363,7 @@
                             ajaxError(xhr.status);
                         },
                         complete: function () {
-                            SnackMessage('Tamamlandı!', 'info', 'bl');
+                            SnackMessage('Tamamlandı!', 'danger', 'bl');
                         }
                     },
                     columns: [
@@ -1460,8 +1459,10 @@
                     }).always(function () {
                         $('#modalBodyAgencyLocation').unblock();
                     });
+                });
 
-
+                $(document).ready(function () {
+                    ToastMessage('success', '', 'Türkiye Geneli Mahalli Lokasyon Raporu Görüntülenmeye Hazır!');
                 });
             </script>
     @endsection

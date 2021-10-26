@@ -70,7 +70,7 @@ class TcCars extends Model
         'sofor_yakini_ikametgah_belgesi',
         'creator_id'
     ];
-    protected $logAttributes = [
+    protected static $logAttributes = [
         'plaka',
         'marka',
         'model',

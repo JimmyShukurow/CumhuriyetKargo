@@ -86,9 +86,7 @@ class User extends Authenticatable
 
     public function authUserToken()
     {
-
         return $this->hasMany('App\Models\OauthAccessToken');
-
     }
 
 

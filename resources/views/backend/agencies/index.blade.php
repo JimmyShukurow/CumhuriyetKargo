@@ -155,7 +155,7 @@
                     {data: 'created_at', name: 'created_at'},
                     {data: 'edit', name: 'edit'},
                 ],
-                scrollY: false
+                scrollY: "500px",
             });
         });
 
