@@ -162,7 +162,8 @@ class UserController extends Controller
             ->where('id', $user->creator_user)
             ->first();
 
-        return response()->json($data, 200);
+        return response()
+            ->json($data, 200);
 
     }
 

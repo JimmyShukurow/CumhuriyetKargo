@@ -320,7 +320,6 @@ class LocalLocationController extends Controller
             ->where('agency_code', $agency->id)
             ->get();
 
-
         return response()
             ->json([
                 'status' => 1,
@@ -328,5 +327,4 @@ class LocalLocationController extends Controller
                 'agency' => '#' . $agency->agency_code . ' - ' . $agency->agency_name . ' ŞUBE'
             ], 200);
     }
-
 }

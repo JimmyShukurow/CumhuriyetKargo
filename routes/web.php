@@ -26,6 +26,7 @@ use App\Http\Controllers\Backend\Operation\LocalLocationController;
 use App\Http\Controllers\Backend\Operation\VariousController;
 use App\Http\Controllers\Backend\WhoIs\WhoIsController;
 use App\Http\Controllers\Backend\ItAndNotifications\CargoCancellationController;
+use App\Http\Controllers\Backend\OfficialReports\OfficialReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,10 +97,13 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
                 ->name('setCargoCancellationApplicationResult');
             Route::post('PageRowCount', [CargoCancellationController::class, 'pageRowCount'])
                 ->name('pageRowCount');
-
             Route::post('BackupCargo', [CargoCancellationController::class, 'backupCargo'])
                 ->name('backupCargo');
         });
+    });
+
+    Route::group(['prefix' => 'OfficialReport', 'as' => 'OfficialReport.'], function () {
+        Route::get('HTF', [OfficialReportController::class, 'createHTF'])->name('createHTF');
     });
 
 

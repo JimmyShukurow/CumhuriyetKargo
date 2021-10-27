@@ -4,6 +4,8 @@
 
 .labelTrackingNo {
     font-size: 0.8rem;
+    text-align: right;
+    margin-bottom: 6px !important;
 }
 
 .barcodeCargoTotalPrice {
@@ -95,3 +97,13 @@ svg.barcode {
     -o-transform: rotate(270deg);
 }
 
+.invoiceNumber {
+    font-size: 35px;
+    text-align: right;
+}
+
+.barcodePaymentType {
+    display: inline;
+    float: left;
+    margin-top: 15px !important;
+}

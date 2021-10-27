@@ -155,7 +155,7 @@
                                     <button id="btnRefreshMainCargoPage"
                                             class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success">
                                         <i class="lnr-sync text-success opacity-7 btn-icon-wrapper mb-2"> </i>
-                                        Yenile
+                                        YENİLE
                                     </button>
                                 </div>
 
@@ -164,7 +164,7 @@
                                         <button id="btnNewCargo"
                                                 class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-info">
                                             <i class="lnr-plus-circle text-info opacity-7 btn-icon-wrapper mb-2"> </i>
-                                            Yeni Kargo
+                                            YENİ KARGO
                                         </button>
                                     </a>
                                 </div>
@@ -173,7 +173,7 @@
                                     <button id="btnExportExcel"
                                             class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-warning">
                                         <i class="fas fa-file-excel text-warning opacity-7 btn-icon-wrapper mb-2"> </i>
-                                        Excele Aktar
+                                        EXCEL'E AKTAR
                                     </button>
                                 </div>
 
@@ -181,21 +181,46 @@
                                     <button id="btnPrintSelectedBarcode"
                                             class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-alternate">
                                         <i class="lnr-printer text-alternate opacity-7 btn-icon-wrapper mb-2"> </i>
-                                        Yazdır
+                                        YAZDIR
                                     </button>
                                 </div>
                                 <div class="p-2 col-lg-2 col-sm-4 col-xs-6">
                                     <button
-                                        class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success">
-                                        <i class="lnr-pencil text-success opacity-7 btn-icon-wrapper mb-2"> </i>
-                                        Kargo Düzenle
+                                        aria-haspopup="true" aria-expanded="false"
+                                        data-toggle="dropdown"
+                                        class="dropdown-toggle  btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-primary">
+                                        <i class="pe-7s-note2 text-primary opacity-7 btn-icon-wrapper mb-2"> </i>
+                                        TUTANAK
                                     </button>
+
+                                    <div tabindex="-1" role="menu" aria-hidden="true"
+                                         class="dropdown-menu-hover-link dropdown-menu">
+                                        <h6 tabindex="-1" class="dropdown-header">Tutanak Oluştur</h6>
+
+                                        <a href="{{route('OfficialReport.createHTF')}}"
+                                           target="popup"
+                                           onclick="window.open('{{route('OfficialReport.createHTF')}}','popup','width=700,height=700'); return false;">
+                                            <button type="button"
+                                                    tabindex="0" class="dropdown-item">
+                                                <i class="dropdown-icon pe-7s-news-paper print-all-barcodes"></i>
+                                                <span>HTF (Hasar Tespit Tutanağı)</span>
+                                            </button>
+                                        </a>
+
+                                        <button type="button" tabindex="0" class="dropdown-item">
+                                            <i class="dropdown-icon lnr-file-empty"></i>
+                                            <span>UTF (Uygunsuzluk Tespit Tutanağı)</span>
+                                        </button>
+                                    </div>
+
                                 </div>
+
+
                                 <div class="p-2 col-lg-2 col-sm-4 col-xs-6">
                                     <button
                                         class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
                                         <i class="lnr-cross text-danger opacity-7 btn-icon-wrapper mb-2"> </i>
-                                        Kargo İptal
+                                        KARGO İPTAL
                                     </button>
                                 </div>
                             </div>

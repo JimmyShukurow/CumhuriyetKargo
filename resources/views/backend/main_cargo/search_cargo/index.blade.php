@@ -81,6 +81,7 @@
                                 @endforeach
                             </select>
                         </div>
+
                         <div class="col-md-6">
                             <label for="startDate">Başlangıç Tarih:</label>
                             <input type="datetime-local" id="startDate" value="{{ date('Y-m-d') }}T00:00"

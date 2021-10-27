@@ -1473,6 +1473,9 @@ class MainCargoController extends Controller
                     ## INSERT Cargo Parts END
 
 
+//                    return CharacterCleaner($receiver->gsm);
+//                    return CharacterCleaner($current->gsm);
+
                     ## SMS Transactions
                     if ($insert != false) {
 
