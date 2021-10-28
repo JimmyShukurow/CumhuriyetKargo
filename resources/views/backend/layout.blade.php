@@ -3,6 +3,7 @@
 <!-- This Page Designed By Niko -->
 <!-- =========>>>>>>>>><<<<<<<<<========= -->
 <!-- =========>>>>>>>>><<<<<<<<<========= -->
+
 <!doctype html>
 <html lang="tr">
 @php $user = GetLayoutInformaiton() @endphp

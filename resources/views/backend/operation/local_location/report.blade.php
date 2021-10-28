@@ -1039,6 +1039,7 @@
                         $(this).find('small').html('<span>%' + stepValue.toFixed(2).substring(2) + '<span>');
                     });
 
+
                     $('.circle-mahalle-bazli-dagitim').circleProgress({
                         value: {{ '.'.round(($data['total_local_locations']  / $data['total_neighborhood']) * 100, 0) }},
                         size: 46,
@@ -1046,11 +1047,11 @@
                         fill: {color: '#794C8A'}
 
                     }).on('circle-animation-progress', function (event, progress, stepValue) {
-                        $(this).find('small').html('<span>%' + stepValue.toFixed(2).substring(2) + '<span>');
+                        $(this).find('small').html('<span>%' + {{ round(($data['total_local_locations']  / $data['total_neighborhood']) * 100, 0) }} + '<span>');
                     });
 
                     $('.circle-sehir-bazli-dagitim').circleProgress({
-                        value: {{ '.0' . round(($data['at_cities']  / $data['cities']) * 100, 0)}},
+                        value: {{ '.' . round(($data['at_cities']  / $data['cities']) * 100, 0)}},
                         size: 46,
                         lineCap: 'round',
                         fill: {color: '#d92550'}
