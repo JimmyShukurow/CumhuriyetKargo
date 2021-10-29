@@ -662,7 +662,6 @@
             <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
             <script src="/backend/assets/scripts/circle-progress.min.js"></script>
             <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
-            <script src="/backend/assets/scripts/jquery.blockUI.js"></script>
             <script src="/backend/assets/scripts/city-districts-point.js"></script>
 
 

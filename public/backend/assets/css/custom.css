@@ -272,3 +272,86 @@ table.Table20Padding th, table.Table20Padding td {
     height: 100px;
     margin-top: 15px;
 }
+
+
+#SearchPanel {
+    position: absolute;
+    top: 70px;
+    left: 320px;
+    min-width: 400px;
+    padding: 13px 12px 15px 10px;
+    border-radius: 12px;
+}
+
+@media (max-width: 991px) {
+    #SearchPanel {
+        top: 150px;
+        left: 65px;
+        min-width: 380px;
+    }
+}
+
+@media (max-width: 483px) {
+    #SearchPanel {
+        top: 150px;
+        left: 41px;
+        min-width: 327px;
+    }
+}
+
+.search-link {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+#SearchPanel .vertical-nav-menu li a:hover {
+    background: #e0f3ff;
+    text-decoration: none;
+    color: #fff !important;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.mm-search-active {
+    background: #e0f3ff;
+    text-decoration: none;
+    color: #fff !important;
+    font-weight: bold !important;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

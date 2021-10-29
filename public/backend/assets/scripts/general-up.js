@@ -248,3 +248,133 @@ function NikoStaylePostMethod() {
         $('#ModalCargoDetails').unblock();
     });
 }
+
+$(document).on('keyup', '#search-input', delay(function (e) {
+    // down
+    if (e.keyCode == 40)
+        return false;
+    // #up
+    else if (e.keyCode == 38)
+        return false;
+    // #enter
+    else if (e.keyCode == 13)
+        return false;
+
+    searchModule();
+
+}, 650));
+
+var curent_active = 0;
+
+$(document).on('keyup', '#search-input', function (e) {
+
+    var li_count = $('li.li-of-search-module').length;
+
+    var each_counter = 0;
+    $('li.li-of-search-module').each(function () {
+        if ($(this).hasClass('mm-search-active')) {
+            curent_active = each_counter;
+        }
+        each_counter++;
+    });
+
+    if (e.keyCode == 38) { // top
+        curent_active -= 1;
+    }
+    if (e.keyCode == 40) { // bott
+        curent_active += 1;
+    }
+
+    if (e.keyCode == 13)
+        window.location.href = $('li.li-of-search-module a').eq(curent_active).attr('href');
+
+
+    if (curent_active == li_count) {
+        curent_active = 0;
+    }
+
+    $('li.li-of-search-module').removeClass('mm-search-active');
+    $('li.li-of-search-module').eq(curent_active).addClass('mm-search-active');
+});
+
+
+function searchModule() {
+    $('#SearchPanel').block({
+        message: $('<div class="loader mx-auto">\n' +
+            '                            <div class="ball-grid-pulse">\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                            </div>\n' +
+            '                        </div>')
+    });
+
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+    $.ajax('/SearchModule', {
+        method: 'POST',
+        data: {
+            _token: token,
+            searchTerm: $('#search-input').val()
+        }
+    }).done(function (response) {
+
+        $('#SearchLinkUl').html('');
+
+        if (response.length == 0) {
+            $('#SearchLinkUl').html('<div class="row"><div class="col-md-12 text-center"><b style="color: #fff;">Sonuç Bulunamadı!</b></div></div>');
+        } else
+            $.each(response, function (key, val) {
+                $('#SearchLinkUl').append('' +
+                    '<li class="li-of-search-module"><a class="search-link" href="' + val['url'] + '">' + val['sub_name'] + ' (' + val['module_name'] + ')<i class="metismenu-icon ' + val['ico'] + '"></i></a></li>\n' +
+                    '');
+            });
+
+        $('li.li-of-search-module').eq(0).addClass('mm-search-active')
+        $('li.li-of-search-module').eq(0).focus();
+
+    }).error(function (jqXHR, response) {
+        ajaxError(jqXHR.status);
+    }).always(function () {
+        $('#SearchPanel').unblock();
+    });
+}
+
+$(document).on('click', 'button.close', function () {
+    $('#SearchPanel').removeClass('animate__bounceIn');
+    $('#SearchPanel').addClass('animate__bounceOut');
+});
+
+$(document).on('click', 'button.search-icon', function () {
+    $('#SearchPanel').show();
+    $('input.search-input').focus();
+    $('#SearchPanel').removeClass('animate__bounceOut');
+    $('#SearchPanel').addClass('animate__bounceIn');
+});
+
+$(document).on('click', '#search-input', function () {
+    $('#SearchPanel').removeClass('animate__bounceOut');
+    $('#SearchPanel').show();
+});
+
+
+$(document).ready(function () {
+    searchModule();
+});
+
+$(document).mouseup(function (e) {
+    var container = $("#SearchPanel");
+
+    // if the target of the click isn't the container nor a descendant of the container
+    if (!container.is(e.target) && container.has(e.target).length === 0) {
+        $('#SearchPanel').removeClass('animate__bounceIn');
+        $('#SearchPanel').addClass('animate__bounceOut');
+    }
+});

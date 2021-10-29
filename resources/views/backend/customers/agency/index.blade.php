@@ -166,7 +166,6 @@
 
     <script src="/backend/assets/scripts/backend-modules.js"></script>
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
-    <script src="/backend/assets/scripts/jquery.blockUI.js"></script>
     <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
     <link rel="stylesheet" href="/backend/assets/css/jquery.json-viewer.css">
     <style type="text/css">

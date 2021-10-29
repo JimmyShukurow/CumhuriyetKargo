@@ -258,7 +258,6 @@
 @section('js')
 
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
-    <script src="/backend/assets/scripts/jquery.blockUI.js"></script>
     <script src="/backend/assets/scripts/official-report/htf-create.js"></script>
 
 

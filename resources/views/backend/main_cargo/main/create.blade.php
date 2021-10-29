@@ -642,7 +642,6 @@
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
     <script src="/backend/assets/scripts/main-cargo/main-cargo.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
-    <script src="/backend/assets/scripts/jquery.blockUI.js"></script>
     {{--    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>--}}
 @endsection
 

@@ -201,7 +201,6 @@
 @section('js')
 
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
-    <script src="/backend/assets/scripts/jquery.blockUI.js"></script>
     <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/delete-method.js"></script>

@@ -128,7 +128,6 @@
 @section('js')
     <script src="/backend/assets/scripts/backend-modules.js"></script>
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
-    <script src="/backend/assets/scripts/jquery.blockUI.js"></script>
 
     <script type="text/javascript">
         var city_id, region_id;

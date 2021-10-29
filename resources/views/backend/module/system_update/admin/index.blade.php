@@ -80,7 +80,6 @@
 
 @section('js')
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
-    <script src="/backend/assets/scripts/jquery.blockUI.js"></script>
 
     <script>
         // parse a date in yyyy-mm-dd format

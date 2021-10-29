@@ -32,6 +32,8 @@
     <script src="/backend/assets/scripts/sweetalert.js"></script>
     <script src="/backend/assets/scripts/general-up.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
     {{--PWA START--}}
     <link rel="manifest" href="/backend/assets/scripts/pwa/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -122,13 +124,15 @@
             <div class="app-header-left">
                 <div class="search-wrapper">
                     <div class="input-holder">
-                        <input type="text" class="search-input" placeholder="Type to search">
+                        <input type="text" class="search-input" id="search-input" placeholder="Birşeyler aratın">
 
                         <button class="search-icon"><span></span></button>
                     </div>
                     <button class="close"></button>
                 </div>
             </div>
+
+
             <div class="app-header-right">
 
                 <div class="header-dots">
@@ -418,6 +422,21 @@
 
             </div>
         </div>
+
+        <div style="display: none;" id="SearchPanel" class="animate__animated row {{$theme->header}}">
+
+            <div style="width: 100% !important;" class="app-sidebar__inner">
+                <ul id="SearchLinkUl" class="vertical-nav-menu">
+                    {{--                    <li><a class="search-link" href="apps-mailbox.html">Chat<i--}}
+                    {{--                                class="metismenu-icon pe-7s-box2"></i></a></li>--}}
+                    {{--                    <li><a class="search-link" href="apps-mailbox.html">Kişiler<i class="metismenu-icon pe-7s-box2"></i></a>--}}
+                    {{--                    </li>--}}
+                    {{--                    <li><a class="search-link" href="apps-mailbox.html">Contacts<i--}}
+                    {{--                                class="metismenu-icon pe-7s-box2"></i></a></li>--}}
+                </ul>
+            </div>
+        </div>
+
     </div>
 
     {{--THEME SECTION--}}
@@ -1233,6 +1252,8 @@
 <script src="/backend/assets/scripts/js-snackbar.js"></script>
 <script type="text/javascript" src="/backend/assets/scripts/main.8d288f825d8dffbbe55e.js?v=1.0.0.0"></script>
 <script src="/backend/assets/scripts/select2.js"></script>
+<script src="/backend/assets/scripts/jquery.blockUI.js"></script>
+
 
 <script>
     @if(\Illuminate\Support\Facades\Session::exists('virtual-login'))

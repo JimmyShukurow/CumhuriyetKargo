@@ -170,6 +170,35 @@ class PersonelController extends Controller
             ->paginate(20);
 
         return view('backend.personel.notifications_and_announcements', compact('tab', 'notifications'));
-
     }
+
+    public function searchModule(Request $request)
+    {
+        $search = $request->searchTerm;
+
+        $permissions = DB::table('role_permissions')
+            ->orderBy('module_group_must')
+            ->orderBy('module_must')
+            ->whereRaw(" role_id = " . Auth::user()->role_id . " and (sub_name like '%" . $search . "%' or module_name like '%" . $search . "%')")
+            ->limit(10)
+            ->get();
+
+        $data = [];
+
+        foreach ($permissions as $key) {
+            $data[] = [
+                'ico' => $key->module_ico,
+                'module_name' => $key->module_name,
+                'sub_name' => $key->sub_name,
+                'url' => route($key->link)
+            ];
+        }
+
+        return $data;
+
+
+        return response()->json($permissions, 200);
+    }
+
+
 }

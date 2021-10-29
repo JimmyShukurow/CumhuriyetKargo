@@ -180,6 +180,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
             Route::get('NotificationAndAnnouncements/{Tab?}', [PersonelController::class, 'notificationAndAnnouncements'])->name('notificationAndAnnouncements');
         });
     });
+    Route::post('SearchModule', [PersonelController::class, 'searchModule']);
+
 
     Route::group(['prefix' => 'SystemSupport', 'as' => 'systemSupport.'], function () {
         Route::get('NewTicket', [SystemSupportController::class, 'addTicket'])->name('NewTicket');
