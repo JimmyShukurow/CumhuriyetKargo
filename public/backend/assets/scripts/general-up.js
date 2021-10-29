@@ -378,3 +378,12 @@ $(document).mouseup(function (e) {
         $('#SearchPanel').addClass('animate__bounceOut');
     }
 });
+
+$(window).keydown(function (event) {
+    if (event.ctrlKey && (event.which == 88 || event.which == 118)) {
+        $('.search-icon').trigger('click');
+    }
+});
+
+
+

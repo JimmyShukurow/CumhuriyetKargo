@@ -124,7 +124,8 @@
             <div class="app-header-left">
                 <div class="search-wrapper">
                     <div class="input-holder">
-                        <input type="text" class="search-input" id="search-input" placeholder="Birşeyler aratın">
+                        <input type="text" class="search-input" id="search-input"
+                               placeholder="Birşeyler aratın (CTRL + X)">
 
                         <button class="search-icon"><span></span></button>
                     </div>
