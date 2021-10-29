@@ -329,7 +329,7 @@ function searchModule() {
         $('#SearchLinkUl').html('');
 
         if (response.length == 0) {
-            $('#SearchLinkUl').html('<div class="row"><div class="col-md-12 text-center"><b style="color: #fff;">Sonuç Bulunamadı!</b></div></div>');
+            $('#SearchLinkUl').html('<div class="row"><div class="col-md-12 text-center"><b style="color: #fff;">Üzgünüz, aradığınız şeyi bulamadık.</b></div></div>');
         } else
             $.each(response, function (key, val) {
                 $('#SearchLinkUl').append('' +
