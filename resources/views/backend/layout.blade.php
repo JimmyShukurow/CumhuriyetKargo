@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="/backend/assets/css/bootstrap-multiselect.css">
     <link rel="stylesheet" href="/backend/assets/css/datatables.min.css">
     <link href="/backend/assets/css/toastr.min.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="/backend/assets/css/custom.css?v=1">
+    <link rel="stylesheet" href="/backend/assets/css/custom.css?v=2">
     <link rel="stylesheet" href="/backend/assets/css/js-snackbar.css">
     <script src="/backend/assets/scripts/jquery.js"></script>
     <script src="/backend/assets/scripts/sweetalert.js"></script>
