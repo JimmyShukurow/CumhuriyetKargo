@@ -26,13 +26,13 @@
     <link rel="stylesheet" href="/backend/assets/css/bootstrap-multiselect.css">
     <link rel="stylesheet" href="/backend/assets/css/datatables.min.css">
     <link href="/backend/assets/css/toastr.min.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="/backend/assets/css/custom.css?v=2">
+    <link rel="stylesheet" href="/backend/assets/css/custom.css?v=1.0.1">
+    <link rel="stylesheet" href="/backend/assets/css/animate-css.css">
     <link rel="stylesheet" href="/backend/assets/css/js-snackbar.css">
     <script src="/backend/assets/scripts/jquery.js"></script>
     <script src="/backend/assets/scripts/sweetalert.js"></script>
-    <script src="/backend/assets/scripts/general-up.js?v=1"></script>
+    <script src="/backend/assets/scripts/general-up.js?v=1.0.1"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
     {{--PWA START--}}
     <link rel="manifest" href="/backend/assets/scripts/pwa/manifest.json">
