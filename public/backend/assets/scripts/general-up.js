@@ -364,7 +364,6 @@ $(document).on('click', '#search-input', function () {
     $('#SearchPanel').show();
 });
 
-
 $(document).ready(function () {
     searchModule();
 });
@@ -380,7 +379,7 @@ $(document).mouseup(function (e) {
 });
 
 $(window).keydown(function (event) {
-    if (event.ctrlKey && (event.which == 88 || event.which == 118)) {
+    if (event.ctrlKey && (event.which == 66 || event.which == 118)) {
         $('.search-icon').trigger('click');
     }
 });

@@ -106,7 +106,6 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('HTF', [OfficialReportController::class, 'createHTF'])->name('createHTF');
     });
 
-
     # ==> Main Cargo Transaction
     Route::group(['prefix' => 'MainCargo', 'as' => 'mainCargo.'], function () {
         Route::get('NewCargo', [MainCargoController::class, 'newCargo'])->name('newCargo');

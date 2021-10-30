@@ -37,9 +37,13 @@ class OfficialReportController extends Controller
             ];
         }
 
+        $agencies = Agencies::orderBy('agency_name')
+            ->get();
+        $tc = TransshipmentCenters::all();
+
 
         GeneralLog('HTF oluştur sayfası görüntülendi.');
-        return view('backend.OfficialReports.htf_create', compact(['damage_types', 'transactions', 'branch']));
+        return view('backend.OfficialReports.htf_create', compact(['damage_types', 'transactions', 'branch', 'agencies', 'tc']));
     }
 
 }

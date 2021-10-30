@@ -125,7 +125,7 @@
                 <div class="search-wrapper">
                     <div class="input-holder">
                         <input type="text" class="search-input" id="search-input"
-                               placeholder="Birşeyler aratın (CTRL + X)">
+                               placeholder="Birşeyler aratın (CTRL + B)">
 
                         <button class="search-icon"><span></span></button>
                     </div>

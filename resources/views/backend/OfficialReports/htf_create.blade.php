@@ -2,6 +2,11 @@
 
 @section('title', 'HTF Oluştur')
 
+@push('css')
+    <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
+    <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
+@endpush
+
 @section('content')
 
     <div class="app-main__inner">
@@ -166,7 +171,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group position-relative">
                                 <label for="reported_unit">Tutanak Tutulan Birim Tipi:</label>
                                 <select name="reported_unit_type" class="form-control form-control-sm"
@@ -182,6 +187,51 @@
                             </div>
                         </div>
 
+                        <div id="column_fake_unit" class="col-md-3">
+                            <div class="form-group position-relative">
+                                <label for="select_reported_unit">Birim Seçin:</label>
+                                <select disabled name="select_reported_unit" class="form-control form-control-sm"
+                                        id="select_reported_unit">
+                                    <option value="">Seçiniz</option>
+                                    <option value="Çıkış Şube">Çıkış Şube</option>
+                                    <option value="Çıkış TRM.">Çıkış TRM.</option>
+                                    <option value="Varış Şube">Varış Şube</option>
+                                    <option value="Varış TRM.">Varış TRM.</option>
+                                    <option value="Diğer Şube">Diğer Şube</option>
+                                    <option value="Diğer TRM.">Diğer TRM.</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display: none;" id="column-agency" class="col-md-3">
+                            <div class="form-group position-relative">
+                                <label for="select_reported_agency">Şube Seçin:</label>
+                                <select style="width:100%;" disabled name="select_reported_agency"
+                                        class="form-control form-control-sm"
+                                        id="select_reported_agency">
+                                    <option value="">Seçiniz</option>
+                                    @foreach($agencies as $key)
+                                        <option
+                                            value="{{$key->id}}">{{$key->agency_name . ' ŞUBE'}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display: none;" id="column-tc" class="col-md-3">
+                            <div class="form-group position-relative">
+                                <label for="select_reported_tc">Transfer Merkezi Seçin:</label>
+                                <select style="width:100%;" name="select_reported_tc" disabled
+                                        class="form-control form-control-sm"
+                                        id="select_reported_tc">
+                                    <option value="">Seçiniz</option>
+                                    @foreach($tc as $key)
+                                        <option value="{{$key->id}}">{{$key->tc_name . ' TRM.'}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="col-md-6">
                             <div class="form-group position-relative">
                                 <label for="reported_unit">Tutanak Tutulan Birim:</label>
@@ -190,7 +240,6 @@
                                        class="form-control font-weight-bold text-danger form-control-sm">
                             </div>
                         </div>
-
 
                     </div>
 
@@ -259,6 +308,7 @@
 
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
     <script src="/backend/assets/scripts/official-report/htf-create.js"></script>
+    <script src="/backend/assets/scripts/select2.js"></script>
 
 
     <script>
@@ -288,54 +338,6 @@
 
     <script>
 
-        $('#email').keyup(function () {
-            var charMap = {
-                Ç: 'C',
-                Ö: 'O',
-                Ş: 'S',
-                İ: 'I',
-                I: 'i',
-                Ü: 'U',
-                Ğ: 'G',
-                ç: 'c',
-                ö: 'o',
-                ş: 's',
-                ı: 'i',
-                ü: 'u',
-                ğ: 'g'
-            };
-            var str = $('#email').val();
-            str_array = str.split('');
 
-            for (var i = 0, len = str_array.length; i < len; i++) {
-                str_array[i] = charMap[str_array[i]] || str_array[i];
-            }
-            str = str_array.join('');
-            var clearStr = str.replace(" ", "").replace("-", "").replace(/[^a-z0-9-.çöşüğı]/gi, "");
-
-            $('#email').val(clearStr.toLowerCase());
-
-        });
-
-        $('#email').focusout(function () {
-            check_email($(this).val())
-        });
-
-
-        function check_email(email) {
-            $.post('/Users/CheckEmail', {
-                _token: token,
-                email: email
-            }, function (response) {
-                if (response == 1) {
-                    $('#email').addClass("is-invalid").removeClass("is-valid");
-                    $('#email-error').show();
-                } else {
-                    $('#email').addClass("is-valid").removeClass("is-invalid");
-                    $('#email-error').hide();
-                }
-                console.log(response);
-            })
-        }
     </script>
 @endsection

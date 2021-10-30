@@ -98,6 +98,8 @@ function getCargo() {
 
 $('#reported_unit_type').change(function () {
 
+    $('#reported_unit').val('');
+
     if (general_cargo == null) {
         $(this).val('');
         ToastMessage('error', 'Önce fatura numarasını veya takip numarasını giriniz!', 'HATA!');
@@ -108,10 +110,15 @@ $('#reported_unit_type').change(function () {
 
         case '':
             $('#reported_unit').val('');
+            $('#column_fake_unit').show();
+            $('#column-agency').hide();
+            $('#select_reported_agency').prop('disabled', true);
+            $('#column-tc').hide();
+            $('#select_reported_tc').prop('disabled', true);
             break;
 
         case  'Çıkış Şube':
-            $('#reported_unit').val("#" + general_cargo.departure.agency_code + " " + general_cargo.departure.city + "-" + general_cargo.departure.agency_name + " ŞUBE");
+            $('#reported_unit').val(general_cargo.departure.agency_name + " ŞUBE");
             break;
 
         case  'Çıkış TRM.':
@@ -119,19 +126,49 @@ $('#reported_unit_type').change(function () {
             break;
 
         case  'Varış Şube':
-            $('#reported_unit').val("#" + general_cargo.arrival.agency_code + " " + general_cargo.arrival.city + "-" + general_cargo.arrival.agency_name + " ŞUBE");
+            $('#reported_unit').val(general_cargo.arrival.agency_name + " ŞUBE");
             break;
 
         case  'Varış TRM.':
             $('#reported_unit').val(general_cargo.arrival_tc.tc_name + " TRM.");
             break;
 
+        case 'Diğer Şube':
+            $('#column_fake_unit').hide();
+            $('#column-agency').show();
+            $('#select_reported_agency').prop('disabled', false);
+
+            $('#column-tc').hide();
+            $('#select_reported_tc').prop('disabled', true);
+            break;
+
+        case 'Diğer TRM.':
+            $('#column_fake_unit').hide();
+            $('#column-tc').show();
+            $('#select_reported_tc').prop('disabled', false);
+
+            $('#column-agency').hide();
+            $('#select_reported_agency').prop('disabled', true);
+            break;
+
+
         default:
             ToastMessage('error', 'Lütfen geçerli bir birim tipi seçin!', 'Hata!');
-
     }
 
+});
 
+$(document).ready(function () {
+    $('#select_reported_agency').select2();
+    $('#select_reported_tc').select2();
+});
+
+$('#select_reported_agency').change(function () {
+    $('#reported_unit').val($("#select_reported_agency option:selected").text());
+});
+
+$('#select_reported_tc').change(function () {
+    $('#reported_unit').val($("#select_reported_tc option:selected").text());
 });
 
 
