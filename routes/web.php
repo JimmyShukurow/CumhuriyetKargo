@@ -388,7 +388,9 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
 });
 
+
 Route::get('notyet',[DefaultController::class, 'notyet'])->name('not.yet');
+
 
 //Route::get('not.yet', [DefaultController::class, 'notyet'])->name('not.yet');
 //Route::get('nxot.yet', [DefaultController::class, 'notyet'])->name('mainCargo.search');

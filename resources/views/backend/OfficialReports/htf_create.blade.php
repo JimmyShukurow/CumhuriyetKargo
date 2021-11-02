@@ -53,6 +53,15 @@
                                        class="form-control form-control-sm input-mask-trigger">
                             </div>
                         </div>
+
+                        <div class="col-lg-3 col-sm-6 col-xs-6">
+                            <div class="position-relative form-group">
+                                <label for="name_surname" class="">İlgili Parçalar:</label>
+                                <input style="display: inline; width: 75%;" name="name_surname" required id="pieces"
+                                       type="text" value="" disabled class="form-control form-control-sm">
+                                <button class="btn btn-danger btn-sm">Parçalar</button>
+                            </div>
+                        </div>
                     </div>
 
                     <h5 class="card-title mt-2">Kargo Bilgileri</h5>
@@ -65,6 +74,7 @@
                                 <h3><b class="cargo-information text-danger font-large-3" id="invoice_number">-</b></h3>
                             </div>
                         </div>
+
 
                         <div class="col-md-6 col-sm-6">
                             <div class="form-group position-relative">
