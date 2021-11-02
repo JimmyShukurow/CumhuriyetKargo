@@ -43,6 +43,17 @@ $(document).ready(function () {
         },
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col"f>>rtip',
         buttons: [
+            'copy',
+            'pdf',
+            'csv',
+            'print',
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                },
+                title: "CK-Acenteler"
+            },
             {
                 text: 'Yenile',
                 action: function (e, dt, node, config) {
@@ -54,7 +65,15 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '/WhoIsWho/GetTransshipmentCenters',
+            url: '/WhoIsWho/GetAgencies',
+            data: function (d) {
+                d.agency_code = $('#agencyCode').val();
+                d.city = $("#city option:selected").text();
+                d.district = $("#district option:selected").text();
+                d.agency_name = $('#agencyName').val();
+                d.dependency_tc = $("#dependency_tc option:selected").text();
+                d.phone = $('#phone').val();
+            },
             error: function (xhr, error, code) {
                 if (code == "Too Many Requests") {
                     ToastMessage('info', 'Aşırı istekte bulundunuz, Lütfen bir süre sonra tekrar deneyin!', 'Hata');
@@ -63,27 +82,55 @@ $(document).ready(function () {
         },
         columns: [
             {data: 'city', name: 'city'},
+            // {data: 'district', name: 'district'},
+            {data: 'agency_name', name: 'agency_name'},
+            {data: 'regional_directorates', name: 'regional_directorates'},
             {data: 'tc_name', name: 'tc_name'},
-            {data: 'region_name', name: 'region_name'},
-            {data: 'agency_count', name: 'agency_count'},
-            {data: 'type', name: 'type'},
-            {data: 'director_name', name: 'director_name'},
+            {data: 'name_surname', name: 'name_surname'},
             {data: 'phone', name: 'phone'},
+            {data: 'agency_code', name: 'agency_code'},
             {data: 'edit', name: 'edit'},
         ],
         scrollY: false
     });
 });
 
-$(document).on('click', '.tc-detail', function () {
-    $('#ModalUserDetail').modal();
+$('#search-form').on('submit', function (e) {
+    oTable.draw();
+    e.preventDefault();
+});
 
-    detailsID = $(this).prop('id');
-    TransshipmentPost($(this).prop('id'));
+$('#city').change(function () {
+    getDistricts('#city', '#district');
 });
 
 
-function TransshipmentPost(transshipment_id) {
+function drawDT() {
+    oTable.draw();
+}
+
+$('.niko-select-filter').change(delay(function (e) {
+    drawDT();
+}, 1000));
+
+$('.niko-filter').keyup(delay(function (e) {
+    drawDT();
+}, 1000));
+
+
+$('#city_district').change(function () {
+    getDistricts('#ilSelector', '#ilceSelector');
+});
+
+$(document).on('click', '.agency-detail', function () {
+    $('#ModalUserDetail').modal();
+
+    detailsID = $(this).prop('id');
+    agencyPost($(this).prop('id'));
+});
+
+
+function agencyPost(agency_id) {
     $('#modalBodyAgencyDetail').block({
         message: $('<div class="loader mx-auto">\n' +
             '                            <div class="ball-pulse-sync">\n' +
@@ -99,60 +146,52 @@ function TransshipmentPost(transshipment_id) {
 
     $('#ModalAgencyDetail').modal();
 
-    $.ajax('/WhoIsWho/GetTransshipmentCentersData', {
+    $.ajax('/WhoIsWho/GetAgencyInfo', {
         method: 'POST',
         data: {
             _token: token,
-            transshipment_id: transshipment_id
+            agency_id: agency_id
         }
     }).done(function (response) {
-        //console.dir(response)
-        var transshipment = response.transshipment;
-        var director = response.director;
-        var assistantdirector = response.assistant_director
-        var agency_worker = response.agency_worker
-        //response.agency[0].agency_name + " ACENTE");
-        $('h5#transshippingname').html(transshipment.tc_name + " TCM");
-        $('#cityDistrict').html(transshipment.city + "/" + transshipment.district);
-        $('#transshippingname').html(transshipment.tc_name);
-        $('#transshippingtype').html(transshipment.type);
-        $('#transshippingphone').html(transshipment.phone);
-        $('#trmheader').html(transshipment.tc_name+ ' TRM ÖZET');
-        
-        if(typeof director?.name_surname !== "undefined"){
-            $('#directorname').html(director.name_surname)
-            $('#directphone').html(director.phone)
-            $('#directemail').html(director.email)
-        }
-        if(typeof assistantdirector?.name_surname !== "undefined"){
-            $('#assistantdirectorname').html(assistantdirector.name_surname)
-            $('#assistantdirectorphone').html(assistantdirector.phone)
-            $('#assistantdirectoremail').html(assistantdirector.email)
-        }
+        console.log(response)
+        var employee = response.employees;
+
+        $('h5#agencyName').html(response.agency[0].agency_name + " ACENTE");
+        $('#agencyCityDistrict').html(response.agency[0].city + "/" + response.agency[0].district);
+
+        $('#cityDistrict').html(response.agency[0].city + "/" + response.agency[0].district);
+        $('#neighborhood').html(response.agency[0].neighborhood);
+        $('#adress').html(response.agency[0].adress);
+        $('#phone').html(response.agency[0].phone);
+        $('#phone2').html(response.agency[0].phone2);
+        $('#trasfferCenter').html(response.agency[0].tc_agency_name);
+        $('#regionalDirectorate').html(response.agency[0].regional_directorates != null ? response.agency[0].regional_directorates + " BÖLGE MÜDÜRLÜĞÜ" : 'Ne var');
+        $('#status').html(response.agency.status == "1" ? "Aktif" : "Pasif");
+        $('#agencyDevelopmentOfficer').html(response.agency[0].agency_development_officer);
+        $('#agencyCode').html(response.agency[0].agency_code);
+        $('#updatedDate').html(response.agency[0].updated_at);
 
         $('#tbodyEmployees').html('');
-        if (agency_worker.length == 0) {
+        if (employee.length == 0) {
             $('#tbodyEmployees').append(
                 '<tr>' +
                 '<td class="text-center" colspan="4">Kullanıcı Yok.</td>' +
                 +'</tr>'
             );
         } else {
-            $.each(agency_worker, function (key, value) {
-        
-            /* let email = value['email'];
+            $.each(employee, function (key, value) {
+
+                let email = value['email'];
                 let character = email.indexOf('@');
                 email = email.substring(0, character) + "@cumh...com.tr";
-                */
+
 
                 $('#tbodyEmployees').append(
                     '<tr>' +
-                    '<td>' + (value['agency_code']) + '</td>' +
-                    '<td>' + (value['city']) + '/'+ (value['district']) +'</td>' +
-                   // '<td title="' + (value['email']) + '">' + (email) + '</td>' +
-                    '<td>' + (value['agency_name']) +  ' ŞUBE</td>' +
-                    '<td>' + (value['phone']) + '</td>' +
                     '<td>' + (value['name_surname']) + '</td>' +
+                    '<td title="' + (value['email']) + '">' + (email) + '</td>' +
+                    '<td>' + (value['display_name']) + '</td>' +
+                    '<td>' + (value['phone']) + '</td>' +
                     +'</tr>'
                 );
             });
@@ -162,4 +201,6 @@ function TransshipmentPost(transshipment_id) {
     }).always(function () {
         $('#modalBodyAgencyDetail').unblock();
     });
+
 }
+
