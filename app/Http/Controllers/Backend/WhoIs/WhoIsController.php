@@ -32,7 +32,8 @@ class WhoIsController extends Controller
 
         if (($request->name_surname && $request->name_surname != '') || ($request->agency && $request->agency != '')
             || ($request->tc && $request->tc != '') || ($request->role && $request->role != '')
-            || ($request->user_type && $request->user_type != '')) {
+            || ($request->user_type && $request->user_type != '')
+        ) {
             $users = DB::table('view_users_all_info')
                 ->select([
                     'id', 'name_surname', 'display_name', 'email', 'phone', 'branch_city', 'branch_district', 'branch_name', 'user_type'
@@ -55,7 +56,6 @@ class WhoIsController extends Controller
             ->addColumn('detail', 'backend.who_is_who.columns.edit')
             ->rawColumns(['detail'])
             ->make(true);
-
     }
 
 
@@ -94,7 +94,6 @@ class WhoIsController extends Controller
             ->get();
 
         return response()->json($data, 200);
-
     }
 
 
@@ -136,7 +135,7 @@ class WhoIsController extends Controller
             ->setRowId(function ($agency) {
                 return 'agency-item-' . $agency->id;
             })
-//            ->addColumn('intro', 'Hi {{$name_surname}}')
+            //            ->addColumn('intro', 'Hi {{$name_surname}}')
             ->addColumn('regional_directorates', function ($agency) {
                 return $agency->regional_directorates != '' ? "$agency->regional_directorates  B.M." : "";
             })
@@ -168,5 +167,57 @@ class WhoIsController extends Controller
         return response()->json($data, 200);
     }
 
+    public function transshipmentCenters(Request $request)
+    {
+        $data['agencies'] = Agencies::all();
+        $data['tc'] = TransshipmentCenters::all();
+        $data['roles'] = Roles::all();
+        $data['cities'] = Cities::all();
+        GeneralLog("'Kim Kimdir?' modülünde 'Transfer Merkezleri' sayfası görüntülendi.");
+        return view('backend.who_is_who.transshipment_centers', compact('data'));
+    }
 
+
+    public function getTransshipmentCenters(Request $request)
+    {
+        $agencies = DB::table('view_transshipment_center_info');
+        
+        return DataTables::of($agencies)
+            ->editColumn('tc_name', function ($agency) {
+                return $agency->tc_name   . " TRM.";
+            })
+            ->editColumn('region_name', function ($agency) {
+                return $agency->tc_name   . " BM.";
+            })
+            ->addColumn('edit', 'backend.who_is_who.columns.tc_detail')
+            ->rawColumns(['edit'])
+            ->editColumn('city', function ($agency) {
+                return $agency->city . '/' . $agency->district;
+            })
+            ->make(true);
+    }
+
+    public function getTransshipmentCentersData(Request $request)
+    {
+
+        $data['transshipment'] = DB::table('view_transshipment_center_info')
+            ->where('id', $request->transshipment_id)
+            ->first();
+
+        $data['director'] = DB::table('users')
+            ->select(['name_surname', 'phone', 'email'])
+            ->where('id', $data['transshipment']->tc_director_id)
+            ->first();
+
+        $data['assistant_director'] = DB::table('users')
+        ->select(['name_surname', 'phone', 'email'])
+        ->where('id',$data['transshipment']->tc_assistant_director_id)
+        ->first();
+
+        $data['agency_worker'] = DB::table('view_agency_region')
+        ->where('tc_id',$data['transshipment']->id)
+        ->get();
+
+        return response()->json($data, 200);
+    }
 }

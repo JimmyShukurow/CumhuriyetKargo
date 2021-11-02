@@ -27,7 +27,8 @@ use App\Http\Controllers\Backend\Operation\VariousController;
 use App\Http\Controllers\Backend\WhoIs\WhoIsController;
 use App\Http\Controllers\Backend\ItAndNotifications\CargoCancellationController;
 use App\Http\Controllers\Backend\OfficialReports\OfficialReportController;
-
+use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -81,11 +82,22 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
     Route::group(['prefix' => 'WhoIsWho', 'as' => 'whois.'], function () {
         Route::get('', [WhoIsController::class, 'index'])->name('index');
+        Route::get('TransshipmentCenters', [WhoIsController::class, 'transshipmentCenters'])->name('tc');
+
+
+       // Route::get('GetTransshipmentCenters', [WhoIsController::class, 'getTransshipmentCentersData'])->name('tcdata');
+   
         Route::get('Agencies', [WhoIsController::class, 'index_agencies'])->name('agencies');
         Route::get('GetAgencies', [WhoIsController::class, 'getAgencies'])->name('GetAgencies');
+
+        Route::get('GetTransshipmentCenters', [WhoIsController::class, 'getTransshipmentCenters'])->name('getTransshipmentCenters');
+        Route::post('GetTransshipmentCentersData', [WhoIsController::class, 'getTransshipmentCentersData'])->name('Transshipment');
+
         Route::post('GetAgencyInfo', [WhoIsController::class, 'agencyInfo'])->name('agencyInfo');
+        
         Route::get('GetUsers', [WhoIsController::class, 'getUsers'])->name('getUsers');
         Route::post('GetUserInfo', [WhoIsController::class, 'userInfo']);
+        
     });
 
     Route::group(['prefix' => 'ItAndNotification'], function () {
@@ -294,7 +306,6 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         });
     });
 
-
     # Main Routes
     Route::get('/SystemUpdates', [ModuleController::class, 'systemUpdateView']);
     Route::group(['prefix' => '/Module', 'middleware' => ['ModulesMid']], (function () {
@@ -377,8 +388,9 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
 });
 
-Route::get('not.yet', [DefaultController::class, 'notyet'])->name('not.yet');
+Route::get('notyet',[DefaultController::class, 'notyet'])->name('not.yet');
 
+//Route::get('not.yet', [DefaultController::class, 'notyet'])->name('not.yet');
 //Route::get('nxot.yet', [DefaultController::class, 'notyet'])->name('mainCargo.search');
 //Route::get('nyot.yet', [DefaultController::class, 'notyet'])->name('TransferCars.index');
 

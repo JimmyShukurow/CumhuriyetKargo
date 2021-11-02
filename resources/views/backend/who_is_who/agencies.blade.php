@@ -80,13 +80,13 @@
                         <div class="col-md-2">
                             <label for="phone">Telefon</label>
                             <input name="phone" id="phone" data-inputmask="'mask': '(999) 999 99 99'"
-                                   placeholder="(___) ___ __ __" type="text" class="form-control input-mask-trigger">
+                            placeholder="(___) ___ __ __" type="text" class="form-control input-mask-trigger">
                         </div>
 
                         <div class="col-md-2">
                             <label for="phone">Şube Kodu</label>
                             <input name="phone" id="agencyCode" data-inputmask="'mask': '999999'"
-                                   placeholder="______" type="text" class="form-control niko-filter input-mask-trigger">
+                            placeholder="______" type="text" class="form-control niko-filter input-mask-trigger">
                         </div>
                     </div>
 
@@ -113,7 +113,7 @@
             <div class="card-body">
 
                 <table id="AgenciesTable"
-                       class="align-middle mb-0 table Table30Padding table-borderless table-striped NikolasDataTable">
+                    class="align-middle mb-0 table Table30Padding table-borderless table-striped NikolasDataTable">
                     <thead>
                     <tr>
                         <th>İl/İlçe</th>
@@ -301,7 +301,7 @@
                     agency_id: agency_id
                 }
             }).done(function (response) {
-
+                console.log(response)
                 var employee = response.employees;
 
                 $('h5#agencyName').html(response.agency[0].agency_name + " ACENTE");
