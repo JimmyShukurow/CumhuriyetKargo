@@ -83,7 +83,6 @@
                             </div>
                         </div>
 
-
                         <div class="col-md-2 col-sm-3">
                             <div class="form-group position-relative">
                                 <label for="sender_name">Gönderici Adı:</label>
@@ -96,6 +95,7 @@
                                 <p><b class="cargo-information" id="receiver_name">-</b></p>
                             </div>
                         </div>
+
                         <div class="col-md-2 col-sm-3">
                             <div class="form-group position-relative">
                                 <label for="departure_branch">Çıkış Şube:</label>

@@ -214,7 +214,7 @@ function clicker(selector) {
     $(selector).click();
 }
 
-function NikoStaylePostMethod() {
+function NikoStylePostMethod() {
 
     $('#ModalCargoDetails').block({
         message: $('<div class="loader mx-auto">\n' +

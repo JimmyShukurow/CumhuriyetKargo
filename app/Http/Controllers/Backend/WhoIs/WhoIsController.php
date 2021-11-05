@@ -181,13 +181,13 @@ class WhoIsController extends Controller
     public function getTransshipmentCenters(Request $request)
     {
         $agencies = DB::table('view_transshipment_center_info');
-        
+
         return DataTables::of($agencies)
             ->editColumn('tc_name', function ($agency) {
                 return $agency->tc_name   . " TRM.";
             })
             ->editColumn('region_name', function ($agency) {
-                return $agency->tc_name   . " BM.";
+                return $agency->region_name   . " BM.";
             })
             ->addColumn('edit', 'backend.who_is_who.columns.tc_detail')
             ->rawColumns(['edit'])

@@ -11,6 +11,7 @@ use App\Models\Tickets;
 use App\Models\SentSms;
 use App\Models\Debits;
 use App\Models\Agencies;
+use App\Models\TransshipmentCenters;
 
 function tr_strtoupper($text)
 {
@@ -566,6 +567,43 @@ function CreateCargoTrackingNo($agencyCode)
     return $ctn;
 }
 
+function CreateCargoBagTrackingNo()
+{
+
+    if (Auth::user()->user_type == 'Acente') {
+
+        $agency = Agencies::find(Auth::user()->agency_code);
+        $city = Cities::where('city_name', $agency->city)->first();
+        $ctn = $city->plaque . $agency->agency_code;
+
+    } else if (Auth::user()->user_type == 'Aktarma') {
+
+        $agency = TransshipmentCenters::find(Auth::user()->tc_code);
+        $city = Cities::where('city_name', $agency->city)->first();
+        $ctn = $city->plaque . $agency->id;
+
+    }
+
+    $i = 0;
+    while (true) {
+        if ($i < 100)
+            $rnd = rand(111111111111, 999999999999);
+        else
+            $rnd = rand(123456789101234, 999999999999999);
+
+        $ctn .= substr($rnd, 0, (15 - strlen($ctn)));
+        $cargo = DB::table('cargo_bags')
+            ->where('tracking_no', $ctn)
+            ->first();
+
+        if ($cargo == null)
+            break;
+
+        $i++;
+    }
+    return $ctn;
+}
+
 
 function TrackingNumberDesign($tracking_no)
 {
@@ -670,16 +708,16 @@ function InsertDebits($ctn, $cargoID, $partNo, $userID, $movementID)
 function crypteTrackingNo($number)
 {
     $replacers = array(
-        '@' => '0',
+        'J' => '0',
         'DY' => '1',
         'GU' => '2',
         '%' => '3',
         'OS' => '4',
         '&' => '5',
-        'G' => '6',
+        'X' => '6',
         '$' => '7',
         'ZO' => '8',
-        'Z' => '9',
+        'F' => '9',
         'T#' => ' '
     );
 
@@ -690,12 +728,49 @@ function crypteTrackingNo($number)
     return $val;
 }
 
+function decryptTrackingNo($number = '')
+{
+    $replacers = array(
+        '?' => 'J',
+        '1' => 'DY',
+        '2' => 'GU',
+        '3' => '%',
+        '4' => 'OS',
+        '5' => '&',
+        '6' => 'X',
+        '7' => '$',
+        '8' => 'ZO',
+        '9' => 'F',
+        ' ' => 'T#'
+    );
+
+    $text = '%OSJ%OS%FOSF%J&GUOSFT#DY';
+
+    $bitch = str_split($text);
+    $decryptedVal = "";
+
+    for ($i = 0; $i < count($bitch); $i++) {
+
+        $single = substr($text, $i, 1);
+        $double = substr($text, $i, 2);
+
+        if (array_search($single, $replacers))
+            $decryptedVal .= array_search($single, $replacers);
+        else if (array_search($double, $replacers))
+            $decryptedVal .= array_search($double, $replacers);
+    }
+
+    $decryptedVal = str_replace('?', '0', $decryptedVal);
+    return $decryptedVal;
+}
+
 function DesignInvoiceNumber()
 {
     $letters = ['A', 'X', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'U', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'V', 'Y', 'X', 'Z'];
     $invoiceNumber = "";
 
     while (true) {
+
         $rnd = rand(0, count($letters) - 1);
         $rnd2 = rand(0, count($letters) - 1);
 
@@ -708,6 +783,7 @@ function DesignInvoiceNumber()
         $cargo = DB::table('cargoes')
             ->where('invoice_number', $invoiceNumber)
             ->first();
+
 
         if ($cargo != null)
             continue;
@@ -730,6 +806,18 @@ function allCargoTypes()
 {
     $CargoTypes = ['Dosya', 'Mi', 'Paket', 'Koli', 'Çuval', 'Rulo', 'Palet', 'Sandık', 'Valiz'];
     return $CargoTypes;
+}
+
+function getNameFirstLatter($name)
+{
+    $arrayName = explode(' ', $name);
+
+    $firstLetters = "";
+    foreach ($arrayName as $key) {
+        $firstLetters .= mb_substr($key, 0, 1, "utf-8") . '.';
+    }
+
+    return $firstLetters;
 }
 
 

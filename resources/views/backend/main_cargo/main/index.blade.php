@@ -217,12 +217,14 @@
 
 
                                 <div class="p-2 col-lg-2 col-sm-4 col-xs-6">
-                                    <button
-                                        class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
-                                        <i class="lnr-cross text-danger opacity-7 btn-icon-wrapper mb-2"> </i>
-                                        KARGO İPTAL
-                                    </button>
+                                    <a class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger"
+                                       href="{{route('cargoBags.agencyIndex')}}">
+                                        <i class="pe-7s-check text-danger opacity-7 btn-icon-wrapper mb-2"> </i>
+                                        Manifesto
+                                    </a>
                                 </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -506,7 +508,7 @@
 @section('js')
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
     <script src="/backend/assets/scripts/jquery.blockUI.js">/script>
-    <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
+        <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/delete-method.js"></script>
     <script src="/backend/assets/scripts/JsBarcode.js"></script>
