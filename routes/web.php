@@ -27,8 +27,10 @@ use App\Http\Controllers\Backend\Operation\VariousController;
 use App\Http\Controllers\Backend\WhoIs\WhoIsController;
 use App\Http\Controllers\Backend\ItAndNotifications\CargoCancellationController;
 use App\Http\Controllers\Backend\OfficialReports\OfficialReportController;
+use App\Http\Controllers\Backend\MainCargo\CargoBagsController;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -85,8 +87,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('TransshipmentCenters', [WhoIsController::class, 'transshipmentCenters'])->name('tc');
 
 
-       // Route::get('GetTransshipmentCenters', [WhoIsController::class, 'getTransshipmentCentersData'])->name('tcdata');
-   
+        // Route::get('GetTransshipmentCenters', [WhoIsController::class, 'getTransshipmentCentersData'])->name('tcdata');
+
         Route::get('Agencies', [WhoIsController::class, 'index_agencies'])->name('agencies');
         Route::get('GetAgencies', [WhoIsController::class, 'getAgencies'])->name('GetAgencies');
 
@@ -94,10 +96,10 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('GetTransshipmentCentersData', [WhoIsController::class, 'getTransshipmentCentersData'])->name('Transshipment');
 
         Route::post('GetAgencyInfo', [WhoIsController::class, 'agencyInfo'])->name('agencyInfo');
-        
+
         Route::get('GetUsers', [WhoIsController::class, 'getUsers'])->name('getUsers');
         Route::post('GetUserInfo', [WhoIsController::class, 'userInfo']);
-        
+
     });
 
     Route::group(['prefix' => 'ItAndNotification'], function () {
@@ -127,7 +129,6 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('AjaxTransactions/{transaction}', [MainCargoController::class, 'ajaxTransacrtions']);
         Route::get('StatementOfResponsibility/{ctn}', [MainCargoController::class, 'statementOfResponsibility']);
 
-
         Route::get('SearchCargo', [MainCargoController::class, 'searchCargo'])->name('search');
         Route::get('SearchGlobalCargo', [MainCargoController::class, 'getGlobalCargoes'])
             ->middleware('throttle:30,1')
@@ -136,6 +137,16 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('CancelledCargoes', [MainCargoController::class, 'cancelledCargoesIndex'])
             ->name('cancelledCargoes');
         Route::get('GetCancelledCargoes', [MainCargoController::class, 'getCancelledCargoes']);
+    });
+
+    Route::group(['prefix' => 'CargoBags', 'as' => 'cargoBags.'], function () {
+
+        Route::group(['prefix' => 'Agency', 'as' => 'agency'], function () {
+            Route::get('/', [CargoBagsController::class, 'agencyIndex'])->name('Index');
+            Route::get('/GetCargoBags', [CargoBagsController::class, 'getCargoBags'])->name('GetCargoBags');
+            Route::post('/CreateBag', [CargoBagsController::class, 'createBag'])->name('CreateBag');
+            Route::post('/GetBagInfo', [CargoBagsController::class, 'getBagInfo'])->name('GetBagInfo');
+        });
 
     });
 
@@ -389,7 +400,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 });
 
 
-Route::get('notyet',[DefaultController::class, 'notyet'])->name('not.yet');
+Route::get('notyet', [DefaultController::class, 'notyet'])->name('not.yet');
 
 
 //Route::get('not.yet', [DefaultController::class, 'notyet'])->name('not.yet');
