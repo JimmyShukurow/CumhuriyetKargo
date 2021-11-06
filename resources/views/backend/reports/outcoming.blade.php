@@ -11,7 +11,7 @@
     </style>
 @endpush
 
-@section('title', 'Kargo Sorgulama Ekranı')
+@section('title', 'Giden Kargo Sorgulama Ekranı')
 @section('content')
 
     <div class="app-main__inner">
@@ -23,7 +23,7 @@
                         <i class="pe-7s-box2 icon-gradient bg-ck">
                         </i>
                     </div>
-                    <div>Kargo Sorgulama
+                    <div>Giden Kargo Sorgulama
                         <div class="page-title-subheading">Bu sayfa üzerinden Cumhuriyet Kargo'nun taşıdığı tüm
                             kargoları sorgulayabilirsiniz (Tek seferde en fazla 30 günlük kayıt görüntüleyebilirsiniz).
                         </div>
@@ -35,7 +35,7 @@
         <div class="card mt-3">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                        class="header-icon pe-7s-box2 mr-3 text-muted opacity-6"> </i> CKG-Sis Kargo Sorgulama Ekranı
+                        class="header-icon pe-7s-box2 mr-3 text-muted opacity-6"> </i> CKG-Sis Giden Kargo Sorgulama Ekranı
                 </div>
                 <div class="btn-actions-pane-right actions-icon-btn">
                     <div class="btn-group dropdown">
@@ -43,7 +43,7 @@
                                 aria-expanded="false" class="btn-icon btn-icon-only btn btn-link"><i
                                 class="pe-7s-menu btn-icon-wrapper"></i></button>
                         <div tabindex="-1" role="menu" aria-hidden="true"
-                             class="dropdown-menu-right rm-pointers dropdown-menu-shadow dropdown-menu-hover-link dropdown-menu">
+                            class="dropdown-menu-right rm-pointers dropdown-menu-shadow dropdown-menu-hover-link dropdown-menu">
 
                             <div class="p-3 text-right">
                                 <button id="btnClearFilter" class="mr-2 btn-shadow btn-sm btn btn-link">Filtreyi
@@ -272,7 +272,7 @@
     <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
-    <script src="/backend/assets/scripts/main-cargo/search-cargo.js"></script>
+    <script src="/backend/assets/scripts/reports/incoming.js"></script>
 @endsection
 
 

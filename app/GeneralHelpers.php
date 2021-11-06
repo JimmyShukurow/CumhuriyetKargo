@@ -744,7 +744,7 @@ function decryptTrackingNo($number = '')
         ' ' => 'T#'
     );
 
-    $text = '%OSJ%OS%FOSF%J&GUOSFT#DY';
+    $text = $number;
 
     $bitch = str_split($text);
     $decryptedVal = "";

@@ -28,6 +28,7 @@ use App\Http\Controllers\Backend\WhoIs\WhoIsController;
 use App\Http\Controllers\Backend\ItAndNotifications\CargoCancellationController;
 use App\Http\Controllers\Backend\OfficialReports\OfficialReportController;
 use App\Http\Controllers\Backend\MainCargo\CargoBagsController;
+use App\Http\Controllers\Backend\Reports\ReportController;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 
@@ -137,6 +138,14 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('CancelledCargoes', [MainCargoController::class, 'cancelledCargoesIndex'])
             ->name('cancelledCargoes');
         Route::get('GetCancelledCargoes', [MainCargoController::class, 'getCancelledCargoes']);
+        
+    });
+
+    Route::group(['prefix'=>'Reports','as'=>'reports.'],function(){
+        Route::get('/IncomingCargoes',[ReportController::class,'incomingCargoes'])->name('incomingCargoes');
+        Route::get('/OutgoingCargoes',[ReportController::class,'outgoingCargoes'])->name('outcomingCargoes');
+        Route::get('/GetIncomingCargoes',[ReportController::class,'getIncomingCargoes']);
+        
     });
 
     Route::group(['prefix' => 'CargoBags', 'as' => 'cargoBags.'], function () {
@@ -399,11 +408,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
 });
 
-
 Route::get('notyet', [DefaultController::class, 'notyet'])->name('not.yet');
-
 
 //Route::get('not.yet', [DefaultController::class, 'notyet'])->name('not.yet');
 //Route::get('nxot.yet', [DefaultController::class, 'notyet'])->name('mainCargo.search');
 //Route::get('nyot.yet', [DefaultController::class, 'notyet'])->name('TransferCars.index');
-

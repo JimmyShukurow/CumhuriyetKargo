@@ -57,6 +57,9 @@ Route::middleware('auth:api')->group(function () {
     Route::any('DebitTransaction/{val?}', [DebitController::class, 'debitTransaction']);
     Route::post('CargoTransaction/{val?}', [CargoController::class, 'cargoTransaction']);
 
+    
+    Route::post('CaroBagTransactions/{val?}',[CargoController::class,'readCargoBag']);
+
 });
 
 
