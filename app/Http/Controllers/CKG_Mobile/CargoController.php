@@ -120,8 +120,10 @@ class CargoController extends Controller
             ->json($data, 200);
     }
 
-    public function readCargoBag($val = null, Request $request)
+    public function caroBagTransactions($val = null, Request $request)
     {
+        $data = [];
+
         switch ($val) {
             case 'ReadCargoBag':
                 // real val: '%OSJ%OS%FOS&FOSZO&$GU'
@@ -169,57 +171,146 @@ class CargoController extends Controller
                     ], 200);
                 }
 
+
+                $ctn = decryptTrackingNo($request->ctn);
+                $ctn = explode(' ', $ctn);
+                $bagID = $request->cargo_bag_id;
+                $bag = CargoBags::find($bagID);
+
+
+                if ($bag == null) {
+                    $data = [
+                        'status' =>  0,
+                        'message' => 'Çuval & Torba Bulunamadı!'
+                    ];
+                } else {
+
+                    $cargo = DB::table('cargoes')
+                        ->where('tracking_no', $ctn[0])
+                        ->whereRaw('deleted_at is null')
+                        ->where('confirm', '1')
+                        ->first();
+
+
+                    if ($cargo == null)
+                        $data = [
+                            'status' =>  0,
+                            'message' => 'Kargo bulunamadı!'
+                        ];
+                    else {
+
+                        #debit control
+                        $debit = DB::table('debits')
+                            ->where('cargo_id', $cargo->id)
+                            ->where('agency_code', Auth::user()->agency_code)
+                            ->first();
+
+
+
+                        if ($debit == null) {
+
+
+                            $data =  [
+                                'status' =>  0,
+                                'message' => 'Kargo zimmetinizde değil!'
+                            ];
+                        } else {
+
+                            # Kargo Tipi (cargo_type) => Dosya - Mi
+                            if ($cargo->cargo_type != 'Dosya' && $cargo->cargo_type != 'Mi')
+                                $data = [
+                                    'status' =>  0,
+                                    'message' => 'Sadece Dosya veya Mi kargoları yükleyebilirsiniz!'
+                                ];
+                            else {
+
+                                # load to bag
+                                $insert = CargoBagDetails::create([
+                                    'bag_id' => $bagID,
+                                    'cargo_id' => $cargo->id,
+                                    'part_no' => $ctn[1],
+                                    'loader_user_id' => Auth::id(),
+                                ]);
+
+                                if ($insert)
+                                    $data = ['status' => 1];
+                                else
+                                    $data = [
+                                        'status' =>  0,
+                                        'message' => 'İşlem başarısız oldu, lütfen daha sonra tekrar deneyiniz!'
+                                    ];
+                            }
+                        }
+                    }
+                }
+                break;
+
+            case 'UnLoadCargoToCargoBag':
+                $rules = ['ctn' => 'required', 'cargo_bag_id' => 'required'];
+                $validator = Validator::make($request->all(), $rules);
+                $data = [];
+
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => 0,
+                        'errors' => $validator->getMessageBag()->toArray()
+                    ], 200);
+                }
+
                 $ctn = decryptTrackingNo($request->ctn);
                 $ctn = explode(' ', $ctn);
                 $bagID = $request->cargo_bag_id;
 
-                $cargo = DB::table('cargoes')
-                    ->where('tracking_no', $ctn[0])
-                    ->whereRaw('deleted_at is null')
-                    ->where('confirm', '1')
-                    ->first();
+                $bag = CargoBags::find($bagID);
 
-
-                if ($cargo == null)
+                if ($bag == null) {
                     $data = [
                         'status' =>  0,
-                        'message' => 'Kargo bulunamadı!'
+                        'message' => 'Çuval & Torba Bulunamadı!'
                     ];
-                else {
-                    #debit control
-                    $debit = DB::table('debits')
-                        ->where('cargo_id', $cargo->id)
-                        ->where('agency_code', Auth::user()->agency_code)
+                } else {
+
+                    $cargo = DB::table('cargoes')
+                        ->where('tracking_no', $ctn[0])
+                        ->whereRaw('deleted_at is null')
+                        ->where('confirm', '1')
                         ->first();
 
-
-                    if ($debit == null)
+                    if ($cargo == null)
                         $data = [
                             'status' =>  0,
-                            'message' => 'Kargo zimmetinizde değil!'
+                            'message' => 'Kargo bulunamadı!'
                         ];
                     else {
-                        # load to bag
-                        $insert = CargoBagDetails::create([
-                            'bag_id' => $bagID,
-                            'cargo_id' => $cargo->id,
-                            'part_no' => $ctn[1],
-                            'loader_user_id' => Auth::id(),
-                        ]);
+                        # kargo çuval & torbada var mı? 
+                        $control = DB::table('cargo_bag_details')
+                            ->where('cargo_id',  $cargo->id)
+                            ->where('part_no', $ctn[1])
+                            ->where('is_inside', '1')
+                            ->first();
 
-                        if ($insert)
-                            $data = ['status' => 1];
-                        else
+                        if ($control == null) {
+
                             $data = [
                                 'status' =>  0,
-                                'message' => 'İşlem başarısız oldu, lütfen daha sonra tekrar deneyiniz!'
+                                'message' => 'Kargo ' . $bag->type . ' içerinde bulunamadı!'
                             ];
+                        } else {
 
+                            $update = CargoBagDetails::where('cargo_id', $cargo->id) //->first();
+                                ->where('part_no', $ctn[1])
+                                ->update(['is_inside' => '0', 'unloader_user_id' => Auth::user()->id, 'unloaded_time' => now()]);
+
+                            if ($update)
+                                $data = ['status' => 1];
+                            else
+                                $data = [
+                                    'status' =>  0,
+                                    'message' => 'İşlem başarısız oldu, lütfen daha sonra tekrar deneyiniz!'
+                                ];
+                        }
                     }
                 }
-
-
-
                 break;
 
             default:
@@ -233,8 +324,6 @@ class CargoController extends Controller
 
     public function loadCargoBag(Request $request)
     {
-
-
         return true;
     }
 }
