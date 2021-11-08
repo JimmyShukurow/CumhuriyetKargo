@@ -58,7 +58,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('CargoTransaction/{val?}', [CargoController::class, 'cargoTransaction']);
 
     
-    Route::post('CaroBagTransactions/{val?}',[CargoController::class,'readCargoBag']);
+    Route::post('CaroBagTransactions/{val?}',[CargoController::class, 'caroBagTransactions']);
 
 });
 
