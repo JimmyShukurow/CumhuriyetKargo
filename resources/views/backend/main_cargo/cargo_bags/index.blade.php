@@ -18,7 +18,10 @@
                     </div>
                     <div>Torba & Çuval
                         <div class="page-title-subheading">
-                            Bu modül üzerinden oluşturmuş olduğunuz torba ve çuvallarınızı görüntüleyebilirsiniz.
+                            Bu modül üzerinden oluşturmuş olduğunuz torba ve çuvallarınızı görüntüleyebilirsiniz. <b>
+                                Çuval
+                                veya Torba silebilmeniz için, içerdiği kargo sayısı alanının 0 olması gerekmektedir.
+                            </b>
                         </div>
                     </div>
                 </div>
@@ -36,11 +39,10 @@
             </div>
         </div>
 
-
         <div class="card mb-3">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                        class="header-icon lnr-laptop-phone mr-3 text-muted opacity-6"> </i>Tüm Kullanıcılar
+                        class="header-icon pe-7s-box2 mr-3 text-muted opacity-6"> </i> Torba & Çuval
                 </div>
 
             </div>
@@ -109,262 +111,11 @@
 
     <script src="/backend/assets/scripts/backend-modules.js"></script>
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
-
-    <script>
-        var oTable;
-        var detailsID = null;
-        // and The Last Part: NikoStyle
-        $(document).ready(function () {
-            oTable = $('.NikolasDataTable').DataTable({
-                pageLength: 25,
-                lengthMenu: [
-                    [10, 25, 50, 100, 250, 500, -1],
-                    ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
-                ],
-                order: [
-                    5, 'desc'
-                ],
-                language: {
-                    "sDecimal": ",",
-                    "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
-                    "sInfo": "_TOTAL_ kayıttan _START_ - _END_ kayıtlar gösteriliyor",
-                    "sInfoEmpty": "Kayıt yok",
-                    "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
-                    "sInfoPostFix": "",
-                    "sInfoThousands": ".",
-                    "sLengthMenu": "_MENU_",
-                    "sLoadingRecords": "Yükleniyor...",
-                    "sProcessing": "<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>",
-                    "sSearch": "",
-                    "sZeroRecords": "Eşleşen kayıt bulunamadı",
-                    "oPaginate": {
-                        "sFirst": "İlk",
-                        "sLast": "Son",
-                        "sNext": "Sonraki",
-                        "sPrevious": "Önceki"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": artan sütun sıralamasını aktifleştir",
-                        "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
-                    },
-                    "select": {
-                        "rows": {
-                            "_": "%d kayıt seçildi",
-                            "0": "",
-                            "1": "1 kayıt seçildi"
-                        }
-                    }
-                },
-                dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
-                buttons: [
-                    {
-                        extend: 'excelHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5]
-                        },
-                        title: "CK - Torba & Çuvallarınız"
-                    },
-                    {
-                        text: 'Yenile',
-                        action: function (e, dt, node, config) {
-                            dt.ajax.reload();
-                        }
-                    },
-                ],
-                responsive: true,
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: '{!! route('cargoBags.agencyGetCargoBags') !!}',
-                    data: function (d) {
-                        d.startDate = $('#startDate').val();
-                        d.endDate = $('#endDate').val();
-                        d.creatorUser = $('#creatorUser').val();
-                    },
-                    error: function (xhr, error, code) {
-                        if (code == "Too Many Requests") {
-                            ToastMessage('info', 'Aşırı istekte bulundunuz, Lütfen bir süre sonra tekrar deneyin!', 'Hata');
-                        }
-                    }
-                },
-                columns: [
-                    {data: 'tracking_no', name: 'tracking_no'},
-                    {data: 'type', name: 'type'},
-                    {data: 'included_cargo_count', name: 'included_cargo_count'},
-                    {data: 'status', name: 'status'},
-                    {data: 'name_surname', name: 'name_surname'},
-                    {data: 'created_at', name: 'created_at'},
-                    {data: 'edit', name: 'edit'},
-                ],
-                scrollY: "400px",
-            });
-        });
-
-        $('#search-form').on('submit', function (e) {
-            oTable.draw();
-            e.preventDefault();
-        });
-
-        function drawDT() {
-            oTable.draw();
-        }
-
-        $('.niko-select-filter').change(delay(function (e) {
-            drawDT();
-        }, 1000));
-
-        $('.niko-filter').keyup(delay(function (e) {
-            drawDT();
-        }, 1000));
-
-        // parse a date in yyyy-mm-dd format
-        function dateFormat(date) {
-            date = String(date);
-            let text = date.substring(0, 10);
-            let time = date.substring(19, 8);
-            time = time.substring(3, 11);
-            let datetime = text + " " + time;
-            return datetime;
-        }
-
-        $('#btnCreateNewBag').click(function () {
-            $('#bag_type').val('');
-            $('#modalCreateBag').modal();
-        });
-
-        $(document).on('click', '#btnInsertBag', function () {
-            $('#modalBodyCreateBag').block({
-                message: $('<div class="loader mx-auto">\n' +
-                    '                            <div class="ball-grid-pulse">\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                            </div>\n' +
-                    '                        </div>')
-            });
-            $('.blockUI.blockMsg.blockElement').css('border', '0px');
-            $('.blockUI.blockMsg.blockElement').css('background-color', '');
-
-            $('#btnInsertBag').prop('disabled', true);
-            $.ajax('{{route('cargoBags.agencyCreateBag')}}', {
-                method: 'POST',
-                data: {
-                    _token: token,
-                    bag_type: $('#bag_type').val(),
-                }
-            }).done(function (response) {
-
-                if (response.status == 0)
-                    ToastMessage('error', response.message, 'Hata!');
-                else if (response.status == 1) {
-                    $('#modalCreateBag').modal('hide');
-                    ToastMessage('success', '', 'İşlem başarılı, olutşruldu!');
-                    oTable.ajax.reload();
-                }
-
-            }).error(function (jqXHR, response) {
-                ajaxError(jqXHR.status);
-            }).always(function () {
-                $('#modalBodyCreateBag').unblock();
-                $('#btnInsertBag').prop('disabled', false);
-            });
-        });
-
-
-        var detail_id = null;
-
-        $(document).on('click', '.bag-details', function () {
-
-            let bag_id = $(this).prop('id');
-            detail_id = bag_id;
-            getBagDetails(bag_id);
-
-        });
-
-
-        function getBagDetails(bag_id) {
-
-            $('#modalBagDetails').modal();
-
-            $('#modalBodyBagDetails').block({
-                message: $('<div class="loader mx-auto">\n' +
-                    '                            <div class="ball-grid-pulse">\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                            </div>\n' +
-                    '                        </div>')
-            });
-            $('.blockUI.blockMsg.blockElement').css('width', '100%');
-            $('.blockUI.blockMsg.blockElement').css('border', '0px');
-            $('.blockUI.blockMsg.blockElement').css('background-color', '');
-
-            $.ajax('/CargoBags/Agency/GetBagInfo', {
-                method: 'POST',
-                data: {
-                    _token: token,
-                    bag_id: bag_id,
-                }
-            }).done(function (response) {
-
-                if (response.status == 0)
-                    ToastMessage('error', response.message, 'Hata!');
-                else if (response.status == 1) {
-
-                    let bag = response.bag;
-                    let bag_details = response.bag_details;
-
-                    $('#modalBagDetailHeader').text("#" + bag.tracking_no + " - " + bag.type + " DETAYLARI");
-
-                    $('#tbodyBagDetails').html('');
-
-                    if (bag_details.length == 0) {
-                        $('#tbodyBagDetails').html(' <tr><td class="font-weight-bold text-danger text-center" colspan="8">Burda hiç veri yok!</td></tr>');
-                    } else {
-                        $.each(bag_details, function (key, val) {
-                            $('#tbodyBagDetails').append('<tr>' +
-                                '<td class="font-weight-bold">' + (val['invoice_number']) + '</td>' +
-                                '<td>' + (val['part_no']) + '</td>' +
-                                '<td>' + (val['cargo_type']) + '</td>' +
-                                '<td>' + (val['receiver_name']) + '</td>' +
-                                '<td>' + (val['sender_name']) + '</td>' +
-                                '<td>' + (val['arrival_city'] + '/' + val['arrival_district']) + '</td>' +
-                                '<td>' + (val['name_surname']) + '</td>' +
-                                '<td>' + (val['created_at']) + '</td>' +
-                                '</tr>');
-                        });
-                    }
-                }
-
-            }).error(function (jqXHR, response) {
-                ajaxError(jqXHR.status);
-            }).always(function () {
-                $('#modalBodyBagDetails').unblock();
-            });
-        }
-
-        $(document).on('click', '#btnRefreshBagDetails', function () {
-            getBagDetails(detail_id);
-        });
-
-    </script>
-
+    <script src="/backend/assets/scripts/cargo-bags/index.js"></script>
 @endsection
 
 @section('modals')
-    <!-- Large modal -->
+    <!-- Large modal => Modal Create Bag -->
     <div class="modal fade bd-example-modal-lg" id="modalCreateBag" tabindex="-1" role="dialog"
          aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
@@ -401,7 +152,7 @@
         </div>
     </div>
 
-
+    <!-- Large modal => Modal Bag Details -->
     <div class="modal fade bd-example-modal-lg" id="modalBagDetails" tabindex="-1" role="dialog"
          aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -438,6 +189,117 @@
                 <div style="display: flex;align-items: center; justify-content: center;" class="modal-footer">
                     <button id="btnRefreshBagDetails" class="btn btn-warning">Yenile</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Large modal => Modal Barcode -->
+    <div class="modal fade bd-example-modal-lg" id="ModalShowBarcode" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalGiveRolePermissionLabel">Barkod Detayları</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div style="overflow-x: hidden;min-height: 30vh; max-height: 60vh;" id="ModalBarcodes"
+                     class="modal-body">
+                    <div id="ContainerBarcodes"
+                         class="container">
+
+                        <div class="row barcode-row">
+                            <div class="col-6">
+                                <h5 class="font-weight-bold barcode-slogan">Cumhuriyet Kargo - Sevgi ve Değer
+                                    Taşıyoruz..</h5>
+                                <h4 class="font-weight-bold  text-dark m-0 barcodeDepartureTC">VAN Gölü</h4>
+                                <b class="barcodeDepartureAgency">EVREN</b>
+                            </div>
+
+                            <div class="col-6">
+                                <h3 class="p-0 m-0 barcodePaymentType">HL 102856 AÖ</h3>
+                                <h6 class="m-0 labelTrackingNo">GönderiNo: <b class="barcodeTrackingNo">145646
+                                        749879 87968</b>
+                                </h6>
+                                <b>ÜRÜN BEDELİ: <b class="barcodeCargoTotalPrice">858₺</b></b>
+                            </div>
+
+
+                            <div class="col-9 p-0">
+                                <table class="shipmentReceiverInfo">
+                                    <tr>
+                                        <td class="barcode-mini-text text-center font-weight-bold vertical-rl">GÖN</td>
+                                        <td>
+                                            <p class="barcode-mini-text p-1 m-0 font-weight-bold barcodeSenderName">
+                                                Kitaip yayın evi,
+                                                Basım DAĞ. Reklam Tic. LTD ŞTİ</p>
+                                            <p class="barcode-mini-text p-1 m-0 font-weight-bold">
+                                                <span id="barcodeSenderCityDistrict">BAĞCILAR/İSTANBUL </span>
+                                                <span class="text-right barcodeSenderPhone">5354276824</span>
+                                            </p>
+                                        </td>
+                                        <td class="cargoInfo" rowspan="2">
+                                            <p class="barcodeRegDate font-weight-bold barcode-mini-text m-0">
+                                                28.08.2021</p>
+                                            <p class="barcodeCargoType m-0  barcode-mini-text font-weight-bolder">
+                                                KOLİ</p>
+                                            <p class="m-0  barcode-mini-text">Kg:50</p>
+                                            <p class="m-0  barcode-mini-text">Ds:50</p>
+                                            <p class="m-0  barcode-mini-text">Kg/Ds:50</p>
+                                            <p class="m-0  barcode-mini-text">Toplam:164</p>
+                                            <p class="m-0 text-center font-weight-bold">2/2</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="barcode-mini-text text-center font-weight-bold vertical-rl">ALICI
+                                        </td>
+                                        <td>
+                                            <p class="barcodeReceiverName barcode-mini-text p-1 m-0 font-weight-bold">
+                                                NURULLAH GÜÇ</p>
+
+                                            <p class="barcodeReceiverAddress barcode-mini-text p-1 m-0 font-weight-bold">
+                                                Gülbahar Mah. Cemal
+                                                Sururi Sk.
+                                                Halim Meriç İş Merkezi No:15/E K:4/22 Şişli/İstanbul</p>
+                                            <p class="barcode-mini-text p-1 m-0 font-weight-bold">
+                                                <span class="barcodeReceiverCityDistrict">Şişli/İstanbul </span>
+                                                <span class="barcodeReceiverPhone"
+                                                      class="text-right">TEL: 5354276824</span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-3 qr-barcode-cont">
+                                <div class="qrcodes" id="qrcode"></div>
+                            </div>
+
+                            <div class="col-12 text-right">
+                                <h3 class="font-weight-bold text-dark barcodeArrivalTC">
+                                    VAN HATTI</h3>
+                            </div>
+
+                            <div class="col-12 code39-container">
+                                <svg class="barcode"></svg>
+                            </div>
+
+                            <div class="col-12 text-right">
+                                <b class="barcodeArrivalAgency">EVREN</b>
+                            </div>
+
+                        </div>
+                        <div class="barcode-divider"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <label id="modalBarcodeFooterLabel" style="float: left;width: 100%;"><b id="barcodeCount">5</b> Adet
+                        barkod hazırlandı.</label>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                    <button type="button" id="btnPrintBarcode" class="btn btn-primary">Yazdır</button>
+                </div>
+
             </div>
         </div>
     </div>

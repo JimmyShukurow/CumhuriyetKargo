@@ -40,6 +40,9 @@ class CargoBagsController extends Controller
             ->whereRaw("cargo_bags.created_at between '" . $startDate . " 00:00:00" . "' and '" . $endDate . " 23:59:59" . "'");
 
         return datatables()->of($data)
+            ->setRowId(function ($key) {
+                return 'cargo_bag-item-' . $key->id;
+            })
             ->editColumn('tracking_no', function ($key) {
                 return '<b>' . TrackingNumberDesign($key->tracking_no) . '</b>';
             })
@@ -131,5 +134,62 @@ class CargoBagsController extends Controller
 
     }
 
+    public function deleteCargoBag(Request $request)
+    {
+        $cargoBag = CargoBags::find($request->destroy_id);
+
+        if ($cargoBag == null)
+            return 0;
+
+        $cargoBag = DB::table('cargo_bags')
+            ->selectRaw('cargo_bags.*, (select count(*) from cargo_bag_details where bag_id = cargo_bags.id)  as included_cargo_count, users.name_surname')
+            ->join('users', 'cargo_bags.creator_user_id', '=', 'users.id')
+            ->where('cargo_bags.id', $cargoBag->id)
+            ->first();
+
+        if ($cargoBag->included_cargo_count != 0)
+            return ['status' => '0', 'message' => 'Silme işlemini gerçkeleştirebilimeniz için kargo içeriğinin 0 olması gerekmektedir.'];
+        else {
+            $cargoBag = CargoBags::find($request->destroy_id)
+                ->delete();
+            return $cargoBag ? 1 : 0;
+        }
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

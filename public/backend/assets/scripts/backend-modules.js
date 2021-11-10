@@ -166,8 +166,11 @@ $(document).on('click', '.trash', function () {
         url = "/Departments/DestroyRoleDepartment";
         object = "Departmana bağlı yetki";
     } else if (from == "user") {
-        url = "Users/Destroy";
+        url = "/Users/Destroy";
         object = "Kullanıcı";
+    } else if (from == "cargo_bag") {
+        url = "/CargoBags/Agency/DeleteBag";
+        object = "Torba & Çuval"
     }
 
     var destroy_id = $(this).attr('id');
@@ -189,14 +192,19 @@ $(document).on('click', '.trash', function () {
                         _token: token
                     },
                     success: function (msg) {
-                        if (msg == 1) {
+                        if (msg == 1 || msg.status == 1) {
                             $('#' + from + '-item-' + destroy_id).remove();
                             ToastMessage('success', object + ' Silindi.',
                                 'İşlem Başarılı!');
-                        } else
+                        } else if (msg == 0) {
                             ToastMessage('error',
                                 'Bir hata oluştu. Lütfen daha sonra tekrar deneyin.',
                                 'İşlem Başarısız!');
+                        } else if (msg.status == 0) {
+                            ToastMessage('error',
+                                msg.message, 'İşlem Başarısız!');
+                        }
+
                     }
                 });
 

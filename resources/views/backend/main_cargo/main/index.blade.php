@@ -212,7 +212,6 @@
                                             <span>UTF (Uygunsuzluk Tespit Tutanağı)</span>
                                         </button>
                                     </div>
-
                                 </div>
 
 
