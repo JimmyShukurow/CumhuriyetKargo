@@ -7,6 +7,6 @@
         role="menu" aria-hidden="true" class="dropdown-menu" x-placement="bottom-start">
         <a class="dropdown-item bag-details" id="{{ $id }}" href="javascript:void(0)">Detay</a>
         <a from="cargo_bag" class="dropdown-item trash" id="{{ $id }}">Sil</a>
-        <a class="dropdown-item">Barkod Yazdır</a>
+        <a class="dropdown-item print-bag-barcode" id="{{ $id }}">Barkod Yazdır</a>
     </div>
 </div>

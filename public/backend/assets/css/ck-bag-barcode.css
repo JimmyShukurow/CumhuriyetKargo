@@ -1,0 +1,110 @@
+.barcodeDepartureTC {
+    font-size: 2.2rem;
+    color: #000 !important;
+}
+
+.labelTrackingNo {
+    font-size: 0.8rem;
+    text-align: right;
+    margin-bottom: 6px !important;
+}
+
+.barcodeCargoTotalPrice {
+    font-size: 12px;
+}
+
+.shipmentReceiverInfo {
+    width: 100%;
+}
+
+.shipmentReceiverInfo, .shipmentReceiverInfo tr, .shipmentReceiverInfo td {
+    border: 1px solid black;
+}
+
+.barcodeSenderPhone {
+    float: right;
+}
+
+td.cargoInfo {
+    white-space: nowrap;
+}
+
+.barcodeReceiverPhone {
+    float: right;
+}
+
+.barcodeArrivalTC {
+    margin-top: 1px;
+    margin-bottom: 5px;
+    font-size: 2.2rem;
+    color: #000 !important;
+    text-align: left;
+}
+
+.code39-container {
+    height: 91px;
+}
+
+svg.barcode {
+    width: 100%;
+}
+
+.barcodeArrivalAgency {
+    font-size: 2rem;
+    margin-top: -8px !important;
+    text-align: right !important;
+    margin-right: 10px;
+}
+
+.barcode-divider {
+    width: 100%;
+    border: 5px solid #000;
+    height: 2px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.barcode-row {
+    max-height: 400px;
+    max-width: 475px;
+    margin: 10px auto 50px;
+}
+
+/*.barcode-row-last-child {*/
+/*    margin: 10px auto -50px !important;*/
+/*}*/
+
+.barcode-row-first-child {
+    margin-top: 0px !important;
+}
+
+/*.barcode-row:last-child {*/
+/*    max-height: 400px;*/
+/*    max-width: 475px;*/
+/*    margin: 0 auto -40px !important;*/
+/*}*/
+
+#ContainerBarcodes {
+    background: #fff !important;
+    color: #000 !important;
+}
+
+.color-black {
+    color: #000 !important;
+    transform: rotate(7deg);
+    -ms-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+}
+
+.invoiceNumber {
+    font-size: 35px;
+    text-align: right;
+}
+
+.barcodePaymentType {
+    display: inline;
+    float: left;
+    margin-top: 15px !important;
+}

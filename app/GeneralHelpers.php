@@ -784,7 +784,6 @@ function DesignInvoiceNumber()
             ->where('invoice_number', $invoiceNumber)
             ->first();
 
-
         if ($cargo != null)
             continue;
         else

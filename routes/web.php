@@ -102,6 +102,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
             Route::post('/GetBagInfo', [CargoBagsController::class, 'getBagInfo'])->name('GetBagInfo');
             Route::post('/DeleteBag', [CargoBagsController::class, 'deleteCargoBag'])->name('DeleteCargoBag');
         });
+
+        Route::post('GetBagGeneralInfo', [CargoBagsController::class, 'getBagGeneralInfo']);
     });
 
     # ==> Services Fee Transaction START

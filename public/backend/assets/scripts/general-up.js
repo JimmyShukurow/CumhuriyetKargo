@@ -215,7 +215,6 @@ function clicker(selector) {
 }
 
 function NikoStylePostMethod() {
-
     $('#ModalCargoDetails').block({
         message: $('<div class="loader mx-auto">\n' +
             '                            <div class="ball-grid-pulse">\n' +
@@ -384,5 +383,10 @@ $(window).keydown(function (event) {
     }
 });
 
+$(document).ready(function () {
+    $('#btnShortCutSearch').click(function () {
+        $('.search-icon').trigger('click');
+    });
+});
 
 

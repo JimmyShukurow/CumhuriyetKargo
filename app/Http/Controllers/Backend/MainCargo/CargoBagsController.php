@@ -9,6 +9,7 @@ use App\Models\CargoBags;
 use App\Models\Cities;
 use App\Models\Roles;
 use App\Models\TransshipmentCenters;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,8 +24,20 @@ class CargoBagsController extends Controller
         $data['roles'] = Roles::all();
         $data['cities'] = Cities::all();
 
+
+        $agency = DB::table('view_agency_region')
+            ->where('id', Auth::user()->agency_code)
+            ->first();
+
+        $tc = TransshipmentCenters::find($agency->tc_id);
+
+        $departure_point = $agency->agency_name;
+        $arrival_point = $tc->tc_name . ' TRM.';
+        $arrivalPoint = $arrival_point;
+        $departurePoint = $departure_point;
+
         GeneralLog('Acente Torba & Çuval Sayfası görüntülendi.');
-        return view('backend.main_cargo.cargo_bags.index', compact(['data']));
+        return view('backend.main_cargo.cargo_bags.index', compact(['data', 'arrivalPoint', 'departurePoint']));
     }
 
     public function getCargoBags(Request $request)
@@ -154,6 +167,56 @@ class CargoBagsController extends Controller
                 ->delete();
             return $cargoBag ? 1 : 0;
         }
+    }
+
+    public function getBagGeneralInfo(Request $request)
+    {
+        if ($request->id == '')
+            return response()
+                ->json(['status' => 0, 'message' => 'Barcod numarası alanı zorunludur!'], 200);
+
+        $bag = CargoBags::find($request->id);
+
+        if ($bag == null)
+            return response()
+                ->json(['status' => 0, 'message' => 'Torba & Çuval bulanamadı!'], 200);
+
+        $bagInfo = DB::table('cargo_bags')
+            ->where('id', $bag->id)
+            ->first();
+
+        $bagInfo->design_tracking_no = TrackingNumberDesign($bagInfo->tracking_no);
+        $bagInfo->crypted_no = crypteTrackingNo("$bagInfo->tracking_no");
+        $bagInfo->created_at = substr($bagInfo->created_at, 0, 16);
+        $bagInfo->type = tr_strtoupper($bagInfo->type);
+
+
+        $creator_user = User::find($bagInfo->creator_user_id);
+
+        $departure_point = "";
+        $arrival_point = "";
+        if ($creator_user->user_type == 'Acente') {
+
+            $agency = DB::table('view_agency_region')
+                ->where('id', $creator_user->agency_code)
+                ->first();
+
+            $tc = TransshipmentCenters::find($agency->tc_id);
+
+            $departure_point = $agency->agency_name;
+            $arrival_point = $tc->tc_name . ' TRM.';
+        }
+
+        $bagInfo->departure_point = $departure_point;
+        $bagInfo->arrival_point = $arrival_point;
+
+
+        $data = [
+            'status' => 1,
+            'bag_info' => $bagInfo,
+        ];
+
+        return response()->json($data, 200);
     }
 
 }

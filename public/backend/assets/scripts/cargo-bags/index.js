@@ -242,3 +242,98 @@ function getBagDetails(bag_id) {
 $(document).on('click', '#btnRefreshBagDetails', function () {
     getBagDetails(detail_id);
 });
+
+$(document).on('click', '.print-bag-barcode', function () {
+
+    let bag_id = $(this).attr('id');
+
+    $('#ModalShowBarcode').modal();
+
+    $('#ModalBarcodes').block({
+        message: $('<div class="loader mx-auto">\n' +
+            '                            <div class="ball-grid-pulse">\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                            </div>\n' +
+            '                        </div>')
+    });
+    $('.blockUI.blockMsg.blockElement').css('width', '100%');
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+    $.ajax('/CargoBags/GetBagGeneralInfo', {
+        method: 'POST',
+        data: {
+            _token: token,
+            id: bag_id,
+        }
+    }).done(function (response) {
+
+        if (response.status == 0) {
+            ToastMessage('error', response.message, 'Hata!');
+        } else if (response.status == 1) {
+
+            let bag = response.bag_info;
+
+            $('#barcodeTrackingNo').text(bag.design_tracking_no);
+            $('#barcodeCreatedAt').text(bag.created_at);
+            $('.barcodeBagType').text(bag.type);
+            $('.barcodeDepartureTC').text(bag.departure_point);
+            $('.barcodeArrivalTC').text(bag.arrival_point);
+
+            // D@56@HI@ECVHLDEOIIAB5S@
+            makeBarcodeCode39('#barcodeCode39', bag.crypted_no, "" + bag.tracking_no + "");
+            makeBarcodeQRCode('qrcode', bag.crypted_no);
+        }
+
+    }).error(function (jqXHR, response) {
+        ajaxError(jqXHR.status);
+    }).always(function () {
+        $('#ModalBarcodes').unblock();
+    });
+
+
+});
+
+
+function makeBarcodeCode39(selector, val, text) {
+    JsBarcode(selector, val, {
+        textPosition: "none",
+        text: "Referans No: " + text.replace(' ', '').replace(' ', ''),
+    });
+}
+
+function makeBarcodeQRCode(selector, val) {
+
+    $('#' + selector).html('');
+
+    let qrcode = new QRCode(document.getElementById(selector), {
+        width: 100,
+        height: 100
+    });
+
+    function makeCode() {
+        qrcode.makeCode(val);
+    }
+
+    makeCode();
+
+    $("#text").on("blur", function () {
+        makeCode();
+    }).on("keydown", function (e) {
+        if (e.keyCode == 13) {
+            makeCode();
+        }
+    });
+}
+
+$(document).on('click', '#btnPrintBarcode', function () {
+    printBarcode('#ModalBarcodes');
+});

@@ -153,72 +153,83 @@
                                          style="background-image: url('assets/images/dropdown-header/abstract4.jpg');">
                                     </div>
                                     <div class="menu-header-content text-white">
-                                        <h5 class="menu-header-title">Grid Dashboard</h5>
-                                        <h6 class="menu-header-subtitle">Easy grid navigation inside dropdowns</h6>
+                                        <h5 class="menu-header-title">Kolay Menü</h5>
+                                        <h6 class="menu-header-content">Bu menü üzerinden modüllere kolayca erişim
+                                            sağlayabilirsiniz.</h6>
                                     </div>
                                 </div>
                             </div>
                             <div class="grid-menu grid-menu-xl grid-menu-3col">
                                 <div class="no-gutters row">
                                     <div class="col-sm-6 col-xl-4">
-                                        <button
-                                            class="btn-icon-vertical btn-square btn-transition btn btn-outline-link">
-                                            <i
-                                                class="pe-7s-world icon-gradient bg-night-fade btn-icon-wrapper btn-icon-lg mb-3"></i>
-                                            Automation
-                                        </button>
+                                        <a style="text-decoration: none;" href="{{route(getUserFirstPage())}}">
+                                            <button
+                                                class="btn-icon-vertical btn-square btn-transition btn btn-outline-link">
+                                                <i class="pe-7s-world icon-gradient bg-night-fade btn-icon-wrapper btn-icon-lg mb-3"></i>
+                                                Anasayfa
+                                            </button>
+                                        </a>
                                     </div>
+
                                     <div class="col-sm-6 col-xl-4">
-                                        <button
-                                            class="btn-icon-vertical btn-square btn-transition btn btn-outline-link">
-                                            <i
-                                                class="pe-7s-piggy icon-gradient bg-night-fade btn-icon-wrapper btn-icon-lg mb-3">
-                                            </i>
-                                            Reports
-                                        </button>
+                                        <a style="text-decoration: none;" href="{{route('systemSupport.myTickets')}}">
+                                            <button
+                                                class="btn-icon-vertical btn-square btn-transition btn btn-outline-link">
+                                                <i class="pe-7s-ticket icon-gradient bg-night-fade btn-icon-wrapper btn-icon-lg mb-3"></i>
+                                                Destek & Ticket
+                                            </button>
+                                        </a>
                                     </div>
+
                                     <div class="col-sm-6 col-xl-4">
-                                        <button
-                                            class="btn-icon-vertical btn-square btn-transition btn btn-outline-link">
-                                            <i
-                                                class="pe-7s-config icon-gradient bg-night-fade btn-icon-wrapper btn-icon-lg mb-3">
-                                            </i>
-                                            Settings
-                                        </button>
+                                        <a style="text-decoration: none;" href="{{route('personel.AccountSettings')}}">
+                                            <button
+                                                class="btn-icon-vertical btn-square btn-transition btn btn-outline-link">
+                                                <i
+                                                    class="pe-7s-config icon-gradient bg-night-fade btn-icon-wrapper btn-icon-lg mb-3">
+                                                </i>
+                                                Hesap Bilgi & Ayarları
+                                            </button>
+                                        </a>
                                     </div>
+
                                     <div class="col-sm-6 col-xl-4">
-                                        <button
-                                            class="btn-icon-vertical btn-square btn-transition btn btn-outline-link">
-                                            <i
-                                                class="pe-7s-browser icon-gradient bg-night-fade btn-icon-wrapper btn-icon-lg mb-3">
-                                            </i>
-                                            Content
-                                        </button>
+                                        <a style="text-decoration: none;" href="{{route('whois.index')}}">
+                                            <button
+                                                class="btn-icon-vertical btn-square btn-transition btn btn-outline-link">
+                                                <i class="fas fa-users icon-gradient bg-night-fade btn-icon-wrapper btn-icon-lg mb-3"></i>
+                                                Kişiler
+                                            </button>
+                                        </a>
                                     </div>
+
                                     <div class="col-sm-6 col-xl-4">
-                                        <button
-                                            class="btn-icon-vertical btn-square btn-transition btn btn-outline-link">
-                                            <i
-                                                class="pe-7s-hourglass icon-gradient bg-night-fade btn-icon-wrapper btn-icon-lg mb-3">
-                                            </i>
-                                            Activity
-                                        </button>
+                                        <a style="text-decoration: none;" href="{{route('whois.agencies')}}">
+                                            <button
+                                                class="btn-icon-vertical btn-square btn-transition btn btn-outline-link">
+                                                <i class="fas fa-users icon-gradient bg-night-fade btn-icon-wrapper btn-icon-lg mb-3"></i>
+                                                Tüm Acenteler
+                                            </button>
+                                        </a>
                                     </div>
+
                                     <div class="col-sm-6 col-xl-4">
-                                        <button
-                                            class="btn-icon-vertical btn-square btn-transition btn btn-outline-link">
-                                            <i
-                                                class="pe-7s-world icon-gradient bg-night-fade btn-icon-wrapper btn-icon-lg mb-3">
-                                            </i>
-                                            Contacts
-                                        </button>
+                                        <a style="text-decoration: none;" href="{{route('whois.tc')}}">
+                                            <button
+                                                class="btn-icon-vertical btn-square btn-transition btn btn-outline-link">
+                                                <i class="fas fa-users icon-gradient bg-night-fade btn-icon-wrapper btn-icon-lg mb-3"></i>
+                                                Tüm Transfer Merkezleri
+                                            </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                             <ul class="nav flex-column">
                                 <li class="nav-item-divider nav-item"></li>
                                 <li class="nav-item-btn text-center nav-item">
-                                    <button class="btn-shadow btn btn-primary btn-sm">Follow-ups</button>
+                                    <button id="btnShortCutSearch" class="btn-shadow btn btn-primary btn-sm">Modül
+                                        Aratın <i
+                                            class="pe-7s-search"></i></button>
                                 </li>
                             </ul>
                         </div>
