@@ -11,9 +11,7 @@ Route::group(
             Route::get('', [WhoIsController::class, 'index'])->name('index');
             Route::get('TransshipmentCenters', [WhoIsController::class, 'transshipmentCenters'])->name('tc');
 
-
             // Route::get('GetTransshipmentCenters', [WhoIsController::class, 'getTransshipmentCentersData'])->name('tcdata');
-
             Route::get('Agencies', [WhoIsController::class, 'index_agencies'])->name('agencies');
             Route::get('GetAgencies', [WhoIsController::class, 'getAgencies'])->name('GetAgencies');
 

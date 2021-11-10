@@ -87,6 +87,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('HTF', [OfficialReportController::class, 'createHTF'])->name('createHTF');
     });
 
+
+
     Route::group(['prefix' => 'Reports', 'as' => 'reports.'], function () {
         Route::get('/IncomingCargoes', [ReportController::class, 'incomingCargoes'])->name('incomingCargoes');
         Route::get('/OutgoingCargoes', [ReportController::class, 'outgoingCargoes'])->name('outcomingCargoes');
@@ -129,13 +131,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     });
     # ==> Sender Currents Transactions END
 
-    Route::group(['prefix' => 'SystemSupport', 'as' => 'systemSupport.'], function () {
-        Route::get('NewTicket', [SystemSupportController::class, 'addTicket'])->name('NewTicket');
-        Route::post('SendTicket', [SystemSupportController::class, 'createTicket'])->name('create');
-        Route::get('MyTickets', [SystemSupportController::class, 'myTickets'])->name('myTickets');
-        Route::post('ReplyTicket', [SystemSupportController::class, 'replyTicket'])->name('replyTicket');
-        Route::get('TicketDetails/{TicketID}', [SystemSupportController::class, 'ticketDetails'])->name('TicketDetails');
-    });
+    
 
     Route::group(['prefix' => '/Theme', 'middleware' => ['ThemeMid']], function () {
         Route::get('/', [ThemeController::class, 'index'])->name('theme.Index');
@@ -173,7 +169,6 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 });
 
 Route::get('notyet', [DefaultController::class, 'notyet'])->name('not.yet');
-
 
 //Route::get('not.yet', [DefaultController::class, 'notyet'])->name('not.yet');
 //Route::get('nxot.yet', [DefaultController::class, 'notyet'])->name('mainCargo.search');
