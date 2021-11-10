@@ -87,6 +87,39 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('HTF', [OfficialReportController::class, 'createHTF'])->name('createHTF');
     });
 
+
+
+    Route::group(['prefix' => 'Reports', 'as' => 'reports.'], function () {
+        Route::get('/IncomingCargoes', [ReportController::class, 'incomingCargoes'])->name('incomingCargoes');
+        Route::get('/OutgoingCargoes', [ReportController::class, 'outgoingCargoes'])->name('outcomingCargoes');
+        Route::get('/GetIncomingCargoes', [ReportController::class, 'getIncomingCargoes']);
+    });
+
+    Route::group(['prefix' => 'CargoBags', 'as' => 'cargoBags.'], function () {
+
+        Route::group(['prefix' => 'Agency', 'as' => 'agency'], function () {
+            Route::get('/', [CargoBagsController::class, 'agencyIndex'])->name('Index');
+            Route::get('/GetCargoBags', [CargoBagsController::class, 'getCargoBags'])->name('GetCargoBags');
+            Route::post('/CreateBag', [CargoBagsController::class, 'createBag'])->name('CreateBag');
+            Route::post('/GetBagInfo', [CargoBagsController::class, 'getBagInfo'])->name('GetBagInfo');
+            Route::post('/DeleteBag', [CargoBagsController::class, 'deleteCargoBag'])->name('DeleteCargoBag');
+        });
+    });
+
+    # ==> Services Fee Transaction START
+    Route::group(['middleware' => 'GeneralServicesFeeMid'], function () {
+        Route::group(['prefix' => 'ServiceFees', 'as' => 'servicefee.'], function () {
+            Route::get('/', [ServiceFeeController::class, 'index'])->name('index');
+            Route::post('FilePrice/{id}', [ServiceFeeController::class, 'updateFilePrice']);
+            Route::post('MiPrice/{id}', [ServiceFeeController::class, 'updateMiPrice']);
+            Route::post('GetFilePrice', [ServiceFeeController::class, 'getFilePrice']);
+        });
+        Route::resource('AdditionalServices', AdditionalServicesController::class);
+        Route::resource('DesiList', DesiListController::class);
+    });
+    # ==> Services Fee Transaction END
+
+
     # ==> Sender Currents Transactions START
     Route::group(['middleware' => 'SenderCurrentsMid'], function () {
         Route::group(['prefix' => 'SenderCurrents', 'as' => 'senderCurrents.'], function () {
