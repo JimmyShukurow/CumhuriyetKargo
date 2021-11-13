@@ -133,7 +133,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     });
     # ==> Sender Currents Transactions END
 
-    
+
 
     Route::group(['prefix' => '/Theme', 'middleware' => ['ThemeMid']], function () {
         Route::get('/', [ThemeController::class, 'index'])->name('theme.Index');
@@ -167,7 +167,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     });
 
     # Main Routes
-    Route::get('/sSystemUpdates', [ModuleController::class, 'systemUpdateView']);
+    Route::get('/SystemUpdates', [ModuleController::class, 'systemUpdateView']);
 });
 
 Route::get('notyet', [DefaultController::class, 'notyet'])->name('not.yet');

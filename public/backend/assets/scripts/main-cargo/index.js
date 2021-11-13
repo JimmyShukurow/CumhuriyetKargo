@@ -807,20 +807,20 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
 
                 preparedBarcodCount++;
 
-                if (loop == 1)
+                if (loop == 1) {
                     className = "barcode-row-last-child";
-
-                else if (loop == preparedBarcodCount)
+                    elementStyle = "margin-top: -2px";
+                } else if (loop == preparedBarcodCount) {
+                    elementStyle = "";
                     className = "barcode-row-first-child";
-
-                else
+                } else
                     className = "";
 
                 if (loop > 1)
                     if (loop != preparedBarcodCount)
                         elementStyle = "margin-top: 90px;";
                     else
-                        elementStyle = "";
+                        elementStyle = "margin-top: -2px";
 
                 if (cargo.collectible == 1)
                     cumhuriyetCargoType = "TAHSİLATLI";
@@ -1026,10 +1026,21 @@ $('#btnPrintSelectedBarcode').click(function () {
 
                 preparedBarcodCount++;
 
+                if (loop == 1) {
+                    className = "barcode-row-last-child";
+                    elementStyle = "margin-top: -2px";
+                } else if (loop == preparedBarcodCount) {
+                    elementStyle = "";
+                    className = "barcode-row-first-child";
+                } else
+                    className = "";
+
+
                 if (preparedBarcodCount != total_part_count)
                     elementStyle = "margin-top: 90px;";
                 else
                     elementStyle = "";
+
 
                 if (cargo.collectible == 1)
                     cumhuriyetCargoType = "TAHSİLATLI";

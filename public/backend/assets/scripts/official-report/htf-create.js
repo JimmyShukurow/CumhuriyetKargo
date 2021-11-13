@@ -28,6 +28,8 @@ $('#tracking_no').keyup(delay(function (e) {
 
 function getCargo() {
 
+    $('#tbodyCargoPartDetails').html('<tr><td colspan="9" class="text-center">Burda hiç veri yok.</td></tr>');
+
     $('#rowCargoInfo').block({
         message: $('<div class="loader mx-auto">\n' +
             '                            <div class="ball-grid-pulse">\n' +
@@ -58,6 +60,7 @@ function getCargo() {
         if (response.status == 0) {
             $('.cargo-information').text('-');
             ToastMessage('error', response.message, 'Hata!');
+            $('#piecesBtn').prop('disabled', true);
             general_cargo = null;
         } else if (response.status == 1) {
 
@@ -68,6 +71,7 @@ function getCargo() {
             let arrival_tc = response.arrival_tc;
             let departure = response.departure;
             let departure_tc = response.departure_tc;
+            let part_details = response.part_details;
 
 
             $('b#invoice_number').text(cargo.invoice_number);
@@ -81,11 +85,53 @@ function getCargo() {
             $('b#arrival_branch').text(arrival.city + "-" + arrival.agency_name + " ŞUBE");
             $('b#arrival_tc').text(arrival_tc.tc_name + " TRM.");
 
+            if (cargo.number_of_pieces > 1) {
+                $('#pieces').val('Lütfen İlgili Parçaları Seçin!');
+                $('#pieces').removeClass('text-dark');
+                $('#pieces').addClass('text-danger');
+                $('#piecesBtn').prop('disabled', false);
+            } else if (cargo.number_of_pieces == 1) {
+                $('#pieces').val('1');
+                $('#pieces').removeClass('text-danger');
+                $('#pieces').addClass('text-dark');
+                $('#piecesBtn').prop('disabled', true);
+            }
+
             $('b#cargo_type').text(cargo.cargo_type);
             $('b#number_of_pieces').text(cargo.number_of_pieces);
             $('b#desi').text(cargo.desi);
             $('b#status').text(cargo.status);
             $('b#total_price').text(cargo.total_price + " ₺");
+
+
+            let countCargoPart = 0, cargoDesiCount = 0;
+            $('#tbodyCargoPartDetails').html('');
+            if (part_details.length == 0)
+                $('#tbodyCargoPartDetails').html('<tr><td colspan="8" class="text-center">Burda hiç veri yok.</td></tr>');
+            else {
+                $.each(part_details, function (key, val) {
+
+                    $('#tbodyCargoPartDetails').prepend(
+                        '<tr>' +
+                        '<th>\n' + '<input style="width: 20px; margin-left: 7px;" type="checkbox" id="' + val['part_no'] + '" class="cb-piece form-control">\n' + '</th>' +
+                        '<td class="font-weight-bold text-success">' + cargo.cargo_type + '</td>' +
+                        '<td class="font-weight-bold">' + val['part_no'] + '</td>' +
+                        '<td class="">' + val['width'] + '</td>' +
+                        '<td class="">' + val['size'] + '</td>' +
+                        '<td class="">' + val['height'] + '</td>' +
+                        '<td class="">' + val['weight'] + '</td>' +
+                        '<td class="font-weight-bold text-primary">' + val['desi'] + '</td>' +
+                        '<td class="text-alternate">' + val['cubic_meter_volume'] + '</td>' +
+                        +'</tr>'
+                    );
+                    countCargoPart = countCargoPart + 1;
+                    cargoDesiCount = cargoDesiCount + parseInt(val['desi']);
+                });
+
+                $('#tbodyCargoPartDetails').prepend(
+                    '<tr><td class="font-weight-bold text-center" colspan="9"> Toplam: <b class="text-primary">' + countCargoPart + ' Parça</b>, <b class="text-primary">' + cargoDesiCount + ' Desi</b>. </td></tr>'
+                );
+            }
 
         }
 
@@ -95,6 +141,46 @@ function getCargo() {
         $('#rowCargoInfo').unblock();
     });
 }
+
+$(document).ready(function () {
+    $(".select-all-cb").click(function () {
+        $('input:checkbox:not(:disabled)').prop('checked', this.checked);
+    });
+});
+
+$(document).on('click', '#btnSelectPieces', function () {
+
+    var PieceArray = [];
+    $("input.cb-piece[type=checkbox]:checked:not(:disabled)").each(function () {
+        PieceArray.push($(this).prop('id'));
+    });
+
+    let values = "";
+    $.each(PieceArray, function (key, val) {
+        // console.log(key + "=>" + val);
+        values += val + ",";
+    });
+
+    if (PieceArray.length == 0)
+        ToastMessage('error', 'Lütfen ilgili parçaları seçiniz', 'HATA!');
+    else {
+        ToastMessage('success', 'Parçalar seçildi!', 'İşlem Başarılı!');
+
+        let newVal = values.substring(0, values.length - 1);
+        $('#pieces').val(newVal);
+
+        $('#ModalPartDetails').modal('hide');
+
+
+    }
+
+
+});
+
+
+$('#piecesBtn').click(function () {
+    $('#ModalPartDetails').modal();
+});
 
 $('#reported_unit_type').change(function () {
 

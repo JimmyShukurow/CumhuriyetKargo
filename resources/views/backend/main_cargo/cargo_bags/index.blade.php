@@ -228,7 +228,7 @@
                      class="modal-body">
                     <div id="ContainerBarcodes"
                          class="container">
-                        <div style=" + elementStyle + " class="row barcode-row  ">
+                        <div style="margin-top: -2px;" class="row barcode-row  ">
                             <div class="col-12">
                                 <h5 class="font-weight-bold text-center barcode-slogan">Cumhuriyet Kargo Daima
                                     Önde..</h5>
@@ -262,7 +262,6 @@
                                     </tr>
                                 </table>
                             </div>
-
 
                             <div class="col-12 text-right">
                                 <h3 class="font-weight-bold text-center text-dark barcodeArrivalTC">İST - AVRUPA
