@@ -66,6 +66,9 @@
                                     </button>
                                 </div>
                             </div>
+                            <small class="text-success font-weight-bold">
+                                <i id="textSelectedPieces"></i>
+                            </small>
                         </div>
 
 
@@ -304,12 +307,14 @@
 
                     <div class="col-12 mt-2">
                         <div class="form-group position-relative">
-                            <label for="damage_description">Açıklama</label>
-                            <textarea name="damage_description" id="damage_description" cols="30"
+                            <label for="content_detection">İçerik Tespiti <small class="text-danger"><i>(Zorunlu
+                                        Alan)</i></small>:</label>
+                            <textarea name="content_detection" id="content_detection" cols="30"
                                       rows="2" class="form-control"></textarea>
                         </div>
                     </div>
                 </div>
+
 
                 <button type="submit" class="ladda-button mb-2 mr-2 btn btn-gradient-primary"
                         data-style="slide-right">

@@ -15,6 +15,8 @@ class CreateOfficialReportsTable extends Migration
     {
         Schema::create('official_reports', function (Blueprint $table) {
             $table->id();
+            $table->integer('cargo_id');
+            $table->
             $table->timestamps();
         });
     }

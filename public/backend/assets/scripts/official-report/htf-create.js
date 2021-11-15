@@ -87,6 +87,7 @@ function getCargo() {
 
             if (cargo.number_of_pieces > 1) {
                 $('#pieces').val('Lütfen İlgili Parçaları Seçin!');
+                $('#textSelectedPieces').text("");
                 $('#pieces').removeClass('text-dark');
                 $('#pieces').addClass('text-danger');
                 $('#piecesBtn').prop('disabled', false);
@@ -95,6 +96,7 @@ function getCargo() {
                 $('#pieces').removeClass('text-danger');
                 $('#pieces').addClass('text-dark');
                 $('#piecesBtn').prop('disabled', true);
+                $('#textSelectedPieces').text("1 Parça Seçildi.");
             }
 
             $('b#cargo_type').text(cargo.cargo_type);
@@ -144,7 +146,7 @@ function getCargo() {
 
 $(document).ready(function () {
     $(".select-all-cb").click(function () {
-        $('input:checkbox:not(:disabled)').prop('checked', this.checked);
+        $('.cb-piece:input:checkbox:not(:disabled)').prop('checked', this.checked);
     });
 });
 
@@ -168,6 +170,8 @@ $(document).on('click', '#btnSelectPieces', function () {
 
         let newVal = values.substring(0, values.length - 1);
         $('#pieces').val(newVal);
+
+        $('#textSelectedPieces').text(PieceArray.length + " Parça Seçildi.");
 
         $('#ModalPartDetails').modal('hide');
 

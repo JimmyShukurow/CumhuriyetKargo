@@ -26,7 +26,7 @@ use App\Http\Controllers\Backend\Operation\LocalLocationController;
 use App\Http\Controllers\Backend\Operation\VariousController;
 use App\Http\Controllers\Backend\WhoIs\WhoIsController;
 use App\Http\Controllers\Backend\ItAndNotifications\CargoCancellationController;
-use App\Http\Controllers\Backend\OfficialReports\OfficialReportController;
+use App\Http\Controllers\Backend\OfficialReports\HtfController;
 use App\Http\Controllers\Backend\MainCargo\CargoBagsController;
 use App\Http\Controllers\Backend\Reports\ReportController;
 use Yajra\DataTables\DataTables;
@@ -84,7 +84,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::get('VariousCarsGetCars', [VariousController::class, 'getCars'])->name('VariousCars.getCars');
 
     Route::group(['prefix' => 'OfficialReport', 'as' => 'OfficialReport.'], function () {
-        Route::get('HTF', [OfficialReportController::class, 'createHTF'])->name('createHTF');
+        Route::get('HTF', [HtfController::class, 'createHTF'])->name('createHTF');
     });
 
 

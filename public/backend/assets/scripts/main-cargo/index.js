@@ -1026,6 +1026,12 @@ $('#btnPrintSelectedBarcode').click(function () {
 
                 preparedBarcodCount++;
 
+                if (preparedBarcodCount != total_part_count)
+                    elementStyle = "margin-top: 90px;";
+                else
+                    elementStyle = "";
+
+
                 if (loop == 1) {
                     className = "barcode-row-last-child";
                     elementStyle = "margin-top: -2px";
@@ -1036,10 +1042,6 @@ $('#btnPrintSelectedBarcode').click(function () {
                     className = "";
 
 
-                if (preparedBarcodCount != total_part_count)
-                    elementStyle = "margin-top: 90px;";
-                else
-                    elementStyle = "";
 
 
                 if (cargo.collectible == 1)
