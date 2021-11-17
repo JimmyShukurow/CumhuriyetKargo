@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\Cities;
 use App\Models\Districts;
+use App\Models\LocalLocation;
 use App\Models\Neighborhoods;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
@@ -144,6 +145,11 @@ class AgencyController extends Controller
     {
         $destroy = Agencies::find(intval($request->destroy_id))->delete();
         if ($destroy) {
+
+            $destroyLocations = DB::table('local_locations')
+                ->where('agency_code', $request->destroy_id)
+                ->delete();
+
             return 1;
         }
         return 0;
