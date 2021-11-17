@@ -389,4 +389,24 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
 
+    let successMessage = localStorage.getItem('swal');
+    if (successMessage) {
+        swal(localStorage.getItem('swal-title'), localStorage.getItem('swal-message'), localStorage.getItem('swal-type'));
+
+        localStorage.removeItem('swal');
+        localStorage.removeItem('swal-title');
+        localStorage.removeItem('swal-message');
+        localStorage.removeItem('swal-type');
+    }
+})
+
+function setMessageToLS(title, message, type) {
+    // # => Set Message To Locale Storage!
+
+    localStorage.setItem('swal', true);
+    localStorage.setItem('swal-title', title);
+    localStorage.setItem('swal-message', message);
+    localStorage.setItem('swal-type', type);
+}

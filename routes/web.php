@@ -85,8 +85,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
     Route::group(['prefix' => 'OfficialReport', 'as' => 'OfficialReport.'], function () {
         Route::get('HTF', [HtfController::class, 'createHTF'])->name('createHTF');
+        Route::post('CreateHTF', [HtfController::class, 'insertHTF']);
     });
-
 
 
     Route::group(['prefix' => 'Reports', 'as' => 'reports.'], function () {
@@ -132,7 +132,6 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::resource('SenderCurrents', SenderCurrentController::class);
     });
     # ==> Sender Currents Transactions END
-
 
 
     Route::group(['prefix' => '/Theme', 'middleware' => ['ThemeMid']], function () {

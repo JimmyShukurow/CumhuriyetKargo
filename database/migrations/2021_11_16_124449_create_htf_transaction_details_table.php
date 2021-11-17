@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOfficialReportsTable extends Migration
+class CreateHtfTransactionDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateOfficialReportsTable extends Migration
      */
     public function up()
     {
-        Schema::create('official_reports', function (Blueprint $table) {
+        Schema::create('htf_transaction_details', function (Blueprint $table) {
             $table->id();
-            $table->integer('cargo_id');
-            $table->
+            $table->integer('htf_id');
+            $table->integer('transaction_id');
+            $table->string('transaction_text');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateOfficialReportsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('official_reports');
+        Schema::dropIfExists('htf_transaction_details');
     }
 }

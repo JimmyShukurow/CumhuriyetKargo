@@ -1,4 +1,4 @@
-let general_cargo = null;
+let general_cargo = null, piecesSelected = false;
 $('#invoice_number').keyup(delay(function (e) {
 
     let invoice_number = $(this).val().replaceAll('_', '').trim();
@@ -62,6 +62,7 @@ function getCargo() {
             ToastMessage('error', response.message, 'Hata!');
             $('#piecesBtn').prop('disabled', true);
             general_cargo = null;
+            piecesSelected = false;
         } else if (response.status == 1) {
 
             general_cargo = response;
@@ -91,12 +92,14 @@ function getCargo() {
                 $('#pieces').removeClass('text-dark');
                 $('#pieces').addClass('text-danger');
                 $('#piecesBtn').prop('disabled', false);
+                piecesSelected = false;
             } else if (cargo.number_of_pieces == 1) {
                 $('#pieces').val('1');
                 $('#pieces').removeClass('text-danger');
                 $('#pieces').addClass('text-dark');
                 $('#piecesBtn').prop('disabled', true);
                 $('#textSelectedPieces').text("1 Parça Seçildi.");
+                piecesSelected = true;
             }
 
             $('b#cargo_type').text(cargo.cargo_type);
@@ -172,9 +175,9 @@ $(document).on('click', '#btnSelectPieces', function () {
         $('#pieces').val(newVal);
 
         $('#textSelectedPieces').text(PieceArray.length + " Parça Seçildi.");
+        piecesSelected = true;
 
         $('#ModalPartDetails').modal('hide');
-
 
     }
 
@@ -186,44 +189,57 @@ $('#piecesBtn').click(function () {
     $('#ModalPartDetails').modal();
 });
 
+function hideFakeColumn() {
+    $('#reported_unit').val('');
+    $('#column_fake_unit').show();
+    $('#column-agency').hide();
+    $('#select_reported_agency').prop('disabled', true);
+    $('#column-tc').hide();
+    $('#select_reported_tc').prop('disabled', true);
+}
+
 $('#reported_unit_type').change(function () {
 
     $('#reported_unit').val('');
 
     if (general_cargo == null) {
         $(this).val('');
-        ToastMessage('error', 'Önce fatura numarasını veya takip numarasını giriniz!', 'HATA!');
+        ToastMessage('error', 'Önce kargonun fatura numarasını veya takip numarasını giriniz!', 'HATA!');
         return false;
     }
 
     switch ($(this).val()) {
 
         case '':
-            $('#reported_unit').val('');
-            $('#column_fake_unit').show();
-            $('#column-agency').hide();
-            $('#select_reported_agency').prop('disabled', true);
-            $('#column-tc').hide();
-            $('#select_reported_tc').prop('disabled', true);
+            hideFakeColumn();
             break;
 
         case  'Çıkış Şube':
+            hideFakeColumn();
             $('#reported_unit').val(general_cargo.departure.agency_name + " ŞUBE");
+            $('#reported_unit_id').val(general_cargo.cargo.departure_agency_code);
             break;
 
         case  'Çıkış TRM.':
+            hideFakeColumn();
             $('#reported_unit').val(general_cargo.departure_tc.tc_name + " TRM.");
+            $('#reported_unit_id').val(general_cargo.cargo.departure_tc_code);
             break;
 
         case  'Varış Şube':
+            hideFakeColumn();
             $('#reported_unit').val(general_cargo.arrival.agency_name + " ŞUBE");
+            $('#reported_unit_id').val(general_cargo.cargo.arrival_agency_code);
             break;
 
         case  'Varış TRM.':
+            hideFakeColumn();
             $('#reported_unit').val(general_cargo.arrival_tc.tc_name + " TRM.");
+            $('#reported_unit_id').val(general_cargo.cargo.arrival_tc_code);
             break;
 
         case 'Diğer Şube':
+            $('#reported_unit_id').val($('#select_reported_agency').val());
             $('#column_fake_unit').hide();
             $('#column-agency').show();
             $('#select_reported_agency').prop('disabled', false);
@@ -233,6 +249,7 @@ $('#reported_unit_type').change(function () {
             break;
 
         case 'Diğer TRM.':
+            $('#reported_unit_id').val($('#select_reported_tc').val());
             $('#column_fake_unit').hide();
             $('#column-tc').show();
             $('#select_reported_tc').prop('disabled', false);
@@ -248,6 +265,10 @@ $('#reported_unit_type').change(function () {
 
 });
 
+$('.reported-units').change(function () {
+    $('#reported_unit_id').val($(this).val());
+});
+
 $(document).ready(function () {
     $('#select_reported_agency').select2();
     $('#select_reported_tc').select2();
@@ -259,6 +280,162 @@ $('#select_reported_agency').change(function () {
 
 $('#select_reported_tc').change(function () {
     $('#reported_unit').val($("#select_reported_tc option:selected").text());
+});
+
+
+function getDataDamages() {
+    let array = [];
+    $.each($('.cb-damges'), function (key, val) {
+        if (val.checked == true) {
+            array.push($('#' + val.id).attr('damage-id'));
+        }
+    });
+    return array;
+}
+
+function getDataTransactions() {
+    let array = [];
+    $.each($('.cb-transactions'), function (key, val) {
+        if (val.checked == true) {
+            array.push($('#' + val.id).attr('transaction-id'));
+        }
+    });
+    return array;
+}
+
+
+$("#HtfCreateForm").submit(function (e) {
+    e.preventDefault();
+
+    if (general_cargo == null) {
+        ToastMessage('error', 'Önce kargonun fatura numarasını veya takip numarasını giriniz!');
+        return false;
+    }
+
+    if (piecesSelected == false) {
+        ToastMessage('error', 'Lütfen ilgili parçaları seçiniz!');
+        return false;
+    }
+
+    if ($('#reported_unit_type').val() == '') {
+        ToastMessage('error', 'Tutanak tutulan birim tipi alanı zorunludur!');
+        return false;
+    }
+
+    if ($('#reported_unit').val() == '') {
+        ToastMessage('error', 'Tutanak tutulan birim alanı zorunludur!');
+        return false;
+    }
+
+    let damageStatus = true;
+    $.each($('.cb-damges'), function (key, val) {
+        if (val.checked == true) {
+            damageStatus = true;
+            return false;
+        } else
+            damageStatus = false;
+    });
+
+    if (!damageStatus) {
+        ToastMessage('error', 'Lütfen hasar nedeni kutucuklarından en az 1 tanesini seçiniz!');
+        return false;
+    }
+
+    let transactionStatus = true;
+    $.each($('.cb-transactions'), function (key, val) {
+        if (val.checked == true) {
+            transactionStatus = true;
+            return false;
+        } else
+            transactionStatus = false;
+    });
+
+    if (!transactionStatus) {
+        ToastMessage('error', 'Lütfen yapılan işlem kutucuklarından en az 1 tanesini seçiniz!');
+        return false;
+    }
+
+    if ($('#content_detection').val() == '') {
+        ToastMessage('error', 'Lütfen İçerik Tespiti alanını doldurunuz!');
+        return false;
+    }
+
+    let damageArray = getDataDamages();
+    let transactionArray = getDataTransactions();
+
+    $('.app-main__inner').block({
+        message: $('<div class="loader mx-auto">\n' +
+            '                            <div class="ball-grid-pulse">\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                            </div>\n' +
+            '                        </div>')
+    });
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+    $.ajax('/OfficialReport/CreateHTF', {
+        method: 'POST',
+        data: {
+            _token: token,
+            faturaNumarasi: $('#invoice_number').val(),
+            tutanakTutulanBirimTipi: $('#reported_unit_type').val(),
+            tutanakTutulanBirim: $('#reported_unit').val(),
+            icerikAciklamasi: $('#content_detection').val(),
+            hasarAciklamasi: $('#damage_description').val(),
+            hasarNedenleri: damageArray,
+            yapilanIslemler: transactionArray,
+            ilgiliParcalar: $('#pieces').val(),
+            tutanakTutulanBirimID: $('#reported_unit_id').val()
+        }
+    }).done(function (response) {
+
+        if (response.status == -1) {
+            $.each(response.errors, function (index, value) {
+                ToastMessage('error', value)
+            });
+        } else if (response.status == 0) {
+            ToastMessage('error', response.message)
+        } else if (response.status == 1) {
+            ToastMessage('success', response.message);
+
+            $('.app-main__inner').block({
+                message: $('<div class="loader mx-auto">\n' +
+                    '                            <div class="ball-grid-pulse">\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                            </div>\n' +
+                    '                        </div>')
+            });
+            $('.blockUI.blockMsg.blockElement').css('border', '0px');
+            $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+            setMessageToLS('İşlem Başarılı!', response.message, 'success');
+
+            window.location.reload();
+        }
+
+
+    }).error(function (jqXHR, response) {
+        ajaxError(jqXHR.status);
+    }).always(function () {
+        $('.app-main__inner').unblock();
+    });
+
 });
 
 

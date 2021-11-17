@@ -793,6 +793,8 @@ function DesignInvoiceNumber()
     return $invoiceNumber;
 }
 
+
+
 function dateFormatForJsonOutput($date)
 {
     $date = Carbon::parse($date);
@@ -817,6 +819,12 @@ function getNameFirstLatter($name)
     }
 
     return $firstLetters;
+}
+
+function ReportedUnitTypes()
+{
+    # => For HTF Report Create Page
+    return ['Çıkış Şube', 'Çıkış TRM.', 'Varış Şube', 'Varış TRM.', 'Diğer Şube', 'Diğer TRM.'];
 }
 
 
