@@ -20,9 +20,9 @@ class CheckStatus
         if (Auth::user()->status == 1)
             return $next($request);
         else {
-            $message = Auth::user()->status_description != '' ? Auth::user()->status_description : 'Hesabınız pasif edilmiştir. Detaylı bilgi için sistem destek ekibine ulaşın.';
+            $message = Auth::user()->status_description != '' ? 'Hesabınız [' . Auth::user()->status_description . '] gerekçesiyle pasif edilmiştir!' : 'Hesabınız pasif edilmiştir. Detaylı bilgi için sistem destek ekibine ulaşın.';
             Auth::logout();
-
+            
             return redirect(route('Login'))
                 ->with('error', $message);
         }

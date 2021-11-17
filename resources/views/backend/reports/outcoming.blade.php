@@ -272,7 +272,7 @@
     <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
-    <script src="/backend/assets/scripts/reports/incoming.js"></script>
+    <script src="/backend/assets/scripts/reports/outgoing.js"></script>
 @endsection
 
 

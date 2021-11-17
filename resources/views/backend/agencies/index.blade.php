@@ -18,7 +18,8 @@
                     </div>
                     <div> Acenteler
                         <div class="page-title-subheading">Bu modül üzerinden sistemdeki tüm acenteleri
-                            listleyebilir, işlem yapablirsiniz.
+                            listleyebilir, işlem yapablirsiniz. <b class="text-danger">Dikkat: Acente silme işlemi
+                                sonrası acentenin lokasyon bilgisi de silinecektir. Bu işlem geri alınamaz.</b>
                         </div>
                     </div>
                 </div>

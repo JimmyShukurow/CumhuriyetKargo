@@ -93,6 +93,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('/IncomingCargoes', [ReportController::class, 'incomingCargoes'])->name('incomingCargoes');
         Route::get('/OutgoingCargoes', [ReportController::class, 'outgoingCargoes'])->name('outcomingCargoes');
         Route::get('/GetIncomingCargoes', [ReportController::class, 'getIncomingCargoes']);
+        Route::get('/GetOutGoingCargoes', [ReportController::class, 'getOutGoingCargoes']);
     });
 
     Route::group(['prefix' => 'CargoBags', 'as' => 'cargoBags.'], function () {

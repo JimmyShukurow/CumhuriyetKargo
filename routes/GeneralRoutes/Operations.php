@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\Operation\LocalLocationController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'Operation'], function () {
+
     Route::group(['middleware' => 'LocalLocationMid'], function () {
         Route::resource('LocalLocation', LocalLocationController::class);
         Route::get('LocationLocationReport', [LocalLocationController::class, 'locationReport'])->name('location.report');
@@ -17,4 +18,6 @@ Route::group(['prefix' => 'Operation'], function () {
         Route::get('GetLocations', [LocalLocationController::class, 'getLocation'])->name('operation.getLocation');
         Route::post('GetNeighborhoodsOfAgency', [LocalLocationController::class, 'getNeighborhoodsOfAgency']);
     });
+
+    Route::get('AgencyLocationSummery', [LocalLocationController::class, 'agencyLocationsSummery'])->name('agency.location.summery');
 });

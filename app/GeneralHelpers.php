@@ -691,7 +691,7 @@ function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $
 
 function InsertDebits($ctn, $cargoID, $partNo, $userID, $movementID)
 {
-    $agency = Agencies::find(Auth::id());
+    $agency = Agencies::find(Auth::user()->agency_code);
 
     $insert = Debits::create([
         'cargo_id' => $cargoID,
@@ -792,7 +792,6 @@ function DesignInvoiceNumber()
 
     return $invoiceNumber;
 }
-
 
 
 function dateFormatForJsonOutput($date)

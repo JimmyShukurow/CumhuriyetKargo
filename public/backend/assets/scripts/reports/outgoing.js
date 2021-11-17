@@ -69,7 +69,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '/Reports/GetOutcomingCargoes',
+            url: '/Reports/GetOutGoingCargoes',
             data: function (d) {
                 d.trackingNo = $('#trackingNo').val();
                 d.invoiceNumber = $('#invoice_number').val();

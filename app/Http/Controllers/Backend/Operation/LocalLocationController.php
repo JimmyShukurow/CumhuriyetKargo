@@ -12,6 +12,7 @@ use App\Models\RegioanalDirectorates;
 use App\Models\RegionalDistricts;
 use App\Models\TransshipmentCenters;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
@@ -330,4 +331,19 @@ class LocalLocationController extends Controller
                 'agency' => '#' . $agency->agency_code . ' - ' . $agency->agency_name . ' ŞUBE'
             ], 200);
     }
+
+    public function agencyLocationsSummery()
+    {
+        $agency = Agencies::find(Auth::user()->agency_code);
+
+        $locations = DB::table('local_locations')
+            ->where('agency_code', $agency->id)
+            ->get();
+
+        GeneralLog('Acente dağıtım alanlarım sayfası görüntülendi');
+        return view('backend.operation.local_location.agency_locations', compact(['agency', 'locations']));
+    }
 }
+
+
+
