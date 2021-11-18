@@ -31,7 +31,7 @@ use App\Http\Controllers\Backend\MainCargo\CargoBagsController;
 use App\Http\Controllers\Backend\Reports\ReportController;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
-
+use App\Http\Controllers\Backend\OfficialReports\OfficialReportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -84,8 +84,10 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::get('VariousCarsGetCars', [VariousController::class, 'getCars'])->name('VariousCars.getCars');
 
     Route::group(['prefix' => 'OfficialReport', 'as' => 'OfficialReport.'], function () {
-        Route::get('HTF', [HtfController::class, 'createHTF'])->name('createHTF');
-        Route::post('CreateHTF', [HtfController::class, 'insertHTF']);
+        Route::get('HTF', [OfficialReportController::class, 'createHTF'])->name('createHTF');
+        Route::post('CreateHTF', [OfficialReportController::class, 'insertHTF']);
+
+        Route::get('UTF', [OfficialReportController::class, 'createUTF'])->name('createUTF');
     });
 
 

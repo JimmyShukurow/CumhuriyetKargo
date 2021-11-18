@@ -439,6 +439,25 @@ $("#HtfCreateForm").submit(function (e) {
 });
 
 
+function cargoContainerControl() {
+
+    $('#contCargoInfo').hide();
+
+    $.each($('.cargo'), function (key, val) {
+        if (val.checked == true) {
+            $('#contCargoInfo').show();
+            return false;
+        }
+    });
+
+}
+
+$('.cargo').click(function () {
+    cargoContainerControl();
+    console.log('click cargo');
+});
+
+
 
 
 

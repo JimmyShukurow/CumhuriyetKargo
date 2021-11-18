@@ -6,15 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class HtfReports extends Model
+class Reports extends Model
 {
     use HasFactory, LogsActivity;
 
     protected $guarded = [];
 
     protected static $logAttributes = [
-        'id',
+        'type',
         'report_serial_no',
+        'car_id',
         'cargo_id',
         'cargo_invoice_number',
         'cargo_tracking_no',
@@ -25,6 +26,7 @@ class HtfReports extends Model
         'reported_unit_id',
         'damage_description',
         'content_detection',
+        'impropriety_description',
         'confirm',
         'reject_reason',
         'confirming_user_id',
@@ -34,6 +36,6 @@ class HtfReports extends Model
     public function getDescriptionForEvent(string $eventName): string
     {
         $eventName = getLocalEventName($eventName);
-        return "Acente $eventName.";
+        return "HTF-UTF Tutanağı $eventName.";
     }
 }

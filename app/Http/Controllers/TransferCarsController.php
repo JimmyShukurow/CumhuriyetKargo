@@ -278,7 +278,8 @@ class TransferCarsController extends Controller
                 ->whereRaw('deleted_at is null')
                 ->first();
 
-            $aktarmalar .= $exist->tc_name . ", ";
+            if ($exist != null)
+                $aktarmalar .= $exist->tc_name . ", ";
         }
 
         return response()

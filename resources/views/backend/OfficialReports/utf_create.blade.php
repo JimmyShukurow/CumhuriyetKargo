@@ -1,6 +1,6 @@
 @extends('backend.layout')
 
-@section('title', 'HTF Oluştur')
+@section('title', 'UTF Oluştur')
 
 @push('css')
     <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
@@ -17,8 +17,8 @@
                         <i class="pe-7s-note2 icon-gradient bg-amy-crisp">
                         </i>
                     </div>
-                    <div>HTF (Hasar Tespit Formu) Tutanağı Oluştur
-                        <div class="page-title-subheading">Bu sayfa üzerinden <b>HTF (Hasar Tespit Formu)</b> tutanağı
+                    <div>UTF (Uygunuszluk Tespit Tutanağı) Oluştur
+                        <div class="page-title-subheading">Bu sayfa üzerinden <b>UTF (Uygunsuzluk Tespit Tutanağı)</b>
                             oluşturabilirsiniz.
                         </div>
                     </div>
@@ -28,151 +28,11 @@
 
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <h5 class="card-title">HTF (Hasar Tespit Formu)</h5>
+                <h5 class="card-title">UTF (Uygunuszluk Tespit Tutanağı)</h5>
                 <form id="HtfCreateForm" method="POST" action="{{ route('agency.InsertAgency') }}">
                     @csrf
-                    <div class="form-row">
-                        <div class="col-lg-3 col-sm-6 col-xs-6">
-                            <div class="position-relative form-group">
-                                <label for="name_surname" class="">Fatura No:</label>
-                                <input name="name_surname" id="invoice_number"
-                                       data-inputmask="'mask': 'AA 999999'"
-                                       placeholder="__ ______"
-                                       type="text" value="{{ old('name_surname') }}"
-                                       class="form-control form-control-sm input-mask-trigger">
-                            </div>
-                        </div>
 
-                        <div class="col-lg-3 col-sm-6 col-xs-6">
-                            <div class="position-relative form-group">
-                                <label for="name_surname" class="">Kargo Takip No:</label>
-                                <input name="name_surname" id="tracking_no"
-                                       data-inputmask="'mask': '99999 99999 99999'"
-                                       placeholder="_____ _____ _____"
-                                       type="text" value="{{ old('name_surname') }}"
-                                       class="form-control form-control-sm input-mask-trigger">
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-sm-6 col-xs-6">
-                            <div class="position-relative form-group">
-                                <label for="pieces" class="">İlgili Parçalar:</label>
-                                <div class="input-group">
-                                    <input type="text" id="pieces" readonly
-                                           class="form-control font-weight-bold form-control-sm">
-                                    <div class="input-group-append ">
-                                        <button type="button" id="piecesBtn" disabled class="btn btn-danger btn-sm">
-                                            Parçalar
-                                        </button>
-                                    </div>
-                                </div>
-                                <small class="text-success font-weight-bold">
-                                    <i id="textSelectedPieces"></i>
-                                </small>
-                            </div>
-
-
-                        </div>
-
-
-                    </div>
-
-                    <h5 class="card-title mt-2">Kargo Bilgileri</h5>
-                    <div class="divider"></div>
-                    <div id="rowCargoInfo" class="row">
-
-                        <div class="col-md-6 col-sm-6">
-                            <div class="form-group position-relative">
-                                <label class="font-weight-bold" for="sender_name">Fatura Numarası:</label>
-                                <h3><b class="cargo-information text-danger font-large-3" id="invoice_number">-</b></h3>
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-6 col-sm-6">
-                            <div class="form-group position-relative">
-                                <label class="font-weight-bold" for="sender_name">Kargo Takip Numarası:</label>
-                                <h3><b class="cargo-information text-primary" id="tracking_no">-</b></h3>
-                            </div>
-                        </div>
-
-                        <div class="col-md-2 col-sm-3">
-                            <div class="form-group position-relative">
-                                <label for="sender_name">Gönderici Adı:</label>
-                                <p><b class="cargo-information" id="sender_name">-</b></p>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-sm-3">
-                            <div class="form-group position-relative">
-                                <label for="receiver_name">Alıcı Adı:</label>
-                                <p><b class="cargo-information" id="receiver_name">-</b></p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-2 col-sm-3">
-                            <div class="form-group position-relative">
-                                <label for="departure_branch">Çıkış Şube:</label>
-                                <p><b class="cargo-information" id="departure_branch">-</b></p>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-sm-3">
-                            <div class="form-group position-relative">
-                                <label for="departure_tc">Çıkış TRM:</label>
-                                <p><b class="cargo-information" id="departure_tc">-</b></p>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-sm-3">
-                            <div class="form-group position-relative">
-                                <label for="arrival_branch">Varış Şube:</label>
-                                <p><b class="cargo-information" id="arrival_branch">-</b></p>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-sm-3">
-                            <div class="form-group position-relative">
-                                <label for="arrival_tc">Varış TRM:</label>
-                                <p><b class="cargo-information" id="arrival_tc">-</b></p>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-sm-3">
-                            <div class="form-group position-relative">
-                                <label for="cargo_type">Kargo Tipi:</label>
-                                <p><b class="cargo-information" id="cargo_type">-</b></p>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-sm-3">
-                            <div class="form-group position-relative">
-                                <label for="number_of_pieces">Parça Sayısı:</label>
-                                <p><b class="cargo-information" id="number_of_pieces">-</b></p>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-sm-3">
-                            <div class="form-group position-relative">
-                                <label for="desi">Desi:</label>
-                                <p><b class="cargo-information" id="desi">-</b></p>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-sm-3">
-                            <div class="form-group position-relative">
-                                <label for="status">Statü:</label>
-                                <p><b class="cargo-information" id="status">-</b></p>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-sm-3">
-                            <div class="form-group position-relative">
-                                <label for="total_price">Toplam Ücret</label>
-                                <p><b class="cargo-information" id="total_price">-</b></p>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-sm-3">
-                            <div class="form-group position-relative">
-                                <label for="cargo_info">Diğer Bilgiler:</label>
-                                <input disabled id="cargo_info" style="width: 100%;" type="button" class="btn btn-info"
-                                       value="Kargo Bilgileri">
-                            </div>
-                        </div>
-                    </div>
-
-                    <h5 class="card-title mt-2">Tutanak Bilgileri</h5>
+                    <h5 class="card-title mt-2 text-center">Tutanak Bilgileri</h5>
                     <div class="divider"></div>
 
                     <div class="row">
@@ -265,18 +125,20 @@
 
                     </div>
 
-                    <h5 class="card-title mt-2">Hasar Nedeni</h5>
+
+                    <h5 class="card-title mt-2">Uygunsuzluk Nedeni</h5>
                     <div class="divider"></div>
 
                     <div class="row">
-                        @foreach($damage_types as $key)
+                        @foreach($impropriety_types as $key)
                             <div class="col-lg-2 col-md-4 col-sm-4 col-6">
                                 <div class="custom-control custom-checkbox">
                                     <input {{$key->status == '0' ? 'disabled' : ''}} type="checkbox"
-                                           class="custom-control-input cb-damges" damage-id="{{$key->id}}"
-                                           id="cb-damage-{{$key->id}}">
-                                    <label class="custom-control-label cursor-pointer unselectable"
-                                           for="cb-damage-{{$key->id}}">{{$key->damage_name}}</label>
+                                           class="custom-control-input {{$key->type}} cb-impropriety" impropriety-id="{{$key->id}}"
+                                           id="cb-impropriety-{{$key->id}}">
+                                    <label
+                                        class="custom-control-label cursor-pointer unselectable {{$key->type == 'cargo' ? 'text-danger font-weight-bold' : ''}}"
+                                        for="cb-impropriety-{{$key->id}}">{{$key->name}}</label>
                                 </div>
                             </div>
                         @endforeach
@@ -290,29 +152,149 @@
                         </div>
                     </div>
 
-                    <h5 class="card-title mt-2">Yapılan İşlem</h5>
-                    <div class="divider"></div>
+                    <div style="display: none;" id="contCargoInfo">
+                        <h5 class="card-title mt-2">Kargo Bilgileri</h5>
+                        <div class="divider"></div>
 
-                    <div class="row">
-                        @foreach($transactions as $key)
-                            <div class="col-lg-2 col-md-4 col-sm-4 col-6">
-                                <div class="custom-control custom-checkbox">
-                                    <input {{$key->status == '0' ? 'disabled' : ''}}  transaction-id="{{$key->id}}"
-                                           type="checkbox"
-                                           class="custom-control-input cb-transactions"
-                                           id="cb-transaction-{{$key->id}}">
-                                    <label class="custom-control-label cursor-pointer unselectable"
-                                           for="cb-transaction-{{$key->id}}">{{$key->transaction_name}}</label>
+
+                        <div class="form-row">
+                            <div class="col-lg-3 col-sm-6 col-xs-6">
+                                <div class="position-relative form-group">
+                                    <label for="name_surname" class="">Fatura No:</label>
+                                    <input name="name_surname" id="invoice_number"
+                                           data-inputmask="'mask': 'AA 999999'"
+                                           placeholder="__ ______"
+                                           type="text" value="{{ old('name_surname') }}"
+                                           class="form-control form-control-sm input-mask-trigger">
                                 </div>
                             </div>
-                        @endforeach
 
-                        <div class="col-12 mt-2">
-                            <div class="form-group position-relative">
-                                <label for="content_detection">İçerik Tespiti <small class="text-danger"><i>(Zorunlu
-                                            Alan)</i></small>:</label>
-                                <textarea name="content_detection" required id="content_detection" cols="30"
-                                          rows="2" class="form-control"></textarea>
+                            <div class="col-lg-3 col-sm-6 col-xs-6">
+                                <div class="position-relative form-group">
+                                    <label for="name_surname" class="">Kargo Takip No:</label>
+                                    <input name="name_surname" id="tracking_no"
+                                           data-inputmask="'mask': '99999 99999 99999'"
+                                           placeholder="_____ _____ _____"
+                                           type="text" value="{{ old('name_surname') }}"
+                                           class="form-control form-control-sm input-mask-trigger">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-sm-6 col-xs-6">
+                                <div class="position-relative form-group">
+                                    <label for="pieces" class="">İlgili Parçalar:</label>
+                                    <div class="input-group">
+                                        <input type="text" id="pieces" readonly
+                                               class="form-control font-weight-bold form-control-sm">
+                                        <div class="input-group-append ">
+                                            <button type="button" id="piecesBtn" disabled class="btn btn-danger btn-sm">
+                                                Parçalar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <small class="text-success font-weight-bold">
+                                        <i id="textSelectedPieces"></i>
+                                    </small>
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+                        <div class="divider"></div>
+                        <div id="rowCargoInfo" class="row">
+
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group position-relative">
+                                    <label class="font-weight-bold" for="sender_name">Fatura Numarası:</label>
+                                    <h3><b class="cargo-information text-danger font-large-3" id="invoice_number">-</b>
+                                    </h3>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group position-relative">
+                                    <label class="font-weight-bold" for="sender_name">Kargo Takip Numarası:</label>
+                                    <h3><b class="cargo-information text-primary" id="tracking_no">-</b></h3>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 col-sm-3">
+                                <div class="form-group position-relative">
+                                    <label for="sender_name">Gönderici Adı:</label>
+                                    <p><b class="cargo-information" id="sender_name">-</b></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-3">
+                                <div class="form-group position-relative">
+                                    <label for="receiver_name">Alıcı Adı:</label>
+                                    <p><b class="cargo-information" id="receiver_name">-</b></p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 col-sm-3">
+                                <div class="form-group position-relative">
+                                    <label for="departure_branch">Çıkış Şube:</label>
+                                    <p><b class="cargo-information" id="departure_branch">-</b></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-3">
+                                <div class="form-group position-relative">
+                                    <label for="departure_tc">Çıkış TRM:</label>
+                                    <p><b class="cargo-information" id="departure_tc">-</b></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-3">
+                                <div class="form-group position-relative">
+                                    <label for="arrival_branch">Varış Şube:</label>
+                                    <p><b class="cargo-information" id="arrival_branch">-</b></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-3">
+                                <div class="form-group position-relative">
+                                    <label for="arrival_tc">Varış TRM:</label>
+                                    <p><b class="cargo-information" id="arrival_tc">-</b></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-3">
+                                <div class="form-group position-relative">
+                                    <label for="cargo_type">Kargo Tipi:</label>
+                                    <p><b class="cargo-information" id="cargo_type">-</b></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-3">
+                                <div class="form-group position-relative">
+                                    <label for="number_of_pieces">Parça Sayısı:</label>
+                                    <p><b class="cargo-information" id="number_of_pieces">-</b></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-3">
+                                <div class="form-group position-relative">
+                                    <label for="desi">Desi:</label>
+                                    <p><b class="cargo-information" id="desi">-</b></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-3">
+                                <div class="form-group position-relative">
+                                    <label for="status">Statü:</label>
+                                    <p><b class="cargo-information" id="status">-</b></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-3">
+                                <div class="form-group position-relative">
+                                    <label for="total_price">Toplam Ücret</label>
+                                    <p><b class="cargo-information" id="total_price">-</b></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-3">
+                                <div class="form-group position-relative">
+                                    <label for="cargo_info">Diğer Bilgiler:</label>
+                                    <input disabled id="cargo_info" style="width: 100%;" type="button"
+                                           class="btn btn-info"
+                                           value="Kargo Bilgileri">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -334,7 +316,7 @@
 @section('js')
 
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
-    <script src="/backend/assets/scripts/official-report/htf-create.js"></script>
+    <script src="/backend/assets/scripts/official-report/utf-create.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
 
 
@@ -364,10 +346,6 @@
 
     </script>
 
-    <script>
-
-
-    </script>
 @endsection
 
 

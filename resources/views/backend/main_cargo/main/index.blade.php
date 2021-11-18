@@ -207,10 +207,14 @@
                                             </button>
                                         </a>
 
-                                        <button type="button" tabindex="0" class="dropdown-item">
-                                            <i class="dropdown-icon lnr-file-empty"></i>
-                                            <span>UTF (Uygunsuzluk Tespit Tutanağı)</span>
-                                        </button>
+                                        <a href="{{route('OfficialReport.createUTF')}}"
+                                           target="popup"
+                                           onclick="window.open('{{route('OfficialReport.createUTF')}}','popup','width=700,height=700'); return false;">
+                                            <button type="button" tabindex="0" class="dropdown-item">
+                                                <i class="dropdown-icon lnr-file-empty"></i>
+                                                <span>UTF (Uygunsuzluk Tespit Tutanağı)</span>
+                                            </button>
+                                        </a>
                                     </div>
                                 </div>
 
