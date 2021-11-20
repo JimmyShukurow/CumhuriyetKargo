@@ -827,3 +827,9 @@ function ReportedUnitTypes()
 }
 
 
+function changeAgencyCode()
+{
+    $agencies = Agencies::all()->count();
+    return $agencies;
+//    return 'here! test here bitch!';
+}

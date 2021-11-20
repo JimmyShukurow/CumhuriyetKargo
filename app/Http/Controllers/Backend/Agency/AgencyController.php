@@ -22,6 +22,12 @@ class AgencyController extends Controller
 {
     public function index(AgenciesDataTable $dataTable)
     {
+//        $fix =  changeAgencyCode();
+//
+//        return $fix;
+//        return 'test';
+
+
         $data['agencies'] = Agencies::all();
         GeneralLog('Acenteler sayfası görüntülendi.');
         return view('backend.agencies.index', compact('data'));
@@ -87,7 +93,7 @@ class AgencyController extends Controller
         $neighborhood = Neighborhoods::find($request->neighborhood);
         $post_code = '0' . $neighborhood->post_code;
 
-//        echo $city->city_name . ' => ' . $district->district_name . ' => ' . $neighborhood->neighborhood_name . ' => ' . $post_code;
+        // echo $city->city_name . ' => ' . $district->district_name . ' => ' . $neighborhood->neighborhood_name . ' => ' . $post_code;
 
         $there_is_some_agency_code = DB::table('agencies')
             ->where('agency_code', $post_code)
