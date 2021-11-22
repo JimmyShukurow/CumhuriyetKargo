@@ -92,12 +92,12 @@ class AgencyController extends Controller
         $district = Districts::find($request->district);
         $neighborhood = Neighborhoods::find($request->neighborhood);
         $post_code = '0' . $neighborhood->post_code;
-
         // echo $city->city_name . ' => ' . $district->district_name . ' => ' . $neighborhood->neighborhood_name . ' => ' . $post_code;
 
         $there_is_some_agency_code = DB::table('agencies')
             ->where('agency_code', $post_code)
             ->first();
+
 
         if ($there_is_some_agency_code !== null) {
 
@@ -111,8 +111,7 @@ class AgencyController extends Controller
                 $counter++;
             }
         }
-
-        //  echo '<br>' . $post_code;
+//          echo '<br>' . $post_code;
 
         $insert = Agencies::create([
             'name_surname' => tr_strtoupper($request->name_surname),

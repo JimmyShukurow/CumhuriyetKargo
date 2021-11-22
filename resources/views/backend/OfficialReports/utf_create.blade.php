@@ -134,7 +134,8 @@
                             <div class="col-lg-2 col-md-4 col-sm-4 col-6">
                                 <div class="custom-control custom-checkbox">
                                     <input {{$key->status == '0' ? 'disabled' : ''}} type="checkbox"
-                                           class="custom-control-input {{$key->type}} cb-impropriety" impropriety-id="{{$key->id}}"
+                                           class="custom-control-input {{$key->type}} cb-impropriety"
+                                           impropriety-id="{{$key->id}}"
                                            id="cb-impropriety-{{$key->id}}">
                                     <label
                                         class="custom-control-label cursor-pointer unselectable {{$key->type == 'cargo' ? 'text-danger font-weight-bold' : ''}}"
@@ -297,6 +298,39 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div id="contCarInfo">
+                        <h5 class="card-title mt-2">Araç Bilgileri</h5>
+                        <div class="divider"></div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group position-relative">
+                                    <label for="plaque">ARAÇ PLAKA</label>
+                                    <input name="name_surname" id="plaque"
+                                           type="text" placeholder="Araç Plakasını Giriniz"
+                                           class="form-control form-control-sm font-weight-bold text-dark">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group position-relative">
+                                    <label for="labelPlaque">PLAKA:</label>
+                                    <h4 id="labelPlaque" class="font-weight-bold text-primary">34HV4186</h4>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group position-relative">
+                                    <label for="carType">ARAÇ TİPİ:</label>
+                                    <h4 id="carType" class="font-weight-bold text-danger">AKTARMA ARACI</h4>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
 

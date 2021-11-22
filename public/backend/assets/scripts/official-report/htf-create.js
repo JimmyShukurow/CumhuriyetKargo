@@ -401,7 +401,9 @@ $("#HtfCreateForm").submit(function (e) {
             $.each(response.errors, function (index, value) {
                 ToastMessage('error', value)
             });
+            $('.app-main__inner').unblock();
         } else if (response.status == 0) {
+            $('.app-main__inner').unblock();
             ToastMessage('error', response.message)
         } else if (response.status == 1) {
             ToastMessage('success', response.message);
@@ -432,8 +434,9 @@ $("#HtfCreateForm").submit(function (e) {
 
     }).error(function (jqXHR, response) {
         ajaxError(jqXHR.status);
-    }).always(function () {
         $('.app-main__inner').unblock();
+    }).always(function () {
+        // $('.app-main__inner').unblock();
     });
 
 });
