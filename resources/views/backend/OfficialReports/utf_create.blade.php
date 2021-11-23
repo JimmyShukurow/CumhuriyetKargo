@@ -300,8 +300,9 @@
                         </div>
                     </div>
 
-                    <div id="contCarInfo">
+                    <div style="display: none;" id="contCarInfo">
                         <h5 class="card-title mt-2">Araç Bilgileri</h5>
+                        <small><em class="font-weight-bold text-danger">Lütfen araç plakasını giriniz.</em></small>
                         <div class="divider"></div>
 
                         <div class="row">
@@ -319,14 +320,14 @@
                             <div class="col-md-4">
                                 <div class="form-group position-relative">
                                     <label for="labelPlaque">PLAKA:</label>
-                                    <h4 id="labelPlaque" class="font-weight-bold text-primary">34HV4186</h4>
+                                    <h4 id="labelPlaque" class="font-weight-bold text-primary">-</h4>
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div class="form-group position-relative">
                                     <label for="carType">ARAÇ TİPİ:</label>
-                                    <h4 id="carType" class="font-weight-bold text-danger">AKTARMA ARACI</h4>
+                                    <h4 id="carType" class="font-weight-bold text-danger">-</h4>
                                 </div>
                             </div>
                         </div>
@@ -384,7 +385,6 @@
 
 
 @section('modals')
-
     <!-- Large modal => Modal Barcode -->
     <div class="modal fade bd-example-modal-lg" id="ModalPartDetails" tabindex="-1" role="dialog"
          aria-labelledby="myLargeModalLabel" aria-hidden="true">

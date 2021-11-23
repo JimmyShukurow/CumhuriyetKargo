@@ -165,6 +165,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
             Route::post('DistrictToNeighborhood', [AjaxController::class, 'districtToNeighborhood'])->name('district.to.neighborhood');
             Route::get('/SystemUpdatesShow/{id}', [ModuleController::class, 'systemUpdateShow']);
             Route::post('GetAgency', [AjaxController::class, 'getAgency']);
+            Route::post('/GetCarInfo', [AjaxController::class, 'getCarInfo']);
         });
     });
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\ServiceFee\ServiceFeeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\ServiceFee\AdditionalServicesController;
 
 Route::group(
     ['middleware' => ['CheckAuth', 'CheckStatus']],

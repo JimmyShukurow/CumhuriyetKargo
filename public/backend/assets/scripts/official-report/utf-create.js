@@ -457,6 +457,90 @@ $('.cargo').click(function () {
     console.log('click cargo');
 });
 
+function carContainerControl() {
+
+    $('#contCarInfo').hide();
+
+    $.each($('.not_cargo'), function (key, val) {
+        if (val.checked == true) {
+            $('#contCarInfo').show();
+            return false;
+        }
+    });
+}
+
+$('.not_cargo').click(function () {
+    carContainerControl();
+    console.log('click car');
+});
+
+
+$('#plaque').keyup(delay(function (e) {
+
+    let plaque = $(this).val();
+
+    if (plaque == '')
+        return false;
+
+    getCarInfo();
+
+}, 1000));
+
+
+function getCarInfo() {
+
+    $('#contCarInfo').block({
+        message: $('<div class="loader mx-auto">\n' +
+            '                            <div class="ball-grid-pulse">\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                            </div>\n' +
+            '                        </div>')
+    });
+
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+    $.ajax('/Ajax/GetCarInfo', {
+        method: 'POST',
+        data: {
+            _token: token,
+            plaque: $('#plaque').val()
+        }
+    }).done(function (response) {
+        if (response.status == 1) {
+            $('#labelPlaque').text(response.car.plaka);
+            $('#carType').text(response.car.car_type);
+        } else if (response.status == 0) {
+            ToastMessage('error', response.message, 'HATA!');
+            clearCarVal();
+            return false;
+        }
+    }).error(function (jqXHR, response) {
+        ajaxError(jqXHR.status);
+    }).always(function () {
+        $('#contCarInfo').unblock();
+    });
+
+}
+
+$('#plaque').keyup(function () {
+    this.value = this.value.toUpperCase().replaceAll(' ', '');
+});
+
+function clearCarVal() {
+    $('#labelPlaque').text('-');
+    $('#carType').text('-');
+}
+
+
 
 
 
