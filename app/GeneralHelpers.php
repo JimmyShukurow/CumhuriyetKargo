@@ -777,7 +777,7 @@ function DesignInvoiceNumber()
         $prefix = $letters[$rnd] . $letters[$rnd2];
         $realRandom = rand(123456, 987654);
 
-        $invoiceNumber = $prefix . ' ' . $realRandom;
+        $invoiceNumber = $prefix . '-' . $realRandom;
 
         #control Number
         $cargo = DB::table('cargoes')

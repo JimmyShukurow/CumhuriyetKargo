@@ -17,9 +17,9 @@
                         <i class="pe-7s-note2 icon-gradient bg-amy-crisp">
                         </i>
                     </div>
-                    <div>UTF (Uygunuszluk Tespit Tutanağı) Oluştur
-                        <div class="page-title-subheading">Bu sayfa üzerinden <b>UTF (Uygunsuzluk Tespit Tutanağı)</b>
-                            oluşturabilirsiniz.
+                    <div>UTF (Uygunuszluk Tespit Formu) Tutanağı Oluştur
+                        <div class="page-title-subheading">Bu sayfa üzerinden <b>UTF (Uygunsuzluk Tespit Formu)</b>
+                            Tutanağı oluşturabilirsiniz.
                         </div>
                     </div>
                 </div>
@@ -60,9 +60,8 @@
                                 <select name="reported_unit_type" required class="form-control form-control-sm"
                                         id="reported_unit_type">
                                     <option value="">Seçiniz</option>
-                                    @foreach(ReportedUnitTypes() as $key)
-                                        <option value="{{$key}}">{{$key}}</option>
-                                    @endforeach
+                                    <option value="Diğer Şube">Diğer Şube</option>
+                                    <option value="Diğer TRM.">Diğer TRM.</option>
                                 </select>
                             </div>
                         </div>
@@ -153,156 +152,10 @@
                         </div>
                     </div>
 
-                    <div style="display: none;" id="contCargoInfo">
-                        <h5 class="card-title mt-2">Kargo Bilgileri</h5>
-                        <div class="divider"></div>
-
-
-                        <div class="form-row">
-                            <div class="col-lg-3 col-sm-6 col-xs-6">
-                                <div class="position-relative form-group">
-                                    <label for="name_surname" class="">Fatura No:</label>
-                                    <input name="name_surname" id="invoice_number"
-                                           data-inputmask="'mask': 'AA 999999'"
-                                           placeholder="__ ______"
-                                           type="text" value="{{ old('name_surname') }}"
-                                           class="form-control form-control-sm input-mask-trigger">
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3 col-sm-6 col-xs-6">
-                                <div class="position-relative form-group">
-                                    <label for="name_surname" class="">Kargo Takip No:</label>
-                                    <input name="name_surname" id="tracking_no"
-                                           data-inputmask="'mask': '99999 99999 99999'"
-                                           placeholder="_____ _____ _____"
-                                           type="text" value="{{ old('name_surname') }}"
-                                           class="form-control form-control-sm input-mask-trigger">
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3 col-sm-6 col-xs-6">
-                                <div class="position-relative form-group">
-                                    <label for="pieces" class="">İlgili Parçalar:</label>
-                                    <div class="input-group">
-                                        <input type="text" id="pieces" readonly
-                                               class="form-control font-weight-bold form-control-sm">
-                                        <div class="input-group-append ">
-                                            <button type="button" id="piecesBtn" disabled class="btn btn-danger btn-sm">
-                                                Parçalar
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <small class="text-success font-weight-bold">
-                                        <i id="textSelectedPieces"></i>
-                                    </small>
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-                        <div class="divider"></div>
-                        <div id="rowCargoInfo" class="row">
-
-                            <div class="col-md-6 col-sm-6">
-                                <div class="form-group position-relative">
-                                    <label class="font-weight-bold" for="sender_name">Fatura Numarası:</label>
-                                    <h3><b class="cargo-information text-danger font-large-3" id="invoice_number">-</b>
-                                    </h3>
-                                </div>
-                            </div>
-
-
-                            <div class="col-md-6 col-sm-6">
-                                <div class="form-group position-relative">
-                                    <label class="font-weight-bold" for="sender_name">Kargo Takip Numarası:</label>
-                                    <h3><b class="cargo-information text-primary" id="tracking_no">-</b></h3>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2 col-sm-3">
-                                <div class="form-group position-relative">
-                                    <label for="sender_name">Gönderici Adı:</label>
-                                    <p><b class="cargo-information" id="sender_name">-</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2 col-sm-3">
-                                <div class="form-group position-relative">
-                                    <label for="receiver_name">Alıcı Adı:</label>
-                                    <p><b class="cargo-information" id="receiver_name">-</b></p>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2 col-sm-3">
-                                <div class="form-group position-relative">
-                                    <label for="departure_branch">Çıkış Şube:</label>
-                                    <p><b class="cargo-information" id="departure_branch">-</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2 col-sm-3">
-                                <div class="form-group position-relative">
-                                    <label for="departure_tc">Çıkış TRM:</label>
-                                    <p><b class="cargo-information" id="departure_tc">-</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2 col-sm-3">
-                                <div class="form-group position-relative">
-                                    <label for="arrival_branch">Varış Şube:</label>
-                                    <p><b class="cargo-information" id="arrival_branch">-</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2 col-sm-3">
-                                <div class="form-group position-relative">
-                                    <label for="arrival_tc">Varış TRM:</label>
-                                    <p><b class="cargo-information" id="arrival_tc">-</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2 col-sm-3">
-                                <div class="form-group position-relative">
-                                    <label for="cargo_type">Kargo Tipi:</label>
-                                    <p><b class="cargo-information" id="cargo_type">-</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2 col-sm-3">
-                                <div class="form-group position-relative">
-                                    <label for="number_of_pieces">Parça Sayısı:</label>
-                                    <p><b class="cargo-information" id="number_of_pieces">-</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2 col-sm-3">
-                                <div class="form-group position-relative">
-                                    <label for="desi">Desi:</label>
-                                    <p><b class="cargo-information" id="desi">-</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2 col-sm-3">
-                                <div class="form-group position-relative">
-                                    <label for="status">Statü:</label>
-                                    <p><b class="cargo-information" id="status">-</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2 col-sm-3">
-                                <div class="form-group position-relative">
-                                    <label for="total_price">Toplam Ücret</label>
-                                    <p><b class="cargo-information" id="total_price">-</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2 col-sm-3">
-                                <div class="form-group position-relative">
-                                    <label for="cargo_info">Diğer Bilgiler:</label>
-                                    <input disabled id="cargo_info" style="width: 100%;" type="button"
-                                           class="btn btn-info"
-                                           value="Kargo Bilgileri">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div style="display: none;" id="contCarInfo">
                         <h5 class="card-title mt-2">Araç Bilgileri</h5>
-                        <small><em class="font-weight-bold text-danger">Lütfen araç plakasını giriniz.</em></small>
+                        <small><em class="font-weight-bold text-danger">Lütfen ilgili aracın plakasını
+                                giriniz.</em></small>
                         <div class="divider"></div>
 
                         <div class="row">
@@ -337,7 +190,7 @@
 
                     <button type="submit" id="btnSubmitForm" class="ladda-button mb-2 mr-2 btn btn-gradient-primary"
                             data-style="slide-right">
-                        <span class="ladda-label">HTF Oluştur</span>
+                        <span class="ladda-label">UTF Oluştur</span>
                         <span class="ladda-spinner"></span>
                         <div class="ladda-progress" style="width: 0px;"></div>
                     </button>

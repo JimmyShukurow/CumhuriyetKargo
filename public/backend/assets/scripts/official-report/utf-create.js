@@ -202,40 +202,11 @@ $('#reported_unit_type').change(function () {
 
     $('#reported_unit').val('');
 
-    if (general_cargo == null) {
-        $(this).val('');
-        ToastMessage('error', 'Önce kargonun fatura numarasını veya takip numarasını giriniz!', 'HATA!');
-        return false;
-    }
 
     switch ($(this).val()) {
 
         case '':
             hideFakeColumn();
-            break;
-
-        case  'Çıkış Şube':
-            hideFakeColumn();
-            $('#reported_unit').val(general_cargo.departure.agency_name + " ŞUBE");
-            $('#reported_unit_id').val(general_cargo.cargo.departure_agency_code);
-            break;
-
-        case  'Çıkış TRM.':
-            hideFakeColumn();
-            $('#reported_unit').val(general_cargo.departure_tc.tc_name + " TRM.");
-            $('#reported_unit_id').val(general_cargo.cargo.departure_tc_code);
-            break;
-
-        case  'Varış Şube':
-            hideFakeColumn();
-            $('#reported_unit').val(general_cargo.arrival.agency_name + " ŞUBE");
-            $('#reported_unit_id').val(general_cargo.cargo.arrival_agency_code);
-            break;
-
-        case  'Varış TRM.':
-            hideFakeColumn();
-            $('#reported_unit').val(general_cargo.arrival_tc.tc_name + " TRM.");
-            $('#reported_unit_id').val(general_cargo.cargo.arrival_tc_code);
             break;
 
         case 'Diğer Şube':

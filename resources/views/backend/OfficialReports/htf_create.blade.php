@@ -36,7 +36,7 @@
                             <div class="position-relative form-group">
                                 <label for="name_surname" class="">Fatura No:</label>
                                 <input name="name_surname" id="invoice_number"
-                                       data-inputmask="'mask': 'AA 999999'"
+                                       data-inputmask="'mask': 'AA-999999'"
                                        placeholder="__ ______"
                                        type="text" value="{{ old('name_surname') }}"
                                        class="form-control form-control-sm input-mask-trigger">

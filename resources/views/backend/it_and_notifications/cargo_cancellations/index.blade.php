@@ -56,7 +56,7 @@
 
                         <div class="col-md-3">
                             <label for="receiverCode">Fatura NO:</label>
-                            <input type="text" data-inputmask="'mask': 'AA 999999'"
+                            <input type="text" data-inputmask="'mask': 'AA-999999'"
                                    placeholder="__ ______" type="text" id="invoice_number"
                                    class="form-control input-mask-trigger form-control-sm niko-filter">
                         </div>
