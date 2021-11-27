@@ -833,3 +833,17 @@ function changeAgencyCode()
     return $agencies;
 //    return 'here! test here bitch!';
 }
+
+function OfficialReportsPermissions()
+{
+//    $array = [
+//        1 => 'Genel Yönetici',
+//        20 => 'Acente Müdürü',
+//        29 => 'Aktarma Müdürü',
+//        34 => 'Operasyon Müdürü',
+//        44 => 'Aktarma Müdür Yardımcısı'
+//    ];
+
+    $permissionArray = [1, 20, 29, 34, 44];
+    return $permissionArray;
+}

@@ -32,6 +32,7 @@ use App\Http\Controllers\Backend\Reports\ReportController;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Backend\OfficialReports\OfficialReportController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -88,6 +89,11 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('CreateHTF', [OfficialReportController::class, 'insertHTF']);
 
         Route::get('UTF', [OfficialReportController::class, 'createUTF'])->name('createUTF');
+        Route::post('CreateUTF', [OfficialReportController::class, 'insertUTF']);
+
+        Route::get('OurReports', [OfficialReportController::class, 'ourReports'])->name('ourReports');
+        Route::get('GetOurReports', [OfficialReportController::class, 'getOurReports']);
+
     });
 
 

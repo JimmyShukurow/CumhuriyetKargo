@@ -254,21 +254,11 @@ $('#select_reported_tc').change(function () {
 });
 
 
-function getDataDamages() {
+function getDataImpropriety() {
     let array = [];
-    $.each($('.cb-damges'), function (key, val) {
+    $.each($('.cb-impropriety'), function (key, val) {
         if (val.checked == true) {
-            array.push($('#' + val.id).attr('damage-id'));
-        }
-    });
-    return array;
-}
-
-function getDataTransactions() {
-    let array = [];
-    $.each($('.cb-transactions'), function (key, val) {
-        if (val.checked == true) {
-            array.push($('#' + val.id).attr('transaction-id'));
+            array.push($('#' + val.id).attr('impropriety-id'));
         }
     });
     return array;
@@ -277,16 +267,6 @@ function getDataTransactions() {
 
 $("#HtfCreateForm").submit(function (e) {
     e.preventDefault();
-
-    if (general_cargo == null) {
-        ToastMessage('error', 'Önce kargonun fatura numarasını veya takip numarasını giriniz!');
-        return false;
-    }
-
-    if (piecesSelected == false) {
-        ToastMessage('error', 'Lütfen ilgili parçaları seçiniz!');
-        return false;
-    }
 
     if ($('#reported_unit_type').val() == '') {
         ToastMessage('error', 'Tutanak tutulan birim tipi alanı zorunludur!');
@@ -298,41 +278,26 @@ $("#HtfCreateForm").submit(function (e) {
         return false;
     }
 
-    let damageStatus = true;
-    $.each($('.cb-damges'), function (key, val) {
+    if ($('#impropriety_description').val() == '') {
+        ToastMessage('error', 'Açıklama alanı zorunludur!');
+        return false;
+    }
+
+    let improprietyStatus = true;
+    $.each($('.cb-impropriety'), function (key, val) {
         if (val.checked == true) {
-            damageStatus = true;
+            improprietyStatus = true;
             return false;
         } else
-            damageStatus = false;
+            improprietyStatus = false;
     });
 
-    if (!damageStatus) {
-        ToastMessage('error', 'Lütfen hasar nedeni kutucuklarından en az 1 tanesini seçiniz!');
+    if (!improprietyStatus) {
+        ToastMessage('error', 'Lütfen uygunsuzluk nedeni kutucuklarından en az 1 tanesini seçiniz!');
         return false;
     }
 
-    let transactionStatus = true;
-    $.each($('.cb-transactions'), function (key, val) {
-        if (val.checked == true) {
-            transactionStatus = true;
-            return false;
-        } else
-            transactionStatus = false;
-    });
-
-    if (!transactionStatus) {
-        ToastMessage('error', 'Lütfen yapılan işlem kutucuklarından en az 1 tanesini seçiniz!');
-        return false;
-    }
-
-    if ($('#content_detection').val() == '') {
-        ToastMessage('error', 'Lütfen İçerik Tespiti alanını doldurunuz!');
-        return false;
-    }
-
-    let damageArray = getDataDamages();
-    let transactionArray = getDataTransactions();
+    let improprietyArray = getDataImpropriety();
 
     $('.app-main__inner').block({
         message: $('<div class="loader mx-auto">\n' +
@@ -352,18 +317,14 @@ $("#HtfCreateForm").submit(function (e) {
     $('.blockUI.blockMsg.blockElement').css('border', '0px');
     $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
-    $.ajax('/OfficialReport/CreateHTF', {
+    $.ajax('/OfficialReport/CreateUTF', {
         method: 'POST',
         data: {
             _token: token,
-            faturaNumarasi: general_cargo.cargo.invoice_number,
             tutanakTutulanBirimTipi: $('#reported_unit_type').val(),
             tutanakTutulanBirim: $('#reported_unit').val(),
-            icerikAciklamasi: $('#content_detection').val(),
-            hasarAciklamasi: $('#damage_description').val(),
-            hasarNedenleri: damageArray,
-            yapilanIslemler: transactionArray,
-            ilgiliParcalar: $('#pieces').val(),
+            uygunsuzlukAciklamasi: $('#impropriety_description').val(),
+            uygunsuzlukNedenleri: improprietyArray,
             tutanakTutulanBirimID: $('#reported_unit_id').val()
         }
     }).done(function (response) {
@@ -409,24 +370,6 @@ $("#HtfCreateForm").submit(function (e) {
 
 });
 
-
-function cargoContainerControl() {
-
-    $('#contCargoInfo').hide();
-
-    $.each($('.cargo'), function (key, val) {
-        if (val.checked == true) {
-            $('#contCargoInfo').show();
-            return false;
-        }
-    });
-
-}
-
-$('.cargo').click(function () {
-    cargoContainerControl();
-    console.log('click cargo');
-});
 
 function carContainerControl() {
 

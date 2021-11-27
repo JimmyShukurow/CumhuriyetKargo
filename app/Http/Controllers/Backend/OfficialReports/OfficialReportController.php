@@ -11,6 +11,8 @@ use App\Models\HtfPieceDetails;
 use App\Models\HtfTransactionDetails;
 use App\Models\Reports;
 use App\Models\TransshipmentCenters;
+use App\Models\UtfImproprietyDetails;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -71,7 +73,7 @@ class OfficialReportController extends Controller
             $prefix = $letters[$rnd] . $letters[$rnd2];
             $realRandom = rand(123456, 987654);
 
-            $invoiceNumber = $prefix . ' ' . $realRandom;
+            $invoiceNumber = $prefix . '-' . $realRandom;
 
             #control Number
             $cargo = DB::table('reports')
@@ -202,6 +204,10 @@ class OfficialReportController extends Controller
                     ->json(['status' => 0, 'message' => 'Lütfen geçerli bir yapılan işlem seçin!']);
         }
 
+        #control permission
+        $permissionIds = OfficialReportsPermissions();
+        $permission = in_array(Auth::id(), $permissionIds);
+
         $createHTF = Reports::create([
             'type' => 'HTF',
             'report_serial_no' => $this->DesignReportInvoiceNumber(),
@@ -215,7 +221,9 @@ class OfficialReportController extends Controller
             'reported_unit_id' => $reportedUnitID,
             'damage_description' => tr_strtoupper($request->hasarAciklamasi),
             'content_detection' => tr_strtoupper($request->icerikAciklamasi),
-            'confirm' => '0',
+            'confirm' => $permission ? '1' : '0',
+            'confirming_user_id' => $permission ? Auth::id() : null,
+            'confirming_datetime' => $permission ? Carbon::now() : null,
         ]);
 
         if ($createHTF) {
@@ -249,8 +257,13 @@ class OfficialReportController extends Controller
                 ]);
             }
 
+            if ($permission)
+                $message = 'Tutanak başarıyla oluşturuldu ve onaylandı!';
+            else
+                $message = 'Tutanak başarıyla oluşturuldu, Onay bekliyor.';
+
             return response()
-                ->json(['status' => 1, 'message' => 'Tutanak başarıyla oluşturuldu, Onay bekliyor.'], 200);
+                ->json(['status' => 1, 'message' => $message], 200);
         }
 
         return response()
@@ -293,4 +306,236 @@ class OfficialReportController extends Controller
         GeneralLog('UTF oluştur sayfası görüntülendi.');
         return view('backend.OfficialReports.utf_create', compact(['impropriety_types', 'transactions', 'branch', 'agencies', 'tc']));
     }
+
+    public function insertUTF(Request $request)
+    {
+        $rules = [
+            'tutanakTutulanBirimTipi' => 'required',
+            'tutanakTutulanBirim' => 'required',
+            'uygunsuzlukAciklamasi' => 'required',
+            'uygunsuzlukNedenleri' => 'required',
+            'tutanakTutulanBirimID' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails())
+            return response()->json(['status' => -1, 'errors' => $validator->getMessageBag()->toArray()], 200);
+
+        $UnitTypes = ReportedUnitTypes();
+        if (!in_array($request->tutanakTutulanBirimTipi, $UnitTypes))
+            return response()
+                ->json(['status' => 0, 'message' => 'Lütfen geçerli bir tutanak tutulan birimi tipi seçin!']);
+
+        $realReportedUnitType = "";
+        $reportedUnitID = false;
+
+
+        switch ($request->tutanakTutulanBirimTipi) {
+
+            case 'Diğer Şube':
+                $realReportedUnitType = "Acente";
+
+                $agencyControl = Agencies::find($request->tutanakTutulanBirimID);
+                if ($agencyControl == null)
+                    return response()
+                        ->json(['status' => 0, 'message' => 'Lütfen geçerli bir diğer şube seçin!']);
+
+                $reportedUnitID = $agencyControl->id;
+                break;
+
+            case 'Diğer TRM.':
+                $realReportedUnitType = "Aktarma";
+
+                $tcControl = TransshipmentCenters::find($request->tutanakTutulanBirimID);
+                if ($tcControl == null)
+                    return response()
+                        ->json(['status' => 0, 'message' => 'Lütfen geçerli bir diğer TRM. seçin!']);
+
+                $reportedUnitID = $tcControl->id;
+
+                break;
+        }
+
+
+        foreach ($request->uygunsuzlukNedenleri as $key) {
+            $control = DB::table('utf_impropriety_types')
+                ->where('id', $key)
+                ->first();
+
+            if ($control == null)
+                return response()
+                    ->json(['status' => 0, 'message' => 'Lütfen geçerli bir hasar nedeni seçin!']);
+        }
+
+        #control permission
+        $permissionIds = OfficialReportsPermissions();
+        $permission = in_array(Auth::id(), $permissionIds);
+
+
+        $createUTF = Reports::create([
+            'type' => 'UTF',
+            'report_serial_no' => $this->DesignReportInvoiceNumber(),
+            'real_detecting_unit_type' => Auth::user()->user_type,
+            'detecting_user_id' => Auth::id(),
+            'reported_unit_type' => $request->tutanakTutulanBirimTipi,
+            'real_reported_unit_type' => $realReportedUnitType,
+            'reported_unit_id' => $reportedUnitID,
+            'impropriety_description' => tr_strtoupper($request->uygunsuzlukAciklamasi),
+            'confirm' => $permission ? '1' : '0',
+            'confirming_user_id' => $permission ? Auth::id() : null,
+            'confirming_datetime' => $permission ? Carbon::now() : null,
+        ]);
+
+        if ($createUTF) {
+
+            foreach ($request->uygunsuzlukNedenleri as $key) {
+                $control = DB::table('utf_impropriety_types')
+                    ->where('id', $key)
+                    ->first();
+                $insert = UtfImproprietyDetails::create([
+                    'utf_id' => $createUTF->id,
+                    'impropriety_id' => $control->id,
+                    'impropriety_text' => $control->name
+                ]);
+            }
+
+            if ($permission)
+                $message = 'Tutanak başarıyla oluşturuldu ve onaylandı!';
+            else
+                $message = 'Tutanak başarıyla oluşturuldu, Onay bekliyor.';
+
+            return response()
+                ->json(['status' => 1, 'message' => $message], 200);
+        }
+
+        return response()
+            ->json(['status' => 0, 'message' => 'İşlem başarısız oldu, lütfen daha sonra tekrar deneyiniz!']);
+    }
+
+    public function ourReports()
+    {
+        $data['cities'] = Cities::all();
+        $unit = '';
+
+        if (Auth::user()->user_type == 'Acente') {
+            $agency = Agencies::find(Auth::user()->agency_code);
+            $unit = $agency->agency_name . ' ŞUBE';
+        } else if (Auth::user()->user_type == 'Aktarma') {
+            $agency = TransshipmentCenters::find(Auth::user()->tc_code);
+            $unit = $agency->tc_name . ' TRM';
+        }
+
+
+        GeneralLog('Tutanaklarım sayfası görüntülendi');
+        return view('backend.OfficialReports.our_reports', compact(['data', 'unit']));
+    }
+
+    public function getOurReports(Request $request)
+    {
+        $trackingNo = str_replace([' ', '_'], ['', ''], $request->trackingNo);
+        $invoiceNumber = $request->invoiceNumber;
+        $cargoType = $request->cargoType;
+        $currentCity = $request->senderCity;
+        $currentCode = str_replace([' ', '_'], ['', ''], $request->senderCurrentCode);
+        $receiverCurrentCode = str_replace([' ', '_'], ['', ''], $request->receiverCurrentCode);
+        $currentName = $request->senderName;
+        $receiverCity = $request->receiverCity;
+        $receiverName = tr_strtoupper($request->receiverName);
+        $receiverDistrict = $request->receiverDistrict;
+        $receiverPhone = $request->receiverPhone;
+        $currentDistrict = $request->senderDistrict;
+        $currentPhone = $request->senderPhone;
+        $finishDate = $request->finishDate;
+        $startDate = $request->startDate;
+        $filterByDAte = $request->filterByDAte;
+
+        $finishDate = new Carbon($finishDate);
+        $startDate = new Carbon($startDate);
+
+        if ($filterByDAte == "true") {
+            $diff = $startDate->diffInDays($finishDate);
+            if ($filterByDAte) {
+                if ($diff >= 30) {
+                    return response()->json([], 509);
+                }
+            }
+        }
+
+
+        $cargoes = DB::table('cargoes')
+            ->join('users', 'users.id', '=', 'cargoes.creator_user_id')
+            ->join('agencies', 'agencies.id', '=', 'users.agency_code')
+            ->select(['cargoes.*', 'agencies.city as city_name', 'agencies.district as district_name', 'agencies.agency_name', 'users.name_surname as user_name_surname'])
+            ->whereRaw($cargoType ? "cargo_type='" . $cargoType . "'" : '1 > 0')
+            ->whereRaw($currentCity ? "sender_city='" . $currentCity . "'" : '1 > 0')
+            ->whereRaw($currentDistrict ? "sender_district='" . $currentDistrict . "'" : '1 > 0')
+            ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
+            ->whereRaw($receiverCurrentCode ? 'current_code=' . $receiverCurrentCode : '1 > 0')
+            ->whereRaw($trackingNo ? 'tracking_no=' . $trackingNo : '1 > 0')
+            ->whereRaw($invoiceNumber ? "invoice_number='" . $invoiceNumber . "'" : '1 > 0')
+            ->whereRaw($currentName ? "sender_name like '" . $currentName . "%'" : '1 > 0')
+            ->whereRaw($receiverCity ? "receiver_city='" . $receiverCity . "'" : '1 > 0')
+            ->whereRaw($receiverPhone ? "receiver_phone='" . $receiverPhone . "'" : '1 > 0')
+            ->whereRaw($currentPhone ? "sender_phone='" . $currentPhone . "'" : '1 > 0')
+            ->whereRaw($receiverDistrict ? "receiver_district='" . $receiverDistrict . "'" : '1 > 0')
+            ->whereRaw($receiverName ? "receiver_name like '%" . $receiverName . "%'" : '1 > 0')
+            ->whereRaw($filterByDAte == "true" ? "cargoes.created_at between '" . $startDate . "'  and '" . $finishDate . "'" : '1 > 0')
+            ->whereRaw('cargoes.deleted_at is null')
+            ->where('arrival_agency_code', Auth::user()->agency_code)
+            ->limit(100)
+            ->orderByDesc('created_at')
+            ->get();
+
+        return datatables()->of($cargoes)
+            ->editColumn('free', function () {
+                return '';
+            })
+            ->setRowId(function ($cargoes) {
+                return "cargo-item-" . $cargoes->id;
+            })
+            ->editColumn('payment_type', function ($cargoes) {
+                return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . $cargoes->payment_type . '</b>' : '<b class="text-dark">' . $cargoes->payment_type . '</b>';
+            })
+            ->editColumn('cargo_type', function ($cargoes) {
+                return $cargoes->cargo_type == 'Koli' ? '<b class="text-primary">' . $cargoes->cargo_type . '</b>' : '<b class="text-success">' . $cargoes->cargo_type . '</b>';
+            })
+            ->editColumn('receiver_address', function ($cargoes) {
+                return substr($cargoes->receiver_address, 0, 30);
+            })
+            ->editColumn('agency_name', function ($cargoes) {
+                return $cargoes->agency_name;
+            })
+            ->editColumn('sender_name', function ($cargoes) {
+                return substr($cargoes->sender_name, 0, 30);
+            })
+            ->editColumn('receiver_name', function ($cargoes) {
+                return substr($cargoes->receiver_name, 0, 30);
+            })
+            ->editColumn('collectible', function ($cargoes) {
+                return $cargoes->collectible == '1' ? '<b class="text-success">Evet</b>' : '<b class="text-danger">Hayır</b>';
+            })
+            ->editColumn('total_price', function ($cargoes) {
+                return '<b class="text-primary">' . $cargoes->total_price . '₺' . '</b>';
+            })
+            ->editColumn('collection_fee', function ($cargoes) {
+                return '<b class="text-primary">' . $cargoes->collection_fee . '₺' . '</b>';
+            })
+            ->editColumn('status', function ($cargoes) {
+                return '<b class="text-dark">' . $cargoes->status . '</b>';
+            })
+            ->editColumn('created_at', function ($cargoes) {
+                return '<b class="text-primary">' . $cargoes->created_at . '</b>';
+            })
+            ->editColumn('status_for_human', function ($cargoes) {
+                return '<b class="text-success">' . $cargoes->status_for_human . '</b>';
+            })
+            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
+            ->addColumn('tracking_no', 'backend.main_cargo.search_cargo.columns.tracking_no')
+            ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
+            ->rawColumns(['tracking_no', 'invoice_number', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->make(true);
+    }
+
+
 }

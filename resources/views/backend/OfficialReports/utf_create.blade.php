@@ -145,48 +145,14 @@
 
                         <div class="col-12 mt-2">
                             <div class="form-group position-relative">
-                                <label for="damage_description">Açıklama</label>
-                                <textarea name="damage_description" id="damage_description" cols="30"
+                                <label for="impropriety_description">Açıklama</label>
+                                <textarea name="impropriety_description"
+                                          placeholder="Lütfen uygunsuzluk nedenini detaylı bir şekilde belirtiniz."
+                                          required id="impropriety_description" cols="30"
                                           rows="2" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
-
-                    <div style="display: none;" id="contCarInfo">
-                        <h5 class="card-title mt-2">Araç Bilgileri</h5>
-                        <small><em class="font-weight-bold text-danger">Lütfen ilgili aracın plakasını
-                                giriniz.</em></small>
-                        <div class="divider"></div>
-
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group position-relative">
-                                    <label for="plaque">ARAÇ PLAKA</label>
-                                    <input name="name_surname" id="plaque"
-                                           type="text" placeholder="Araç Plakasını Giriniz"
-                                           class="form-control form-control-sm font-weight-bold text-dark">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group position-relative">
-                                    <label for="labelPlaque">PLAKA:</label>
-                                    <h4 id="labelPlaque" class="font-weight-bold text-primary">-</h4>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="form-group position-relative">
-                                    <label for="carType">ARAÇ TİPİ:</label>
-                                    <h4 id="carType" class="font-weight-bold text-danger">-</h4>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
 
                     <button type="submit" id="btnSubmitForm" class="ladda-button mb-2 mr-2 btn btn-gradient-primary"
                             data-style="slide-right">
@@ -202,7 +168,6 @@
 @endsection
 
 @section('js')
-
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
     <script src="/backend/assets/scripts/official-report/utf-create.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
