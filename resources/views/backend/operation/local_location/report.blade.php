@@ -585,7 +585,7 @@
                         type: 'column',
                         data: [
                             @foreach($data['distributor_agencies'] as $key)
-                                {{ $key->covered_neighborhoods  }},
+                                {{ $key->location_count  }},
                             @endforeach
                         ]
                     }, {
@@ -593,14 +593,14 @@
                         type: 'line',
                         data: [
                             @foreach($data['distributor_agencies'] as $key)
-                                {{ $key->covered_neighborhoods  }},
+                                {{ $key->location_count  }},
                             @endforeach
                         ]
                     }],
 
                     labels: [
                         @foreach($data['distributor_agencies'] as $key)
-                            '{{ $key->agency_city . '-' .$key->agency_name  }}',
+                            '{{ $key->city . '-' .$key->agency_name  }}',
                         @endforeach
                     ],
 

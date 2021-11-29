@@ -201,12 +201,15 @@ class LocalLocationController extends Controller
         $data['regional_districts'] = $regional_districts = RegionalDistricts::count();
         $data['idle_districts_quantity'] = $districts - $regional_districts;
 
+
         $data['city_names'] = Cities::all();
         $data['agencies'] = Agencies::all();
         $data['cities'] = Cities::count();
         $data['agency_quantity'] = Agencies::count();
         $data['total_districts'] = $districts = Districts::count();
         $data['total_neighborhood'] = $neighborhoods = Neighborhoods::count();
+
+
 
         $data['local_location_completed_agencies'] = DB::table('local_locations')
             ->join('agencies', 'agencies.id', '=', 'local_locations.agency_code')
@@ -221,6 +224,7 @@ class LocalLocationController extends Controller
 
         $data['total_not_local_locations'] = $data['total_neighborhood'] - $data['total_local_locations'];
 
+
         $data['ab_locations'] = DB::table('local_locations')
             ->where('area_type', 'AB')
             ->count();
@@ -234,7 +238,6 @@ class LocalLocationController extends Controller
 
         $data['at_cities'] = count($data['at_cities']);
 
-
         $data['at_out_cities'] = $data['cities'] - $data['at_cities'];
 
         $data['at_districts'] = DB::table('local_locations')
@@ -244,10 +247,13 @@ class LocalLocationController extends Controller
 
         $data['at_out_districts'] = $districts - $data['at_districts'];
 
-        $data['distributor_agencies'] = DB::table('view_most_distributor_agencies')
-            ->orderByDesc('covered_neighborhoods')
+
+        $data['distributor_agencies'] = DB::table('view_agency_location_counts')
+            ->orderByDesc('location_count')
             ->limit(15)
             ->get();
+
+
 
         GeneralLog('Lokasyon Rapor (Mahalli) görüntülendi.');
         return view('backend.operation.local_location.report', compact('data'));
