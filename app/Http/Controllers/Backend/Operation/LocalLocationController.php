@@ -231,6 +231,7 @@ class LocalLocationController extends Controller
         $data['at_cities'] = DB::table('local_locations')
             ->groupBy('city')
             ->get();
+
         $data['at_cities'] = count($data['at_cities']);
 
 
@@ -238,7 +239,8 @@ class LocalLocationController extends Controller
 
         $data['at_districts'] = DB::table('local_locations')
             ->groupBy('district')
-            ->count();
+            ->get();
+        $data['at_districts'] = count($data['at_districts']);
 
         $data['at_out_districts'] = $districts - $data['at_districts'];
 

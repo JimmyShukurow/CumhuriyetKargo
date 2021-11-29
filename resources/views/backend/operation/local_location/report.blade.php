@@ -464,7 +464,6 @@
                     <div class="mb-3 card">
                         <div class="tabs-lg-alternate card-header">
                             <ul class="nav nav-justified">
-
                                 <li class="nav-item">
                                     <a data-toggle="tab" href="#idle-agiencies-region" class="nav-link showa active">
                                         <div class="widget-number">Acente Lokasyon Statü</div>
@@ -472,17 +471,6 @@
                                         </div>
                                     </a>
                                 </li>
-
-                                <li class="nav-item">
-                                    <a data-toggle="tab" href="#idle-districts" class="nav-link show ">
-                                        <div class="widget-number">CK Mahalli Lokasyon</div>
-                                        <div class="tab-subheading">
-                                            Türkiye geneli mahalleler ve AT-DIŞI, Ana Bölge, Mobil Bölge
-                                            Durumları.
-                                        </div>
-                                    </a>
-                                </li>
-
                             </ul>
                         </div>
                         <div class="tab-content">
@@ -560,88 +548,6 @@
                                                 <th>Şube Kodu</th>
                                                 <th>Dağıtım Alanı</th>
                                                 <th>Detay</th>
-                                            </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane show" id="idle-districts" role="tabpanel">
-                                <div class="card-body">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="city">İl</label>
-                                                    <select name="" id="city"
-                                                            class="form-control niko-select-filter form-control-sm">
-                                                        @foreach($data['city_names'] as $city)
-                                                            <option id="{{$city->id}}" data="{{$city->city_name}}"
-                                                                    value="{{$city->id}}">{{$city->city_name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="district">İlçe</label>
-                                                    <select name="" id="district"
-                                                            class="form-control niko-select-filter form-control-sm">
-                                                        <option value="">Seçiniz</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="agency">Acente</label>
-                                                    <select name="" id="agency"
-                                                            class="form-control niko-select-filter form-control-sm">
-                                                        <option value="">Seçiniz</option>
-                                                        @foreach($data['agencies'] as $key)
-                                                            <option
-                                                                value="{{$key->id}}">{{$key->agency_name . ' ŞUBE'}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="area_type">Bölge Tipi</label>
-                                                    <select name="" id="area_type"
-                                                            class="form-control niko-select-filter form-control-sm">
-                                                        <option value="">Tümü</option>
-                                                        <option value="AT-DIŞI">AT-DIŞI</option>
-                                                        <option value="AB">AB</option>
-                                                        <option value="MB">MB</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <table id="TableRolePermissions"
-                                               style="white-space: nowrap; "
-                                               class="table table-hover table-striped  table-bordered TableNoPadding NikolasDataTable TrGeneralLocalLocations table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>İl</th>
-                                                <th>İlçe</th>
-                                                <th>Mahalle</th>
-                                                <th>Bölge Tipi</th>
-                                                <th>Acente</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                            <tfoot>
-                                            <tr>
-                                                <th>İl</th>
-                                                <th>İlçe</th>
-                                                <th>Mahalle</th>
-                                                <th>Bölge Tipi</th>
-                                                <th>Acente</th>
                                             </tr>
                                             </tfoot>
                                         </table>
@@ -1038,9 +944,8 @@
                         $(this).find('small').html('<span>%' + stepValue.toFixed(2).substring(2) + '<span>');
                     });
 
-
                     $('.circle-mahalle-bazli-dagitim').circleProgress({
-                        value: {{ '.'.round(($data['total_local_locations']  / $data['total_neighborhood']) * 100, 0) }},
+                        value: {{ '.0'.round(($data['total_local_locations']  / $data['total_neighborhood']) * 100, 0) }},
                         size: 46,
                         lineCap: 'round',
                         fill: {color: '#794C8A'}
@@ -1206,96 +1111,14 @@
             </script>
 
             <script>
-                var oTable = $('.NikolasDataTable.TrGeneralLocalLocations').DataTable({
-                    pageLength: 10,
-                    lengthMenu: [
-                        [10, 25, 50, 100, 250, 500, -1],
-                        ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
-                    ],
-                    language: {
-                        "sDecimal": ",",
-                        "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
-                        "sInfo": "_TOTAL_ kayıttan _START_ - _END_ kayıtlar gösteriliyor",
-                        "sInfoEmpty": "Kayıt yok",
-                        "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
-                        "sInfoPostFix": "",
-                        "sInfoThousands": ".",
-                        "sLengthMenu": "_MENU_",
-                        "sLoadingRecords": "Yükleniyor...",
-                        "sProcessing": "<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>",
-                        "sSearch": "",
-                        "sZeroRecords": "Eşleşen kayıt bulunamadı",
-                        "oPaginate": {
-                            "sFirst": "İlk",
-                            "sLast": "Son",
-                            "sNext": "Sonraki",
-                            "sPrevious": "Önceki"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": artan sütun sıralamasını aktifleştir",
-                            "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
-                        },
-                        "select": {
-                            "rows": {
-                                "_": "%d kayıt seçildi",
-                                "0": "",
-                                "1": "1 kayıt seçildi"
-                            }
-                        }
-                    },
-                    dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col"f>>rtip',
-                    buttons: [
-                        'copy',
-                        'pdf',
-                        'csv',
-                        'print',
-                        {
-                            extend: 'excelHtml5',
-                            exportOptions: {
-                                columns: [0, 1, 2]
-                            },
-                            title: "CK-Bölgesi Olmayan İlçeler - {{date('d/m/Y H:i')}}"
-                        },
-                        {
-                            text: 'Yenile',
-                            action: function (e, dt, node, config) {
-                                dt.ajax.reload();
-                            }
-                        }
-                    ],
-                    responsive: false,
-                    processing: false,
-                    serverSide: false,
-                    ajax: {
-                        url: '{!! route('location.GetTrGeneralLocations') !!}',
-                        data: function (d) {
-                            d.city = $('#city').val();
-                            d.district = $('#district').val();
-                            d.agency = $('#agency').val();
-                            d.area_type = $('#area_type').val();
-                        },
-                        error: function (xhr, error, code) {
-                            // ajaxError(xhr.status);
-                        },
-                        complete: function () {
-                            SnackMessage('Tamamlandı!', 'danger', 'bl');
-                        }
-                    },
-                    columns: [
-                        {data: 'city_name', name: 'city_name'},
-                        {data: 'district_name', name: 'district_name'},
-                        {data: 'neighborhood_name', name: 'neighborhood_name'},
-                        {data: 'area_type', name: 'area_type'},
-                        {data: 'agency', name: 'agency'},
-                    ],
-                    scrollY: false
-                });
-
                 var oTable = $('.NikolasDataTable#AgencyLocationStatus').DataTable({
                     pageLength: 10,
                     lengthMenu: [
                         [10, 25, 50, 100, 250, 500, -1],
                         ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
+                    ],
+                    order: [
+                        3, 'desc'
                     ],
                     language: {
                         "sDecimal": ",",
