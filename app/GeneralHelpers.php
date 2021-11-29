@@ -827,12 +827,26 @@ function ReportedUnitTypes()
 }
 
 
-function changeAgencyCode()
+function CreateAgencyCode()
 {
-    $agencies = Agencies::all()->count();
-    return $agencies;
-//    return 'here! test here bitch!';
+    $code = 0;
+
+    while (true) {
+        $code = rand(1111, 8999);
+
+        $control = DB::table('agencies')
+            ->where('agency_code', $code)
+            ->first();
+
+        if ($control != null)
+            continue;
+        else
+            break;
+    }
+
+    return $code;
 }
+
 
 function OfficialReportsPermissions()
 {

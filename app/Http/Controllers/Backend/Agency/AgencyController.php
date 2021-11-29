@@ -8,6 +8,7 @@ use App\Models\Cities;
 use App\Models\Districts;
 use App\Models\LocalLocation;
 use App\Models\Neighborhoods;
+use App\Models\RegioanalDirectorates;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
 use Facade\Ignition\Tabs\Tab;
@@ -22,21 +23,43 @@ class AgencyController extends Controller
 {
     public function index(AgenciesDataTable $dataTable)
     {
-//        $fix =  changeAgencyCode();
-//
-//        return $fix;
-//        return 'test';
-
-
         $data['agencies'] = Agencies::all();
+        $data['cities'] = Cities::all();
+        $data['regional_directorates'] = RegioanalDirectorates::all();
+        $data['transshipment_centers'] = TransshipmentCenters::all();
+
         GeneralLog('Acenteler sayfası görüntülendi.');
         return view('backend.agencies.index', compact('data'));
     }
 
-    public function getAgencies()
+    public function getAgencies(Request $request)
     {
-//        $agencies = Agencies::orderBy('created_at', 'desc')->get();
-        $agencies = DB::select('CALL proc_agency_region()');
+        $city = $request->city != null ? $request->city : false;
+        $district = $request->district != null ? $request->district : false;
+        $agencyCode = $request->agencyCode != null ? $request->agencyCode : false;
+        $agencyName = $request->agencyName != null ? $request->agencyName : false;
+        $nameSurname = $request->nameSurname != null ? $request->nameSurname : false;
+        $status = $request->status != null ? $request->status : false;
+        $statusVal = $status == 'Aktif' ? '1' : '0';
+        $regionalDirectorate = $request->regionalDirectorate != null ? $request->regionalDirectorate : false;
+        $transshipmentCenter = $request->transshipmentCenter != null ? $request->transshipmentCenter : false;
+
+        if ($city)
+            $realCity = Cities::find($city);
+
+        if ($district)
+            $realDistrict = Districts::find($district);
+
+
+        $agencies = DB::table('view_agency_region')
+            ->whereRaw($city ? "city='" . $realCity->city_name . "'" : ' 1 > 0')
+            ->whereRaw($district ? "district='" . $realDistrict->district_name . "'" : ' 1 > 0')
+            ->whereRaw($agencyCode ? 'agency_code = ' . $agencyCode : ' 1 > 0')
+            ->whereRaw($agencyName ? "agency_name like '%" . $agencyName . "%'" : ' 1 > 0')
+            ->whereRaw($nameSurname ? "name_surname like '%" . $nameSurname . "%'" : ' 1 > 0')
+            ->whereRaw($status ? "status = '" . $statusVal . "'" : ' 1 > 0')
+            ->whereRaw($regionalDirectorate ? 'regional_directorate_id = ' . $regionalDirectorate : ' 1 > 0')
+            ->whereRaw($transshipmentCenter ? 'tc_id = ' . $transshipmentCenter : ' 1 > 0');
 
         return DataTables::of($agencies)
             ->setRowClass(function ($agency) {
@@ -45,21 +68,26 @@ class AgencyController extends Controller
             ->setRowId(function ($agency) {
                 return 'agency-item-' . $agency->id;
             })
-//            ->addColumn('intro', 'Hi {{$name_surname}}')
+            ->editColumn('status', function ($key) {
+                return $key->status == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>';
+            })
             ->addColumn('regional_directorates', function ($agency) {
                 return $agency->regional_directorates != '' ? "$agency->regional_directorates  B.M." : "";
             })
             ->addColumn('tc_name', function ($agency) {
-                return $agency->tc_name != '' ? "$agency->tc_name  T.M." : "";
+                return $agency->tc_name != '' ? "$agency->tc_name  TRM." : "";
             })
             ->addColumn('edit', 'backend.agencies.column')
-            ->rawColumns(['edit'])
             ->editColumn('city', function ($agency) {
                 return $agency->city . '/' . $agency->district;
             })
             ->editColumn('created_at', function ($agency) {
                 return Carbon::parse($agency->created_at)->format('Y-m-d H:i:s');
             })
+            ->editColumn('agency_code', function ($agency) {
+                return '<b class="text-primary">' . $agency->agency_code . '</b>';
+            })
+            ->rawColumns(['status', 'edit', 'agency_code'])
             ->make(true);
     }
 
@@ -94,31 +122,13 @@ class AgencyController extends Controller
         $post_code = '0' . $neighborhood->post_code;
         // echo $city->city_name . ' => ' . $district->district_name . ' => ' . $neighborhood->neighborhood_name . ' => ' . $post_code;
 
-        $there_is_some_agency_code = DB::table('agencies')
-            ->where('agency_code', $post_code)
-            ->first();
-
-
-        if ($there_is_some_agency_code !== null) {
-
-            $post_code = substr($post_code, 1, 5);
-            $counter = 1;
-
-            while ($there_is_some_agency_code !== null) {
-                if (strlen($post_code) > 5) $post_code = substr($post_code, 0, 5);
-                $post_code = $post_code . $counter;
-                $there_is_some_agency_code = DB::table('agencies')->where('agency_code', $post_code)->first();
-                $counter++;
-            }
-        }
-//          echo '<br>' . $post_code;
 
         $insert = Agencies::create([
             'name_surname' => tr_strtoupper($request->name_surname),
             'phone' => $request->phone,
             'phone2' => $request->phone2,
             'transshipment_center_code' => $request->transshipment_center,
-            'agency_code' => $post_code,
+            'agency_code' => CreateAgencyCode(),
             'city' => tr_strtoupper($city->city_name),
             'district' => tr_strtoupper($district->district_name),
             'neighborhood' => tr_strtoupper($neighborhood->neighborhood_name),
@@ -137,7 +147,10 @@ class AgencyController extends Controller
     {
         $agency_id = $request->agency_id;
 
-        $data['agency'] = DB::select('CALL proc_agency_region_search(' . $agency_id . ')');
+        $data['agency'] = DB::table('view_agency_region')
+            ->where('id', $agency_id)
+            ->get();
+
         $data['employees'] = DB::table('view_user_role')
             ->where('agency_code', $agency_id)
             ->orderBy('display_name', 'asc')
