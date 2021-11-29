@@ -207,10 +207,11 @@
                         <th></th>
                         <th>Tutanak No</th>
                         <th>Tutanak Tipi</th>
-                        <th>Oluşturan</th>
+                        <th>Düzenleyen</th>
                         <th>Tutanak Tutulan Birim</th>
                         <th>Onay</th>
                         <th>Kayıt Tarihi</th>
+                        <th>Detay</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -221,10 +222,11 @@
                         <th></th>
                         <th>Tutanak No</th>
                         <th>Tutanak Tipi</th>
-                        <th>Oluşturan</th>
+                        <th>Düzenleyen</th>
                         <th>Tutanak Tutulan Birim</th>
                         <th>Onay</th>
                         <th>Kayıt Tarihi</th>
+                        <th>Detay</th>
                     </tr>
                     </tfoot>
                 </table>

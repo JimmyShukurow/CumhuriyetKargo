@@ -462,78 +462,69 @@ class OfficialReportController extends Controller
             }
         }
 
-
-        $cargoes = DB::table('cargoes')
-            ->join('users', 'users.id', '=', 'cargoes.creator_user_id')
-            ->join('agencies', 'agencies.id', '=', 'users.agency_code')
-            ->select(['cargoes.*', 'agencies.city as city_name', 'agencies.district as district_name', 'agencies.agency_name', 'users.name_surname as user_name_surname'])
-            ->whereRaw($cargoType ? "cargo_type='" . $cargoType . "'" : '1 > 0')
-            ->whereRaw($currentCity ? "sender_city='" . $currentCity . "'" : '1 > 0')
-            ->whereRaw($currentDistrict ? "sender_district='" . $currentDistrict . "'" : '1 > 0')
-            ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
-            ->whereRaw($receiverCurrentCode ? 'current_code=' . $receiverCurrentCode : '1 > 0')
-            ->whereRaw($trackingNo ? 'tracking_no=' . $trackingNo : '1 > 0')
-            ->whereRaw($invoiceNumber ? "invoice_number='" . $invoiceNumber . "'" : '1 > 0')
-            ->whereRaw($currentName ? "sender_name like '" . $currentName . "%'" : '1 > 0')
-            ->whereRaw($receiverCity ? "receiver_city='" . $receiverCity . "'" : '1 > 0')
-            ->whereRaw($receiverPhone ? "receiver_phone='" . $receiverPhone . "'" : '1 > 0')
-            ->whereRaw($currentPhone ? "sender_phone='" . $currentPhone . "'" : '1 > 0')
-            ->whereRaw($receiverDistrict ? "receiver_district='" . $receiverDistrict . "'" : '1 > 0')
-            ->whereRaw($receiverName ? "receiver_name like '%" . $receiverName . "%'" : '1 > 0')
-            ->whereRaw($filterByDAte == "true" ? "cargoes.created_at between '" . $startDate . "'  and '" . $finishDate . "'" : '1 > 0')
-            ->whereRaw('cargoes.deleted_at is null')
-            ->where('arrival_agency_code', Auth::user()->agency_code)
-            ->limit(100)
-            ->orderByDesc('created_at')
-            ->get();
+        $cargoes = DB::table('reports')
+            ->select(['reports.*', 'users.name_surname'])
+            ->selectRaw("	reports.*,
+                    users.name_surname,
+                IF
+                    (
+                        reports.real_reported_unit_type = 'Acente',
+                        CONCAT(( SELECT agency_name FROM agencies WHERE agencies.id = reports.reported_unit_id ), ' ŞUBE' ),
+                        CONCAT(( SELECT tc_name FROM transshipment_centers WHERE id = reports.reported_unit_id ), ' TRM' )
+                    ) AS reported_unit "
+            )
+            ->join('users', 'users.id', '=', 'reports.detecting_user_id');
 
         return datatables()->of($cargoes)
             ->editColumn('free', function () {
                 return '';
             })
-            ->setRowId(function ($cargoes) {
-                return "cargo-item-" . $cargoes->id;
+//            ->setRowId(function ($cargoes) {
+//                return "cargo-item-" . $cargoes->id;
+//            })
+//            ->editColumn('payment_type', function ($cargoes) {
+//                return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . $cargoes->payment_type . '</b>' : '<b class="text-dark">' . $cargoes->payment_type . '</b>';
+//            })
+//            ->editColumn('cargo_type', function ($cargoes) {
+//                return $cargoes->cargo_type == 'Koli' ? '<b class="text-primary">' . $cargoes->cargo_type . '</b>' : '<b class="text-success">' . $cargoes->cargo_type . '</b>';
+//            })
+//            ->editColumn('receiver_address', function ($cargoes) {
+//                return substr($cargoes->receiver_address, 0, 30);
+//            })
+//            ->editColumn('agency_name', function ($cargoes) {
+//                return $cargoes->agency_name;
+//            })
+//            ->editColumn('sender_name', function ($cargoes) {
+//                return substr($cargoes->sender_name, 0, 30);
+//            })
+//            ->editColumn('receiver_name', function ($cargoes) {
+//                return substr($cargoes->receiver_name, 0, 30);
+//            })
+            ->editColumn('confirm', function ($key) {
+                return $key->confirm == '1' ? '<b class="text-success">Onaylandı</b>' : '<b class="text-danger">Onay Bekliyor</b>';
             })
-            ->editColumn('payment_type', function ($cargoes) {
-                return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . $cargoes->payment_type . '</b>' : '<b class="text-dark">' . $cargoes->payment_type . '</b>';
+//            ->editColumn('total_price', function ($cargoes) {
+//                return '<b class="text-primary">' . $cargoes->total_price . '₺' . '</b>';
+//            })
+//            ->editColumn('collection_fee', function ($cargoes) {
+//                return '<b class="text-primary">' . $cargoes->collection_fee . '₺' . '</b>';
+//            })
+//            ->editColumn('status', function ($cargoes) {
+//                return '<b class="text-dark">' . $cargoes->status . '</b>';
+//            })
+            ->editColumn('type', function ($key) {
+                return $key->type == 'HTF' ? '<b class="text-primary">' . $key->type . '</b>' : '<b class="text-danger">' . $key->type . '</b>';
             })
-            ->editColumn('cargo_type', function ($cargoes) {
-                return $cargoes->cargo_type == 'Koli' ? '<b class="text-primary">' . $cargoes->cargo_type . '</b>' : '<b class="text-success">' . $cargoes->cargo_type . '</b>';
+            ->addColumn('detail', function ($key) {
+                return '<a href="javascript:void(0)" class="btn btn-sm btn-primary">Detay</a>';
             })
-            ->editColumn('receiver_address', function ($cargoes) {
-                return substr($cargoes->receiver_address, 0, 30);
-            })
-            ->editColumn('agency_name', function ($cargoes) {
-                return $cargoes->agency_name;
-            })
-            ->editColumn('sender_name', function ($cargoes) {
-                return substr($cargoes->sender_name, 0, 30);
-            })
-            ->editColumn('receiver_name', function ($cargoes) {
-                return substr($cargoes->receiver_name, 0, 30);
-            })
-            ->editColumn('collectible', function ($cargoes) {
-                return $cargoes->collectible == '1' ? '<b class="text-success">Evet</b>' : '<b class="text-danger">Hayır</b>';
-            })
-            ->editColumn('total_price', function ($cargoes) {
-                return '<b class="text-primary">' . $cargoes->total_price . '₺' . '</b>';
-            })
-            ->editColumn('collection_fee', function ($cargoes) {
-                return '<b class="text-primary">' . $cargoes->collection_fee . '₺' . '</b>';
-            })
-            ->editColumn('status', function ($cargoes) {
-                return '<b class="text-dark">' . $cargoes->status . '</b>';
-            })
-            ->editColumn('created_at', function ($cargoes) {
-                return '<b class="text-primary">' . $cargoes->created_at . '</b>';
-            })
-            ->editColumn('status_for_human', function ($cargoes) {
-                return '<b class="text-success">' . $cargoes->status_for_human . '</b>';
-            })
-            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
-            ->addColumn('tracking_no', 'backend.main_cargo.search_cargo.columns.tracking_no')
-            ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
-            ->rawColumns(['tracking_no', 'invoice_number', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+//            ->editColumn('status_for_human', function ($cargoes) {
+//                return '<b class="text-success">' . $cargoes->status_for_human . '</b>';
+//            })
+//            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
+//            ->addColumn('tracking_no', 'backend.main_cargo.search_cargo.columns.tracking_no')
+            ->addColumn('report_serial_no', 'backend.OfficialReports.columns.report_serial_no')
+            ->rawColumns(['confirm', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 

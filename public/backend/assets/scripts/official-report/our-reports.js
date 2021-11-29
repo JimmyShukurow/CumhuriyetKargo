@@ -103,12 +103,13 @@ $(document).ready(function () {
         },
         columns: [
             {data: 'free', name: 'free'},
-            {data: 'invoice_number', name: 'invoice_number'},
-            {data: 'tracking_no', name: 'tracking_no'},
-            {data: 'agency_name', name: 'agency_name'},
-            {data: 'sender_name', name: 'sender_name'},
-            {data: 'sender_city', name: 'sender_city'},
+            {data: 'report_serial_no', name: 'report_serial_no'},
+            {data: 'type', name: 'type'},
+            {data: 'name_surname', name: 'name_surname'},
+            {data: 'reported_unit', name: 'reported_unit'},
+            {data: 'confirm', name: 'confirm'},
             {data: 'created_at', name: 'created_at'},
+            {data: 'detail', name: 'detail'},
         ],
 
     });
