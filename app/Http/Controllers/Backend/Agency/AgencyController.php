@@ -11,11 +11,13 @@ use App\Models\Neighborhoods;
 use App\Models\RegioanalDirectorates;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
+use App\Notifications\GeneralNotify;
 use Facade\Ignition\Tabs\Tab;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\DataTables\AgenciesDataTable;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 
@@ -43,6 +45,10 @@ class AgencyController extends Controller
         $statusVal = $status == 'Aktif' ? '1' : '0';
         $regionalDirectorate = $request->regionalDirectorate != null ? $request->regionalDirectorate : false;
         $transshipmentCenter = $request->transshipmentCenter != null ? $request->transshipmentCenter : false;
+        $phone = $request->phone != null ? $request->phone : null;
+        $phone2 = $request->phone2 != null ? $request->phone2 : null;
+        $address = $request->address != null ? $request->address : null;
+        $maps_link = $request->maps_link != null ? $request->maps_link : null;
 
         if ($city)
             $realCity = Cities::find($city);
@@ -50,14 +56,30 @@ class AgencyController extends Controller
         if ($district)
             $realDistrict = Districts::find($district);
 
+        if ($address != null)
+            if ($address == 'Girildi')
+                $addressQuery = "adress <> 'ADRES BEKLİYOR'";
+            else
+                $addressQuery = "adress = 'ADRES BEKLİYOR'";
+
+        if ($maps_link != null)
+            if ($maps_link == 'Girildi')
+                $maps_linkQuery = "maps_link is not null";
+            else
+                $maps_linkQuery = "maps_link is null";
+
         $agencies = DB::table('view_agency_region')
             ->whereRaw($city ? "city='" . $realCity->city_name . "'" : ' 1 > 0')
             ->whereRaw($district ? "district='" . $realDistrict->district_name . "'" : ' 1 > 0')
+            ->whereRaw($phone ? "phone='" . $phone . "'" : ' 1 > 0')
+            ->whereRaw($phone2 ? "phone2='" . $phone2 . "'" : ' 1 > 0')
             ->whereRaw($agencyCode ? 'agency_code = ' . $agencyCode : ' 1 > 0')
             ->whereRaw($agencyName ? "agency_name like '%" . $agencyName . "%'" : ' 1 > 0')
             ->whereRaw($nameSurname ? "name_surname like '%" . $nameSurname . "%'" : ' 1 > 0')
             ->whereRaw($status ? "status = '" . $statusVal . "'" : ' 1 > 0')
             ->whereRaw($regionalDirectorate ? 'regional_directorate_id = ' . $regionalDirectorate : ' 1 > 0')
+            ->whereRaw($address ? $addressQuery : ' 1 > 0')
+            ->whereRaw($maps_link ? $maps_linkQuery : ' 1 > 0')
             ->whereRaw($transshipmentCenter ? 'tc_id = ' . $transshipmentCenter : ' 1 > 0');
 
         return DataTables::of($agencies)
@@ -76,7 +98,7 @@ class AgencyController extends Controller
             ->addColumn('tc_name', function ($agency) {
                 return $agency->tc_name != '' ? "$agency->tc_name  TRM." : "";
             })
-            ->addColumn('edit', 'backend.agencies.column')
+            ->addColumn('edit', 'backend.agencies.columns.details')
             ->editColumn('city', function ($agency) {
                 return $agency->city . '/' . $agency->district;
             })
@@ -86,7 +108,8 @@ class AgencyController extends Controller
             ->editColumn('agency_code', function ($agency) {
                 return '<b class="text-primary">' . $agency->agency_code . '</b>';
             })
-            ->rawColumns(['status', 'edit', 'agency_code'])
+            ->addColumn('maps_link', 'backend.agencies.columns.maps_link')
+            ->rawColumns(['status', 'edit', 'agency_code', 'maps_link'])
             ->make(true);
     }
 
@@ -133,6 +156,7 @@ class AgencyController extends Controller
             'neighborhood' => tr_strtoupper($neighborhood->neighborhood_name),
             'agency_name' => tr_strtoupper($request->agency_name),
             'agency_development_officer' => tr_strtoupper($request->agency_development_officer),
+            'maps_link' => $request->maps_link,
             'adress' => tr_strtoupper($request->adress)
         ]);
 
@@ -156,6 +180,58 @@ class AgencyController extends Controller
             ->get();
 
         return response()->json($data, 200);
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $rules = [
+            'status' => 'required|in:0,1',
+            'agency' => 'required|numeric'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => '-1',
+                'errors' => $validator->getMessageBag()->toArray()
+            ], 200);
+        }
+
+        $update = Agencies::find(intval($request->agency))
+            ->update([
+                'status' => $request->status,
+                'status_description' => $request->status == '1' ? '' : $request->status_description
+            ]);
+
+        if ($update) {
+
+            $statu = $request->status == '1' ? 'aktif' : 'pasif';
+            $user = Agencies::find($request->agency);
+            $properties = [
+                'Eylemi gerçekleştiren' => Auth::user()->name_surname,
+                'id\'si' => Auth::id(),
+                'İşlem Yapılan Acente' => $user->agency_name,
+                'Statü' => $statu,
+                'Statü Açıklama' => $request->status == '1' ? '' : $request->status_description
+            ];
+
+            $log = $user->agency_name . " İsimli kullanıcı " . $statu . ' hale getirildi';
+            activity()
+                ->performedOn($user)
+                ->inLog('User Enabled-Disabled')
+                ->withProperties($properties)
+                ->log($log);
+
+            User::find($request->user)
+                ->notify(new GeneralNotify('Hesabınız ' . $statu . ' hale getirildi.', '#'));
+
+            return response()->json(['status' => 1], 200);
+        } else
+            return response()->json([
+                'status' => 0,
+                'message' => "Bir hata oluştu, lütfen daha sonra tekrar deneyin!"
+            ], 200);
+
     }
 
     public function destroyAgency(Request $request)
@@ -234,6 +310,7 @@ class AgencyController extends Controller
                 'neighborhood' => tr_strtoupper($cityDistrictNeighborhood[0]->neighborhood_name),
                 'agency_name' => tr_strtoupper($request->agency_name),
                 'agency_development_officer' => tr_strtoupper($request->agency_development_officer),
+                'maps_link' => $request->maps_link,
                 'adress' => tr_strtoupper($request->adress)
             ]);
 

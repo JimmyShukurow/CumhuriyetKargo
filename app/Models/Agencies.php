@@ -22,6 +22,7 @@ class Agencies extends Model
         'phone2',
         'transshipment_center_code',
         'agency_development_officer',
+        'maps_link',
         'status',
         'agency_code',
         'maps_link'
@@ -38,6 +39,7 @@ class Agencies extends Model
         'phone2',
         'transshipment_center_code',
         'agency_development_officer',
+        'maps_link',
         'status',
         'agency_code',
         'maps_link'

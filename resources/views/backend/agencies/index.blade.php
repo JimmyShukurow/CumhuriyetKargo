@@ -121,6 +121,49 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group position-relative">
+                                <label for="filter_phone">Telefon:</label>
+                                <input name="phone" id="filter_phone"
+                                       data-inputmask="'mask': '(999) 999 99 99'"
+                                       placeholder="(___) ___ __ __" type="text" value=""
+                                       class="form-control form-control-sm input-mask-trigger" im-insert="true">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group position-relative">
+                                <label for="filter_phone2">Telefon 2:</label>
+                                <input name="phone" id="filter_phone2"
+                                       data-inputmask="'mask': '(999) 999 99 99'"
+                                       placeholder="(___) ___ __ __" type="text" value=""
+                                       class="form-control form-control-sm input-mask-trigger" im-insert="true">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group position-relative">
+                                <label for="filter_MapsLink">Maps Link:</label>
+                                <select id="filter_MapsLink" class="form-control form-control-sm">
+                                    <option value="">Seçiniz</option>
+                                    <option value="Girildi">Girildi</option>
+                                    <option value="Girilmedi">Girilmedi</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group position-relative">
+                                <label for="filter_address">Adres Biglsi:</label>
+                                <select id="filter_address" class="form-control form-control-sm">
+                                    <option value="">Seçiniz</option>
+                                    <option value="Girildi">Girildi</option>
+                                    <option value="Girilmedi">Girilmedi</option>
+                                </select>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="row text-center mt-3">
                         <div class="col-md-12 text-center">
@@ -143,8 +186,10 @@
                         <th>Bağ. Old. Aktarma</th>
                         <th>Acente Sahibi</th>
                         <th>Telefon</th>
+                        <th>Telefon 2</th>
                         <th>Şube Kodu</th>
                         <th>Statü</th>
+                        <th>Maps</th>
                         <th>Pers. Sayısı</th>
                         <th>Kayıt Tarihi</th>
                         <th width="10" class="text-center"></th>
@@ -184,7 +229,7 @@
                     ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
                 ],
                 order: [
-                    9, 'desc'
+                    11, 'desc'
                 ],
                 language: {
                     "sDecimal": ",",
@@ -226,7 +271,7 @@
                     {
                         extend: 'excelHtml5',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
                         },
                         title: "CK-Acenteler"
                     },
@@ -235,7 +280,11 @@
                         action: function (e, dt, node, config) {
                             dt.ajax.reload();
                         }
-                    }
+                    },
+                    {
+                        extend: 'colvis',
+                        text: 'Sütun Görünüm'
+                    },
                 ],
                 responsive: true,
                 processing: true,
@@ -251,6 +300,10 @@
                         d.agencyName = $('#filter_AgencyName').val();
                         d.nameSurname = $('#filter_NameSurname').val();
                         d.status = $('#filter_Status').val();
+                        d.phone = $('#filter_phone').val();
+                        d.phone2 = $('#filter_phone2').val();
+                        d.maps_link = $('#filter_MapsLink').val();
+                        d.address = $('#filter_address').val();
                     },
                     error: function (xhr, error, code) {
                         if (code == "Too Many Requests") {
@@ -266,8 +319,10 @@
                     {data: 'tc_name', name: 'tc_name'},
                     {data: 'name_surname', name: 'name_surname'},
                     {data: 'phone', name: 'phone'},
+                    {data: 'phone2', name: 'phone2'},
                     {data: 'agency_code', name: 'agency_code'},
                     {data: 'status', name: 'status'},
+                    {data: 'maps_link', name: 'maps_link'},
                     {data: 'employee_count', name: 'employee_count'},
                     {data: 'created_at', name: 'created_at'},
                     {data: 'edit', name: 'edit'},
@@ -294,6 +349,9 @@
             return datetime;
         }
 
+
+        var details_id = null;
+
         function agencyPost(agency_id) {
 
             $('#ModalModyAgencyDetail').block({
@@ -314,21 +372,27 @@
                 agency_id: agency_id
             }, function (response) {
 
+                details_id = response.agency[0].id;
+
                 $('#agencyName').html(response.agency[0].agency_name + " ŞUBE");
                 $('#thMainTitle').html(response.agency[0].agency_name + " ŞUBE");
                 $('#agencyCityDistrict').html(response.agency[0].city + "/" + response.agency[0].district);
 
+                $('td#cityDistrict').html(response.agency[0].city + "/" + response.agency[0].district);
+                $('td#neighborhood').html(response.agency[0].neighborhood);
+                $('td#adress').html(response.agency[0].adress);
+                $('td#phone').html(response.agency[0].phone);
+                $('td#phone2').html(response.agency[0].phone2);
+                $('td#transshipmentCenter').html(response.agency[0].tc_name + " TRM.");
+                $('td#regionalDirectorate').html(response.agency[0].regional_directorates != null ? response.agency[0].regional_directorates + " BÖLGE MÜDÜRLÜĞÜ" : '');
+                $('td#status').html(response.agency[0].status == '1' ? "Aktif" : "Pasif");
+                $('td#statusDescription').html(response.agency[0].status_description);
+                $('td#agencyDevelopmentOfficer').html(response.agency[0].agency_development_officer);
+                if (response.agency[0].maps_link != null)
+                    $('#agencyMapsLink').html('<a target="_blank" href="http://www.google.com/maps?q=' + response.agency[0].maps_link + '">' + response.agency[0].maps_link + '</a>')
+                else
+                    $('#agencyMapsLink').html('');
 
-                $('#cityDistrict').html(response.agency[0].city + "/" + response.agency[0].district);
-                $('#neighborhood').html(response.agency[0].neighborhood);
-                $('#adress').html(response.agency[0].adress);
-                $('#phone').html(response.agency[0].phone);
-                $('#phone2').html(response.agency[0].phone2);
-                $('#transshipmentCenter').html(response.agency[0].tc_name + " TRM.");
-                $('#regionalDirectorate').html(response.agency[0].regional_directorates != null ? response.agency[0].regional_directorates + " BÖLGE MÜDÜRLÜĞÜ" : '');
-                $('#status').html(response.agency.status == "1" ? "Aktif" : "Pasif");
-                $('#statusDescription').html(response.agency[0].status_description);
-                $('#agencyDevelopmentOfficer').html(response.agency[0].agency_development_officer);
                 $('#agencyCode').html(response.agency[0].agency_code);
                 $('#regDate').html(dateFormat(response.agency[0].created_at));
                 $('#updatedDate').html(dateFormat(response.agency[0].updated_at));
@@ -363,7 +427,7 @@
         }
 
         $('button.agency-detail').click(function () {
-            let agency_id = $(this).attr('agency_id');
+            agency_id = $(this).attr('agency_id');
             agencyPost(agency_id);
         });
 
@@ -371,6 +435,74 @@
             let agency_id = $(this).attr('agency_id');
             agencyPost(agency_id);
         });
+
+
+        $(document).on('click', '#btnDisableEnableAgency', function () {
+            // alert(detailsID);
+            $('#modalEnabledDisabled').modal();
+
+            $('#modalBodyEnabledDisabled.modalEnabledDisabled.modal-body').block({
+                message: $('<div class="loader mx-auto">\n' +
+                    '                            <div class="ball-pulse-sync">\n' +
+                    '                                <div class="bg-warning"></div>\n' +
+                    '                                <div class="bg-warning"></div>\n' +
+                    '                                <div class="bg-warning"></div>\n' +
+                    '                            </div>\n' +
+                    '                        </div>')
+            });
+            $('.blockUI.blockMsg.blockElement').css('width', '100%');
+            $('.blockUI.blockMsg.blockElement').css('border', '0px');
+            $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+
+            $.ajax('{{route('agency.Info')}}', {
+                method: 'POST',
+                data: {
+                    _token: token,
+                    agency_id: details_id
+                }
+            }).done(function (response) {
+
+
+                $('#enableDisable_agencyName').val("#" + response.agency[0].agency_code + "-" + response.agency[0].agency_name);
+
+                $('#accountStatus').val(response.agency[0].status);
+                $('#statusDesc').val(response.agency[0].status_description);
+
+                $('#modalBodyEnabledDisabled.modalEnabledDisabled.modal-body').unblock();
+            });
+        });
+
+        $(document).on('click', '#btnSaveStatus', function () {
+            ToastMessage('warning', 'İstek alındı, lütfen bekleyiniz.', 'Dikkat!');
+            $.ajax('/Users/ChangeStatus', {
+                method: 'POST',
+                data: {
+                    _token: token,
+                    agency: details_id,
+                    status: $('#accountStatus').val(),
+                    status_description: $('#statusDesc').val()
+                }
+            }).done(function (response) {
+                if (response.status == 1) {
+                    userInfo(detailsID);
+                    ToastMessage('success', 'Değişiklikler başarıyla kaydedildi.', 'İşlem Başarılı!');
+                    $('#modalEnabledDisabled').modal('toggle');
+                } else if (response.status == 0) {
+                    ToastMessage('error', response.description, 'Hata!');
+                } else if (response.status == -1) {
+                    response.errors.status.forEach(key =>
+                        ToastMessage('error', key, 'Hata!')
+                    );
+                }
+
+                return false;
+            }).error(function (jqXHR, response) {
+
+                ToastMessage('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!', 'Hata!');
+            });
+        });
+
 
     </script>
 @endsection
@@ -472,6 +604,10 @@
                                                     <td id="agencyDevelopmentOfficer">Zühra Orak</td>
                                                 </tr>
                                                 <tr>
+                                                    <td class="static">Maps Link (Koordinat):</td>
+                                                    <td id="agencyMapsLink"></td>
+                                                </tr>
+                                                <tr>
                                                     <td class="static">Şube Kodu</td>
                                                     <td id="agencyCode">021234</td>
                                                 </tr>
@@ -528,8 +664,8 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="p-1">
-                                    <button
-                                        class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
+                                    <button id="btnDisableEnableAgency"
+                                            class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
                                         <i
                                             class="lnr-construction text-danger opacity-7 btn-icon-wrapper mb-2">
                                         </i>
@@ -548,4 +684,56 @@
             </div>
         </div>
     </div>
+
+    {{-- Standart Modal - Enabled/Disabled User --}}
+    <div class="modal fade" id="modalEnabledDisabled" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Şubeyi Aktif Pasif Yap</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="modalBodyEnabledDisabled" class="modalEnabledDisabled modal-body ">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="enableDisable_agencyName">Şube Adı</label>
+                                <input id="enableDisable_agencyName" class="form-control" type="text" readonly
+                                       value="">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="accountStatus">Hesap Durumu</label>
+                                <select class="form-control" name="" id="accountStatus">
+                                    <option value="0">Pasif</option>
+                                    <option value="1">Aktif</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="statusDesc">Statü Açıklaması</label>
+                                <textarea name="" id="statusDesc" cols="30" rows="10" class="form-control"></textarea>
+                                <em class="text-danger">Şube hesabı pasif edilmesinden dolayı kargo kesim modülüne
+                                    erişemeyecektir ve açıklamada girdiğiniz text ile karşılaşacaktır.</em>
+                                <em class="text-success"> <br>
+                                    <b>Default Message: Şubeniz pasif edilmiştir, detaylı bilgi için sistem destek
+                                        ekibine ulaşın.</b>
+                                </em>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button id="btnSaveStatus" type="button" class="btn btn-primary">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection

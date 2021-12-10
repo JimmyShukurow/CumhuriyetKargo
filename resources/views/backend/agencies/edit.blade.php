@@ -201,6 +201,20 @@
 
                     </div>
 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group position-relative">
+                                <label for="maps_link">Harita Link (Koordinat):</label>
+                                <div class="input-group">
+                                    <div class="input-group-append"><span class="input-group-text">http://www.google.com/maps?q=</span>
+                                    </div>
+                                    <input type="text" value="{{$agency->maps_link}}" name="maps_link" id="maps_link"
+                                           class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-row">
                         <div class="col-md-12">
                             <div class="position-relative form-group">
