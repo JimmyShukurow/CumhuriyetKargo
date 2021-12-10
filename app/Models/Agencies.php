@@ -23,7 +23,8 @@ class Agencies extends Model
         'transshipment_center_code',
         'agency_development_officer',
         'status',
-        'agency_code'
+        'agency_code',
+        'maps_link'
     ];
 
     protected static $logAttributes = [
@@ -38,7 +39,8 @@ class Agencies extends Model
         'transshipment_center_code',
         'agency_development_officer',
         'status',
-        'agency_code'
+        'agency_code',
+        'maps_link'
     ];
 
     public function getDescriptionForEvent(string $eventName): string

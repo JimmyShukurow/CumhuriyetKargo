@@ -13,8 +13,7 @@
             <div class="page-title-wrapper">
                 <div class="page-title-heading">
                     <div class="page-title-icon">
-                        <i class="lnr-store icon-gradient bg-amy-crisp">
-                        </i>
+                        <i class="lnr-store icon-gradient bg-amy-crisp"></i>
                     </div>
                     <div> Acenteler
                         <div class="page-title-subheading">Bu modül üzerinden sistemdeki tüm acenteleri
@@ -176,6 +175,7 @@
             });
         });
 
+
         $(document).ready(function () {
             var oTable = $('.NikolasDataTable').DataTable({
                 pageLength: 10,
@@ -295,6 +295,20 @@
         }
 
         function agencyPost(agency_id) {
+
+            $('#ModalModyAgencyDetail').block({
+                message: $('<div class="loader mx-auto">\n' +
+                    '                            <div class="ball-pulse-sync">\n' +
+                    '                                <div class="bg-warning"></div>\n' +
+                    '                                <div class="bg-warning"></div>\n' +
+                    '                                <div class="bg-warning"></div>\n' +
+                    '                            </div>\n' +
+                    '                        </div>')
+            });
+            $('.blockUI.blockMsg.blockElement').css('width', '100%');
+            $('.blockUI.blockMsg.blockElement').css('border', '0px');
+            $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
             $.post('{{ route('agency.Info') }}', {
                 _token: token,
                 agency_id: agency_id
@@ -339,6 +353,10 @@
                         );
                     });
                 }
+            }).done(function () {
+                $('#ModalModyAgencyDetail').unblock();
+            }).always(function () {
+                $('#ModalModyAgencyDetail').unblock();
             });
 
             $('#ModalAgencyDetail').modal();
@@ -369,7 +387,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div style="max-height: 65vh; overflow-y: auto;" class="modal-body">
+                <div id="ModalModyAgencyDetail" style="max-height: 65vh; overflow-y: auto;" class="modal-body">
 
                     {{-- CARD START --}}
                     <div class="col-md-12">

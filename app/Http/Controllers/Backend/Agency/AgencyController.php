@@ -50,7 +50,6 @@ class AgencyController extends Controller
         if ($district)
             $realDistrict = Districts::find($district);
 
-
         $agencies = DB::table('view_agency_region')
             ->whereRaw($city ? "city='" . $realCity->city_name . "'" : ' 1 > 0')
             ->whereRaw($district ? "district='" . $realDistrict->district_name . "'" : ' 1 > 0')
@@ -224,36 +223,12 @@ class AgencyController extends Controller
                 ->with('error', 'Lütfen geçerli bir il ilçe ve mahalle seçin!');
         }
 
-        $post_code = '0' . $cityDistrictNeighborhood[0]->post_code;
-//        echo $city->city_name . ' => ' . $district->district_name . ' => ' . $neighborhood->neighborhood_name . ' => ' . $post_code;
-
-        $there_is_some_agency_code = DB::table('agencies')
-            ->where('agency_code', $post_code)
-            ->where('agency_code', '<>', $post_code)
-            ->first();
-
-        if ($there_is_some_agency_code !== null) {
-
-            $post_code = substr($post_code, 1, 5);
-            $counter = 1;
-
-            while ($there_is_some_agency_code !== null) {
-                if (strlen($post_code) > 5) $post_code = substr($post_code, 0, 5);
-                $post_code = $post_code . $counter;
-                $there_is_some_agency_code = DB::table('agencies')->where('agency_code', $post_code)->first();
-                $counter++;
-            }
-        }
-
-        //  echo '<br>' . $post_code;
-
         $insert = Agencies::find($id)
             ->update([
                 'name_surname' => tr_strtoupper($request->name_surname),
                 'phone' => $request->phone,
                 'phone2' => $request->phone2,
                 'transshipment_center_code' => $request->transshipment_center,
-                'agency_code' => $post_code,
                 'city' => tr_strtoupper($cityDistrictNeighborhood[0]->city_name),
                 'district' => tr_strtoupper($cityDistrictNeighborhood[0]->district_name),
                 'neighborhood' => tr_strtoupper($cityDistrictNeighborhood[0]->neighborhood_name),
@@ -267,6 +242,5 @@ class AgencyController extends Controller
         $request->flash();
         return back()->with('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin.');
     }
-
 
 }

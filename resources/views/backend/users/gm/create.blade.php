@@ -2,6 +2,10 @@
 
 @section('title', 'Yeni Kullanıcı Girişi (General Managment)')
 
+@push('css')
+    <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
+    <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
+@endpush
 
 @section('content')
 
@@ -117,21 +121,22 @@
                         <div class="col-md-6">
                             <div id="agency_block" class="position-relative form-group">
                                 <label for="agency" class="">Acente*</label>
-                                <select name="agency" id="agency" required class="form-control">
+                                <select name="agency" id="agency" required class="form-control select2">
                                     <option value="">Acente Seçiniz</option>
                                     @foreach($data['agencies'] as $agency)
                                         <option {{old('agency') == $agency->id ? 'selected' : ''}}
-                                                value="{{$agency->id}}">{{$agency->city . '/' . $agency->district. '/' . $agency->neighbourhood  .  ' - ' .$agency->agency_name}}</option>
+                                                value="{{$agency->id}}">{{$agency->city . '/' . $agency->district. '/' . $agency->neighbourhood  .  ' - ' .$agency->agency_name . ' ŞUBE'}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div style="display: none;" id="tc_block" class="position-relative form-group">
                                 <label for="agency" class="">Aktarma*</label>
-                                <select name="tc" id="tc" disabled required class="form-control">
+                                <select style="width: 100%;" name="tc" id="tc" disabled required
+                                        class="form-control select2">
                                     <option value="">Aktarma Seçiniz</option>
                                     @foreach($data['transshipment_centers'] as $tc)
                                         <option {{old('$tc') == $tc->id ? 'selected' : ''}}
-                                                value="{{$tc->id}}">{{$tc->city  .' - ' .$tc->tc_name . ' TRANSFER MERKEZİ'}}</option>
+                                                value="{{$tc->id}}">{{$tc->city  .' - ' .$tc->tc_name . ' TRM'}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -155,6 +160,8 @@
 
 @section('js')
     <script src="/backend/assets/scripts/backend-modules.js"></script>
+    <script src="/backend/assets/scripts/select2.js"></script>
+
 
     <script>
         $(document).ready(function () {
@@ -226,6 +233,14 @@
                 $('#tc').prop('disabled', false);
             }
         }
+
+
+        $(document).ready(function () {
+            $('.select2').select2({
+                language: "es",
+                placeholder: "Şube Adı Girin",
+            });
+        });
 
     </script>
 

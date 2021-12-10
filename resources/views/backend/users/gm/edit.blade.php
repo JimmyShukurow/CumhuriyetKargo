@@ -2,6 +2,12 @@
 
 @section('title', 'Kullanıcı Düzenle (General Managment)')
 
+@push('css')
+    <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
+    <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
+@endpush
+
+
 @section('content')
 
     <div class="app-main__inner">
@@ -117,7 +123,8 @@
                         <div class="col-md-6">
                             <div id="agency_block" class="position-relative form-group">
                                 <label for="agency" class="">Acente*</label>
-                                <select name="agency" id="agency" required class="form-control">
+                                <select style="width: 100%;" name="agency" id="agency" required
+                                        class="form-control select2">
                                     <option value="">Acente Seçiniz</option>
                                     @foreach($data['agencies'] as $agency)
                                         <option {{$user->agency_code == $agency->id ? 'selected' : ''}}
@@ -127,7 +134,8 @@
                             </div>
                             <div style="display: none;" id="tc_block" class="position-relative form-group">
                                 <label for="agency" class="">Aktarma*</label>
-                                <select name="tc" id="tc" disabled required class="form-control">
+                                <select style="width: 100%;" name="tc" id="tc" disabled required
+                                        class="form-control select2">
                                     <option value="">Aktarma Seçiniz</option>
                                     @foreach($data['transshipment_centers'] as $tc)
                                         <option {{$user->tc_code == $tc->id ? 'selected' : ''}}
@@ -225,6 +233,13 @@
         }
 
         change();
+
+        $(document).ready(function () {
+            $('.select2').select2({
+                language: "es",
+                placeholder: "Şube Adı Girin",
+            });
+        });
     </script>
 
 
