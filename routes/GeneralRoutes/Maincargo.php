@@ -4,8 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\MainCargo\MainCargoController;
 
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
-    Route::group(['prefix' => 'MainCargo', 'as' => 'mainCargo.'], function () {
-        Route::get('NewCargo', [MainCargoController::class, 'newCargo'])->name('newCargo');
+    Route::group(['prefix' => 'MainCargo', 'as' => 'mainCargo.', 'middleware' => ['MainCargoMid']], function () {
+
+
+        Route::get('NewCargo', [MainCargoController::class, 'newCargo'])->name('newCargo')
+        ->middleware('PermissionOfCreateCargo');
+
+
         Route::get('', [MainCargoController::class, 'index'])->name('index');
         Route::get('GetCargoes', [MainCargoController::class, 'getMainCargoes'])->name('getCargoes')
             ->middleware('throttle:20,1');

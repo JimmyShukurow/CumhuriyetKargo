@@ -24,6 +24,9 @@ class Agencies extends Model
         'agency_development_officer',
         'maps_link',
         'status',
+        'ip_address',
+        'permission_of_create_cargo',
+        'status_description',
         'agency_code',
         'maps_link'
     ];
@@ -40,7 +43,10 @@ class Agencies extends Model
         'transshipment_center_code',
         'agency_development_officer',
         'maps_link',
+        'ip_address',
+        'permission_of_create_cargo',
         'status',
+        'status_description',
         'agency_code',
         'maps_link'
     ];

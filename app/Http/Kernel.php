@@ -11,6 +11,7 @@ use App\Http\Middleware\MidsOfCont\AgenciesMid;
 use App\Http\Middleware\MidsOfCont\DepartmentsMid;
 use App\Http\Middleware\MidsOfCont\GeneralServicesFeeMid;
 use App\Http\Middleware\MidsOfCont\LocalLocationMid;
+use App\Http\Middleware\MidsOfCont\MainCargoMid;
 use App\Http\Middleware\MidsOfCont\ModulesMid;
 use App\Http\Middleware\MidsOfCont\RegionalDirectoratesMid;
 use App\Http\Middleware\MidsOfCont\SenderCurrentsMid;
@@ -21,6 +22,7 @@ use App\Http\Middleware\MidsOfCont\Users\GmUsersMid;
 use App\Http\Middleware\MidsOfCont\Users\TCUserMid;
 use App\Http\Middleware\MidsOfCont\VariousCarsMid;
 use App\Http\Middleware\Operation;
+use App\Http\Middleware\PermissionOfCreateCargo;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\CheckStatus;
 use App\Http\Middleware\MidsOfCont\AdminSystemSupportMid;
@@ -91,6 +93,7 @@ class Kernel extends HttpKernel
         'CheckLogin' => CheckLogin::class,
         'CheckAuth' => CheckAuth::class,
         'CheckStatus' => CheckStatus::class,
+        'PermissionOfCreateCargo' => PermissionOfCreateCargo::class,
 
         #Middlewares of Controllers
         'AgenciesMid' => AgenciesMid::class,
@@ -109,7 +112,7 @@ class Kernel extends HttpKernel
         'GeneralServicesFeeMid' => GeneralServicesFeeMid::class,
         'SenderCurrentsMid' => SenderCurrentsMid::class,
         'ItAndNotificationMidX' => ItAndNotificationMidX::class,
-
+        'MainCargoMid' => MainCargoMid::class,
 
     ];
 }

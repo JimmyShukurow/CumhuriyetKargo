@@ -23,6 +23,7 @@ class Agencies extends Model
         'transshipment_center_code',
         'agency_development_officer',
         'status',
+        'status_description',
         'agency_code'
     ];
 
@@ -38,6 +39,7 @@ class Agencies extends Model
         'transshipment_center_code',
         'agency_development_officer',
         'status',
+        'status_description',
         'agency_code'
     ];
 

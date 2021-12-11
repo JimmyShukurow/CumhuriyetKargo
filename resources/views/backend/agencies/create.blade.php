@@ -187,7 +187,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group position-relative">
                                 <label for="maps_link">Harita Link (Koordinat):</label>
                                 <div class="input-group">
@@ -196,6 +196,16 @@
                                     <input type="text" value="" name="maps_link" id="maps_link"
                                            class="form-control">
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group position-relative">
+                                <label for="ip_address">IP Adresi:</label>
+                                <input name="ip_address" class="form-control font-weight-bold input-mask-trigger"
+                                       value="" id="ip"
+                                       data-inputmask="'alias': 'ip'"
+                                       im-insert="true">
                             </div>
                         </div>
                     </div>

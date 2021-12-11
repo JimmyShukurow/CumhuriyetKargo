@@ -202,7 +202,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-lg-6 col-md-12 col-sm-12">
                             <div class="form-group position-relative">
                                 <label for="maps_link">Harita Link (Koordinat):</label>
                                 <div class="input-group">
@@ -213,6 +213,17 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-lg-6 col-md-12 col-sm-12">
+                            <div class="form-group position-relative">
+                                <label for="ip_address">IP Adresi:</label>
+                                <input name="ip_address" class="form-control font-weight-bold input-mask-trigger"
+                                       value="{{$agency->ip_address}}" id="ip"
+                                       data-inputmask="'alias': 'ip'"
+                                       im-insert="true">
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="form-row">

@@ -49,6 +49,9 @@ class AgencyController extends Controller
         $phone2 = $request->phone2 != null ? $request->phone2 : null;
         $address = $request->address != null ? $request->address : null;
         $maps_link = $request->maps_link != null ? $request->maps_link : null;
+        $ip_address = $request->ip_address != null ? $request->ip_address : null;
+        $ip_address_info = $request->ip_address_info != null ? $request->ip_address_info : null;
+        $permission_of_create_cargo = $request->permission_of_create_cargo != null ? $request->permission_of_create_cargo : null;
 
         if ($city)
             $realCity = Cities::find($city);
@@ -68,6 +71,12 @@ class AgencyController extends Controller
             else
                 $maps_linkQuery = "maps_link is null";
 
+        if ($ip_address_info != null)
+            if ($ip_address_info == 'Girildi')
+                $ip_address_infoQuery = "ip_address is not null";
+            else
+                $ip_address_infoQuery = "ip_address is null";
+
         $agencies = DB::table('view_agency_region')
             ->whereRaw($city ? "city='" . $realCity->city_name . "'" : ' 1 > 0')
             ->whereRaw($district ? "district='" . $realDistrict->district_name . "'" : ' 1 > 0')
@@ -77,9 +86,11 @@ class AgencyController extends Controller
             ->whereRaw($agencyName ? "agency_name like '%" . $agencyName . "%'" : ' 1 > 0')
             ->whereRaw($nameSurname ? "name_surname like '%" . $nameSurname . "%'" : ' 1 > 0')
             ->whereRaw($status ? "status = '" . $statusVal . "'" : ' 1 > 0')
+            ->whereRaw($ip_address ? "ip_address = '" . $ip_address . "'" : ' 1 > 0')
             ->whereRaw($regionalDirectorate ? 'regional_directorate_id = ' . $regionalDirectorate : ' 1 > 0')
             ->whereRaw($address ? $addressQuery : ' 1 > 0')
             ->whereRaw($maps_link ? $maps_linkQuery : ' 1 > 0')
+            ->whereRaw($ip_address_info ? $ip_address_infoQuery : ' 1 > 0')
             ->whereRaw($transshipmentCenter ? 'tc_id = ' . $transshipmentCenter : ' 1 > 0');
 
         return DataTables::of($agencies)
@@ -91,6 +102,9 @@ class AgencyController extends Controller
             })
             ->editColumn('status', function ($key) {
                 return $key->status == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>';
+            })
+            ->editColumn('permission_of_create_cargo', function ($key) {
+                return $key->permission_of_create_cargo == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>';
             })
             ->addColumn('regional_directorates', function ($agency) {
                 return $agency->regional_directorates != '' ? "$agency->regional_directorates  B.M." : "";
@@ -109,7 +123,7 @@ class AgencyController extends Controller
                 return '<b class="text-primary">' . $agency->agency_code . '</b>';
             })
             ->addColumn('maps_link', 'backend.agencies.columns.maps_link')
-            ->rawColumns(['status', 'edit', 'agency_code', 'maps_link'])
+            ->rawColumns(['status', 'edit', 'agency_code', 'maps_link', 'permission_of_create_cargo'])
             ->make(true);
     }
 
@@ -157,6 +171,7 @@ class AgencyController extends Controller
             'agency_name' => tr_strtoupper($request->agency_name),
             'agency_development_officer' => tr_strtoupper($request->agency_development_officer),
             'maps_link' => $request->maps_link,
+            'ip_address' => $request->ip_address,
             'adress' => tr_strtoupper($request->adress)
         ]);
 
@@ -184,8 +199,10 @@ class AgencyController extends Controller
 
     public function changeStatus(Request $request)
     {
+
         $rules = [
             'status' => 'required|in:0,1',
+            'permission_of_create_cargo' => 'required|in:0,1',
             'agency' => 'required|numeric'
         ];
         $validator = Validator::make($request->all(), $rules);
@@ -197,10 +214,11 @@ class AgencyController extends Controller
             ], 200);
         }
 
-        $update = Agencies::find(intval($request->agency))
+        $update = Agencies::find($request->agency)
             ->update([
                 'status' => $request->status,
-                'status_description' => $request->status == '1' ? '' : $request->status_description
+                'permission_of_create_cargo' => $request->permission_of_create_cargo,
+                'status_description' => $request->status == 1 ? '' : $request->status_description
             ]);
 
         if ($update) {
@@ -218,12 +236,12 @@ class AgencyController extends Controller
             $log = $user->agency_name . " İsimli kullanıcı " . $statu . ' hale getirildi';
             activity()
                 ->performedOn($user)
-                ->inLog('User Enabled-Disabled')
+                ->inLog('Agency Enabled-Disabled')
                 ->withProperties($properties)
                 ->log($log);
 
-            User::find($request->user)
-                ->notify(new GeneralNotify('Hesabınız ' . $statu . ' hale getirildi.', '#'));
+//            User::find($request->user)
+//                ->notify(new GeneralNotify('Hesabınız ' . $statu . ' hale getirildi.', '#'));
 
             return response()->json(['status' => 1], 200);
         } else
@@ -311,6 +329,7 @@ class AgencyController extends Controller
                 'agency_name' => tr_strtoupper($request->agency_name),
                 'agency_development_officer' => tr_strtoupper($request->agency_development_officer),
                 'maps_link' => $request->maps_link,
+                'ip_address' => $request->ip_address,
                 'adress' => tr_strtoupper($request->adress)
             ]);
 

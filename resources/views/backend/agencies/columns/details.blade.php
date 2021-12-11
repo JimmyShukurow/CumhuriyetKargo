@@ -1,9 +1,8 @@
 <div class="text-center">
     <div class="dropdown d-inline-block">
-        <button style="width: 90px !important;" type="button" aria-haspopup="true" aria-expanded="false"
+        <button style="padding-top: 7px;padding-bottom: 7px" type="button" aria-haspopup="true" aria-expanded="false"
                 data-toggle="dropdown"
-                class="mb-2 mr-2 btn btn-sm btn-primary sonOfBitcj">İşlemler <i
-                class="icon ion-android-arrow-dropdown"></i>
+                class="mb-2 mr-2 btn btn-xs btn-primary sonOfBitcj">İşlem
         </button>
         <div
             style="min-width: 1rem; max-width: 140px !important; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 29px, 0px);"

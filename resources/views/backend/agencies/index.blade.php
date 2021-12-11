@@ -164,6 +164,40 @@
                             </div>
                         </div>
 
+                        <div class="col-md-3">
+                            <div class="form-group position-relative">
+                                <label for="filter_IpAddress">IP Adresi:</label>
+                                <input id="filter_IpAddress"
+                                       class="form-control form-control-sm font-weight-bold input-mask-trigger"
+                                       value="" id="ip"
+                                       data-inputmask="'alias': 'ip'"
+                                       im-insert="true">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group position-relative">
+                                <label for="filter_IPAddressInfo">IP Adresi Biglsi:</label>
+                                <select id="filter_IPAddressInfo" class="form-control form-control-sm">
+                                    <option value="">Seçiniz</option>
+                                    <option value="Girildi">Girildi</option>
+                                    <option value="Girilmedi">Girilmedi</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group position-relative">
+                                <label for="filter_PermissionOfCreateCargo">Kargo Kesim İzini:</label>
+                                <select id="filter_PermissionOfCreateCargo" class="form-control form-control-sm">
+                                    <option value="">Seçiniz</option>
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Pasif">Pasif</option>
+                                </select>
+                            </div>
+                        </div>
+
+
                     </div>
                     <div class="row text-center mt-3">
                         <div class="col-md-12 text-center">
@@ -189,6 +223,7 @@
                         <th>Telefon 2</th>
                         <th>Şube Kodu</th>
                         <th>Statü</th>
+                        <th>Kargo Kesim</th>
                         <th>Maps</th>
                         <th>Pers. Sayısı</th>
                         <th>Kayıt Tarihi</th>
@@ -220,16 +255,16 @@
             });
         });
 
-
+        var oTable;
         $(document).ready(function () {
-            var oTable = $('.NikolasDataTable').DataTable({
+            oTable = $('.NikolasDataTable').DataTable({
                 pageLength: 10,
                 lengthMenu: [
                     [10, 25, 50, 100, 250, 500, -1],
                     ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
                 ],
                 order: [
-                    11, 'desc'
+                    12, 'desc'
                 ],
                 language: {
                     "sDecimal": ",",
@@ -271,9 +306,9 @@
                     {
                         extend: 'excelHtml5',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
                         },
-                        title: "CK-Acenteler"
+                        title: "CKGSis-Acenteler"
                     },
                     {
                         text: 'Yenile',
@@ -304,6 +339,10 @@
                         d.phone2 = $('#filter_phone2').val();
                         d.maps_link = $('#filter_MapsLink').val();
                         d.address = $('#filter_address').val();
+                        d.ip_address = $('#filter_IpAddress').val();
+                        d.ip_address_info = $('#filter_IPAddressInfo').val();
+                        d.permission_of_create_cargo = $('#filter_PermissionOfCreateCargo').val();
+
                     },
                     error: function (xhr, error, code) {
                         if (code == "Too Many Requests") {
@@ -322,6 +361,7 @@
                     {data: 'phone2', name: 'phone2'},
                     {data: 'agency_code', name: 'agency_code'},
                     {data: 'status', name: 'status'},
+                    {data: 'permission_of_create_cargo', name: 'permission_of_create_cargo'},
                     {data: 'maps_link', name: 'maps_link'},
                     {data: 'employee_count', name: 'employee_count'},
                     {data: 'created_at', name: 'created_at'},
@@ -367,6 +407,7 @@
             $('.blockUI.blockMsg.blockElement').css('border', '0px');
             $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
+
             $.post('{{ route('agency.Info') }}', {
                 _token: token,
                 agency_id: agency_id
@@ -385,13 +426,21 @@
                 $('td#phone2').html(response.agency[0].phone2);
                 $('td#transshipmentCenter').html(response.agency[0].tc_name + " TRM.");
                 $('td#regionalDirectorate').html(response.agency[0].regional_directorates != null ? response.agency[0].regional_directorates + " BÖLGE MÜDÜRLÜĞÜ" : '');
-                $('td#status').html(response.agency[0].status == '1' ? "Aktif" : "Pasif");
+                $('td#status').html(response.agency[0].status == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>');
                 $('td#statusDescription').html(response.agency[0].status_description);
                 $('td#agencyDevelopmentOfficer').html(response.agency[0].agency_development_officer);
                 if (response.agency[0].maps_link != null)
                     $('#agencyMapsLink').html('<a target="_blank" href="http://www.google.com/maps?q=' + response.agency[0].maps_link + '">' + response.agency[0].maps_link + '</a>')
                 else
                     $('#agencyMapsLink').html('');
+
+                $('td#agencyPermissionOfCreateCargo').html(response.agency[0].permission_of_create_cargo == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>');
+
+
+                $('td#agencyIpAddress').html(response.agency[0].ip_address);
+
+                $('#linkOfEditAgency').attr('onclick', "window.open('/Agencies/EditAgency/" + details_id + "','popup','width=800,height=750'); return false;");
+
 
                 $('#agencyCode').html(response.agency[0].agency_code);
                 $('#regDate').html(dateFormat(response.agency[0].created_at));
@@ -467,6 +516,7 @@
                 $('#enableDisable_agencyName').val("#" + response.agency[0].agency_code + "-" + response.agency[0].agency_name);
 
                 $('#accountStatus').val(response.agency[0].status);
+                $('#accountPermissionOfCreateCargo').val(response.agency[0].permission_of_create_cargo);
                 $('#statusDesc').val(response.agency[0].status_description);
 
                 $('#modalBodyEnabledDisabled.modalEnabledDisabled.modal-body').unblock();
@@ -475,18 +525,20 @@
 
         $(document).on('click', '#btnSaveStatus', function () {
             ToastMessage('warning', 'İstek alındı, lütfen bekleyiniz.', 'Dikkat!');
-            $.ajax('/Users/ChangeStatus', {
+            $.ajax('{{route('agency.ChangeStatus')}}', {
                 method: 'POST',
                 data: {
                     _token: token,
                     agency: details_id,
                     status: $('#accountStatus').val(),
-                    status_description: $('#statusDesc').val()
+                    permission_of_create_cargo: $('#accountPermissionOfCreateCargo').val(),
+                    status_description: $('textarea#statusDesc').val()
                 }
             }).done(function (response) {
                 if (response.status == 1) {
-                    userInfo(detailsID);
+                    agencyPost(details_id);
                     ToastMessage('success', 'Değişiklikler başarıyla kaydedildi.', 'İşlem Başarılı!');
+                    oTable.draw();
                     $('#modalEnabledDisabled').modal('toggle');
                 } else if (response.status == 0) {
                     ToastMessage('error', response.description, 'Hata!');
@@ -501,6 +553,10 @@
 
                 ToastMessage('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!', 'Hata!');
             });
+        });
+
+        $(document).on('click', '#BtnRefreshAgencyDetail', function () {
+            agencyPost(details_id);
         });
 
 
@@ -519,7 +575,58 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div id="ModalModyAgencyDetail" style="max-height: 65vh; overflow-y: auto;" class="modal-body">
+                <div id="ModalModyAgencyDetail" style="max-height: 65vh; overflow-y: auto; overflow-x: hidden;"
+                     class="modal-body">
+
+                    <li class="p-0 mb-3 list-group-item">
+                        <div class="grid-menu grid-menu-2col">
+                            <div class="no-gutters row">
+                                <div class="col-sm-3">
+                                    <div class="p-1">
+                                        <a id="linkOfEditAgency" target="popup" style="cursor: pointer;" onclick="">
+                                            <button
+                                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-info">
+                                                <i class="lnr-pencil text-info opacity-7 btn-icon-wrapper mb-2"></i>
+                                                Düzenle
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="p-1">
+                                        <button id="BtnRefreshAgencyDetail"
+                                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success">
+                                            <i class="lnr-redo text-success opacity-7 btn-icon-wrapper mb-2"></i>
+                                            Yenile
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="p-1">
+                                        <button
+                                            class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
+                                            <i class="lnr-lighter text-dark opacity-7 btn-icon-wrapper mb-2">
+                                            </i>
+                                            Kargo Geçmişine Git
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="p-1">
+                                        <button id="btnDisableEnableAgency"
+                                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
+                                            <i
+                                                class="lnr-construction text-danger opacity-7 btn-icon-wrapper mb-2">
+                                            </i>
+                                            Acenteyi Kapat
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </li>
+
 
                     {{-- CARD START --}}
                     <div class="col-md-12">
@@ -608,6 +715,15 @@
                                                     <td id="agencyMapsLink"></td>
                                                 </tr>
                                                 <tr>
+                                                    <td class="static">IP Adres:</td>
+                                                    <td class="font-weight-bold" id="agencyIpAddress"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Kargo Kesim İzni:</td>
+                                                    <td class="font-weight-bold"
+                                                        id="agencyPermissionOfCreateCargo"></td>
+                                                </tr>
+                                                <tr>
                                                     <td class="static">Şube Kodu</td>
                                                     <td id="agencyCode">021234</td>
                                                 </tr>
@@ -649,34 +765,6 @@
                     </div>
                     {{-- CARD END --}}
                 </div>
-                <li class="p-0 list-group-item">
-                    <div class="grid-menu grid-menu-2col">
-                        <div class="no-gutters row">
-                            <div class="col-sm-6">
-                                <div class="p-1">
-                                    <button
-                                        class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
-                                        <i class="lnr-lighter text-dark opacity-7 btn-icon-wrapper mb-2">
-                                        </i>
-                                        Kargo Geçmişine Git
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="p-1">
-                                    <button id="btnDisableEnableAgency"
-                                            class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
-                                        <i
-                                            class="lnr-construction text-danger opacity-7 btn-icon-wrapper mb-2">
-                                        </i>
-                                        Acenteyi Kapat
-                                    </button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </li>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
@@ -707,8 +795,17 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="accountStatus">Hesap Durumu</label>
+                                <label for="accountStatus">Şube Durumu</label>
                                 <select class="form-control" name="" id="accountStatus">
+                                    <option value="0">Pasif</option>
+                                    <option value="1">Aktif</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="accountPermissionOfCreateCargo">Kargo Kesim İzni:</label>
+                                <select class="form-control" name="" id="accountPermissionOfCreateCargo">
                                     <option value="0">Pasif</option>
                                     <option value="1">Aktif</option>
                                 </select>

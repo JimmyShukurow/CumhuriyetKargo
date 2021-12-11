@@ -1,4 +1,4 @@
-<?php 
+<?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Agency\AgencyController;
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
@@ -12,5 +12,6 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('DestroyAgency', [AgencyController::class, 'destroyAgency'])->name('DestroyAgency');
         ### ==> Ajax Info <== ###
         Route::post('Info', [AgencyController::class, 'agencyInfo'])->name('Info');
+        Route::post('ChangeStatus', [AgencyController::class, 'changeStatus'])->name('ChangeStatus');
     });
 });
