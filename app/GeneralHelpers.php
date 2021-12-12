@@ -254,13 +254,27 @@ function SendSMS($text, $number, $subject = 'UNKNOWN', $heading = 'CUMHURIYETK',
         return false;
 }
 
-function SendSMS2($text, $number)
+function SendSMS2($text, $number, $subject = 'UNKNOWN', $heading = 'CUMHURIYETK', $ctn = '')
 {
     $text = str_replace(" ", "%20", $text);
     $string = "http://panel.ankaratoplusms.com/api/sendsms?kulladi=cumhuriyetkargo&sifre=Cumhuriyet1416&mesaj=" . $text . "&baslik=CUMHURIYETK&alicilar=$number";
     $fgc = file_get_contents($string);
-
     $xmlArrayAlici = simplexml_load_string($fgc);
+
+    $insert = SentSms::create([
+        'company' => 'KAYSERİ TOPLU SMS',
+        'heading' => $heading,
+        'subject' => tr_strtoupper($subject),
+        'sms_content' => $text,
+        'phone' => $number,
+        'length' => strlen($text),
+        'quantity' => intval((strlen($text) / 155)) + 1,
+        'causer_user_id' => Auth::id(),
+        'ip_address' => request()->ip(),
+        'ctn' => $ctn,
+        'result' => $xmlArrayAlici->status == 'OK' ? '1' : '0',
+    ]);
+
     if ($xmlArrayAlici->status == "OK") {
         return true;
     } else {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Agencies;
 use App\Models\Motivation_Lyrics;
 use App\Models\SecurityCodes;
 use App\Models\SmsContent;
@@ -45,16 +46,86 @@ class DefaultController extends Controller
 
         if (Auth::attempt($credentials, $remember_me)) {
 
+            $user = Auth::user();
+
+            if ($user->user_type == 'Acente X') {
+
+                $agency = Agencies::find($user->agency_code);
+                if ($agency->ip_address != $request->ip()) {
+
+                    Auth::logout();
+
+                    $user = User::find($user->id);
+
+                    $code_exist_control = DB::select("SELECT *, TIMESTAMPDIFF(SECOND,created_at,NOW()) as second_diff
+                    FROM security_codes WHERE user_id=" . $user->id . " and security_codes.status = '0' and TIMESTAMPDIFF(SECOND,created_at,NOW()) < 300 and reason='Login Code'");
+
+                    if ($code_exist_control == null) {
+
+                        # too many try control < 5
+                        $TryQuantity = DB::select("SELECT count(*) as quantity FROM security_codes
+                        where TIMESTAMPDIFF(HOUR,created_at,NOW()) < 24 and reason = 'Login Code' and user_id =" . $user->id);
+
+                        if ($TryQuantity[0]->quantity >= 20)
+                            return redirect(route('Login'))
+                                ->with('error', 'Yabancı IP Adresi üzerinden çok fazla deneme yaptınız. Lütfen sisteme kayıtlı IP adresiniz üzerinden giriş yapın veya bir süre sonra tekrar deneyin! Bunun bir hata olduğunu düşünüyorsanız lütfen sistem destek ekibine ulaşın.');
+
+                        $code = CreateSecurityCode();
+                        $smsContent = SmsContent::where('key', 'login_security_code')->first();
+                        $sms = str_replace(['[name_surname]', '[code]'], [$user->name_surname, $code], $smsContent->content);
+
+                        SendSMS($sms, CharacterCleaner($user->phone), 'Şifre Sıfırlama', 'CUMHURIYETK', $ctn = '');
+
+                        $insert = SecurityCodes::create([
+                            'user_id' => $user->id,
+                            'code' => $code,
+                            'reason' => 'Login Code'
+                        ]);
+
+                        $code_exist_control = DB::select("SELECT *, TIMESTAMPDIFF(SECOND,created_at,NOW()) as second_diff
+                        FROM security_codes WHERE user_id=" . $user->id . " and security_codes.status = '0' and TIMESTAMPDIFF(SECOND,created_at,NOW()) < 300 and reason='Login Code'");
+
+
+                        $diffSeconds = 300 - $code_exist_control[0]->second_diff;
+                        $dateHumens['minute'] = '0' . intval($diffSeconds / 60);
+                        $dateHumens['seconds'] = $diffSeconds % 60;
+                        $dateHumens['seconds'] = $dateHumens['seconds'] < 10 ? '0' . $dateHumens['seconds'] : $dateHumens['seconds'];
+
+                        $userAllInfo = DB::table('view_users_all_info')
+                            ->where('id', $user->id)
+                            ->first();
+
+                        return view('backend.default.login-code', compact(['diffSeconds', 'user', 'userAllInfo', 'dateHumens']));
+
+                    } else {
+
+                        $diffSeconds = 300 - $code_exist_control[0]->second_diff;
+                        $dateHumens['minute'] = '0' . intval($diffSeconds / 60);
+                        $dateHumens['seconds'] = $diffSeconds % 60;
+                        $dateHumens['seconds'] = $dateHumens['seconds'] < 10 ? '0' . $dateHumens['seconds'] : $dateHumens['seconds'];
+
+                        $userAllInfo = DB::table('view_users_all_info')
+                            ->where('id', $user->id)
+                            ->first();
+
+                        return view('backend.default.login-code', compact(['diffSeconds', 'user', 'userAllInfo', 'dateHumens']));
+                    }
+
+                }
+
+            }
+
             $user = User::find(Auth::id());
-            $route = getUserFirstPage();
             $properties = ['Login IP' => request()->ip()];
+
             activity()
                 ->withProperties($properties)
                 ->performedOn($user)
                 ->inLog('Login')
                 ->log('Sisteme giriş yapıldı!');
 
-            return redirect()->intended(route($route))->with('success', 'Hoşgeldin ' . Auth::user()->name_surname);
+            return redirect()->intended(route(getUserFirstPage()))->with('success', 'Hoşgeldin ' . Auth::user()->name_surname);
+
         } else {
             return back()->with('error', 'E-Mail veya Şifre Hatalı!');
         }
@@ -158,6 +229,63 @@ class DefaultController extends Controller
         }
 
     }
+
+    public function confirmLoginSecurityCode(Request $request)
+    {
+
+        $user_id = Decrypte4x($request->token);
+        $code = $request->code;
+
+        $code = SecurityCodes::where('code', $code)
+            ->where('user_id', $user_id)
+            ->where('status', '0')
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if ($code === null)
+            return response()
+                ->json([
+                    'status' => 0,
+                    'message' => 'Güvenlik kodu hatalı!'
+                ]);
+
+        $date = Carbon::parse($code->created_at);
+        $now = Carbon::now();
+        $diffSeconds = 300 - $date->diffInSeconds($now);
+
+        if ($diffSeconds <= 0)
+            return response()
+                ->json([
+                    'status' => 0,
+                    'message' => 'Bu kod zaman aşımına uğramış, lütfen cep numaranıza son gönderilen güvenlik kodunu giriniz!'
+                ]);
+
+
+        #Confirmed
+        $update = SecurityCodes::find($code->id)
+            ->where('user_id', $user_id)
+            ->where('status', '0')
+            ->update([
+                'status' => '1'
+            ]);
+
+        Auth::loginUsingId($user_id);
+
+        $user = User::find(Auth::id());
+        $properties = ['Login IP' => request()->ip()];
+        activity()
+            ->withProperties($properties)
+            ->performedOn($user)
+            ->inLog('Login')
+            ->log('Sisteme güvenlik kodu kullanılarak giriş yapıldı!');
+
+        return response()
+            ->json([
+                'status' => 1,
+                'message' => 'Güvenlik kodu doğrulandı. Hoşgeldiniz, Sn. ' . Auth::user()->name_surname
+            ]);
+    }
+
 
     public function confirmSecurityCode(Request $request)
     {

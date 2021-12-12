@@ -13,13 +13,15 @@ class SecurityCodes extends Model
     protected $fillable = [
         'user_id',
         'code',
-        'status'
+        'status',
+        'reason',
     ];
 
     protected static $logAttributes = [
         'user_id',
         'code',
-        'status'
+        'status',
+        'reason',
     ];
 
     public function getDescriptionForEvent(string $eventName): string

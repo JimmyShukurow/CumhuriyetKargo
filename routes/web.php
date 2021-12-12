@@ -60,6 +60,9 @@ Route::get('/RecoverPassword/{UserID}', [DefaultController::class, 'recoverPassw
 Route::post('/ConfirmSecurityCode', [DefaultController::class, 'confirmSecurityCode'])
     ->name('confirmSecurityCode')->middleware('throttle:10,1');
 
+Route::post('/ConfirmLoginSecurityCode', [DefaultController::class, 'confirmLoginSecurityCode'])
+    ->middleware('throttle:10,1');
+
 Route::get('Logout', [DefaultController::class, 'logout'])->name('admin.Logout');
 Route::get('CloseTheVirtualLogin/{id}', [DefaultController::class, 'closeTheVirtualLogin'])->name('closeTheVirtualLogin');
 

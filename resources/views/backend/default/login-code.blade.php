@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Forgot Password Boxed - ArchitectUI HTML Bootstrap 4 Dashboard Template</title>
+    <title>CKGSis - İki adımlı doğrulama - güvenlik kodunu girin</title>
     <link rel="icon" href="/backend/assets/images/ck-ico-white.png" type="image/x-icon"/>
 
     <meta name="viewport"
@@ -27,7 +27,7 @@
 <body>
 <div class="app-container app-theme-white body-tabs-shadow">
     <div class="app-container">
-        <div class="h-100 bg-plum-plate bg-animation">
+        <div class="h-100 bg-asteroid bg-animation">
             <div class="d-flex h-100 justify-content-center align-items-center">
                 <div class="mx-auto app-login-box col-md-6">
                     <div class="app-logo-inverse mx-auto mb-3"></div>
@@ -57,11 +57,10 @@
                                     </div>
 
                                     <h6 class="mt-1 mb-0 opacity-8" style="color: #000;">
-                                        <span>Sn. <b>{{$user->name_surname}}</b> Şifrenizi yenilemek için <b>{{$user->phone}}</b> numaralı cep telefonunuza göndermiş olduğumuz 6 haneli güvenlik kodunu giriniz.</span>
+                                        <span>Sn. <b>{{$user->name_surname}}</b>, <br> sisteme giriş yapabilmek için <b>{{$user->phone}}</b> numaralı cep telefonunuza göndermiş olduğumuz 6 haneli güvenlik kodunu giriniz.</span>
                                     </h6>
                                 </div>
                             </div>
-                            {{--                            <form id="frmRecoverPassword" method="POST" action="{{route('confirmSecurityCode')}}">--}}
                             <div class="modal-body">
                                 <div>
                                     @csrf
@@ -79,16 +78,14 @@
                                 </div>
                                 <input type="hidden" id="token" name="token" value="{{Crypte4x($user->id)}}">
                                 <div class="divider"></div>
-                                <h6 style="display: inline" class="mb-0">
-                                    <a href="{{route('Login')}}" class="text-primary">Veya Giriş Yapın</a>
-                                </h6>
-                                <span class="font-weight-bold text-dark float-right font-size-lg" id="time">{{$dateHumens['minute']}}:{{$dateHumens['seconds']}}</span>
+                                <span
+                                    class="font-weight-bold text-dark float-left font-size-lg" id="time">Kalan Süre: {{$dateHumens['minute']}}:{{$dateHumens['seconds']}}</span>
                             </div>
                             <input type="hidden" id="leftseconds" value="{{$diffSeconds}}">
                             <div class="modal-footer clearfix">
                                 <div class="float-right">
                                     <button id="btnConfirmCode" type="submit" class="btn btn-primary btn-lg">
-                                        Şifre Yenile
+                                        Giriş Yap
                                     </button>
                                 </div>
                             </div>
@@ -104,7 +101,7 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="/backend/assets/scripts/toastr.js"></script>
-<script src="/backend/assets/scripts/code-confirm.js"></script>
+<script src="/backend/assets/scripts/login-code-confirm.js"></script>
 
 
 <script>
