@@ -224,13 +224,15 @@ class AgencyController extends Controller
         if ($update) {
 
             $statu = $request->status == '1' ? 'aktif' : 'pasif';
+            $permission_of_create_cargo = $request->permission_of_create_cargo == '1' ? 'aktif' : 'pasif';
             $user = Agencies::find($request->agency);
             $properties = [
                 'Eylemi gerçekleştiren' => Auth::user()->name_surname,
                 'id\'si' => Auth::id(),
                 'İşlem Yapılan Acente' => $user->agency_name,
                 'Statü' => $statu,
-                'Statü Açıklama' => $request->status == '1' ? '' : $request->status_description
+                'Statü Açıklama' => $request->status == '1' ? '' : $request->status_description,
+                'Kargo Kesim İzni' => $permission_of_create_cargo
             ];
 
             $log = $user->agency_name . " İsimli kullanıcı " . $statu . ' hale getirildi';
