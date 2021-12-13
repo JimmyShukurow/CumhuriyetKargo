@@ -59,6 +59,8 @@ class CheckStatus
                         ->with('error', 'Kayıtlı olmayan şube!');
                 }
 
+                ## mehmet ateş
+
                 if ($tc->status == '1')
                     return $next($request);
                 else {

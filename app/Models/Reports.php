@@ -27,6 +27,7 @@ class Reports extends Model
         'damage_description',
         'content_detection',
         'impropriety_description',
+        'description',
         'confirm',
         'reject_reason',
         'confirming_user_id',

@@ -11,8 +11,8 @@
     <link rel="icon" href="/backend/assets/images/ck-ico-white.png" type="image/x-icon"/>
 
     <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
-    />
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"/>
+
     <meta name="description" content="ArchitectUI HTML Bootstrap 4 Dashboard Template">
 
     <!-- Disable tap highlight on IE -->
@@ -21,7 +21,22 @@
 
     <script src="/backend/assets/scripts/jquery.js"></script>
     <link href="/backend/assets/css/toastr.min.css" rel="stylesheet" type="text/css"/>
-    <script src="/backend/assets/scripts/general-up.js"></script>
+    <script src="/backend/assets/scripts/general-up.js?v=1.0.1"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            let successMessage = localStorage.getItem('swal');
+            if (successMessage) {
+                swal(localStorage.getItem('swal-title'), localStorage.getItem('swal-message'), localStorage.getItem('swal-type'));
+
+                localStorage.removeItem('swal');
+                localStorage.removeItem('swal-title');
+                localStorage.removeItem('swal-message');
+                localStorage.removeItem('swal-type');
+            }
+        })
+    </script>
 </head>
 
 <body>

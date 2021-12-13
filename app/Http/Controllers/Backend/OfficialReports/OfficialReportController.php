@@ -220,6 +220,7 @@ class OfficialReportController extends Controller
             'real_reported_unit_type' => $realReportedUnitType,
             'reported_unit_id' => $reportedUnitID,
             'damage_description' => tr_strtoupper($request->hasarAciklamasi),
+            'description' => tr_strtoupper($request->hasarAciklamasi),
             'content_detection' => tr_strtoupper($request->icerikAciklamasi),
             'confirm' => $permission ? '1' : '0',
             'confirming_user_id' => $permission ? Auth::id() : null,
@@ -382,6 +383,7 @@ class OfficialReportController extends Controller
             'real_reported_unit_type' => $realReportedUnitType,
             'reported_unit_id' => $reportedUnitID,
             'impropriety_description' => tr_strtoupper($request->uygunsuzlukAciklamasi),
+            'description' => tr_strtoupper($request->uygunsuzlukAciklamasi),
             'confirm' => $permission ? '1' : '0',
             'confirming_user_id' => $permission ? Auth::id() : null,
             'confirming_datetime' => $permission ? Carbon::now() : null,
@@ -426,9 +428,13 @@ class OfficialReportController extends Controller
             $unit = $agency->tc_name . ' TRM';
         }
 
+        $agencies = Agencies::orderBy('agency_name')
+            ->get();
+        $tc = TransshipmentCenters::all();
+
 
         GeneralLog('Tutanaklarım sayfası görüntülendi');
-        return view('backend.OfficialReports.our_reports', compact(['data', 'unit']));
+        return view('backend.OfficialReports.our_reports', compact(['data', 'unit', 'agencies', 'tc']));
     }
 
     public function getOurReports(Request $request)

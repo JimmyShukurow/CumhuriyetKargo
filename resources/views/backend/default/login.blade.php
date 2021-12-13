@@ -70,6 +70,7 @@
 
     <script src="/backend/assets/scripts/jquery.js"></script>
     <link href="/backend/assets/css/toastr.min.css" rel="stylesheet" type="text/css"/>
+    <script src="/backend/assets/scripts/sweetalert.js"></script>
     <script src="/backend/assets/scripts/general-up.js"></script>
 
 
@@ -202,7 +203,7 @@
 
 
 <footer style="font-size:10px" class="footer navbar-fixed-bottom footer-dark">
-    <p style="text-align: center;">Copyright &copy; Cumhuriyet Kargo 2021 Powered By CKG-Team</p>
+    <p style="text-align: center;">Copyright &copy; Cumhuriyet Kargo 2022 | Powered By CKG-Team</p>
 </footer>
 
 

@@ -1,7 +1,6 @@
 @extends('backend.layout')
 
 @push('css')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/backend/assets/css/app-main-block.css">
     <style>
         table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child:before, table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child:before {
@@ -9,6 +8,8 @@
             left: 5px;
         }
     </style>
+    <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
+    <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
 @endpush
 
 @section('title', 'Tutanaklarım')
@@ -57,75 +58,97 @@
             <div class="card-body">
                 <form method="POST" id="search-form">
                     <div class="row">
-                        <div class="col-md-4">
+
+                        <div class="col-md-3">
+                            <label for="receiverCode">Tutanak NO:</label>
+                            <input type="text" data-inputmask="'mask': 'AA-999999'"
+                                   placeholder="__ ______" type="text" id="invoice_number"
+                                   class="form-control input-mask-trigger form-control-sm niko-filter">
+                        </div>
+                        <div class="col-md-3">
                             <label for="receiverCode">Kargo Takip No:</label>
                             <input type="text" data-inputmask="'mask': '99999 99999 99999'"
                                    placeholder="_____ _____ _____" type="text" id="trackingNo"
                                    class="form-control input-mask-trigger form-control-sm niko-filter">
                         </div>
 
-                        <div class="col-md-4">
-                            <label for="receiverCode">Fatura NO:</label>
+                        <div class="col-md-3">
+                            <label for="receiverCode">Kargo - Fatura NO:</label>
                             <input type="text" data-inputmask="'mask': 'AA-999999'"
                                    placeholder="__ ______" type="text" id="invoice_number"
                                    class="form-control input-mask-trigger form-control-sm niko-filter">
                         </div>
 
-                        <div class="col-md-4">
-                            <label for="cargoType">Kargo Tipi:</label>
-                            <select id="cargoType"
+
+                        <div class="col-md-3">
+                            <label for="receiverDistrict">Tutanak Tipi:</label>
+                            <select id="receiverDistrict"
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
-                                @foreach(allCargoTypes() as $key)
-                                    <option value="{{$key}}">{{$key}}</option>
-                                @endforeach
+                                <option value="HTF">HTF</option>
+                                <option value="UTF">UTF</option>
                             </select>
                         </div>
 
-                        <div class="col-md-6">
+
+                        <div class="col-md-3 mt-2">
                             <label for="startDate">Başlangıç Tarih:</label>
                             <input type="datetime-local" id="startDate" value="{{ date('Y-m-d') }}T00:00"
                                    class="form-control form-control-sm  niko-select-filter">
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-3 mt-2">
                             <label for="finishDate">Bitiş Tarihi:</label>
                             <input type="datetime-local" id="finishDate" value="{{ date('Y-m-d') }}T23:59"
                                    class="form-control form-control-sm  niko-select-filter">
+                        </div>
+
+                        <div id="column-agency" class="col-md-3 mt-2">
+                            <div class="form-group position-relative">
+                                <label for="select_reported_agency">Şube Seçin:</label>
+                                <select style="width:100%;" name="select_reported_agency"
+                                        class="form-control form-control-sm reported-units"
+                                        id="select_reported_agency">
+                                    <option value="">Seçiniz</option>
+                                    @foreach($agencies as $key)
+                                        <option
+                                            value="{{$key->id}}">{{$key->agency_name . ' ŞUBE'}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="column-tc" class="col-md-3 mt-2">
+                            <div class="form-group position-relative">
+                                <label for="select_reported_tc">Transfer Merkezi Seçin:</label>
+                                <select style="width:100%;" name="select_reported_tc"
+                                        class="form-control form-control-sm reported-units"
+                                        id="select_reported_tc">
+                                    <option value="">Seçiniz</option>
+                                    @foreach($tc as $key)
+                                        <option value="{{$key->id}}">{{$key->tc_name . ' TRM.'}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
 
 
                     <div class="row pt-2">
 
-                        {{--                        <div class="col-md-2">--}}
-                        {{--                            <label for="receiverCurrentCode">Alıcı Cari Kod:</label>--}}
-                        {{--                            <input type="text" data-inputmask="'mask': '999 999 999'"--}}
-                        {{--                                   placeholder="___ ___ ___" type="text" id="receiverCurrentCode"--}}
-                        {{--                                   class="form-control input-mask-trigger form-control-sm niko-filter">--}}
-                        {{--                        </div>--}}
-
                         <div class="col-md-3">
-                            <label for="receiverName">Alıcı Adı:</label>
+                            <label for="receiverName">Düzenleyen:</label>
                             <input type="text" id="receiverName" class="form-control niko-filter form-control-sm">
                         </div>
 
                         <div class="col-md-3">
-                            <label for="receiverCity">Alıcı İl:</label>
-                            <select id="receiverCity"
-                                    class="form-control form-control-sm niko-select-filter">
-                                <option value="">Seçiniz</option>
-                                @foreach($data['cities'] as $key)
-                                    <option data="{{$key->city_name}}" value="{{$key->id}}">{{$key->city_name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="receiverDistrict">Alıcı İlçe:</label>
+                            <label for="receiverDistrict">Onay:</label>
                             <select id="receiverDistrict"
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
+                                <option value="0">Onay Bekliyor</option>
+                                <option value="1">Onaylandı</option>
+                                <option value="-1">Onaylanmadı</option>
                             </select>
                         </div>
 

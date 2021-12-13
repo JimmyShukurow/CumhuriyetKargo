@@ -1,4 +1,3 @@
-
 $(document).on('change', '#receiverCity', function () {
     getDistricts('#receiverCity', '#receiverDistrict');
 });
@@ -7,6 +6,18 @@ $(document).on('change', '#senderCity', function () {
     getDistricts('#senderCity', '#senderDistrict');
 });
 
+$(document).ready(function () {
+    $('#select_reported_agency').select2();
+    $('#select_reported_tc').select2();
+
+    $('#select_reported_agency').change(function () {
+        $('#select_reported_tc').val('');
+    });
+
+    $('#select_reported_tc').change(function () {
+        $('#select_reported_agency').val('');
+    });
+});
 
 var oTable;
 var detailsID = null;

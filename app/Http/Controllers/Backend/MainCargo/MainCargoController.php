@@ -914,6 +914,14 @@ class MainCargoController extends Controller
                 $arrivalAgency = DB::table('agencies')
                     ->where('id', $distribution->agency_code)
                     ->first();
+
+                if ($arrivalAgency->status == '0')
+                    return response()
+                        ->json([
+                            'status' => -1,
+                            'message' => 'Alıcı [' . $arrivalAgency->agency_name . '] şube pasif olduğundan kargo kesimi gerçekleştiremezsiniz.'
+                        ]);
+
                 $arrivalTC = getTCofAgency($arrivalAgency->id);
                 ### Distribution Control END ###
 
@@ -1602,6 +1610,13 @@ class MainCargoController extends Controller
                 $agency = DB::table('agencies')
                     ->where('id', $control->agency_code)
                     ->first();
+
+                if ($agency->status == '0')
+                    return response()
+                        ->json([
+                            'status' => 0,
+                            'message' => 'Alıcı [' . $agency->agency_name . '] şube pasif olduğundan kargo kesimi gerçekleştiremezsiniz.'
+                        ]);
 
                 $tc = getTCofAgency($agency->id);
 

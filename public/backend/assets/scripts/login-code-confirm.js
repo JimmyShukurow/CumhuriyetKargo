@@ -10,7 +10,6 @@ $('#btnRecoverPassword').click(function () {
     $('#frmRecoverPassword').submit();
 });
 
-
 function startTimer(duration, display) {
     var timer = duration, minutes, seconds;
     setInterval(function () {
@@ -23,7 +22,9 @@ function startTimer(duration, display) {
         display.textContent = "Kalan Süre: " + minutes + ":" + seconds;
 
         if (--timer <= 0) {
-            window.location.href = "/ForgetPassword/TimeOut";
+            setMessageToLS('Zaman Aşımına Uğradınız!', 'Belirtilen süre içinde kodu girmediğiniz için zaman aşımına uğradınız. Lütfen tekrar deneyin. (Bunun bir hata olduğunu düşünüyorsanız lütfen sistem destek ekibine ulaşın!)', 'error');
+            window.location.href = "/";
+            return false;
         }
     }, 1000);
 }
