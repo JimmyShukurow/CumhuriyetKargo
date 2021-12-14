@@ -875,3 +875,5 @@ function OfficialReportsPermissions()
     $permissionArray = [1, 20, 29, 34, 44];
     return $permissionArray;
 }
+
+

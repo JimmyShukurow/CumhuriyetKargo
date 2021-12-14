@@ -96,6 +96,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
         Route::get('OurReports', [OfficialReportController::class, 'ourReports'])->name('ourReports');
         Route::get('GetOurReports', [OfficialReportController::class, 'getOurReports']);
+        Route::post('GetReportInfo', [OfficialReportController::class, 'getReportInfo']);
 
     });
 

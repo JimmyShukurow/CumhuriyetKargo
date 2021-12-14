@@ -9,14 +9,17 @@ use App\Models\Cities;
 use App\Models\HtfDamageDetails;
 use App\Models\HtfPieceDetails;
 use App\Models\HtfTransactionDetails;
+use App\Models\OfficialReports;
 use App\Models\Reports;
 use App\Models\TransshipmentCenters;
+use App\Models\User;
 use App\Models\UtfImproprietyDetails;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class OfficialReportController extends Controller
 {
@@ -439,37 +442,33 @@ class OfficialReportController extends Controller
 
     public function getOurReports(Request $request)
     {
-        $trackingNo = str_replace([' ', '_'], ['', ''], $request->trackingNo);
-        $invoiceNumber = $request->invoiceNumber;
-        $cargoType = $request->cargoType;
-        $currentCity = $request->senderCity;
-        $currentCode = str_replace([' ', '_'], ['', ''], $request->senderCurrentCode);
-        $receiverCurrentCode = str_replace([' ', '_'], ['', ''], $request->receiverCurrentCode);
-        $currentName = $request->senderName;
-        $receiverCity = $request->receiverCity;
-        $receiverName = tr_strtoupper($request->receiverName);
-        $receiverDistrict = $request->receiverDistrict;
-        $receiverPhone = $request->receiverPhone;
-        $currentDistrict = $request->senderDistrict;
-        $currentPhone = $request->senderPhone;
-        $finishDate = $request->finishDate;
-        $startDate = $request->startDate;
-        $filterByDAte = $request->filterByDAte;
+        $trackingNo = str_replace([' ', '_'], ['', ''], $request->filterTrackingNo);
+        $ReportSerialNumber = $request->filterReportSerialNumber;
+        $InvoiceNumber = $request->filterInvoiceNumber;
+        $ReportType = $request->filterReportType;
+        $StartDate = $request->filterStartDate;
+        $FinishDate = $request->filterFinishDate;
+        $SelectReportedAgency = $request->filterSelectReportedAgency;
+        $SelectReportedTc = $request->filterSelectReportedTc;
+        $DetectingUser = $request->filterDetectingUser;
+        $Confirm = $request->filterConfirm;
+        $Description = $request->filterDescription;
 
-        $finishDate = new Carbon($finishDate);
-        $startDate = new Carbon($startDate);
+        $filterByDAte = $request->filterByDate;
+
+        $startDate = new Carbon($StartDate);
+        $finishDate = new Carbon($FinishDate);
 
         if ($filterByDAte == "true") {
             $diff = $startDate->diffInDays($finishDate);
             if ($filterByDAte) {
-                if ($diff >= 30) {
+                if ($diff >= 90) {
                     return response()->json([], 509);
                 }
             }
         }
 
         $cargoes = DB::table('reports')
-            ->select(['reports.*', 'users.name_surname'])
             ->selectRaw("	reports.*,
                     users.name_surname,
                 IF
@@ -477,62 +476,120 @@ class OfficialReportController extends Controller
                         reports.real_reported_unit_type = 'Acente',
                         CONCAT(( SELECT agency_name FROM agencies WHERE agencies.id = reports.reported_unit_id ), ' ŞUBE' ),
                         CONCAT(( SELECT tc_name FROM transshipment_centers WHERE id = reports.reported_unit_id ), ' TRM' )
-                    ) AS reported_unit "
+                    ) AS reported_unit"
             )
-            ->join('users', 'users.id', '=', 'reports.detecting_user_id');
+            ->join('users', 'users.id', '=', 'reports.detecting_user_id')
+            ->whereRaw($trackingNo ? "cargo_tracking_no ='" . $trackingNo . "'" : ' 1 > 0')
+            ->whereRaw($InvoiceNumber ? "cargo_invoice_number ='" . $InvoiceNumber . "'" : ' 1 > 0')
+            ->whereRaw($ReportType ? "type ='" . $ReportType . "'" : ' 1 > 0')
+            ->whereRaw($DetectingUser ? "users.name_surname  like '%" . $DetectingUser . "%'" : ' 1 > 0')
+            ->whereRaw($Description ? "description  like '%" . $Description . "%'" : ' 1 > 0')
+            ->whereRaw($SelectReportedAgency ? "real_detecting_unit_type='Acente' and reported_unit_id ='" . $SelectReportedAgency . "'" : ' 1 > 0')
+            ->whereRaw($SelectReportedTc ? "real_detecting_unit_type='Aktarma' and reported_unit_id ='" . $SelectReportedTc . "'" : ' 1 > 0')
+            ->whereRaw($Confirm != '' ? "confirm ='" . $Confirm . "'" : ' 1 > 0')
+            ->whereRaw($ReportSerialNumber ? "report_serial_no ='" . $ReportSerialNumber . "'" : ' 1 > 0')
+            ->whereRaw($filterByDAte == "true" ? "reports.created_at between '" . $StartDate . "' and '" . $FinishDate . "'" : ' 1 > 0')
+            ->limit(500)->get();
 
         return datatables()->of($cargoes)
             ->editColumn('free', function () {
                 return '';
             })
-//            ->setRowId(function ($cargoes) {
-//                return "cargo-item-" . $cargoes->id;
-//            })
-//            ->editColumn('payment_type', function ($cargoes) {
-//                return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . $cargoes->payment_type . '</b>' : '<b class="text-dark">' . $cargoes->payment_type . '</b>';
-//            })
-//            ->editColumn('cargo_type', function ($cargoes) {
-//                return $cargoes->cargo_type == 'Koli' ? '<b class="text-primary">' . $cargoes->cargo_type . '</b>' : '<b class="text-success">' . $cargoes->cargo_type . '</b>';
-//            })
-//            ->editColumn('receiver_address', function ($cargoes) {
-//                return substr($cargoes->receiver_address, 0, 30);
-//            })
-//            ->editColumn('agency_name', function ($cargoes) {
-//                return $cargoes->agency_name;
-//            })
-//            ->editColumn('sender_name', function ($cargoes) {
-//                return substr($cargoes->sender_name, 0, 30);
-//            })
-//            ->editColumn('receiver_name', function ($cargoes) {
-//                return substr($cargoes->receiver_name, 0, 30);
-//            })
-            ->editColumn('confirm', function ($key) {
-                return $key->confirm == '1' ? '<b class="text-success">Onaylandı</b>' : '<b class="text-danger">Onay Bekliyor</b>';
+            ->setRowId(function ($cargoes) {
+                return "report-item-" . $cargoes->id;
             })
-//            ->editColumn('total_price', function ($cargoes) {
-//                return '<b class="text-primary">' . $cargoes->total_price . '₺' . '</b>';
-//            })
-//            ->editColumn('collection_fee', function ($cargoes) {
-//                return '<b class="text-primary">' . $cargoes->collection_fee . '₺' . '</b>';
-//            })
-//            ->editColumn('status', function ($cargoes) {
-//                return '<b class="text-dark">' . $cargoes->status . '</b>';
-//            })
+            ->editColumn('confirm', function ($key) {
+                if ($key->confirm == '1')
+                    return '<b class="text-success">Onaylandı</b>';
+                else if ($key->confirm == '0')
+                    return '<b class="text-primary">Onay Bekliyor</b>';
+                else if ($key->confirm == '-1')
+                    return '<b class="text-danger">Onaylanmadı</b>';
+            })
             ->editColumn('type', function ($key) {
                 return $key->type == 'HTF' ? '<b class="text-primary">' . $key->type . '</b>' : '<b class="text-danger">' . $key->type . '</b>';
             })
             ->addColumn('detail', function ($key) {
                 return '<a href="javascript:void(0)" class="btn btn-sm btn-primary">Detay</a>';
             })
-//            ->editColumn('status_for_human', function ($cargoes) {
-//                return '<b class="text-success">' . $cargoes->status_for_human . '</b>';
-//            })
-//            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
-//            ->addColumn('tracking_no', 'backend.main_cargo.search_cargo.columns.tracking_no')
+            ->editColumn('description', function ($key) {
+                return '<span title="' . $key->description . '">' . Str::words($key->description, 3, '...') . '</span>';
+            })
             ->addColumn('report_serial_no', 'backend.OfficialReports.columns.report_serial_no')
-            ->rawColumns(['confirm', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->rawColumns(['confirm', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
+    }
+
+    public function getReportInfo(Request $request)
+    {
+        $report = Reports::find($request->id);
+
+        if ($report == null)
+            return response()
+                ->json(['status' => 0, 'message' => 'Rapor bulunamadı!']);
+
+        $report = DB::table('reports')
+            ->selectRaw("	reports.*,
+                    view_users_all_info.name_surname, view_users_all_info.display_name,
+                IF
+                    (
+                        reports.real_reported_unit_type = 'Acente',
+                        CONCAT(( SELECT agency_name FROM agencies WHERE agencies.id = reports.reported_unit_id ), ' ŞUBE' ),
+                        CONCAT(( SELECT tc_name FROM transshipment_centers WHERE id = reports.reported_unit_id ), ' TRM' )
+                    ) AS reported_unit"
+            )
+            ->where('reports.id', $report->id)
+            ->join('view_users_all_info', 'view_users_all_info.id', '=', 'reports.detecting_user_id')
+            ->first();
+
+        $user = User::find($report->detecting_user_id);
+
+        if ($report->real_detecting_unit_type == 'Acente') {
+            $agency = Agencies::find($user->agency_code);
+            $detectingUnit = '#' . $agency->agency_code . " - " . $agency->agency_name . ' ŞUBE';
+        } else {
+            $tc = TransshipmentCenters::find($user->tc_code);
+            $detectingUnit = $tc->tc_name . ' TRM.';
+        }
+
+        $damageDetailsString = "";
+        $transactionMadeString = "";
+        $pieceDetails = [];
+        if ($report->type == 'HTF') {
+            $pieceDetails = HtfPieceDetails::where('htf_id', $report->id)->select('part_no')->get();
+            $damageDetails = HtfDamageDetails::where('htf_id', $report->id)->get();
+
+            foreach ($damageDetails as $key)
+                $damageDetailsString .= $key->damage_text . ', ';
+
+            $transactionDetails = HtfTransactionDetails::where('htf_id', $report->id)->get();
+            foreach ($transactionDetails as $key)
+                $transactionMadeString .= $key->transaction_text . ', ';
+
+        }
+
+
+        $report->created_at_date = date_format(date_create($report->created_at), 'd/m/Y H:i');
+        $report->detecting_unit = $detectingUnit;
+        $report->damage_details = $damageDetailsString;
+        $report->transaction_details = $transactionMadeString;
+
+        return response()
+            ->json(['status' => 1, 'report' => $report, 'piece_details' => $pieceDetails]);
     }
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
