@@ -69,12 +69,9 @@
 
                         <div class="col-md-3">
                             <label for="filterConfirm">Onay:</label>
-                            <select id="filterConfirm"
+                            <select   id="filterConfirm"
                                     class="form-control form-control-sm niko-select-filter">
-                                <option value="">Seçiniz</option>
-                                <option value="0">Onay Bekliyor</option>
-                                <option value="1">Onaylandı</option>
-                                <option value="-1">Onaylanmadı</option>
+                                <option selected value="1">Onaylandı</option>
                             </select>
                         </div>
 

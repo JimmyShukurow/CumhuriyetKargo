@@ -66,9 +66,9 @@ class OfficialReportController extends Controller
 
         $cargoes = DB::table('view_official_reports_general_info')
             ->whereRaw($trackingNo ? "cargo_tracking_no ='" . $trackingNo . "'" : ' 1 > 0')
-            ->whereRaw($InvoiceNumber ? "cargo_invoice_number ='" . $InvoiceNumber . "'" : ' 1 > 0')
+            ->whereRaw($InvoiceNumber ? "( cargo_invoice_number ='" . $InvoiceNumber . "'" . " or description like '%" . $InvoiceNumber . "%')" : ' 1 > 0')
             ->whereRaw($ReportType ? "type ='" . $ReportType . "'" : ' 1 > 0')
-            ->whereRaw($DetectingUser ? "users.name_surname  like '%" . $DetectingUser . "%'" : ' 1 > 0')
+            ->whereRaw($DetectingUser ? "name_surname  like '%" . $DetectingUser . "%'" : ' 1 > 0')
             ->whereRaw($Description ? "description  like '%" . $Description . "%'" : ' 1 > 0')
             ->whereRaw($SelectReportedAgency ? "real_detecting_unit_type='Acente' and reported_unit_id ='" . $SelectReportedAgency . "'" : ' 1 > 0')
             ->whereRaw($SelectReportedTc ? "real_detecting_unit_type='Aktarma' and reported_unit_id ='" . $SelectReportedTc . "'" : ' 1 > 0')
@@ -567,7 +567,7 @@ class OfficialReportController extends Controller
 
         $cargoes = DB::table('view_official_reports_general_info')
             ->whereRaw($trackingNo ? "cargo_tracking_no ='" . $trackingNo . "'" : ' 1 > 0')
-            ->whereRaw($InvoiceNumber ? "cargo_invoice_number ='" . $InvoiceNumber . "'" : ' 1 > 0')
+            ->whereRaw($InvoiceNumber ? "cargo_invoice_number ='" . $InvoiceNumber . "'" . " or description like '%" . $InvoiceNumber . "%'" : ' 1 > 0')
             ->whereRaw($ReportType ? "type ='" . $ReportType . "'" : ' 1 > 0')
             ->whereRaw($DetectingUser ? "users.name_surname  like '%" . $DetectingUser . "%'" : ' 1 > 0')
             ->whereRaw($Description ? "description  like '%" . $Description . "%'" : ' 1 > 0')
@@ -750,7 +750,7 @@ class OfficialReportController extends Controller
 
         $cargoes = DB::table('view_official_reports_general_info')
             ->whereRaw($trackingNo ? "cargo_tracking_no ='" . $trackingNo . "'" : ' 1 > 0')
-            ->whereRaw($InvoiceNumber ? "cargo_invoice_number ='" . $InvoiceNumber . "'" : ' 1 > 0')
+            ->whereRaw($InvoiceNumber ? "cargo_invoice_number ='" . $InvoiceNumber . "'" . " or description like '%" . $InvoiceNumber . "%'" : ' 1 > 0')
             ->whereRaw($ReportType ? "type ='" . $ReportType . "'" : ' 1 > 0')
             ->whereRaw($DetectingUser ? "users.name_surname  like '%" . $DetectingUser . "%'" : ' 1 > 0')
             ->whereRaw($Description ? "description  like '%" . $Description . "%'" : ' 1 > 0')
