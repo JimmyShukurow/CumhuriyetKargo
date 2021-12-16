@@ -12,7 +12,7 @@
     <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
 @endpush
 
-@section('title', 'Tutanaklarım')
+@section('title', 'Gelen Tutanaklar')
 @section('content')
 
     <div class="app-main__inner">
@@ -24,9 +24,9 @@
                         <i class="pe-7s-note2 icon-gradient bg-ck">
                         </i>
                     </div>
-                    <div>Giden Tutanaklar <b>[{{$unit}}]</b>
-                        <div class="page-title-subheading">Bu sayfa üzerinden birminize ait oluşturulan, ve biriminize
-                            oluşturulan tutanakları görünyüleyebilir işlem yapabilirsiniz. (Tek seferde max. 500 kayıt
+                    <div>Gelen Tutanaklar <b>[{{$unit}}]</b>
+                        <div class="page-title-subheading">Bu sayfa üzerinden birminize tutulan tutanakları
+                            görünyüleyebilir işlem yapabilirsiniz. (Tek seferde max. 500 kayıt
                             veya max 90 günlük kayıt görüntüleyebilirsiniz.)
                         </div>
                     </div>
@@ -37,7 +37,7 @@
         <div class="card mt-3">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                        class="header-icon pe-7s-note2 mr-3 text-muted opacity-6"> </i> Tutanaklarınız
+                        class="header-icon pe-7s-note2 mr-3 text-muted opacity-6"> </i> Gelen Tutanaklar
                 </div>
                 <div class="btn-actions-pane-right actions-icon-btn">
                     <div class="btn-group dropdown">
@@ -149,7 +149,7 @@
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
                                 <option value="0">Onay Bekliyor</option>
-                                <option value="1">Onaylandı</option>
+                                <option selected value="1">Onaylandı</option>
                                 <option value="-1">Onaylanmadı</option>
                             </select>
                         </div>
@@ -171,6 +171,7 @@
                                 <input type="checkbox" id="filterByDate" name="filterByDate" class="niko-filter">
                             </div>
                         </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -226,12 +227,12 @@
     <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
-    <script src="/backend/assets/scripts/official-report/our-reports.js"></script>
+    <script src="/backend/assets/scripts/official-report/incoming-reports.js"></script>
 @endsection
 
 
 @section('modals')
-    <!-- Large modal => Modal Cargo Details -->
+    <!-- Large modal => Modal Report Details -->
     <div class="modal fade bd-example-modal-lg" id="ModalReportDetails" tabindex="-1" role="dialog"
          aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -318,7 +319,7 @@
 
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <table style="white-space: nowrap" id="AgencyCard"
+                                                        <table id="CartHTF"
                                                                class="TableNoPadding table table-bordered table-striped">
                                                             <thead>
                                                             <tr>
@@ -329,106 +330,116 @@
                                                             </thead>
                                                             <tbody>
                                                             <tr>
-                                                                <td class="static">Fatura Numarası:</td>
+                                                                <td style="white-space: nowrap;" class="static">Fatura
+                                                                    Numarası:
+                                                                </td>
                                                                 <td style="text-decoration: underline; cursor: pointer;"
                                                                     id="htfInvoiceNumber"
                                                                     class="font-weight-bold cargo-invoice-number text-dark"></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="static">İlgili Parçalar:</td>
+                                                                <td style="white-space: nowrap;" class="static">İlgili
+                                                                    Parçalar:
+                                                                </td>
                                                                 <td id="htfCargoPieces"></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="static">Hasar Açıklaması:</td>
+                                                                <td style="white-space: nowrap;" class="static">Hasar
+                                                                    Açıklaması:
+                                                                </td>
                                                                 <td id="htfDamageDescription"></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="static">İçerik Tespiti:</td>
+                                                                <td style="white-space: nowrap;" class="static">İçerik
+                                                                    Tespiti:
+                                                                </td>
                                                                 <td id="htfContentDetection"></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="static">Hasar Nedenleri:</td>
+                                                                <td style="white-space: nowrap;" class="static">Hasar
+                                                                    Nedenleri:
+                                                                </td>
                                                                 <td id="htfDamageDetails"></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="static">Yapılan İşlemler:</td>
+                                                                <td style="white-space: nowrap;" class="static">Yapılan
+                                                                    İşlemler:
+                                                                </td>
                                                                 <td id="htfTransactionDetails"></td>
                                                             </tr>
                                                             </tbody>
                                                         </table>
-
+                                                        <table id="CartUTF"
+                                                               class="TableNoPadding table table-bordered table-striped">
+                                                            <thead>
+                                                            <tr>
+                                                                <th class="text-center" id="titleBranch" colspan="2">
+                                                                    UTF (Uygunsuzluk Tespit Formu)
+                                                                </th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td style="white-space: nowrap;" class="static pr-3">
+                                                                    Uygunsuzluk Nedenleri:
+                                                                </td>
+                                                                <td id="utfImproprietyDetails"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="white-space: nowrap;" class="static pr-3">
+                                                                    Uygunsuzluk Açıklaması:
+                                                                </td>
+                                                                <td id="utfImproprietyDescription"></td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
 
                                                     </div>
                                                 </div>
 
-                                                <div class="row mt-2">
-                                                    <div class="col-sm-6">
-                                                        <table style="white-space: nowrap" id="AgencyCard"
-                                                               class="TableNoPadding table table-bordered table-striped">
-                                                            <thead>
-                                                            <tr>
-                                                                <th class="text-center" id="titleBranch" colspan="2">
-                                                                    Hasar Nedenleri
-                                                                </th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr>
-                                                                <td class="static">Fatura Numarası:</td>
-                                                                <td style="text-decoration: underline; cursor: pointer;"
-                                                                    id="htfInvoiceNumber"
-                                                                    class="font-weight-bold cargo-invoice-number text-dark"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="static">İlgili Parçalar:</td>
-                                                                <td id="htfCargoPieces"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="static">Hasar Açıklaması:</td>
-                                                                <td id="htfDamageDescription"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="static">İçerik Tespiti:</td>
-                                                                <td id="htfContentDetection"></td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-
-
+                                                <div class="row mt-2 mb-2">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group position-relative">
+                                                            <label for="">Tutanak Seri No:</label>
+                                                            <b style="display: block;"
+                                                               class="text-dark font-weight-bold"
+                                                               id="reportReportSerialNumber"></b>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <table style="white-space: nowrap" id="AgencyCard"
-                                                               class="TableNoPadding table table-bordered table-striped">
-                                                            <thead>
-                                                            <tr>
-                                                                <th class="text-center" id="titleBranch" colspan="2">
-                                                                    Yapılan İşlemler
-                                                                </th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr>
-                                                                <td class="static">Fatura Numarası:</td>
-                                                                <td style="text-decoration: underline; cursor: pointer;"
-                                                                    id="htfInvoiceNumber"
-                                                                    class="font-weight-bold cargo-invoice-number text-dark"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="static">İlgili Parçalar:</td>
-                                                                <td id="htfCargoPieces"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="static">Hasar Açıklaması:</td>
-                                                                <td id="htfDamageDescription"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="static">İçerik Tespiti:</td>
-                                                                <td id="htfContentDetection"></td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group position-relative">
+                                                            <label for="">Onay Durumu:</label>
+                                                            <b style="display: block;"
+                                                               class="font-weight-bold"
+                                                               id="reportReportConfirm"></b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group position-relative">
+                                                            <label for="">Onaylayan:</label>
+                                                            <b style="display: block;"
+                                                               class="text-primary font-weight-bold"
+                                                               id="reportReportConfirmingUser"></b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group position-relative">
+                                                            <label for="">Onay Tarihi:</label>
+                                                            <b style="display: block;"
+                                                               class="text-primary font-weight-bold"
+                                                               id="reportReportConfirmingDate"></b>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group position-relative">
+                                                            <label for="">Tutanak Kayıt Tarihi:</label>
+                                                            <b style="display: block;"
+                                                               class="text-dark font-weight-bold"
+                                                               id="reportReportCreatedAt"></b>
+                                                        </div>
                                                     </div>
                                                 </div>
 

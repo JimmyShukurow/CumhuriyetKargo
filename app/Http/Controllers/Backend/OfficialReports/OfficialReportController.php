@@ -418,7 +418,7 @@ class OfficialReportController extends Controller
             ->json(['status' => 0, 'message' => 'İşlem başarısız oldu, lütfen daha sonra tekrar deneyiniz!']);
     }
 
-    public function ourReports()
+    public function outgoingReports()
     {
         $data['cities'] = Cities::all();
         $unit = '';
@@ -436,11 +436,11 @@ class OfficialReportController extends Controller
         $tc = TransshipmentCenters::all();
 
 
-        GeneralLog('Tutanaklarım sayfası görüntülendi');
-        return view('backend.OfficialReports.our_reports', compact(['data', 'unit', 'agencies', 'tc']));
+        GeneralLog('Giden tutanaklar sayfası görüntülendi');
+        return view('backend.OfficialReports.outgoing_reports', compact(['data', 'unit', 'agencies', 'tc']));
     }
 
-    public function getOurReports(Request $request)
+    public function getOutGoingReports(Request $request)
     {
         $trackingNo = str_replace([' ', '_'], ['', ''], $request->filterTrackingNo);
         $ReportSerialNumber = $request->filterReportSerialNumber;
@@ -552,6 +552,7 @@ class OfficialReportController extends Controller
             $detectingUnit = $tc->tc_name . ' TRM.';
         }
 
+        $improprietyDetailsString = "";
         $damageDetailsString = "";
         $transactionMadeString = "";
         $pieceDetails = [];
@@ -565,19 +566,56 @@ class OfficialReportController extends Controller
             $transactionDetails = HtfTransactionDetails::where('htf_id', $report->id)->get();
             foreach ($transactionDetails as $key)
                 $transactionMadeString .= $key->transaction_text . ', ';
+        } else if ($report->type == 'UTF') {
+            $improprietyDetails = UtfImproprietyDetails::where('utf_id', $report->id)->get();
 
+            foreach ($improprietyDetails as $key)
+                $improprietyDetailsString .= $key->impropriety_text . ', ';
         }
+
+        if ($report->confirming_user_id != '') {
+            $ConfirmingUser = DB::table('view_users_all_info')->where('id', $report->confirming_user_id)->first();
+            $report->confirming_user = $ConfirmingUser->name_surname . ' (' . $ConfirmingUser->display_name . ')';
+        } else
+            $report->confirming_user = "";
+
+        if ($report->confirming_datetime != '')
+            $report->confirming_datetime = date_format(date_create($report->confirming_datetime), 'd/m/Y H:i');
 
 
         $report->created_at_date = date_format(date_create($report->created_at), 'd/m/Y H:i');
         $report->detecting_unit = $detectingUnit;
         $report->damage_details = $damageDetailsString;
         $report->transaction_details = $transactionMadeString;
+        $report->impropriety_details = $improprietyDetailsString;
+
 
         return response()
             ->json(['status' => 1, 'report' => $report, 'piece_details' => $pieceDetails]);
     }
 
+
+    public function incomingReports()
+    {
+        $data['cities'] = Cities::all();
+        $unit = '';
+
+        if (Auth::user()->user_type == 'Acente') {
+            $agency = Agencies::find(Auth::user()->agency_code);
+            $unit = $agency->agency_name . ' ŞUBE';
+        } else if (Auth::user()->user_type == 'Aktarma') {
+            $agency = TransshipmentCenters::find(Auth::user()->tc_code);
+            $unit = $agency->tc_name . ' TRM';
+        }
+
+        $agencies = Agencies::orderBy('agency_name')
+            ->get();
+        $tc = TransshipmentCenters::all();
+
+
+        GeneralLog('Giden tutanaklar sayfası görüntülendi');
+        return view('backend.OfficialReports.incoming_reports', compact(['data', 'unit', 'agencies', 'tc']));
+    }
 
 }
 

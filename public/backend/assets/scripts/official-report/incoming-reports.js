@@ -7,15 +7,17 @@ $(document).on('change', '#senderCity', function () {
 });
 
 $(document).ready(function () {
-    $('#select_reported_agency').select2();
-    $('#select_reported_tc').select2();
+    $('#filterSelectReportedAgency').select2();
+    $('#filterSelectReportedTc').select2();
 
-    $('#select_reported_agency').change(function () {
-        $('#select_reported_tc').val('');
+    $('#filterSelectReportedAgency').change(function () {
+        $('#filterSelectReportedTc').val('');
+        $('#select2-filterSelectReportedTc-container').text('Seçiniz');
     });
 
-    $('#select_reported_tc').change(function () {
-        $('#select_reported_agency').val('');
+    $('#filterSelectReportedTc').change(function () {
+        $('#filterSelectReportedAgency').val('');
+        $('#select2-filterSelectReportedAgency-container').text('Seçiniz');
     });
 });
 
@@ -82,7 +84,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '/OfficialReport/GetOurReports',
+            url: '/OfficialReport/GetOutGoingReports',
             data: function (d) {
                 d.filterReportSerialNumber = $('#filterReportSerialNumber').val();
                 d.filterTrackingNo = $('#filterTrackingNo').val();
@@ -320,25 +322,56 @@ function getReportInfo(detailsID) {
             let report = response.report;
             let piece_details = response.piece_details;
 
+            if (report.type == 'UTF') {
+                $('#CartHTF').hide();
+                $('#CartUTF').show();
+            } else if (report.type == 'HTF') {
+                $('#CartHTF').show();
+                $('#CartUTF').hide();
+            }
+
             let long_name = report.type == 'UTF' ? "(Uygunsuzluk Tespit Formu)" : '(Hasar Tespit Formu)';
+
+            let piecesString = "";
 
             $('#titleReportTitleType').html(report.type + " " + long_name);
             $('#titleReportSerialNumber').html(report.report_serial_no);
+            $('#reportReportSerialNumber').html(report.report_serial_no);
 
             $('#titleReportDate').html(report.created_at_date);
             $('#htfInvoiceNumber').html(report.cargo_invoice_number);
-            $('#htfCargoPieces').html(piece_details.length + " Adet Parça");
+
+            $.each(piece_details, function (key, val) {
+                piecesString += val['part_no'] + ",";
+            });
+
+            $('#htfCargoPieces').html(piece_details.length + " Adet Parça - (" + piecesString + ")");
             $('#htfDamageDescription').html(report.description);
             $('#htfContentDetection').html(report.content_detection);
             $('#htfDamageDetails').html(report.damage_details);
             $('#htfTransactionDetails').html(report.transaction_details);
-            
+
+            $('#utfImproprietyDescription').html(report.description);
+            $('#utfImproprietyDetails').html(report.impropriety_details);
 
             $('#reportDetectingUnit').html(report.detecting_unit);
             $('#reportDetectingUser').html(report.name_surname + " (" + report.display_name + ")");
             $('#reportRealReportedUnitType').html(report.real_reported_unit_type);
             $('#reportReportedUnit').html(report.reported_unit);
+            $('#reportReportConfirmingUser').html(report.confirming_user);
+            $('#reportReportConfirmingDate').html(report.confirming_datetime);
+            $('#reportReportCreatedAt').html(report.created_at_date);
 
+
+            let confirm = "";
+            if (report.confirm == '0')
+                confirm = '<b class="text-primary">Onay Bekliyor</b>';
+            else if (report.confirm == '-1')
+                confirm = '<b style="text-decoration: underline;" class="text-danger">Onaylanmadı</b>';
+            else if (report.confirm == '1')
+                confirm = '<b class="text-success">Onaylandı</b>';
+
+            $('#reportReportConfirm').html(confirm);
 
         }
 
