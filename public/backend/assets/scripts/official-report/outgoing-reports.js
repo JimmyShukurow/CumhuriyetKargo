@@ -35,7 +35,7 @@ $(document).ready(function () {
             [10, 25, 50, 100, 250, 500, -1],
             ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
         ],
-        order: [7, 'desc'],
+        order: [8, 'desc'],
         language: {
             "sDecimal": ",",
             "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
@@ -116,7 +116,7 @@ $(document).ready(function () {
             {data: 'free', name: 'free'},
             {data: 'report_serial_no', name: 'report_serial_no'},
             {data: 'type', name: 'type'},
-            {data: 'name_surname', name: 'name_surname'},
+            {data: 'detecting_unit', name: 'detecting_unit'},
             {data: 'name_surname', name: 'name_surname'},
             {data: 'reported_unit', name: 'reported_unit'},
             {data: 'description', name: 'description'},
@@ -271,11 +271,8 @@ function userInfo(user) {
 }
 
 $(document).on('dblclick', '.report-serial-no', function () {
-    let tracking_no = $(this).attr('tracking-no')
     let id = $(this).prop('id')
     detailsID = id;
-    copyToClipBoard(tracking_no);
-    SnackMessage('Takip numarası kopyalandı!', 'info', 'bl');
     getReportInfo(id);
 });
 

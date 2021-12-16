@@ -88,6 +88,10 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::get('VariousCarsGetCars', [VariousController::class, 'getCars'])->name('VariousCars.getCars');
 
     Route::group(['prefix' => 'OfficialReport', 'as' => 'OfficialReport.'], function () {
+
+        Route::get('/', [OfficialReportController::class, 'index'])->name('index');
+        Route::get('GetOfficialReports', [OfficialReportController::class, 'getOfficialReports']);
+
         Route::get('HTF', [OfficialReportController::class, 'createHTF'])->name('createHTF');
         Route::post('CreateHTF', [OfficialReportController::class, 'insertHTF']);
 
@@ -95,8 +99,12 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('CreateUTF', [OfficialReportController::class, 'insertUTF']);
 
         Route::get('OutgoingReports', [OfficialReportController::class, 'outgoingReports'])->name('outgoingReports');
-        Route::get('IncomingReports', [OfficialReportController::class, 'incomingReports'])->name('incomingReports');
         Route::get('GetOutGoingReports', [OfficialReportController::class, 'getOutGoingReports']);
+
+        Route::get('IncomingReports', [OfficialReportController::class, 'incomingReports'])->name('incomingReports');
+        Route::get('GetIncomingReports', [OfficialReportController::class, 'getIncomingReports']);
+
+
         Route::post('GetReportInfo', [OfficialReportController::class, 'getReportInfo']);
 
     });

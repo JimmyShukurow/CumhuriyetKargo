@@ -66,12 +66,18 @@
                                    placeholder="__ ______" type="text" id="filterReportSerialNumber"
                                    class="form-control input-mask-trigger form-control-sm niko-filter">
                         </div>
+
                         <div class="col-md-3">
-                            <label for="filterTrackingNo">Kargo Takip No:</label>
-                            <input type="text" data-inputmask="'mask': '99999 99999 99999'"
-                                   placeholder="_____ _____ _____" type="text" id="filterTrackingNo"
-                                   class="form-control input-mask-trigger form-control-sm niko-filter">
+                            <label for="filterConfirm">Onay:</label>
+                            <select id="filterConfirm"
+                                    class="form-control form-control-sm niko-select-filter">
+                                <option value="">Seçiniz</option>
+                                <option value="0">Onay Bekliyor</option>
+                                <option value="1">Onaylandı</option>
+                                <option value="-1">Onaylanmadı</option>
+                            </select>
                         </div>
+
 
                         <div class="col-md-3">
                             <label for="filterInvoiceNumber">Kargo - Fatura NO:</label>
@@ -141,17 +147,6 @@
                             <label for="filterDetectingUser">Düzenleyen:</label>
                             <input type="text" id="filterDetectingUser"
                                    class="form-control niko-filter form-control-sm">
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="filterConfirm">Onay:</label>
-                            <select id="filterConfirm"
-                                    class="form-control form-control-sm niko-select-filter">
-                                <option value="">Seçiniz</option>
-                                <option value="0">Onay Bekliyor</option>
-                                <option value="1">Onaylandı</option>
-                                <option value="-1">Onaylanmadı</option>
-                            </select>
                         </div>
 
                         <div class="col-md-3">

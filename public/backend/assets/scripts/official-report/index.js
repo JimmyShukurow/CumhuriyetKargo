@@ -21,6 +21,7 @@ $(document).ready(function () {
     });
 });
 
+
 var oTable;
 var detailsID = null;
 // and The Last Part: NikoStyle
@@ -84,7 +85,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '/OfficialReport/GetIncomingReports',
+            url: '/OfficialReport/GetOfficialReports',
             data: function (d) {
                 d.filterReportSerialNumber = $('#filterReportSerialNumber').val();
                 d.filterTrackingNo = $('#filterTrackingNo').val();
@@ -100,7 +101,6 @@ $(document).ready(function () {
                 d.filterByDate = $('#filterByDate').prop('checked');
             },
             error: function (xhr, error, code) {
-
                 if (xhr.status == 429) {
                     ToastMessage('error', 'Aşırı istekte bulundunuz, Lütfen bir süre sonra tekrar deneyin!', 'Hata');
                 } else if (xhr.status == 509) {

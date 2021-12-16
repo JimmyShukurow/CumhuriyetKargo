@@ -12,7 +12,7 @@
     <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
 @endpush
 
-@section('title', 'Gelen Tutanaklar')
+@section('title', 'Tüm Tutanaklar')
 @section('content')
 
     <div class="app-main__inner">
@@ -24,9 +24,9 @@
                         <i class="pe-7s-note2 icon-gradient bg-ck">
                         </i>
                     </div>
-                    <div>Gelen Tutanaklar <b>[{{$unit}}]</b>
-                        <div class="page-title-subheading">Bu sayfa üzerinden birminize tutulan tutanakları
-                            görünyüleyebilir işlem yapabilirsiniz. (Tek seferde max. 500 kayıt
+                    <div>Tüm Tutanaklar
+                        <div class="page-title-subheading">Bu sayfa üzerinden birminize tarafından oluşturulan
+                            tutanakları görünyüleyebilir işlem yapabilirsiniz. (Tek seferde max. 500 kayıt
                             veya max 90 günlük kayıt görüntüleyebilirsiniz.)
                         </div>
                     </div>
@@ -37,7 +37,7 @@
         <div class="card mt-3">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                        class="header-icon pe-7s-note2 mr-3 text-muted opacity-6"> </i> Gelen Tutanaklar
+                        class="header-icon pe-7s-note2 mr-3 text-muted opacity-6"> </i> Tüm Tutanaklar
                 </div>
                 <div class="btn-actions-pane-right actions-icon-btn">
                     <div class="btn-group dropdown">
@@ -67,17 +67,17 @@
                                    class="form-control input-mask-trigger form-control-sm niko-filter">
                         </div>
 
-
                         <div class="col-md-3">
                             <label for="filterConfirm">Onay:</label>
                             <select id="filterConfirm"
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
                                 <option value="0">Onay Bekliyor</option>
-                                <option selected value="1">Onaylandı</option>
+                                <option value="1">Onaylandı</option>
                                 <option value="-1">Onaylanmadı</option>
                             </select>
                         </div>
+
 
                         <div class="col-md-3">
                             <label for="filterInvoiceNumber">Kargo - Fatura NO:</label>
@@ -148,7 +148,6 @@
                             <input type="text" id="filterDetectingUser"
                                    class="form-control niko-filter form-control-sm">
                         </div>
-
 
                         <div class="col-md-3">
                             <div class="position-relative form-group">
@@ -225,7 +224,7 @@
     <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
-    <script src="/backend/assets/scripts/official-report/incoming-reports.js"></script>
+    <script src="/backend/assets/scripts/official-report/index.js"></script>
 @endsection
 
 
