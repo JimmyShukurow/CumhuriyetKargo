@@ -74,7 +74,7 @@ class OfficialReportController extends Controller
             ->whereRaw($SelectReportedTc ? "real_detecting_unit_type='Aktarma' and reported_unit_id ='" . $SelectReportedTc . "'" : ' 1 > 0')
 //            ->whereRaw($Confirm != '' ? "confirm ='" . $Confirm . "'" : ' 1 > 0')
             ->whereRaw($ReportSerialNumber ? "report_serial_no ='" . $ReportSerialNumber . "'" : ' 1 > 0')
-            ->whereRaw($filterByDAte == "true" ? "reports.created_at between '" . $StartDate . "' and '" . $FinishDate . "'" : ' 1 > 0')
+            ->whereRaw($filterByDAte == "true" ? "created_at between '" . $StartDate . "' and '" . $FinishDate . "'" : ' 1 > 0')
             ->where('confirm', '1')
             ->limit(500)->get();
 
@@ -575,7 +575,7 @@ class OfficialReportController extends Controller
             ->whereRaw($SelectReportedTc ? "real_detecting_unit_type='Aktarma' and reported_unit_id ='" . $SelectReportedTc . "'" : ' 1 > 0')
             ->whereRaw($Confirm != '' ? "confirm ='" . $Confirm . "'" : ' 1 > 0')
             ->whereRaw($ReportSerialNumber ? "report_serial_no ='" . $ReportSerialNumber . "'" : ' 1 > 0')
-            ->whereRaw($filterByDAte == "true" ? "reports.created_at between '" . $StartDate . "' and '" . $FinishDate . "'" : ' 1 > 0')
+            ->whereRaw($filterByDAte == "true" ? "created_at between '" . $StartDate . "' and '" . $FinishDate . "'" : ' 1 > 0')
             ->whereRaw("real_detecting_unit_type ='" . $unit . "'")
             ->where('detecting_unit_id', $unitID)
             ->limit(500)->get();
@@ -758,7 +758,7 @@ class OfficialReportController extends Controller
             ->whereRaw($SelectReportedTc ? "real_detecting_unit_type='Aktarma' and reported_unit_id ='" . $SelectReportedTc . "'" : ' 1 > 0')
             ->whereRaw($Confirm != '' ? "confirm ='" . $Confirm . "'" : ' 1 > 0')
             ->whereRaw($ReportSerialNumber ? "report_serial_no ='" . $ReportSerialNumber . "'" : ' 1 > 0')
-            ->whereRaw($filterByDAte == "true" ? "reports.created_at between '" . $StartDate . "' and '" . $FinishDate . "'" : ' 1 > 0')
+            ->whereRaw($filterByDAte == "true" ? "created_at between '" . $StartDate . "' and '" . $FinishDate . "'" : ' 1 > 0')
             ->whereRaw("real_reported_unit_type ='" . $unit . "'")
             ->where('reported_unit_id', $unitID)
             ->limit(500)->get();
@@ -789,6 +789,116 @@ class OfficialReportController extends Controller
             })
             ->addColumn('report_serial_no', 'backend.OfficialReports.columns.report_serial_no')
             ->rawColumns(['confirm', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->make(true);
+    }
+
+    public function manageReport()
+    {
+        $data['cities'] = Cities::all();
+        $unit = '';
+
+        if (Auth::user()->user_type == 'Acente') {
+            $agency = Agencies::find(Auth::user()->agency_code);
+            $unit = $agency->agency_name . ' ŞUBE';
+        } else if (Auth::user()->user_type == 'Aktarma') {
+            $agency = TransshipmentCenters::find(Auth::user()->tc_code);
+            $unit = $agency->tc_name . ' TRM';
+        }
+
+        $agencies = Agencies::orderBy('agency_name')
+            ->get();
+        $tc = TransshipmentCenters::all();
+
+
+        GeneralLog('Tutanak onay sayfası görüntülendi');
+        return view('backend.OfficialReports.manage_reports', compact(['data', 'unit', 'agencies', 'tc']));
+    }
+
+    public function getManageReports(Request $request)
+    {
+
+        $unit = "";
+        $unitID = 0;
+        # get Branch Info
+        if (Auth::user()->user_type == 'Acente') {
+            $unit = Auth::user()->user_type;
+            $unitID = Auth::user()->agency_code;
+        } else if (Auth::user()->user_type == 'Aktarma') {
+            $unit = Auth::user()->user_type;
+            $unitID = Auth::user()->tc_code;
+        }
+//        return $unit . ' => ' . $unitID;
+
+        $trackingNo = str_replace([' ', '_'], ['', ''], $request->filterTrackingNo);
+        $ReportSerialNumber = $request->filterReportSerialNumber;
+        $InvoiceNumber = $request->filterInvoiceNumber;
+        $ReportType = $request->filterReportType;
+        $StartDate = $request->filterStartDate;
+        $FinishDate = $request->filterFinishDate;
+        $SelectReportedAgency = $request->filterSelectReportedAgency;
+        $SelectReportedTc = $request->filterSelectReportedTc;
+        $DetectingUser = $request->filterDetectingUser;
+        $Confirm = $request->filterConfirm;
+        $Description = $request->filterDescription;
+
+        $filterByDAte = $request->filterByDate;
+
+        $startDate = new Carbon($StartDate);
+        $finishDate = new Carbon($FinishDate);
+
+        if ($filterByDAte == "true") {
+            $diff = $startDate->diffInDays($finishDate);
+            if ($filterByDAte) {
+                if ($diff >= 90) {
+                    return response()->json([], 509);
+                }
+            }
+        }
+
+        $cargoes = DB::table('view_official_reports_general_info')
+            ->whereRaw($trackingNo ? "cargo_tracking_no ='" . $trackingNo . "'" : ' 1 > 0')
+            ->whereRaw($InvoiceNumber ? "cargo_invoice_number ='" . $InvoiceNumber . "'" . " or description like '%" . $InvoiceNumber . "%'" : ' 1 > 0')
+            ->whereRaw($ReportType ? "type ='" . $ReportType . "'" : ' 1 > 0')
+            ->whereRaw($DetectingUser ? "users.name_surname  like '%" . $DetectingUser . "%'" : ' 1 > 0')
+            ->whereRaw($Description ? "description  like '%" . $Description . "%'" : ' 1 > 0')
+            ->whereRaw($SelectReportedAgency ? "real_detecting_unit_type='Acente' and reported_unit_id ='" . $SelectReportedAgency . "'" : ' 1 > 0')
+            ->whereRaw($SelectReportedTc ? "real_detecting_unit_type='Aktarma' and reported_unit_id ='" . $SelectReportedTc . "'" : ' 1 > 0')
+            ->whereRaw($Confirm != '' ? "confirm ='" . $Confirm . "'" : ' 1 > 0')
+            ->whereRaw($ReportSerialNumber ? "report_serial_no ='" . $ReportSerialNumber . "'" : ' 1 > 0')
+            ->whereRaw($filterByDAte == "true" ? "created_at between '" . $StartDate . "' and '" . $FinishDate . "'" : ' 1 > 0')
+            ->whereRaw("real_detecting_unit_type ='" . $unit . "'")
+            ->where('detecting_unit_id', $unitID)
+            ->limit(500)->get();
+
+        return datatables()->of($cargoes)
+            ->editColumn('free', function () {
+                return '';
+            })
+            ->setRowId(function ($key) {
+                return "report-item-" . $key->id;
+            })
+            ->editColumn('confirm', function ($key) {
+                if ($key->confirm == '1')
+                    return '<b class="text-success">Onaylandı</b>';
+                else if ($key->confirm == '0')
+                    return '<b class="text-primary">Onay Bekliyor</b>';
+                else if ($key->confirm == '-1')
+                    return '<b class="text-danger">Onaylanmadı</b>';
+            })
+            ->editColumn('type', function ($key) {
+                return $key->type == 'HTF' ? '<b class="text-primary">' . $key->type . '</b>' : '<b class="text-danger">' . $key->type . '</b>';
+            })
+            ->addColumn('detail', function ($key) {
+                return '<a href="javascript:void(0)" class="btn btn-sm btn-primary">Detay</a>';
+            })
+            ->editColumn('description', function ($key) {
+                return '<span title="' . $key->description . '">' . Str::words($key->description, 3, '...') . '</span>';
+            })
+            ->editColumn('check', function ($t) {
+                return '<span class="unselectable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+            })
+            ->addColumn('report_serial_no', 'backend.OfficialReports.columns.report_serial_no')
+            ->rawColumns(['confirm', 'check', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 

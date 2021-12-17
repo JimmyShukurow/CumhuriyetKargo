@@ -1,7 +1,7 @@
 @extends('backend.layout')
 
 @push('css')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    {{--    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>--}}
     <link rel="stylesheet" href="/backend/assets/css/app-main-block.css">
     <link rel="stylesheet" href="/backend/assets/css/ck-barcode.css">
     <style>
@@ -510,8 +510,8 @@
 
 @section('js')
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
-    <script src="/backend/assets/scripts/jquery.blockUI.js">/script>
-        <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
+    <script src="/backend/assets/scripts/jquery.blockUI.js"></script>
+    <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/delete-method.js"></script>
     <script src="/backend/assets/scripts/JsBarcode.js"></script>

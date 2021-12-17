@@ -13,6 +13,9 @@ use App\Http\Middleware\MidsOfCont\GeneralServicesFeeMid;
 use App\Http\Middleware\MidsOfCont\LocalLocationMid;
 use App\Http\Middleware\MidsOfCont\MainCargoMid;
 use App\Http\Middleware\MidsOfCont\ModulesMid;
+use App\Http\Middleware\MidsOfCont\OfficialReports\ConfirmReport;
+use App\Http\Middleware\MidsOfCont\OfficialReports\ConfirmReportMid;
+use App\Http\Middleware\MidsOfCont\OfficialReports\ManageReportMid;
 use App\Http\Middleware\MidsOfCont\RegionalDirectoratesMid;
 use App\Http\Middleware\MidsOfCont\SenderCurrentsMid;
 use App\Http\Middleware\MidsOfCont\ThemeMid;
@@ -113,6 +116,7 @@ class Kernel extends HttpKernel
         'SenderCurrentsMid' => SenderCurrentsMid::class,
         'ItAndNotificationMidX' => ItAndNotificationMidX::class,
         'MainCargoMid' => MainCargoMid::class,
+        'ManageReportMid' => ManageReportMid::class,
 
     ];
 }
