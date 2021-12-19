@@ -198,6 +198,12 @@ $(document).on('dblclick', '.report-serial-no', function () {
     getReportInfo(id);
 });
 
+$(document).on('click', '.btn-detail-report', function () {
+    let id = $(this).prop('id')
+    detailsID = id;
+    getReportInfo(id);
+});
+
 function getReportInfo(detailsID) {
 
     $('#ModalReportDetails').modal();
@@ -232,12 +238,10 @@ function getReportInfo(detailsID) {
     }).done(function (response) {
 
         if (response.status == 0) {
-            setTimeout(function () {
-                ToastMessage('error', response.message, 'Hata!');
-                $('#ModalReportDetails').modal('hide');
-                $('#CargoesTable').DataTable().ajax.reload();
-                return false;
-            }, 250);
+            ToastMessage('error', response.message, 'Hata!');
+            $('#ModalReportDetails').modal('hide');
+            $('#OfficialReportsTable').DataTable().ajax.reload();
+            return false;
         } else if (response.status == 1) {
 
             let report = response.report;
@@ -260,6 +264,7 @@ function getReportInfo(detailsID) {
             $('#titleReportSerialNumber').html(report.report_serial_no);
             $('#reportReportSerialNumber').html(report.report_serial_no);
 
+            $('#btnMakeAnObjection').attr('data-id', report.id);
             $('#titleReportDate').html(report.created_at_date);
             $('#htfInvoiceNumber').html(report.cargo_invoice_number);
 

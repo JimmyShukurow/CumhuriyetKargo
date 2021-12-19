@@ -215,6 +215,13 @@
                                                 <span>UTF (Uygunsuzluk Tespit Tutanağı)</span>
                                             </button>
                                         </a>
+
+                                        <a href="{{route('OfficialReport.index')}}">
+                                            <button type="button" tabindex="0" class="dropdown-item">
+                                                <i class="dropdown-icon pe-7s-search"></i>
+                                                <span>Tutanak Sorgula</span>
+                                            </button>
+                                        </a>
                                     </div>
                                 </div>
 

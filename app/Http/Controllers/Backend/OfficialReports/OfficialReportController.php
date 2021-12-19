@@ -98,17 +98,20 @@ class OfficialReportController extends Controller
             ->editColumn('type', function ($key) {
                 return $key->type == 'HTF' ? '<b class="text-primary">' . $key->type . '</b>' : '<b class="text-danger">' . $key->type . '</b>';
             })
+            ->editColumn('objection', function ($key) {
+                return $key->objection == '1' ? '<b class="text-danger">EVET</b>' : '<b class="text-dark">HAYIR</b>';
+            })
             ->editColumn('check', function ($t) {
                 return '<span class="unselectable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
             })
             ->addColumn('detail', function ($key) {
-                return '<a href="javascript:void(0)" class="btn btn-sm btn-primary">Detay</a>';
+                return '<a href="javascript:void(0)" id="' . $key->id . '" class="btn btn-sm btn-primary btn-detail-report">Detay</a>';
             })
             ->editColumn('description', function ($key) {
                 return '<span title="' . $key->description . '">' . Str::words($key->description, 3, '...') . '</span>';
             })
             ->addColumn('report_serial_no', 'backend.OfficialReports.columns.report_serial_no')
-            ->rawColumns(['confirm', 'check', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->rawColumns(['confirm', 'check', 'objection', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 
@@ -638,17 +641,20 @@ class OfficialReportController extends Controller
                 else if ($key->confirm == '-1')
                     return '<b class="text-danger">Onaylanmadı</b>';
             })
+            ->editColumn('objection', function ($key) {
+                return $key->objection == '1' ? '<b class="text-danger">EVET</b>' : '<b class="text-dark">HAYIR</b>';
+            })
             ->editColumn('type', function ($key) {
                 return $key->type == 'HTF' ? '<b class="text-primary">' . $key->type . '</b>' : '<b class="text-danger">' . $key->type . '</b>';
             })
             ->addColumn('detail', function ($key) {
-                return '<a href="javascript:void(0)" class="btn btn-sm btn-primary">Detay</a>';
+                return '<a href="javascript:void(0)" id="' . $key->id . '" class="btn btn-sm btn-primary btn-detail-report">Detay</a>';
             })
             ->editColumn('description', function ($key) {
                 return '<span title="' . $key->description . '">' . Str::words($key->description, 3, '...') . '</span>';
             })
             ->addColumn('report_serial_no', 'backend.OfficialReports.columns.report_serial_no')
-            ->rawColumns(['confirm', 'check', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->rawColumns(['confirm', 'check', 'objection', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 
@@ -721,7 +727,7 @@ class OfficialReportController extends Controller
             else if ($ObjectingUser->user_type == 'Aktarma')
                 $report->objecting_user = $ObjectingUser->branch_name . ' TRM';
 
-            $report->objecting_user .= ' / ' . $ConfirmingUser->name_surname . ' (' . $ConfirmingUser->display_name . ')';
+            $report->objecting_user .= ' / ' . $ObjectingUser->name_surname . ' (' . $ObjectingUser->display_name . ')';
         } else
             $report->objecting_user = "";
 
@@ -849,7 +855,7 @@ class OfficialReportController extends Controller
                 return $key->type == 'HTF' ? '<b class="text-primary">' . $key->type . '</b>' : '<b class="text-danger">' . $key->type . '</b>';
             })
             ->addColumn('detail', function ($key) {
-                return '<a href="javascript:void(0)" class="btn btn-sm btn-primary">Detay</a>';
+                return '<a href="javascript:void(0)" id="' . $key->id . '" class="btn btn-sm btn-primary btn-detail-report">Detay</a>';
             })
             ->editColumn('description', function ($key) {
                 return '<span title="' . $key->description . '">' . Str::words($key->description, 3, '...') . '</span>';
@@ -955,8 +961,11 @@ class OfficialReportController extends Controller
             ->editColumn('type', function ($key) {
                 return $key->type == 'HTF' ? '<b class="text-primary">' . $key->type . '</b>' : '<b class="text-danger">' . $key->type . '</b>';
             })
+            ->editColumn('objection', function ($key) {
+                return $key->objection == '1' ? '<b class="text-danger">EVET</b>' : '<b class="text-dark">HAYIR</b>';
+            })
             ->addColumn('detail', function ($key) {
-                return '<a href="javascript:void(0)" class="btn btn-sm btn-primary">Detay</a>';
+                return '<a href="javascript:void(0)" id="' . $key->id . '" class="btn btn-sm btn-primary btn-detail-report">Detay</a>';
             })
             ->editColumn('description', function ($key) {
                 return '<span title="' . $key->description . '">' . Str::words($key->description, 3, '...') . '</span>';
@@ -968,7 +977,7 @@ class OfficialReportController extends Controller
                 return $key->report_serial_no;
             })
             ->addColumn('report_serial_no', 'backend.OfficialReports.columns.report_serial_no')
-            ->rawColumns(['confirm', 'check', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->rawColumns(['confirm', 'check', 'objection', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 
@@ -1050,6 +1059,92 @@ class OfficialReportController extends Controller
         else
             return response()
                 ->json(['status' => -1, 'message' => 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!']);
+    }
+
+    public function makeAnObjection(Request $request)
+    {
+
+        if ($request->defense == '')
+            return response()
+                ->json([
+                    'status' => 0,
+                    'message' => 'Savunma alanı gereklidir'
+                ]);
+
+        $report = Reports::find($request->id);
+
+        if ($report == null)
+            return response()
+                ->json([
+                    'status' => 0,
+                    'message' => 'Tutanak bulunamadı!'
+                ]);
+
+
+        $report = DB::table('view_official_reports_general_info')
+            ->where('id', $report->id)->first();
+
+        $myUnitId = null;
+        if (Auth::user()->user_type == 'Acente')
+            $myUnitId = Auth::user()->agency_code;
+        else if (Auth::user()->user_type == 'Aktarma')
+            $myUnitId = Auth::user()->tc_code;
+
+        if ($report->reported_unit_id != $myUnitId)
+            return response()
+                ->json([
+                    'status' => 0,
+                    'message' => 'Tutanak bulunamadı!'
+                ]);
+
+
+        $update = Reports::find($report->id)
+            ->update([
+                'objection' => '1',
+                'objecting_user_id' => Auth::id(),
+                'objection_datetime' => Carbon::now(),
+                'objection_defense' => $request->defense
+            ]);
+
+        if ($update) {
+            GeneralLog($report->report_serial_no . ' Seri numaralı tutanağa itaraz edildi!', [
+                'tutanak no' => $report->report_serial_no,
+                'savunma' => $request->defense,
+            ]);
+
+
+            # set movement text start
+            $userInfo = DB::table('view_users_all_info')->where('id', Auth::id())->first();
+
+            if (Auth::user()->user_type == 'Acente') {
+                $agency = Agencies::find(Auth::user()->agency_code);
+                $movement = '#' . $agency->agency_code . ' - ' . $agency->agency_name . ' ŞUBE ye bağlı ';
+            } else {
+                $tc = TransshipmentCenters::find(Auth::user()->tc_code);
+                $movement = $tc->tc_name . ' TRM. ye bağlı ';
+            }
+
+            $movement .= $userInfo->name_surname . " (" . $userInfo->display_name . ') isimli kullanıcı tutanağa <b class="text-danger">itiraz etti.</b> <br> <b class="text-primary">Savunma: ' . $request->defense . '</b>';
+            # set movement text end
+
+            $insertReportMovements = OfficialReportMovements::create([
+                'report_id' => $report->id,
+                'movement' => $movement
+            ]);
+
+            return response()
+                ->json([
+                    'status' => 1,
+                    'message' => 'İtiraz başarıyla gerçekleşti!'
+                ]);
+        } else
+            return response()
+                ->json([
+                    'status' => 0,
+                    'message' => 'Bir hata oluştu, lütfen daha sonra tekrar deneyiniz!'
+                ]);
+
+        return $request->all();
     }
 
 }

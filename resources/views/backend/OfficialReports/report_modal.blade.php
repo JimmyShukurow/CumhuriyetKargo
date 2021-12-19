@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ModalGiveRolePermissionLabel">Tutanak Detayları {{$data['name']}}</h5>
+                <h5 class="modal-title" id="ModalGiveRolePermissionLabel">Tutanak Detayları </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -213,7 +213,7 @@
                                                         <label for="">İtiraz:</label>
                                                         <b style="display: block;"
                                                            class="text-danger font-weight-bold"
-                                                           id="reportReportObjection">Evet</b>
+                                                           id="reportReportObjection"></b>
                                                     </div>
                                                 </div>
 
@@ -222,7 +222,7 @@
                                                         <label for="">İtiraz Eden Birim/Kişi:</label>
                                                         <b style="display: block;"
                                                            class="text-danger font-weight-bold"
-                                                           id="reportReportObjecting">Evet</b>
+                                                           id="reportReportObjecting"></b>
                                                     </div>
                                                 </div>
 
@@ -231,7 +231,7 @@
                                                         <label for="">İtiraz Tarihi:</label>
                                                         <b style="display: block;"
                                                            class="text-danger font-weight-bold"
-                                                           id="reportReportObjectionDate">26/08/2022 12:45</b>
+                                                           id="reportReportObjectionDate"></b>
                                                     </div>
                                                 </div>
 
@@ -240,26 +240,19 @@
                                                         <label for="">Savunma:</label>
                                                         <b style="display: block; text-decoration: underline; text-align: justify;"
                                                            class="text-alternate font-weight-bold p-2"
-                                                           id="reportReportObjectionDefense">Lorem ipsum dolor sit
-                                                            amet, consectetur adipisicing elit. Aliquid asperiores
-                                                            deserunt dicta dignissimos, dolorum esse ex facere
-                                                            fugiat obcaecati quam quisquam ratione sed unde velit
-                                                            voluptatem. Fugiat maxime numquam sequi! Lorem ipsum
-                                                            dolor sit amet, consectetur adipisicing elit. Alias
-                                                            architecto autem blanditiis, corporis doloremque enim
-                                                            exercitationem id impedit ipsum laudantium, nam
-                                                            necessitatibus obcaecati quasi sunt ullam. Architecto
-                                                            debitis quisquam sunt? Lorem ipsum dolor sit amet,
-                                                            consectetur adipisicing elit. Ab, architecto distinctio
-                                                            doloribus ducimus earum error ipsum optio provident
-                                                            quidem unde? Dignissimos incidunt laborum magni quia
-                                                            reprehenderit saepe, voluptatibus. Minus, nisi? Lorem
-                                                            ipsum dolor sit amet, consectetur adipisicing elit.
-                                                            Asperiores iusto, nemo perferendis possimus quasi quia?
-                                                            Ab aliquam, culpa ducimus esse illum natus nisi, optio
-                                                            quas qui quidem sequi sit voluptatem?</b>
+                                                           id="reportReportObjectionDefense"></b>
                                                     </div>
                                                 </div>
+
+                                                @if(@$data['type'] == 'incoming')
+                                                    <div class="col-md-12">
+                                                        <button id="btnMakeAnObjection" style="width: 100%;" data-id=""
+                                                                class="mb-2 mr-2 p-3 btn-icon btn-shadow btn-outline-2x btn btn-outline-danger">
+                                                            <i class="pe-7s-light btn-icon-wrapper"> </i>İtiraz Et!
+                                                        </button>
+                                                    </div>
+                                                @endif
+
 
                                             </div>
 
