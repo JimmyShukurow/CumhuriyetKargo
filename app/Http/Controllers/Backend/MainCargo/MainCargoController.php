@@ -974,9 +974,8 @@ class MainCargoController extends Controller
                     $addServicePrice += $service->price;
                 }
 
-//                return $addServicePrice;
 
-                if ($request->ekHizmetFiyat != $addServicePrice)
+                if (doubleval($request->ekHizmetFiyat) != $addServicePrice)
                     return response()
                         ->json(['status' => -1, 'message' => 'Ek hizmet tutarları uyuşmuyor! Lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
 

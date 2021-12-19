@@ -9,12 +9,14 @@ use App\Models\Cities;
 use App\Models\HtfDamageDetails;
 use App\Models\HtfPieceDetails;
 use App\Models\HtfTransactionDetails;
+use App\Models\OfficialReportMovements;
 use App\Models\OfficialReports;
 use App\Models\Reports;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
 use App\Models\UtfImproprietyDetails;
 use Carbon\Carbon;
+use Facade\FlareClient\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -96,6 +98,9 @@ class OfficialReportController extends Controller
             ->editColumn('type', function ($key) {
                 return $key->type == 'HTF' ? '<b class="text-primary">' . $key->type . '</b>' : '<b class="text-danger">' . $key->type . '</b>';
             })
+            ->editColumn('check', function ($t) {
+                return '<span class="unselectable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+            })
             ->addColumn('detail', function ($key) {
                 return '<a href="javascript:void(0)" class="btn btn-sm btn-primary">Detay</a>';
             })
@@ -103,7 +108,7 @@ class OfficialReportController extends Controller
                 return '<span title="' . $key->description . '">' . Str::words($key->description, 3, '...') . '</span>';
             })
             ->addColumn('report_serial_no', 'backend.OfficialReports.columns.report_serial_no')
-            ->rawColumns(['confirm', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->rawColumns(['confirm', 'check', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 
@@ -131,9 +136,8 @@ class OfficialReportController extends Controller
         } else {
             $tc = TransshipmentCenters::find(Auth::user()->tc_code);
             $branch = [
-                'code' => $tc->tc_code,
                 'city' => $tc->city,
-                'name' => $tc->agency_name,
+                'name' => $tc->tc_name,
                 'type' => 'TRM.'
             ];
         }
@@ -315,6 +319,25 @@ class OfficialReportController extends Controller
         ]);
 
         if ($createHTF) {
+
+            $userInfo = DB::table('view_users_all_info')->where('id', Auth::id())->first();
+
+            if (Auth::user()->user_type == 'Acente') {
+                $agency = Agencies::find(Auth::user()->agency_code);
+                $movement = '#' . $agency->agency_code . ' - ' . $agency->agency_name . ' ŞUBE ye bağlı ';
+            } else {
+                $tc = TransshipmentCenters::find(Auth::user()->tc_code);
+                $movement = $tc->tc_name . ' TRM. ye bağlı ';
+            }
+
+            $prefix = $permission ? ' ve onaylandı.' : '.';
+            $movement .= $userInfo->name_surname . " (" . $userInfo->display_name . ') isimli kullanıcı tarafından HTF tutanağı oluşturuldu' . $prefix;
+            $movements = OfficialReportMovements::create([
+                'report_id' => $createHTF->id,
+                'movement' => $movement,
+                'causer_user_id' => Auth::id()
+            ]);
+
             foreach ($parts as $key)
                 $insertParts = HtfPieceDetails::create([
                     'htf_id' => $createHTF->id,
@@ -379,9 +402,8 @@ class OfficialReportController extends Controller
         } else {
             $tc = TransshipmentCenters::find(Auth::user()->tc_code);
             $branch = [
-                'code' => $tc->tc_code,
                 'city' => $tc->city,
-                'name' => $tc->agency_name,
+                'name' => $tc->tc_name,
                 'type' => 'TRM.'
             ];
         }
@@ -477,6 +499,24 @@ class OfficialReportController extends Controller
         ]);
 
         if ($createUTF) {
+
+            $userInfo = DB::table('view_users_all_info')->where('id', Auth::id())->first();
+
+            if (Auth::user()->user_type == 'Acente') {
+                $agency = Agencies::find(Auth::user()->agency_code);
+                $movement = '#' . $agency->agency_code . ' - ' . $agency->agency_name . ' ŞUBE ye bağlı ';
+            } else {
+                $tc = TransshipmentCenters::find(Auth::user()->tc_code);
+                $movement = $tc->tc_name . ' TRM. ye bağlı ';
+            }
+
+            $prefix = $permission ? ' ve onaylandı.' : '.';
+            $movement .= $userInfo->name_surname . " (" . $userInfo->display_name . ') isimli kullanıcı tarafından UTF tutanağı oluşturuldu' . $prefix;
+            $movements = OfficialReportMovements::create([
+                'report_id' => $createUTF->id,
+                'movement' => $movement,
+                'causer_user_id' => Auth::id()
+            ]);
 
             foreach ($request->uygunsuzlukNedenleri as $key) {
                 $control = DB::table('utf_impropriety_types')
@@ -587,6 +627,9 @@ class OfficialReportController extends Controller
             ->setRowId(function ($cargoes) {
                 return "report-item-" . $cargoes->id;
             })
+            ->editColumn('check', function ($t) {
+                return '<span class="unselectable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+            })
             ->editColumn('confirm', function ($key) {
                 if ($key->confirm == '1')
                     return '<b class="text-success">Onaylandı</b>';
@@ -605,7 +648,7 @@ class OfficialReportController extends Controller
                 return '<span title="' . $key->description . '">' . Str::words($key->description, 3, '...') . '</span>';
             })
             ->addColumn('report_serial_no', 'backend.OfficialReports.columns.report_serial_no')
-            ->rawColumns(['confirm', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->rawColumns(['confirm', 'check', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 
@@ -671,6 +714,20 @@ class OfficialReportController extends Controller
         if ($report->confirming_datetime != '')
             $report->confirming_datetime = date_format(date_create($report->confirming_datetime), 'd/m/Y H:i');
 
+        if ($report->objecting_user_id != '') {
+            $ObjectingUser = DB::table('view_users_all_info')->where('id', $report->objecting_user_id)->first();
+            if ($ObjectingUser->user_type == 'Acente')
+                $report->objecting_user = $ObjectingUser->branch_name . ' ŞUBE';
+            else if ($ObjectingUser->user_type == 'Aktarma')
+                $report->objecting_user = $ObjectingUser->branch_name . ' TRM';
+
+            $report->objecting_user .= ' / ' . $ConfirmingUser->name_surname . ' (' . $ConfirmingUser->display_name . ')';
+        } else
+            $report->objecting_user = "";
+
+        if ($report->objection_datetime != '')
+            $report->objection_datetime = date_format(date_create($report->objection_datetime), 'd/m/Y H:i');
+
 
         $report->created_at_date = date_format(date_create($report->created_at), 'd/m/Y H:i');
         $report->detecting_unit = $detectingUnit;
@@ -678,9 +735,13 @@ class OfficialReportController extends Controller
         $report->transaction_details = $transactionMadeString;
         $report->impropriety_details = $improprietyDetailsString;
 
+        $reportMovements = DB::table('official_report_movements')
+            ->select('movement', 'created_at')
+            ->where('report_id', $report->id)
+            ->get();
 
         return response()
-            ->json(['status' => 1, 'report' => $report, 'piece_details' => $pieceDetails]);
+            ->json(['status' => 1, 'report' => $report, 'piece_details' => $pieceDetails, 'movements' => $reportMovements]);
     }
 
 
@@ -770,6 +831,9 @@ class OfficialReportController extends Controller
             ->setRowId(function ($cargoes) {
                 return "report-item-" . $cargoes->id;
             })
+            ->editColumn('check', function ($t) {
+                return '<span class="unselectable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+            })
             ->editColumn('confirm', function ($key) {
                 if ($key->confirm == '1')
                     return '<b class="text-success">Onaylandı</b>';
@@ -777,6 +841,9 @@ class OfficialReportController extends Controller
                     return '<b class="text-primary">Onay Bekliyor</b>';
                 else if ($key->confirm == '-1')
                     return '<b class="text-danger">Onaylanmadı</b>';
+            })
+            ->editColumn('objection', function ($key) {
+                return $key->objection == '1' ? '<b class="text-danger">EVET</b>' : '<b class="text-dark">HAYIR</b>';
             })
             ->editColumn('type', function ($key) {
                 return $key->type == 'HTF' ? '<b class="text-primary">' . $key->type . '</b>' : '<b class="text-danger">' . $key->type . '</b>';
@@ -788,7 +855,7 @@ class OfficialReportController extends Controller
                 return '<span title="' . $key->description . '">' . Str::words($key->description, 3, '...') . '</span>';
             })
             ->addColumn('report_serial_no', 'backend.OfficialReports.columns.report_serial_no')
-            ->rawColumns(['confirm', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->rawColumns(['confirm', 'check', 'description', 'objection', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 
@@ -897,9 +964,92 @@ class OfficialReportController extends Controller
             ->editColumn('check', function ($t) {
                 return '<span class="unselectable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
             })
+            ->addColumn('report_serial_no_temp', function ($key) {
+                return $key->report_serial_no;
+            })
             ->addColumn('report_serial_no', 'backend.OfficialReports.columns.report_serial_no')
             ->rawColumns(['confirm', 'check', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
+    }
+
+    public function enterConfirmResult(Request $request)
+    {
+        $validator = Validator::make($request->all(), ['ids' => 'required', 'result' => 'required|in:yes,no,wait']);
+
+        $result = $request->result;
+        $resultText = "";
+        if ($result == 'yes') {
+            $resultText = '<b class="text-success"><u>Onaylandı</u></b>';
+            $resultVal = '1';
+        } else if ($result == 'no') {
+            $resultText = '<b class="text-danger"><u>Onaylanmadı</u></b>';
+            $resultVal = '-1';
+        } else if ($result == 'wait') {
+            $resultText = '<b class="text-primary"><u>Onay Bekliyor</u></b>';
+            $resultVal = '0';
+        }
+
+
+        if ($validator->fails())
+            return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
+
+        $ids = substr($request->ids, 0, strlen($request->ids) - 1);
+
+        $idArray = explode(',', $ids);
+
+        $unitID = "";
+        if (Auth::user()->user_type == 'Acente')
+            $unitID = Auth::user()->agency_code;
+        else if (Auth::user()->user_type == 'Aktarma')
+            $unitID = Auth::user()->tc_code;
+
+        # set movement text start
+        $userInfo = DB::table('view_users_all_info')->where('id', Auth::id())->first();
+
+        if (Auth::user()->user_type == 'Acente') {
+            $agency = Agencies::find(Auth::user()->agency_code);
+            $movement = '#' . $agency->agency_code . ' - ' . $agency->agency_name . ' ŞUBE ye bağlı ';
+        } else {
+            $tc = TransshipmentCenters::find(Auth::user()->tc_code);
+            $movement = $tc->tc_name . ' TRM. ye bağlı ';
+        }
+
+        $movement .= $userInfo->name_surname . " (" . $userInfo->display_name . ') isimli kullanıcı tutanağın onay durumunu ' . $resultText . ' olarak güncelledi.';
+        # set movement text end
+
+        $update = "";
+
+        foreach ($idArray as $key) {
+
+            $report = DB::table('view_official_reports_general_info')
+                ->where('id', $key)
+                ->where('detecting_unit_id', $unitID)
+                ->where('real_detecting_unit_type', Auth::user()->user_type)
+                ->first();
+
+            if ($report != null) {
+
+                $update = Reports::find($report->id)
+                    ->update([
+                        'confirm' => $resultVal,
+                        'confirming_user_id' => Auth::id(),
+                        'confirming_datetime' => Carbon::now()
+                    ]);
+
+                if ($update)
+                    $insertReportMovements = OfficialReportMovements::create([
+                        'report_id' => $key,
+                        'movement' => $movement
+                    ]);
+            }
+        }
+
+        if ($update)
+            return response()
+                ->json(['status' => 1]);
+        else
+            return response()
+                ->json(['status' => -1, 'message' => 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!']);
     }
 
 }

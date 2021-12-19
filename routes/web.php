@@ -104,11 +104,12 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('IncomingReports', [OfficialReportController::class, 'incomingReports'])->name('incomingReports');
         Route::get('GetIncomingReports', [OfficialReportController::class, 'getIncomingReports']);
 
-        Route::get('ManageReports', [OfficialReportController::class, 'manageReport'])
-            ->name('manageReport')
-            ->middleware('ManageReportMid');
-        Route::get('GetManageReports', [OfficialReportController::class, 'getManageReports']);
 
+        Route::group(['middleware' => ['ManageReportMid']], function () {
+            Route::get('ManageReports', [OfficialReportController::class, 'manageReport'])->name('manageReport');
+            Route::get('GetManageReports', [OfficialReportController::class, 'getManageReports']);
+            Route::post('EnterConfirmResult', [OfficialReportController::class, 'enterConfirmResult']);
+        });
 
 
         Route::post('GetReportInfo', [OfficialReportController::class, 'getReportInfo']);
