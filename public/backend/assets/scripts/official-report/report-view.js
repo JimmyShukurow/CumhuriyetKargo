@@ -157,6 +157,7 @@ function initDatatable(type = null, urlParams = null) {
             {data: 'description', name: 'description'},
             {data: 'confirm', name: 'confirm'},
             {data: 'objection', name: 'objection'},
+            {data: 'opinion', name: 'opinion'},
             {data: 'created_at', name: 'created_at'},
             {data: 'detail', name: 'detail'}
         ],
@@ -265,6 +266,8 @@ function getReportInfo(detailsID) {
             $('#reportReportSerialNumber').html(report.report_serial_no);
 
             $('#btnMakeAnObjection').attr('data-id', report.id);
+            $('#btnMakeAnOpinion').attr('data-id', report.id);
+
             $('#titleReportDate').html(report.created_at_date);
             $('#htfInvoiceNumber').html(report.cargo_invoice_number);
 
@@ -288,10 +291,17 @@ function getReportInfo(detailsID) {
             $('#reportReportConfirmingUser').html(report.confirming_user);
             $('#reportReportConfirmingDate').html(report.confirming_datetime);
             $('#reportReportCreatedAt').html(report.created_at_date);
+
             $('#reportReportObjection').html(report.objection == '1' ? 'Evet' : 'Hayır');
             $('#reportReportObjecting').html(report.objecting_user != '' ? report.objecting_user : '-');
             $('#reportReportObjectionDate').html(report.objection_datetime != '' ? report.objection_datetime : '-');
             $('#reportReportObjectionDefense').html(report.objection_defense != null ? report.objection_defense : '-');
+
+            $('#reportReportOpinion').html(report.opinion == '1' ? 'Evet' : 'Hayır');
+            $('#reportReportOpinionUser').html(report.opinion_user != '' ? report.opinion_user : '-');
+            $('#reportReportOpinionDate').html(report.opinion_datetime != '' ? report.opinion_datetime : '-');
+            $('#reportReportOpinionText').html(report.opinion_text != null ? report.opinion_text : '-');
+
 
 
             let confirm = "";

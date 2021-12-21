@@ -180,7 +180,7 @@
                             <div class="form-group position-relative">
                                 <label for="detecting_unit">Tespit Eden Birim:</label>
                                 <input type="text" id="detecting_unit" disabled
-                                       value="#{{$branch['code'] . ' ' . $branch['city'] . ' - ' . $branch['name'] . ' ' . $branch['type']}}"
+                                       value="{{ $branch['city'] . ' - ' . $branch['name'] . ' ' . $branch['type']}}"
                                        class="form-control font-weight-bold text-primary form-control-sm">
                             </div>
                         </div>

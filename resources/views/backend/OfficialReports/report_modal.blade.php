@@ -244,16 +244,64 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="col-md-3">
+
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group position-relative">
+                                                        <label for="">Görüş Bildirildi:</label>
+                                                        <b style="display: block;"
+                                                           class="text-dark font-weight-bold"
+                                                           id="reportReportOpinion"></b>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group position-relative">
+                                                        <label for="">Görüş Bildiren Birim/Kişi:</label>
+                                                        <b style="display: block;"
+                                                           class="text-dark font-weight-bold"
+                                                           id="reportReportOpinionUser"></b>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group position-relative">
+                                                        <label for="">Görüş Tarihi:</label>
+                                                        <b style="display: block;"
+                                                           class="text-dark font-weight-bold"
+                                                           id="reportReportOpinionDate"></b>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group position-relative">
+                                                        <label for="">Görüş:</label>
+                                                        <b style="display: block; text-decoration: underline; text-align: justify;"
+                                                           class="text-info font-weight-bold p-2"
+                                                           id="reportReportOpinionText"></b>
+                                                    </div>
+                                                </div>
+
                                                 @if(@$data['type'] == 'incoming')
                                                     <div class="col-md-12">
-                                                        <button id="btnMakeAnObjection" style="width: 100%;" data-id=""
+                                                        <button id="btnMakeAnObjection" style="width: 100%;"
+                                                                data-id=""
                                                                 class="mb-2 mr-2 p-3 btn-icon btn-shadow btn-outline-2x btn btn-outline-danger">
                                                             <i class="pe-7s-light btn-icon-wrapper"> </i>İtiraz Et!
                                                         </button>
                                                     </div>
+                                                @elseif(@$data['type'] == 'outgoing')
+                                                    <div class="col-md-12">
+                                                        <button id="btnMakeAnOpinion" style="width: 100%;"
+                                                                data-id=""
+                                                                class="mb-2 mr-2 p-3 btn-icon btn-shadow btn-outline-2x btn btn-outline-primary">
+                                                            <i class="pe-7s-light btn-icon-wrapper"> </i>Görüş
+                                                            Belirt!
+                                                        </button>
+                                                    </div>
                                                 @endif
-
-
                                             </div>
 
                                             <div style="overflow-y: auto; max-height: 400px; " class="cont">

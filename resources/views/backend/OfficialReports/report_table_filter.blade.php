@@ -168,6 +168,7 @@
                 <th>Açıklama</th>
                 <th>Onay</th>
                 <th>İtiraz</th>
+                <th>Görüş</th>
                 <th>Kayıt Tarihi</th>
                 <th>Detay</th>
             </tr>
@@ -187,6 +188,7 @@
                 <th>Açıklama</th>
                 <th>Onay</th>
                 <th>İtiraz</th>
+                <th>Görüş</th>
                 <th>Kayıt Tarihi</th>
                 <th>Detay</th>
             </tr>

@@ -15,9 +15,11 @@ use App\Models\Reports;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
 use App\Models\UtfImproprietyDetails;
+use App\Notifications\PasswordResetNotify;
 use Carbon\Carbon;
 use Facade\FlareClient\Report;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -104,6 +106,9 @@ class OfficialReportController extends Controller
             ->editColumn('check', function ($t) {
                 return '<span class="unselectable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
             })
+            ->editColumn('opinion', function ($key) {
+                return $key->opinion == '1' ? '<b class="text-danger">EVET</b>' : '<b class="text-dark">HAYIR</b>';
+            })
             ->addColumn('detail', function ($key) {
                 return '<a href="javascript:void(0)" id="' . $key->id . '" class="btn btn-sm btn-primary btn-detail-report">Detay</a>';
             })
@@ -111,7 +116,7 @@ class OfficialReportController extends Controller
                 return '<span title="' . $key->description . '">' . Str::words($key->description, 3, '...') . '</span>';
             })
             ->addColumn('report_serial_no', 'backend.OfficialReports.columns.report_serial_no')
-            ->rawColumns(['confirm', 'check', 'objection', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->rawColumns(['confirm', 'check', 'opinion', 'objection', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 
@@ -323,6 +328,21 @@ class OfficialReportController extends Controller
 
         if ($createHTF) {
 
+
+            if ($permission == '1') {
+                #Get Notifiable Users START
+                $notifiable_users = User::where('user_type', $createHTF->real_reported_unit_type)
+                    ->whereRaw($createHTF->real_reported_unit_type == 'Acente' ? 'agency_code = ' . $createHTF->reported_unit_id : 'tc_code =' . $createHTF->reported_unit_id)
+                    ->whereIn('role_id', $this->getNotifiableUsers())
+                    ->get();
+                #Get Notifiable Users END
+
+                ## => Notification
+                foreach ($notifiable_users as $key)
+                    User::find($key->id)
+                        ->notify(new PasswordResetNotify('Şubenize ' . $createHTF->report_serial_no . ' seri numaralı tutanak tutuldu, detaylar için tıklayın!', '/OfficialReport/IncomingReports/' . $createHTF->id));
+            }
+
             $userInfo = DB::table('view_users_all_info')->where('id', Auth::id())->first();
 
             if (Auth::user()->user_type == 'Acente') {
@@ -503,6 +523,21 @@ class OfficialReportController extends Controller
 
         if ($createUTF) {
 
+            if ($permission == '1') {
+                #Get Notifiable Users START
+                $notifiable_users = User::where('user_type', $createUTF->real_reported_unit_type)
+                    ->whereRaw($createUTF->real_reported_unit_type == 'Acente' ? 'agency_code = ' . $createUTF->reported_unit_id : 'tc_code =' . $createUTF->reported_unit_id)
+                    ->whereIn('role_id', $this->getNotifiableUsers())
+                    ->get();
+                #Get Notifiable Users END
+
+                ## => Notification
+                foreach ($notifiable_users as $key)
+                    ## => Notification
+                    User::find($key->id)
+                        ->notify(new PasswordResetNotify('Şubenize ' . $createUTF->report_serial_no . ' seri numaralı tutanak tutuldu, detaylar için tıklayın!', '/OfficialReport/IncomingReports/' . $createUTF->id));
+            }
+
             $userInfo = DB::table('view_users_all_info')->where('id', Auth::id())->first();
 
             if (Auth::user()->user_type == 'Acente') {
@@ -545,7 +580,7 @@ class OfficialReportController extends Controller
             ->json(['status' => 0, 'message' => 'İşlem başarısız oldu, lütfen daha sonra tekrar deneyiniz!']);
     }
 
-    public function outgoingReports()
+    public function outgoingReports($requestID = null)
     {
         $data['cities'] = Cities::all();
         $unit = '';
@@ -564,7 +599,7 @@ class OfficialReportController extends Controller
 
 
         GeneralLog('Giden tutanaklar sayfası görüntülendi');
-        return view('backend.OfficialReports.outgoing_reports', compact(['data', 'unit', 'agencies', 'tc']));
+        return view('backend.OfficialReports.outgoing_reports', compact(['data', 'unit', 'agencies', 'tc', 'requestID']));
     }
 
     public function getOutGoingReports(Request $request)
@@ -735,6 +770,21 @@ class OfficialReportController extends Controller
             $report->objection_datetime = date_format(date_create($report->objection_datetime), 'd/m/Y H:i');
 
 
+        if ($report->opinion_user_id != '') {
+            $OpinionUser = DB::table('view_users_all_info')->where('id', $report->opinion_user_id)->first();
+            if ($OpinionUser->user_type == 'Acente')
+                $report->opinion_user = $OpinionUser->branch_name . ' ŞUBE';
+            else if ($ObjectingUser->user_type == 'Aktarma')
+                $report->opinion_user = $OpinionUser->branch_name . ' TRM';
+
+            $report->opinion_user .= ' / ' . $OpinionUser->name_surname . ' (' . $OpinionUser->display_name . ')';
+        } else
+            $report->opinion_user = "";
+
+        if ($report->opinion_datetime != '')
+            $report->opinion_datetime = date_format(date_create($report->opinion_datetime), 'd/m/Y H:i');
+
+
         $report->created_at_date = date_format(date_create($report->created_at), 'd/m/Y H:i');
         $report->detecting_unit = $detectingUnit;
         $report->damage_details = $damageDetailsString;
@@ -751,7 +801,7 @@ class OfficialReportController extends Controller
     }
 
 
-    public function incomingReports()
+    public function incomingReports($requestID = null)
     {
         $data['cities'] = Cities::all();
         $unit = '';
@@ -770,7 +820,7 @@ class OfficialReportController extends Controller
 
 
         GeneralLog('Giden tutanaklar sayfası görüntülendi');
-        return view('backend.OfficialReports.incoming_reports', compact(['data', 'unit', 'agencies', 'tc']));
+        return view('backend.OfficialReports.incoming_reports', compact(['data', 'unit', 'agencies', 'tc', 'requestID']));
     }
 
 
@@ -857,11 +907,14 @@ class OfficialReportController extends Controller
             ->addColumn('detail', function ($key) {
                 return '<a href="javascript:void(0)" id="' . $key->id . '" class="btn btn-sm btn-primary btn-detail-report">Detay</a>';
             })
+            ->editColumn('opinion', function ($key) {
+                return $key->opinion == '1' ? '<b class="text-danger">EVET</b>' : '<b class="text-dark">HAYIR</b>';
+            })
             ->editColumn('description', function ($key) {
                 return '<span title="' . $key->description . '">' . Str::words($key->description, 3, '...') . '</span>';
             })
             ->addColumn('report_serial_no', 'backend.OfficialReports.columns.report_serial_no')
-            ->rawColumns(['confirm', 'check', 'description', 'objection', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->rawColumns(['confirm', 'check', 'opinion', 'description', 'objection', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 
@@ -964,6 +1017,9 @@ class OfficialReportController extends Controller
             ->editColumn('objection', function ($key) {
                 return $key->objection == '1' ? '<b class="text-danger">EVET</b>' : '<b class="text-dark">HAYIR</b>';
             })
+            ->editColumn('opinion', function ($key) {
+                return $key->opinion == '1' ? '<b class="text-danger">EVET</b>' : '<b class="text-dark">HAYIR</b>';
+            })
             ->addColumn('detail', function ($key) {
                 return '<a href="javascript:void(0)" id="' . $key->id . '" class="btn btn-sm btn-primary btn-detail-report">Detay</a>';
             })
@@ -977,7 +1033,7 @@ class OfficialReportController extends Controller
                 return $key->report_serial_no;
             })
             ->addColumn('report_serial_no', 'backend.OfficialReports.columns.report_serial_no')
-            ->rawColumns(['confirm', 'check', 'objection', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->rawColumns(['confirm', 'check', 'opinion', 'objection', 'description', 'report_serial_no', 'type', 'detail', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 
@@ -1028,6 +1084,8 @@ class OfficialReportController extends Controller
 
         $update = "";
 
+        $serialNos = array();
+
         foreach ($idArray as $key) {
 
             $report = DB::table('view_official_reports_general_info')
@@ -1036,7 +1094,7 @@ class OfficialReportController extends Controller
                 ->where('real_detecting_unit_type', Auth::user()->user_type)
                 ->first();
 
-            if ($report != null) {
+            if ($report != null && $report->confirm != $resultVal) {
 
                 $update = Reports::find($report->id)
                     ->update([
@@ -1045,20 +1103,57 @@ class OfficialReportController extends Controller
                         'confirming_datetime' => Carbon::now()
                     ]);
 
-                if ($update)
+                if ($update) {
                     $insertReportMovements = OfficialReportMovements::create([
                         'report_id' => $key,
                         'movement' => $movement
                     ]);
+                    # notification start #
+                    if ($resultVal == 1) {
+                        #Get Notifiable Users START
+                        $notifiable_users = User::where('user_type', $report->real_reported_unit_type)
+                            ->whereRaw($report->real_reported_unit_type == 'Acente' ? 'agency_code = ' . $report->reported_unit_id : 'tc_code =' . $report->reported_unit_id)
+                            ->whereIn('role_id', $this->getNotifiableUsers())
+                            ->get();
+                        #Get Notifiable Users END
+
+
+                        foreach ($notifiable_users as $key)
+                            ## => Notification
+                            User::find($key->id)
+                                ->notify(new PasswordResetNotify('Şubenize ' . $report->report_serial_no . ' seri numaralı tutanak tutuldu, detaylar için tıklayın!', '/OfficialReport/IncomingReports/' . $report->id));
+                    }
+                    # notification end #
+
+                    $serialNos[] = $report->report_serial_no;
+                }
             }
         }
 
-        if ($update)
+
+        if ($update) {
+            GeneralLog('Tutanaklar ' . strip_tags($resultText) . ' olarak güncellendi.', ['tutanaklar' => $serialNos, 'statü' => strip_tags($resultText)]);
+
             return response()
                 ->json(['status' => 1]);
-        else
+        } else
             return response()
                 ->json(['status' => -1, 'message' => 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!']);
+    }
+
+    public function getNotifiableUsers()
+    {
+//        [
+//            20 => 'Acente Müdürü',
+//            21  => 'Acente Bilgisayar Operatörü',
+//            29 => 'tc_director',
+//            34 => 'Operasyon Müdürü',
+//            38 => 'Aktarma Bilgisayar Operatörü',
+//            1 => 'admin',
+//            44 => 'Aktarma Müdür Yardımcısı'
+//        ]
+
+        return [20, 21, 29, 34, 38, 1, 44];
     }
 
     public function makeAnObjection(Request $request)
@@ -1132,6 +1227,21 @@ class OfficialReportController extends Controller
                 'movement' => $movement
             ]);
 
+            # notification start #
+            #Get Notifiable Users START
+            $notifiable_users = User::where('user_type', $report->real_detecting_unit_type)
+                ->whereRaw($report->real_detecting_unit_type == 'Acente' ? 'agency_code = ' . $report->detecting_unit_id : 'tc_code =' . $report->detecting_unit_id)
+                ->whereIn('role_id', $this->getNotifiableUsers())
+                ->get();
+            #Get Notifiable Users END
+
+
+            foreach ($notifiable_users as $key)
+                ## => Notification
+                User::find($key->id)
+                    ->notify(new PasswordResetNotify($report->report_serial_no . ' seri numaralı tutanağa itiraz edildi, detaylar için tıklayın.', '/OfficialReport/OutgoingReports/' . $report->id));
+            # notification end #
+
             return response()
                 ->json([
                     'status' => 1,
@@ -1147,12 +1257,109 @@ class OfficialReportController extends Controller
         return $request->all();
     }
 
+
+    public function makeAnOpinion(Request $request)
+    {
+
+        if ($request->opinion == '')
+            return response()
+                ->json([
+                    'status' => 0,
+                    'message' => 'Görüş alanı gereklidir'
+                ]);
+
+        $report = Reports::find($request->id);
+
+        if ($report == null)
+            return response()
+                ->json([
+                    'status' => 0,
+                    'message' => 'Tutanak bulunamadı!'
+                ]);
+
+
+        $report = DB::table('view_official_reports_general_info')
+            ->where('id', $report->id)->first();
+
+        $myUnitId = null;
+        if (Auth::user()->user_type == 'Acente')
+            $myUnitId = Auth::user()->agency_code;
+        else if (Auth::user()->user_type == 'Aktarma')
+            $myUnitId = Auth::user()->tc_code;
+
+        if ($report->detecting_unit_id != $myUnitId)
+            return response()
+                ->json([
+                    'status' => 0,
+                    'message' => 'Tutanak bulunamadı!'
+                ]);
+
+
+        $update = Reports::find($report->id)
+            ->update([
+                'opinion' => '1',
+                'opinion_user_id' => Auth::id(),
+                'opinion_datetime' => Carbon::now(),
+                'opinion_text' => $request->opinion
+            ]);
+
+        if ($update) {
+            GeneralLog($report->report_serial_no . ' Seri numaralı tutanağa görüş bildirildi!', [
+                'tutanak no' => $report->report_serial_no,
+                'gorus' => $request->opinion,
+            ]);
+
+
+            # set movement text start
+            $userInfo = DB::table('view_users_all_info')->where('id', Auth::id())->first();
+
+            if (Auth::user()->user_type == 'Acente') {
+                $agency = Agencies::find(Auth::user()->agency_code);
+                $movement = '#' . $agency->agency_code . ' - ' . $agency->agency_name . ' ŞUBE ye bağlı ';
+            } else {
+                $tc = TransshipmentCenters::find(Auth::user()->tc_code);
+                $movement = $tc->tc_name . ' TRM. ye bağlı ';
+            }
+
+            $movement .= $userInfo->name_surname . " (" . $userInfo->display_name . ') isimli kullanıcı tutanağa <b class="text-info">görüş bildirdi.</b> <br> <b class="text-info"> Görüş: ' . $request->opinion . '</b>';
+            # set movement text end
+
+            $insertReportMovements = OfficialReportMovements::create([
+                'report_id' => $report->id,
+                'movement' => $movement
+            ]);
+
+            # notification start #
+            #Get Notifiable Users START
+            $notifiable_users = User::where('user_type', $report->real_reported_unit_type)
+                ->whereRaw($report->real_reported_unit_type == 'Acente' ? 'agency_code = ' . $report->reported_unit_id : 'tc_code =' . $report->reported_unit_id)
+                ->whereIn('role_id', $this->getNotifiableUsers())
+                ->get();
+            #Get Notifiable Users END
+
+
+            foreach ($notifiable_users as $key)
+                ## => Notification
+                User::find($key->id)
+                    ->notify(new PasswordResetNotify($report->report_serial_no . ' seri numaralı tutanağa görüş bildirildi, detaylar için tıklayın.', '/OfficialReport/IncomingReports/' . $report->id));
+            # notification end #
+
+            return response()
+                ->json([
+                    'status' => 1,
+                    'message' => 'Görüş bildirme işlemi başarıyla gerçekleşti!'
+                ]);
+        } else
+            return response()
+                ->json([
+                    'status' => 0,
+                    'message' => 'Bir hata oluştu, lütfen daha sonra tekrar deneyiniz!'
+                ]);
+
+        return $request->all();
+    }
+
 }
-
-
-
-
-
 
 
 

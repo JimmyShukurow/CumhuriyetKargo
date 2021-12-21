@@ -2060,6 +2060,10 @@ class MainCargoController extends Controller
                     ->where('cargo_id', $data['cargo']->id)
                     ->get();
 
+                $data['part_details'] = DB::table('cargo_part_details')
+                    ->where('tracking_no', str_replace(' ', '', $data['cargo']->tracking_no))
+                    ->get();
+                
                 $data['status'] = 1;
 
                 return response()

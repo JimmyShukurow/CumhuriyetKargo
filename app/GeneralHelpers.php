@@ -302,7 +302,7 @@ function AgencyRoles()
 
 function TCRoles()
 {
-    $roles = ['Aktarma Yöneticisi', 'Okutucu', 'Aktarma Bilgisayar Operatörü'];
+    $roles = ['Aktarma Yöneticisi', 'Okutucu', 'Aktarma Bilgisayar Operatörü', 'Aktarma Müdür Yardımcısı'];
     return $roles;
 }
 

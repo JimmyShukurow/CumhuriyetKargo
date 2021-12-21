@@ -98,10 +98,12 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('UTF', [OfficialReportController::class, 'createUTF'])->name('createUTF');
         Route::post('CreateUTF', [OfficialReportController::class, 'insertUTF']);
 
-        Route::get('OutgoingReports', [OfficialReportController::class, 'outgoingReports'])->name('outgoingReports');
+        Route::get('OutgoingReports/{requestID?}', [OfficialReportController::class, 'outgoingReports'])->name('outgoingReports');
         Route::get('GetOutGoingReports', [OfficialReportController::class, 'getOutGoingReports']);
+        Route::post('MakeAnOpinion', [OfficialReportController::class, 'makeAnOpinion']);
 
-        Route::get('IncomingReports', [OfficialReportController::class, 'incomingReports'])->name('incomingReports');
+
+        Route::get('IncomingReports/{requestID?}', [OfficialReportController::class, 'incomingReports'])->name('incomingReports');
         Route::get('GetIncomingReports', [OfficialReportController::class, 'getIncomingReports']);
         Route::post('MakeAnObjection', [OfficialReportController::class, 'makeAnObjection']);
 

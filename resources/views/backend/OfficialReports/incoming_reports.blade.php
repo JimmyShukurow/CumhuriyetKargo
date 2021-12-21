@@ -55,6 +55,10 @@
     <script>
         $(document).ready(function () {
             initDatatable('reports', '/OfficialReport/GetIncomingReports');
+
+            @if($requestID != null)
+            getReportInfo('{{$requestID}}');
+            @endif
         });
     </script>
 @endsection
