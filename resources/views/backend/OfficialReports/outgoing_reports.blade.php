@@ -59,11 +59,18 @@
             @endif
         });
     </script>
+    <script>var typeOfJs = 'outgoing_reports'; </script>
+    <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
 @endsection
 
 @section('modals')
+
     @php $data = ['type' => 'outgoing'] @endphp
     @include('backend.OfficialReports.report_modal', $data)
+
+
+    @php $data = ['type' => 'outgoing_reports']; @endphp
+    @include('backend.main_cargo.main.modal_cargo_details')
 
     {{-- Standart Modal - Opinion --}}
     <div class="modal fade" id="modalOpinion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -110,5 +117,4 @@
             </div>
         </div>
     </div>
-
 @endsection

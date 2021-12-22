@@ -78,7 +78,7 @@ function initDatatable(type = null, urlParams = null) {
             [10, 25, 50, 100, 250, 500, -1],
             ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
         ],
-        order: [10, 'desc'],
+        order: [11, 'desc'],
         language: {
             "sDecimal": ",",
             "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
@@ -263,12 +263,13 @@ function getReportInfo(detailsID) {
 
             $('#titleReportTitleType').html(report.type + " " + long_name);
             $('#titleReportSerialNumber').html(report.report_serial_no);
-            $('#reportReportSerialNumber').html(report.report_serial_no);
+            $('#htfInvoiceNumber').attr('cargo_id', report.cargo_id);
 
             $('#btnMakeAnObjection').attr('data-id', report.id);
             $('#btnMakeAnOpinion').attr('data-id', report.id);
 
             $('#titleReportDate').html(report.created_at_date);
+            $('#htfInvoiceNumber').html(report.cargo_invoice_number);
             $('#htfInvoiceNumber').html(report.cargo_invoice_number);
 
             $.each(piece_details, function (key, val) {
@@ -301,7 +302,6 @@ function getReportInfo(detailsID) {
             $('#reportReportOpinionUser').html(report.opinion_user != '' ? report.opinion_user : '-');
             $('#reportReportOpinionDate').html(report.opinion_datetime != '' ? report.opinion_datetime : '-');
             $('#reportReportOpinionText').html(report.opinion_text != null ? report.opinion_text : '-');
-
 
 
             let confirm = "";
@@ -338,3 +338,8 @@ function getReportInfo(detailsID) {
         $('#ModalReportDetails').unblock();
     });
 }
+
+
+$(document).on('click', '#htfInvoiceNumber', function () {
+    cargoInfo($(this).attr('cargo_id'));
+});

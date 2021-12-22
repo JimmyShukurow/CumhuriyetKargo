@@ -36,7 +36,7 @@ class WhoIsController extends Controller
         ) {
             $users = DB::table('view_users_all_info')
                 ->select([
-                    'id', 'name_surname', 'display_name', 'email', 'phone', 'branch_city', 'branch_district', 'branch_name', 'user_type'
+                    'id', 'name_surname', 'display_name', 'email', 'phone', 'branch_city', 'branch_district', 'branch_name', 'user_type', 'agency_code',
                 ])
                 ->whereRaw($request->filled('agency') ? 'agency_code=' . $request->agency : '1 > 0')
                 ->whereRaw($request->filled('tc') ? 'tc_code=' . $request->tc : '1 > 0')
@@ -46,12 +46,16 @@ class WhoIsController extends Controller
         } else {
             $users = DB::table('view_users_all_info')
                 ->select([
-                    'id', 'name_surname', 'display_name', 'email', 'phone', 'branch_city', 'branch_district', 'branch_name', 'user_type'
+                    'id', 'name_surname', 'display_name', 'email', 'phone', 'branch_city', 'branch_district', 'branch_name', 'user_type', 'agency_code'
                 ]);
         }
         return datatables()->of($users)
-            ->setRowId(function ($user) {
-                return "user-item-" . $user->id;
+            ->setRowId(function ($key) {
+                return "user-item-" . $key->id;
+            })
+            ->editColumn('phone', function ($key) {
+                if ($key->agency_code == '1')
+                    return '(***) *** ** **';
             })
             ->addColumn('detail', 'backend.who_is_who.columns.edit')
             ->rawColumns(['detail'])
@@ -67,7 +71,7 @@ class WhoIsController extends Controller
 
         if ($data['user']->user_type == 'Acente')
             $data['director'] = DB::table('view_users_all_info')
-                ->select(['view_users_all_info.name_surname', 'view_users_all_info.display_name', 'agencies.phone'])
+                ->select(['view_users_all_info.name_surname', 'view_users_all_info.display_name', 'agencies.phone', 'view_users_all_info.agency_code'])
                 ->join('agencies', 'agencies.id', '=', 'view_users_all_info.id')
                 ->where('view_users_all_info.agency_code', $data['user']->agency_code)
                 ->first();
@@ -79,6 +83,7 @@ class WhoIsController extends Controller
                 ->where('transshipment_centers.id', $data['user']->tc_code)
                 ->first();
 
+
         $data['region'] = DB::table('regional_directorates')
             ->select(['regional_directorates.name'])
             ->join('regional_districts', 'regional_districts.region_id', '=', 'regional_directorates.id')
@@ -86,6 +91,8 @@ class WhoIsController extends Controller
             ->where('regional_districts.district', $data['user']->branch_district)
             ->first();
 
+        if ($data['user']->agency_code == '1')
+            $data['user']->phone = '(***) *** ** **';
 
         $data['user_log'] = DB::table('activity_log')
             ->where('causer_id', $request->user)
@@ -142,6 +149,12 @@ class WhoIsController extends Controller
             ->addColumn('tc_name', function ($agency) {
                 return $agency->tc_name != '' ? "$agency->tc_name  T.M." : "";
             })
+            ->editColumn('phone', function ($key) {
+                if ($key->id == 1)
+                    return '';
+                else
+                    return $key->phone;
+            })
             ->addColumn('edit', 'backend.who_is_who.columns.agencies_detail')
             ->rawColumns(['edit'])
             ->editColumn('city', function ($agency) {
@@ -164,6 +177,11 @@ class WhoIsController extends Controller
             ->orderBy('display_name', 'asc')
             ->get();
 
+        if ($agency_code == 1) {
+            foreach ($data['employees'] as $key)
+                $key->phone = '(***) *** ** **';
+        }
+
         return response()->json($data, 200);
     }
 
@@ -184,10 +202,10 @@ class WhoIsController extends Controller
 
         return DataTables::of($agencies)
             ->editColumn('tc_name', function ($agency) {
-                return $agency->tc_name   . " TRM.";
+                return $agency->tc_name . " TRM.";
             })
             ->editColumn('region_name', function ($agency) {
-                return $agency->region_name   . " BM.";
+                return $agency->region_name . " BM.";
             })
             ->addColumn('edit', 'backend.who_is_who.columns.tc_detail')
             ->rawColumns(['edit'])
@@ -210,13 +228,13 @@ class WhoIsController extends Controller
             ->first();
 
         $data['assistant_director'] = DB::table('users')
-        ->select(['name_surname', 'phone', 'email'])
-        ->where('id',$data['transshipment']->tc_assistant_director_id)
-        ->first();
+            ->select(['name_surname', 'phone', 'email'])
+            ->where('id', $data['transshipment']->tc_assistant_director_id)
+            ->first();
 
         $data['agency_worker'] = DB::table('view_agency_region')
-        ->where('tc_id',$data['transshipment']->id)
-        ->get();
+            ->where('tc_id', $data['transshipment']->id)
+            ->get();
 
         return response()->json($data, 200);
     }

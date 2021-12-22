@@ -523,9 +523,9 @@
                                            for="add-service-tahsilatli">Tahsilatlı Kargo
                                     </label>
                                 </div>
-                                <img id="loginLogo" class="loginLogo" src="/backend/login_assets/CKG_Sis_Gif.gif"
-                                     alt="branding logo" width="100%"
-                                     style="max-width:400px; position: absolute; bottom: 0; left: 0;">
+                                {{--                                <img id="loginLogo" class="loginLogo" src="/backend/login_assets/CKG_Sis_Gif.gif"--}}
+                                {{--                                     alt="branding logo" width="100%"--}}
+                                {{--                                     style="max-width:400px; position: absolute; bottom: 0; left: 0;">--}}
                             </div>
 
                             <div style="padding: 0 40px; border: 2px solid #ce2427; border-left: 0px solid #ce2427;"
@@ -642,7 +642,6 @@
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
     <script src="/backend/assets/scripts/main-cargo/main-cargo.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
-    {{--    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>--}}
 @endsection
 
 @section('modals')

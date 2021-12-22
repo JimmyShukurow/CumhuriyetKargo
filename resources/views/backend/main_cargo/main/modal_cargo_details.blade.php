@@ -1,5 +1,5 @@
 <!-- Large modal => Modal Cargo Details -->
-<div class="modal fade bd-example-modal-lg" id="ModalCargoDetails" tabindex="-1" role="dialog"
+<div class="modal fade bd-example-modal-lg" id="ModalCargoDetails" tabindex="22" role="dialog"
      aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xxl">
         <div class="modal-content">

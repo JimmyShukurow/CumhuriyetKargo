@@ -63,6 +63,7 @@ function getCargo() {
             $('#piecesBtn').prop('disabled', true);
             general_cargo = null;
             piecesSelected = false;
+            $('#cargo_info').prop('disabled', true);
         } else if (response.status == 1) {
 
             general_cargo = response;
@@ -74,6 +75,8 @@ function getCargo() {
             let departure_tc = response.departure_tc;
             let part_details = response.part_details;
 
+            $('#cargo_info').attr('cargo_id', cargo.id);
+            $('#cargo_info').prop('disabled', false);
 
             $('b#invoice_number').text(cargo.invoice_number);
             $('b#tracking_no').text(cargo.tracking_no);
@@ -142,6 +145,7 @@ function getCargo() {
 
     }).error(function (jqXHR, response) {
         ajaxError(jqXHR.status);
+        $('#cargo_info').prop('disabled', true);
     }).always(function () {
         $('#rowCargoInfo').unblock();
     });
@@ -442,7 +446,9 @@ $("#HtfCreateForm").submit(function (e) {
 });
 
 
-
+$('#cargo_info').click(function () {
+    cargoInfo($(this).attr('cargo_id'));
+});
 
 
 

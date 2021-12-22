@@ -57,6 +57,9 @@
             initDatatable('manage', '/OfficialReport/GetManageReports');
         });
     </script>
+
+    <script>var typeOfJs = 'create_htf'; </script>
+    <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
 @endsection
 
 
@@ -65,5 +68,9 @@
 @section('modals')
     @php $data = ['name' => 'nikolatesla'] @endphp
     @include('backend.OfficialReports.report_modal', $data)
+
+    @php $data = ['type' => 'create_htf']; @endphp
+    @include('backend.main_cargo.main.modal_cargo_details')
+
 @endsection
 

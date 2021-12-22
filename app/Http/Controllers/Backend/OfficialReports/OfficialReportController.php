@@ -730,6 +730,7 @@ class OfficialReportController extends Controller
         $transactionMadeString = "";
         $pieceDetails = [];
         if ($report->type == 'HTF') {
+
             $pieceDetails = HtfPieceDetails::where('htf_id', $report->id)->select('part_no')->get();
             $damageDetails = HtfDamageDetails::where('htf_id', $report->id)->get();
 

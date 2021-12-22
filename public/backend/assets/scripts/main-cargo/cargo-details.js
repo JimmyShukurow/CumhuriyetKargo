@@ -1,3 +1,5 @@
+appointmentID = null;
+
 // parse a date in yyyy-mm-dd format
 function dateFormat(date) {
     date = String(date);
@@ -133,7 +135,7 @@ function cargoInfo(user) {
                 $('#ModalCargoDetails').modal('hide');
                 $('#CargoesTable').DataTable().ajax.reload();
                 return false;
-            }, 250);
+            }, 350);
         } else if (response.status == 1) {
 
             let cargo = response.cargo;

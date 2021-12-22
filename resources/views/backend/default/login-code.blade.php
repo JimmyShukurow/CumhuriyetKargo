@@ -72,7 +72,7 @@
                                     </div>
 
                                     <h6 class="mt-1 mb-0 opacity-8" style="color: #000;">
-                                        <span>Sn. <b>{{$user->name_surname}}</b>, <br> sisteme giriş yapabilmek için <b>{{$user->phone}}</b> numaralı cep telefonunuza göndermiş olduğumuz 6 haneli güvenlik kodunu giriniz.</span>
+                                        <span>Sn. <b>{{$user->name_surname}}</b>, <br> sisteme giriş yapabilmek için <b>(***) *** {{substr($user->phone,9 ,6)}}</b> numaralı cep telefonunuza göndermiş olduğumuz 6 haneli güvenlik kodunu giriniz.</span>
                                     </h6>
                                 </div>
                             </div>

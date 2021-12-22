@@ -334,7 +334,6 @@
 @section('js')
 
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
-    <script src="/backend/assets/scripts/official-report/htf-create.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
 
 
@@ -358,20 +357,18 @@
                     $(element).addClass("is-valid").removeClass("is-invalid");
                 }
             });
-
-
         });
-
     </script>
 
-    <script>
-
-
-    </script>
+    <script>var typeOfJs = 'create_htf'; </script>
+    <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
+    <script src="/backend/assets/scripts/official-report/htf-create.js"></script>
 @endsection
 
-
 @section('modals')
+
+    @php $data = ['type' => 'create_htf']; @endphp
+    @include('backend.main_cargo.main.modal_cargo_details')
 
     <!-- Large modal => Modal Barcode -->
     <div class="modal fade bd-example-modal-lg" id="ModalPartDetails" tabindex="-1" role="dialog"
