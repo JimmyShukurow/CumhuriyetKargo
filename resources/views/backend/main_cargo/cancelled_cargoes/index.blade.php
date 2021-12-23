@@ -274,10 +274,13 @@
     <script src="/backend/assets/scripts/main-cargo/cancelled-cargoes.js"></script>
     <script>var typeOfJs = 'cancelled_cargo'; </script>
     <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
+    <script src="/backend/assets/scripts/official-report/report-view.js"></script>
 @endsection
 
 
 @section('modals')
     @php $data = ['type' => 'cancelled_cargo']; @endphp
     @include('backend.main_cargo.main.modal_cargo_details')
+
+    @include('backend.OfficialReports.report_modal', $data)
 @endsection

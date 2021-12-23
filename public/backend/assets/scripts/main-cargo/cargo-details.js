@@ -116,8 +116,10 @@ function cargoInfo(user) {
     let url = '/MainCargo/AjaxTransactions/GetCargoInfo';
     if (typeOfJs == 'cancelled_cargo')
         url = '/MainCargo/AjaxTransactions/GetCancelledCargoInfo';
-    else if (typeOfJs = 'admin_cancel_cargo')
+    else if (typeOfJs == 'admin_cancel_cargo')
         url = '/MainCargo/AjaxTransactions/GetAllCargoInfo';
+    else if (typeOfJs == 'main_cargo')
+        url = '/MainCargo/AjaxTransactions/GetCargoInfo';
 
 
     $.ajax(url, {
@@ -151,6 +153,7 @@ function cargoInfo(user) {
             let movements = response.movements;
             let cancellations = response.cancellation_applications;
             let part_details = response.part_details;
+            let official_reports = response.official_reports;
 
             $('#titleTrackingNo').text(cargo.tracking_no);
 
@@ -367,6 +370,58 @@ function cargoInfo(user) {
                 );
             }
 
+            $('#tbodyCargoOfficialReports').html('');
+
+            if (official_reports.length == 0)
+                $('#tbodyCargoOfficialReports').html('<tr><td colspan="8" class="font-weight-bold text-center text-danger">Burda hiç veri yok.</td></tr>');
+            else {
+
+                $.each(official_reports, function (key, val) {
+
+                    let background = "";
+                    if (val['id'] == appointmentID) {
+                        background = "bg-warning";
+                        $('#cancelAppReason').val(val['application_reason']);
+                        $('#cancelAppResult').val('' + val['confirm'] + '');
+                        $('#canelAppResultDescription').val(val['description']);
+                    }
+
+                    val['approval_at'] = val['approval_at'] == null ? '' : val['approval_at'];
+                    val['confirming_user_name_surname'] = val['confirming_user_name_surname'] == null ? '' : val['confirming_user_name_surname'];
+                    val['confirming_user_display_name'] = val['confirming_user_display_name'] == null ? '' : ' (' + val['confirming_user_display_name'] + ')';
+
+                    let confirm_status = '';
+
+                    if (val['confirm'] == '0')
+                        confirm_status = '<b class="text-info">' + 'Onay Bekliyor' + '</b>';
+                    else if (val['confirm'] == '1')
+                        confirm_status = '<b class="text-success">' + 'Onaylandı' + '</b>';
+                    else if (val['confirm'] == '-1')
+                        confirm_status = '<b class="text-danger">' + 'Onaylanmadı' + '</b>';
+
+                    if (val['description'] == null)
+                        val['description'] = "";
+
+                    if (val['type'] == 'HTF')
+                        report_type = '<b class="text-primary">HTF</b>'
+                    else if (val['type'] == 'UTF')
+                        report_type = '<b class="text-danger">UTF</b>'
+
+                    $('#tbodyCargoOfficialReports').append(
+                        '<tr>' +
+                        '<td style="text-decoration: underline; cursor: pointer;" class="font-weight-bold cargo-report-serial-no" report-id="' + val['id'] + '"><b>' + val['report_serial_no'] + '</b></td>' +
+                        '<td class="font-weight-bold">' + report_type + '</td>' +
+                        '<td title="' + val['detecting_unit'] + '">' + val['detecting_unit'] + '</td>' +
+                        '<td>' + val['name_surname'] + '</td>' +
+                        '<td title="' + val['reported_unit'] + '">' + val['reported_unit'] + '</td>' +
+                        '<td class="font-weight-bold" title="' + val['description'] + '">' + val['description'].substring(0, 20) + '</td>' +
+                        '<td class="font-weight-bold text-center">' + confirm_status + '</td>' +
+                        '<td class="font-weight-bold text-center">' + val['created_at'] + '</td>' +
+                        +'</tr>'
+                    )
+                });
+            }
+
 
             $('#btnCargoPrintBarcode').attr('tracking-no', cargo.id);
 
@@ -383,3 +438,7 @@ function cargoInfo(user) {
 
     $('#ModalAgencyDetail').modal();
 }
+
+$(document).on('dblclick', '.cargo-report-serial-no', function () {
+    getReportInfo($(this).attr('report-id'));
+});

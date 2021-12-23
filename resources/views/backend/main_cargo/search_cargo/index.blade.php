@@ -275,10 +275,14 @@
     <script src="/backend/assets/scripts/main-cargo/search-cargo.js"></script>
     <script>var typeOfJs = 'search_cargo'; </script>
     <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
+
+    <script src="/backend/assets/scripts/official-report/report-view.js"></script>
 @endsection
 
 
 @section('modals')
     @php $data = ['type' => 'search_cargo']; @endphp
     @include('backend.main_cargo.main.modal_cargo_details')
+
+    @include('backend.OfficialReports.report_modal', $data)
 @endsection

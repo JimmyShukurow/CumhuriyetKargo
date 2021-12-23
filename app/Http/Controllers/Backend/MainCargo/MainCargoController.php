@@ -1739,6 +1739,10 @@ class MainCargoController extends Controller
                     ->where('cargo_id', $data['cargo']->id)
                     ->get();
 
+                $data['official_reports'] = DB::table('view_official_reports_general_info')
+                    ->whereRaw("( cargo_invoice_number ='" . $data['cargo']->invoice_number . "' or  description like '%" . $data['cargo']->invoice_number . "%')")
+                    ->get();
+
                 $data['status'] = 1;
 
                 return response()
@@ -2063,7 +2067,11 @@ class MainCargoController extends Controller
                 $data['part_details'] = DB::table('cargo_part_details')
                     ->where('tracking_no', str_replace(' ', '', $data['cargo']->tracking_no))
                     ->get();
-                
+
+                $data['official_reports'] = DB::table('view_official_reports_general_info')
+                    ->whereRaw("( cargo_invoice_number ='" . $data['cargo']->invoice_number . "' or  description like '%" . $data['cargo']->invoice_number . "%')")
+                    ->get();
+
                 $data['status'] = 1;
 
                 return response()
@@ -2168,6 +2176,9 @@ class MainCargoController extends Controller
 
                 $data['part_details'] = $newPartDetais;
 
+                $data['official_reports'] = DB::table('view_official_reports_general_info')
+                    ->whereRaw("( cargo_invoice_number ='" . $data['cargo']->invoice_number . "' or  description like '%" . $data['cargo']->invoice_number . "%')")
+                    ->get();
 
                 $data['status'] = 1;
 

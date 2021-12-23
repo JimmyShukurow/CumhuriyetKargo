@@ -524,8 +524,11 @@
     <script src="/backend/assets/scripts/JsBarcode.js"></script>
     <script src="/backend/assets/scripts/QrCode.min.js"></script>
     <script src="/backend/assets/scripts/main-cargo/index.js"></script>
-    <script>var typeOfJs = 'index_cargo'; </script>
+    <script>var typeOfJs = 'main_cargo'; </script>
     <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
+
+    <script src="/backend/assets/scripts/official-report/report-view.js"></script>
+
 @endsection
 
 @section('modals')
@@ -533,4 +536,5 @@
     @php $data = ['type' => 'main_cargo']; @endphp
     @include('backend.main_cargo.main.modal_cargo_details')
 
+    @include('backend.OfficialReports.report_modal', $data)
 @endsection

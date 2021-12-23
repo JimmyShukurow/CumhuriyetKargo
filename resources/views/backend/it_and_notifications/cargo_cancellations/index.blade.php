@@ -611,12 +611,17 @@
 
     <script>var typeOfJs = 'admin_cancel_cargo'; </script>
     <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
+
+    <script src="/backend/assets/scripts/official-report/report-view.js"></script>
+
 @endsection
 
 @section('modals')
 
     @php $data = ['type' => 'admin_cancel_cargo']; @endphp
     @include('backend.main_cargo.main.modal_cargo_details')
+
+    @include('backend.OfficialReports.report_modal', $data)
 
     <!-- Large modal => Modal Set App Result -->
     <div class="modal fade bd-example-modal-lg" id="ModalSetAppResult" tabindex="-1" role="dialog"
