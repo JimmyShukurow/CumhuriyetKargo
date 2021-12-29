@@ -125,7 +125,9 @@
                         <th>İlçe</th>
                         <th>Mahalle</th>
                         <th>Bölge Tipi</th>
+                        <th>Uzaklık</th>
                         <th>Dağıtan</th>
+                        <th>İşlem</th>
                         <th>İşlem</th>
                     </tr>
                     </thead>
@@ -138,7 +140,9 @@
                         <th>İlçe</th>
                         <th>Mahalle</th>
                         <th>Bölge Tipi</th>
+                        <th>Uzaklık</th>
                         <th>Dağıtan</th>
+                        <th>İşlem</th>
                         <th>İşlem</th>
                     </tr>
                     </tfoot>
@@ -492,7 +496,9 @@
                     {data: 'district', name: 'district'},
                     {data: 'neighborhood', name: 'neighborhood'},
                     {data: 'area_type', name: 'area_type'},
+                    {data: 'distance', name: 'distance'},
                     {data: 'agency_name', name: 'agency_name'},
+                    {data: 'remove', name: 'remove'},
                     {data: 'edit', name: 'edit'}
                 ],
                 scrollY: "400px",
@@ -529,6 +535,61 @@
                 $('#cb-select-all-ab').prop('checked', false);
             }
         }, 450));
+
+        $(document).on('click', '.edit-location', function () {
+            let id = $(this).attr('id')
+
+            $('#ModalEditLocation').modal();
+
+
+            $('#ModalEditLocation').block({
+                message: $('<div class="loader mx-auto">\n' +
+                    '                            <div class="ball-grid-pulse">\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                            </div>\n' +
+                    '                        </div>')
+            });
+            $('.blockUI.blockMsg.blockElement').css('width', '100%');
+            $('.blockUI.blockMsg.blockElement').css('border', '0px');
+            $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+            $.ajax('/Operation/GetLocationInfo', {
+                method: 'POST',
+                data: {
+                    _token: token,
+                    id: id
+                }
+            }).done(function (response) {
+
+                if (response.status == '1') {
+
+                    let location = response.location
+                    $('#editLocationCity').val(location.city)
+                    $('#editLocationDistrict').val(location.district)
+                    $('#editLocationNeighborhood').val(location.neighborhood)
+                    // $('#editLocationAgency').val('#' + location.agency_name + " - " + location.agency_name)
+
+
+                } else if (response.status == '0') {
+                    ToastMessage('error', response.message, 'HATA!')
+                }
+
+            }).error(function (jqXHR, response) {
+                ajaxError(jqXHR.status);
+            }).always(function () {
+                $('#ModalEditLocation').unblock();
+            });
+
+
+        })
 
     </script>
 @endsection
@@ -597,4 +658,69 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit Location Modal -->
+    <div class="modal fade" id="ModalEditLocation" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalCityDistrictsTitle">Mahalle Düzenleyin</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="modalBodyTCDistricts" class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="editLocationCity">İl:</label>
+                                <input type="text" id="editLocationCity" class="form-control form-control-sm" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="editLocationDistrict">İlçe:</label>
+                                <input type="text" id="editLocationDistrict" class="form-control form-control-sm"
+                                       readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="editLocationNeighborhood">Mahalle:</label>
+                                <input type="text" id="editLocationNeighborhood" class="form-control form-control-sm"
+                                       readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="editLocationAgency">Şube:</label>
+                                <input type="text" id="editLocationAgency" class="form-control form-control-sm"
+                                       readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="position-relative form-group">
+                                <label for="editLocationDistance">Mesafe:</label>
+                                <input type="text" id="editLocationDistance" class="form-control form-control-sm">
+                                <small class="text-danger">Zorunlu Alan</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">İptal Et</button>
+                    <button type="button" class="btn btn-primary" id="saveEditLocation">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 @endsection

@@ -88,6 +88,8 @@ $(document).ready(function () {
             {data: 'tc_name', name: 'tc_name'},
             {data: 'name_surname', name: 'name_surname'},
             {data: 'phone', name: 'phone'},
+            {data: 'phone2', name: 'phone2'},
+            {data: 'maps_link', name: 'maps_link'},
             {data: 'agency_code', name: 'agency_code'},
             {data: 'edit', name: 'edit'},
         ],
@@ -184,7 +186,6 @@ function agencyPost(agency_id) {
                 let email = value['email'];
                 let character = email.indexOf('@');
                 email = email.substring(0, character) + "@cumh...com.tr";
-
 
                 $('#tbodyEmployees').append(
                     '<tr>' +

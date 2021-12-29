@@ -17,7 +17,8 @@
                         </i>
                     </div>
                     <div> Transfer Merkezleri
-                        <div class="page-title-subheading">Bu modül üzerinden sistemdeki tüm transfer merkezlerini ve transfer merkezlerine bağlı acenteleri görüntüleyebilirsiniz.
+                        <div class="page-title-subheading">Bu modül üzerinden sistemdeki tüm transfer merkezlerini ve
+                            transfer merkezlerine bağlı acenteleri görüntüleyebilirsiniz.
                         </div>
                     </div>
                 </div>
@@ -35,7 +36,7 @@
             <div class="card-body">
 
                 <table id="AgenciesTable"
-                    class="align-middle mb-0 table Table30Padding table-borderless table-striped NikolasDataTable">
+                       class="align-middle mb-0 table Table30Padding table-borderless table-striped NikolasDataTable">
                     <thead>
                     <tr>
                         <th>İl/İlçe</th>
@@ -69,7 +70,7 @@
 @section('modals')
     <!-- Large modal -->
     <div class="modal fade bd-example-modal-lg" id="ModalAgencyDetail" tabindex="-1" role="dialog"
-        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -86,7 +87,7 @@
                             <div class="dropdown-menu-header">
                                 <div class="dropdown-menu-header-inner bg-dark">
                                     <div class="menu-header-image "
-                                        style="background-image: url('/backend/assets/images/dropdown-header/abstract10.jpg');">
+                                         style="background-image: url('/backend/assets/images/dropdown-header/abstract10.jpg');">
                                     </div>
                                     <div class="menu-header-content btn-pane-right">
                                         <div class="avatar-icon-wrapper mr-3 avatar-icon-xl btn-hover-shine">
@@ -108,7 +109,7 @@
 
                                         <div style="overflow-x: scroll" class="cont">
                                             <table style="white-space: nowrap" id="AgencyCard"
-                                                class="TableNoPadding table table-bordered table-striped">
+                                                   class="TableNoPadding table table-bordered table-striped">
                                                 <thead>
                                                 <tr>
                                                     <th class="text-center" colspan="2" id="trmheader"></th>
@@ -117,43 +118,41 @@
                                                 <tbody>
                                                 <tr>
                                                     <td class="static">İl İlçe</td>
-                                                    <td id="cityDistrict">İstanbul/Bağcılar</td>
+                                                    <td id="cityDistrict"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Aktarma Adı</td>
-                                                    <td id="transshippingname">Mecidiye Köy</td>
+                                                    <td id="transshippingname"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">AktarmaTipi</td>
-                                                    <td id="transshippingtype">Adres Satırı</td>
-                                                </tr>                                                           
+                                                    <td id="transshippingtype"></td>
+                                                </tr>
                                                 <tr>
                                                     <td class="static">Aktarma Müdürü</td>
-                                                    <td id="directorname">İkitelli Transfer Merkezi</td>
+                                                    <td id="directorname"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Aktarma Müdürü İletişim</td>
-                                                    <td data-inputmask="'mask': '(999) 999 99 99'" id="directphone">535 427 68
-                                                        24
-                                                    </td>
+                                                    <td data-inputmask="'mask': '(999) 999 99 99'"
+                                                        id="directphone"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Aktarma Müdürü Email</td>
-                                                    <td id="directemail">Aktif</td>
-                                                </tr>                                           
+                                                    <td id="directemail"></td>
+                                                </tr>
                                                 <tr>
                                                     <td class="static">Aktarma Müdür Yardımcısı</td>
-                                                    <td id="assistantdirectorname">Aktif</td>
+                                                    <td id="assistantdirectorname"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Aktarma Müdür Yardımcısı İletişim</td>
-                                                    <td data-inputmask="'mask': '(999) 999 99 99'" id="assistantdirectorphone">535 427 68
-                                                        24
-                                                    </td>
+                                                    <td data-inputmask="'mask': '(999) 999 99 99'"
+                                                        id="assistantdirectorphone"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Aktarma Müdür Yardımcısı Email</td>
-                                                    <td id="assistantdirectoremail">021234</td>
+                                                    <td id="assistantdirectoremail"></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -162,7 +161,8 @@
                                         <h4 class="mt-3">Aktarmaya Bağlı Şubeler</h4>
 
                                         <div style="overflow: auto; max-height: 150px;" class="cont">
-                                            <table style="white-space: nowrap" id="TableEmployees" class="Table20Padding  table table-bordered table-striped mt-3">
+                                            <table style="white-space: nowrap" id="TableEmployees"
+                                                   class="Table20Padding  table table-bordered table-striped mt-3">
                                                 <thead>
                                                 <tr>
                                                     <th>Şube Kodu</th>

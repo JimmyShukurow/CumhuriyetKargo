@@ -63,6 +63,7 @@
                         <th>İlçe</th>
                         <th>Mahalle</th>
                         <th>Bölge Tipi</th>
+                        <th>Uzaklık</th>
                         <th>Kayıt Tarihi</th>
                     </tr>
                     </thead>
@@ -73,6 +74,7 @@
                             <td>{{$key->district}}</td>
                             <td>{{$key->neighborhood}}</td>
                             <td>{{$key->area_type}}</td>
+                            <td>{{$key->distance}} KM</td>
                             <td>{{$key->created_at}}</td>
                         </tr>
                     @endforeach
@@ -83,6 +85,7 @@
                         <th>İlçe</th>
                         <th>Mahalle</th>
                         <th>Bölge Tipi</th>
+                        <th>Uzaklık</th>
                         <th>Kayıt Tarihi</th>
                     </tr>
                     </tfoot>

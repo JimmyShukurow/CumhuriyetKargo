@@ -1111,7 +1111,7 @@ class MainCargoController extends Controller
 //                return $request->hizmetUcreti . '=>' . $serviceFee;
                 if (!(compareFloatEquality($request->hizmetUcreti, $serviceFee)))
                     return response()
-                        ->json(['status' => -1, 'message' => 'Hizmet tutarları eşleşmiyor, lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
+                        ->json(['status' => -1, 'message' => 'Hizmet tutarları eşleşmiyor,x lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
 
 
                 # evrensel posta hizmetleri ücreti start
@@ -2329,7 +2329,6 @@ class MainCargoController extends Controller
                 }
             }
         }
-
 
         if ($currentDistrict) {
             $district = Districts::find($currentDistrict);

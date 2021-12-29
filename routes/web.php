@@ -114,9 +114,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
             Route::post('EnterConfirmResult', [OfficialReportController::class, 'enterConfirmResult']);
         });
 
-
         Route::post('GetReportInfo', [OfficialReportController::class, 'getReportInfo']);
-
     });
 
 
@@ -153,7 +151,6 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     });
     # ==> Services Fee Transaction END
 
-
     # ==> Sender Currents Transactions START
     Route::group(['middleware' => 'SenderCurrentsMid'], function () {
         Route::group(['prefix' => 'SenderCurrents', 'as' => 'senderCurrents.'], function () {
@@ -164,7 +161,6 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::resource('SenderCurrents', SenderCurrentController::class);
     });
     # ==> Sender Currents Transactions END
-
 
     Route::group(['prefix' => '/Theme', 'middleware' => ['ThemeMid']], function () {
         Route::get('/', [ThemeController::class, 'index'])->name('theme.Index');

@@ -156,13 +156,14 @@ class WhoIsController extends Controller
                     return $key->phone;
             })
             ->addColumn('edit', 'backend.who_is_who.columns.agencies_detail')
-            ->rawColumns(['edit'])
             ->editColumn('city', function ($agency) {
                 return $agency->city . '/' . $agency->district;
             })
+            ->addColumn('maps_link', 'backend.agencies.columns.maps_link')
             ->editColumn('created_at', function ($agency) {
                 return Carbon::parse($agency->created_at)->format('Y-m-d H:i:s');
             })
+            ->rawColumns(['maps_link', 'edit'])
             ->make(true);
     }
 

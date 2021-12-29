@@ -188,10 +188,13 @@ class LocalLocationController extends Controller
             ->editColumn('area_type', function ($location) {
                 return $location->area_type == 'AB' ? '<b class="text-primary">Ana Bölge</b>' : '<b class="text-alternate">Mobil Bölge</b>';
             })
-            ->addColumn('edit', function ($location) {
-                return '<a class="text-danger font-weight-bold trash" from="location" id="' . $location->id . '" href="javascript:void(0)">Kaldır</a>';
+            ->addColumn('remove', function ($location) {
+                return '<a style="text-decoration:underline;" class="text-danger font-weight-bold trash" from="location" id="' . $location->id . '" href="javascript:void(0)">Kaldır</a>';
             })
-            ->rawColumns(['edit', 'area_type'])
+            ->addColumn('edit', function ($location) {
+                return '<a style="text-decoration:underline;" class="text-primary font-weight-bold edit-location" id="' . $location->id . '" href="javascript:void(0)">Düzenle</a>';
+            })
+            ->rawColumns(['edit', 'remove', 'area_type'])
             ->make(true);
     }
 
@@ -208,7 +211,6 @@ class LocalLocationController extends Controller
         $data['agency_quantity'] = Agencies::count();
         $data['total_districts'] = $districts = Districts::count();
         $data['total_neighborhood'] = $neighborhoods = Neighborhoods::count();
-
 
 
         $data['local_location_completed_agencies'] = DB::table('local_locations')
@@ -252,7 +254,6 @@ class LocalLocationController extends Controller
             ->orderByDesc('location_count')
             ->limit(15)
             ->get();
-
 
 
         GeneralLog('Lokasyon Rapor (Mahalli) görüntülendi.');
@@ -350,6 +351,24 @@ class LocalLocationController extends Controller
 
         GeneralLog('Acente dağıtım alanlarım sayfası görüntülendi');
         return view('backend.operation.local_location.agency_locations', compact(['agency', 'locations']));
+    }
+
+    public function getLocationInfo(Request $request)
+    {
+        $id = $request->id;
+
+        $location = DB::table('local_locations')
+            ->select(['local_locations.*', 'agencies.agency_name', 'agencies.agency_code'])
+            ->join('agencies', 'agencies.id', '=', 'local_locations.agency_code')
+            ->where('local_locations.id', $id)
+            ->first();
+
+        if ($location == null)
+            return response()
+                ->json(['status' => 0, 'message' => 'Lokasyon bulunamadı!']);
+
+        return response()
+            ->json(['status' => 1, 'location' => $location]);
     }
 }
 

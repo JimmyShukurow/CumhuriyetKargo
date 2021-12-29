@@ -2,6 +2,7 @@
 
 @push('css')
     <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
+    <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 @endpush
 
@@ -88,13 +89,24 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="position-relative ">
                                     <label for="gondericiAdi">Göndericinin Adı:</label>
                                 </div>
                                 <div class="input-group">
                                     <select class="form-control" name="" style="width:100%;" id="gondericiAdi">
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="position-relative ">
+                                    <label for="gondericiAdi">Gönderici Telefon:</label>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" id="gondericiTelefon" data-inputmask="'mask': '(999) 999 99 99'"
+                                           placeholder="(___) ___ __ __"
+                                           class="form-control input-mask-trigger form-control-sm" im-insert="true">
                                 </div>
                             </div>
                         </div>

@@ -80,13 +80,13 @@
                         <div class="col-md-2">
                             <label for="phone">Telefon</label>
                             <input name="phone" id="phone" data-inputmask="'mask': '(999) 999 99 99'"
-                            placeholder="(___) ___ __ __" type="text" class="form-control input-mask-trigger">
+                                   placeholder="(___) ___ __ __" type="text" class="form-control input-mask-trigger">
                         </div>
 
                         <div class="col-md-2">
                             <label for="phone">Şube Kodu</label>
-                            <input name="phone" id="agencyCode" data-inputmask="'mask': '999999'"
-                            placeholder="______" type="text" class="form-control niko-filter input-mask-trigger">
+                            <input name="phone" id="agencyCode" data-inputmask="'mask': '9999'"
+                                   placeholder="____" type="text" class="form-control niko-filter input-mask-trigger">
                         </div>
                     </div>
 
@@ -113,7 +113,7 @@
             <div class="card-body">
 
                 <table id="AgenciesTable"
-                    class="align-middle mb-0 table Table30Padding table-borderless table-striped NikolasDataTable">
+                       class="align-middle mb-0 table Table30Padding table-borderless table-striped NikolasDataTable">
                     <thead>
                     <tr>
                         <th>İl/İlçe</th>
@@ -122,6 +122,8 @@
                         <th>Bağ. Old. Aktarma</th>
                         <th>Acente Sahibi</th>
                         <th>Telefon</th>
+                        <th>Telefon 2</th>
+                        <th>Harita</th>
                         <th>Şube Kodu</th>
                         <th width="10" class="text-center"></th>
                     </tr>
@@ -195,52 +197,48 @@
                                                 <tbody>
                                                 <tr>
                                                     <td class="static">İl İlçe</td>
-                                                    <td id="cityDistrict">İstanbul/Bağcılar</td>
+                                                    <td id="cityDistrict"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Mahalle</td>
-                                                    <td id="neighborhood">Mecidiye Köy</td>
+                                                    <td id="neighborhood"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Adres</td>
-                                                    <td id="adress">Adres Satırı</td>
+                                                    <td id="adress"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Telefon(1)</td>
-                                                    <td data-inputmask="'mask': '(999) 999 99 99'" id="phone">535 427 68
-                                                        24
-                                                    </td>
+                                                    <td data-inputmask="'mask': '(999) 999 99 99'" id="phone"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Telefon(2)</td>
-                                                    <td data-inputmask="'mask': '(999) 999 99 99'" id="phone2">535 427
-                                                        68 24
-                                                    </td>
+                                                    <td data-inputmask="'mask': '(999) 999 99 99'" id="phone2"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Bağlı Olduğu Aktarma</td>
-                                                    <td id="trasfferCenter">İkitelli Transfer Merkezi</td>
+                                                    <td id="trasfferCenter"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Bağlı Olduğu Bölge Müdürlüğü</td>
-                                                    <td id="regionalDirectorate">Marmara Bölge Müdürlüğü</td>
+                                                    <td id="regionalDirectorate"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Statü</td>
-                                                    <td id="status">Aktif</td>
+                                                    <td id="status"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Acente Geliştirme Sorumlusu</td>
-                                                    <td id="agencyDevelopmentOfficer">Zühra Orak</td>
+                                                    <td id="agencyDevelopmentOfficer"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Şube Kodu</td>
-                                                    <td id="agencyCode">021234</td>
+                                                    <td id="agencyCode"></td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="static">Son Güncellenme Tarihi</td>
-                                                    <td id="updatedDate">535 427 68 24</td>
+                                                    <td id="updatedDate"></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
