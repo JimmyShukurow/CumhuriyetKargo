@@ -12,6 +12,7 @@ use App\Models\SentSms;
 use App\Models\Debits;
 use App\Models\Agencies;
 use App\Models\TransshipmentCenters;
+use Illuminate\Support\Facades\Validator;
 
 function tr_strtoupper($text)
 {
@@ -876,4 +877,15 @@ function OfficialReportsPermissions()
     return $permissionArray;
 }
 
+function ajaxValidation($request)
+{
+    $rules = [
+        'allrules' => 'required',
+    ];
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails())
+        return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
+
+}
 

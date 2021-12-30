@@ -241,6 +241,12 @@ function NikoStylePostMethod() {
         }
     }).done(function (response) {
 
+        if (response.status == 0) {
+            $.each(response.errors, function (index, value) {
+                ToastMessage('error', value, 'Hata!')
+            });
+        }
+
     }).error(function (jqXHR, response) {
         ajaxError(jqXHR.status);
     }).always(function () {

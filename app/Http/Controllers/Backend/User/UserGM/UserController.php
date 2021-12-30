@@ -58,10 +58,10 @@ class UserController extends Controller
                 return "user-item-" . $user->id;
             })
             ->editColumn('status', function ($user) {
-                return $user->status == '1' ? 'Aktif' : 'Pasif';
+                return $user->status == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>';
             })
             ->addColumn('edit', 'backend.users.gm.columns.edit')
-            ->rawColumns(['edit'])
+            ->rawColumns(['edit', 'status'])
             ->make(true);
     }
 

@@ -14,6 +14,7 @@ use App\Models\TransshipmentCenters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 
@@ -26,7 +27,11 @@ class LocalLocationController extends Controller
      */
     public function index()
     {
-        $data['agencies'] = Agencies::all();
+        $data['agencies'] = DB::table('agencies')
+            ->whereRaw('deleted_at is null')
+            ->orderBy('agency_name')
+            ->get();
+
         $data['gm_users'] = DB::table('users')
             ->where('agency_code', 1)
             ->get();
@@ -257,7 +262,7 @@ class LocalLocationController extends Controller
 
 
         GeneralLog('Lokasyon Rapor (Mahalli) görüntülendi.');
-        return view('backend.operation.local_location.report', compact('data'));
+        return view('backend.operation.local-location.report', compact('data'));
     }
 
     public function GetTrGeneralLocations(Request $request)
@@ -350,7 +355,7 @@ class LocalLocationController extends Controller
             ->get();
 
         GeneralLog('Acente dağıtım alanlarım sayfası görüntülendi');
-        return view('backend.operation.local_location.agency_locations', compact(['agency', 'locations']));
+        return view('backend.operation.local-location.agency_locations', compact(['agency', 'locations']));
     }
 
     public function getLocationInfo(Request $request)
@@ -358,7 +363,7 @@ class LocalLocationController extends Controller
         $id = $request->id;
 
         $location = DB::table('local_locations')
-            ->select(['local_locations.*', 'agencies.agency_name', 'agencies.agency_code'])
+            ->select(['local_locations.*', 'agencies.agency_name', 'agencies.agency_code as real_agency_code'])
             ->join('agencies', 'agencies.id', '=', 'local_locations.agency_code')
             ->where('local_locations.id', $id)
             ->first();
@@ -370,7 +375,60 @@ class LocalLocationController extends Controller
         return response()
             ->json(['status' => 1, 'location' => $location]);
     }
+
+    public function updateLocation(Request $request)
+    {
+
+        $rules = [
+            'id' => 'required|numeric',
+            'agency' => 'required|numeric',
+            'distance' => 'required|numeric',
+            'areaType' => 'required|in:AB,MB',
+        ];
+
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails())
+            return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
+
+        $location = LocalLocation::find($request->id);
+
+        if ($location == null)
+            return response()
+                ->json(['status' => 0, 'message' => 'Lokasyon bulunamadı!']);
+
+
+        $distance = intval($request->distance);
+
+        if (!is_numeric($distance))
+            return response()
+                ->json(['status' => 0, 'message' => 'Mesafe için rakam girmelisiniz!']);
+
+        $location = LocalLocation::find($request->id)
+            ->update([
+                'distance' => $distance,
+                'agency_code' => $request->agency,
+                'area_type' => $request->areaType
+            ]);
+
+        if ($location)
+            return response()->json(['status' => 1, 'message' => 'İşlem başarılı, güncelleme yapıldı!']);
+        else
+            return response()
+                ->json(['status' => 0, 'message' => 'Bir hata oluştu, lütfen daha sonra tekrar deneyiniz!']);
+    }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
