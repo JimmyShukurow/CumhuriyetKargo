@@ -52,6 +52,10 @@
                             <a data-toggle="tab" href="#miPrice"
                                class="{{ setActive($tab, 'MiPrice')}} nav-link tab-nav-link">Mi Fiyat</a>
                         </li>
+                        <li class="nav-item">
+                            <a data-toggle="tab" href="#tab-distance-price-list"
+                               class="{{ setActive($tab, 'DistancePrice')}} nav-link tab-nav-link">Mesafe Fiyat</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="card-body">
@@ -215,6 +219,42 @@
                                     </table>
                                 </div>
                             </div>
+                        </div>
+                        <div class="tab-pane {{ setActive($tab, 'DistancePrice') }} min-vh-100"
+                             id="tab-distance-price-list"
+                             role="tabpanel">
+                            <div class="main-card mb-3 card">
+
+                                <div class="card-body">
+                                    <table style="white-space: nowrap;"
+                                           class="table table-bordered  DistancePriceList table-striped Table30Padding mb-5">
+                                        <thead>
+                                        <tr>
+                                            <th>Mesafe</th>
+                                            <th>Başlangıç</th>
+                                            <th>Bitiş</th>
+                                            <th>Fiyat</th>
+                                            <th>Kayıt Tarihi</th>
+                                            <th>Değitirilme Tarihi</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th>Mesafe</th>
+                                            <th>Başlangıç</th>
+                                            <th>Bitiş</th>
+                                            <th>Fiyat</th>
+                                            <th>Kayıt Tarihi</th>
+                                            <th>Değitirilme Tarihi</th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -738,6 +778,97 @@
                 $('#btnUpdateMiPrice').prop('disabled', false);
             });
         });
+
+        // # Distance Price List
+        $(document).ready(function () {
+            $('.DistancePriceList').DataTable({
+                pageLength: 25,
+                lengthMenu: [
+                    [10, 25, 50, 100, 250, 500, -1],
+                    ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
+                ],
+                order: [1],
+                language: {
+                    "sDecimal": ",",
+                    "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
+                    "sInfo": "_TOTAL_ kayıttan _START_ - _END_ kayıtlar gösteriliyor",
+                    "sInfoEmpty": "Kayıt yok",
+                    "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "_MENU_",
+                    "sLoadingRecords": "Yükleniyor...",
+                    "sProcessing": "<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>",
+                    "sSearch": "",
+                    "sZeroRecords": "Eşleşen kayıt bulunamadı",
+                    "oPaginate": {
+                        "sFirst": "İlk",
+                        "sLast": "Son",
+                        "sNext": "Sonraki",
+                        "sPrevious": "Önceki"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": artan sütun sıralamasını aktifleştir",
+                        "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
+                    },
+                    "select": {
+                        "rows": {
+                            "_": "%d kayıt seçildi",
+                            "0": "",
+                            "1": "1 kayıt seçildi"
+                        }
+                    }
+                },
+                dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">f>rtip',
+                buttons: [
+                    {
+                        extend: 'pdf',
+                        title: 'CKG-Sis - Mesafe Ücretleri',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5],
+                        }
+                    },
+                    'print',
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5],
+                        },
+                        title: 'CKG-Sis - Mesafe Ücretleri',
+                    },
+                    {
+                        text: 'Yenile',
+                        action: function (e, dt, node, config) {
+                            dt.ajax.reload();
+                        }
+                    }
+                ],
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '/ServiceFees/GetDistancePrice',
+                    data: function (d) {
+
+                    },
+                    error: function (xhr, error, code) {
+                        if (code == "Too Many Requests") {
+                            ToastMessage('info', 'Aşırı istekte bulundunuz, Lütfen bir süre sonra tekrar deneyin!', 'Hata');
+                        }
+                    }
+                },
+                columns: [
+                    {data: 'name', name: 'name'},
+                    {data: 'distance_start', name: 'distance_start'},
+                    {data: 'distance_end', name: 'distance_end'},
+                    {data: 'price', name: 'price'},
+                    {data: 'created_at', name: 'created_at'},
+                    {data: 'updated_at', name: 'updated_at'},
+                ],
+                scrollY: "500px",
+            });
+        });
+
     </script>
 @endsection
 

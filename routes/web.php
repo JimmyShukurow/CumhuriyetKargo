@@ -138,19 +138,6 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('GetBagGeneralInfo', [CargoBagsController::class, 'getBagGeneralInfo']);
     });
 
-    # ==> Services Fee Transaction START
-    Route::group(['middleware' => 'GeneralServicesFeeMid'], function () {
-        Route::group(['prefix' => 'ServiceFees', 'as' => 'servicefee.'], function () {
-            Route::get('/', [ServiceFeeController::class, 'index'])->name('index');
-            Route::post('FilePrice/{id}', [ServiceFeeController::class, 'updateFilePrice']);
-            Route::post('MiPrice/{id}', [ServiceFeeController::class, 'updateMiPrice']);
-            Route::post('GetFilePrice', [ServiceFeeController::class, 'getFilePrice']);
-        });
-        Route::resource('AdditionalServices', AdditionalServicesController::class);
-        Route::resource('DesiList', DesiListController::class);
-    });
-    # ==> Services Fee Transaction END
-
     # ==> Sender Currents Transactions START
     Route::group(['middleware' => 'SenderCurrentsMid'], function () {
         Route::group(['prefix' => 'SenderCurrents', 'as' => 'senderCurrents.'], function () {
