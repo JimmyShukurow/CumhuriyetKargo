@@ -33,6 +33,9 @@ class DesiListController extends Controller
             ->editColumn('individual_unit_price', function ($data) {
                 return '<b>' . '₺' . $data->individual_unit_price . '</b>';
             })
+            ->editColumn('mobile_individual_unit_price', function ($data) {
+                return '<b>' . '₺' . $data->mobile_individual_unit_price . '</b>';
+            })
             ->editColumn('created_at', function ($data) {
                 $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d-m-Y H:i');
                 return $formatedDate;
@@ -42,7 +45,7 @@ class DesiListController extends Controller
                 return $formatedDate;
             })
             ->addColumn('edit', 'backend.service_fee.columns.desi-list-edit')
-            ->rawColumns(['edit', 'desi_price', 'corporate_unit_price', 'individual_unit_price'])
+            ->rawColumns(['edit', 'mobile_individual_unit_price', 'desi_price', 'corporate_unit_price', 'individual_unit_price'])
             ->make(true);
     }
 
@@ -67,6 +70,7 @@ class DesiListController extends Controller
         $request->desi_price = substr($request->desi_price, 3, strlen($request->desi_price));
         $request->corporate_unit_price = substr($request->corporate_unit_price, 3, strlen($request->corporate_unit_price));
         $request->individual_unit_price = substr($request->individual_unit_price, 3, strlen($request->individual_unit_price));
+        $request->mobile_individual_unit_price = substr($request->mobile_individual_unit_price, 3, strlen($request->mobile_individual_unit_price));
 
         $rules = [
             'start_desi' => 'required|numeric',
@@ -74,6 +78,7 @@ class DesiListController extends Controller
             'desi_price' => 'required',
             'corporate_unit_price' => 'required',
             'individual_unit_price' => 'required',
+            'mobile_individual_unit_price' => 'required',
         ];
         $validator = Validator::make($request->all(), $rules);
 
@@ -86,7 +91,8 @@ class DesiListController extends Controller
             'finish_desi' => $request->finish_desi,
             'desi_price' => $request->desi_price,
             'corporate_unit_price' => $request->corporate_unit_price,
-            'individual_unit_price' => $request->individual_unit_price
+            'individual_unit_price' => $request->individual_unit_price,
+            'mobile_individual_unit_price' => $request->mobile_individual_unit_price,
         ]);
 
         if ($store)
@@ -129,6 +135,7 @@ class DesiListController extends Controller
         $request->desi_price = substr($request->desi_price, 3, strlen($request->desi_price));
         $request->corporate_unit_price = substr($request->corporate_unit_price, 3, strlen($request->corporate_unit_price));
         $request->individual_unit_price = substr($request->individual_unit_price, 3, strlen($request->individual_unit_price));
+        $request->mobile_individual_unit_price = substr($request->mobile_individual_unit_price, 3, strlen($request->mobile_individual_unit_price));
 
         $rules = [
             'start_desi' => 'required|numeric',
@@ -136,6 +143,7 @@ class DesiListController extends Controller
             'desi_price' => 'required',
             'corporate_unit_price' => 'required',
             'individual_unit_price' => 'required',
+            'mobile_individual_unit_price' => 'required',
         ];
         $validator = Validator::make($request->all(), $rules);
 
@@ -148,7 +156,8 @@ class DesiListController extends Controller
                 'finish_desi' => $request->finish_desi,
                 'desi_price' => $request->desi_price,
                 'corporate_unit_price' => $request->corporate_unit_price,
-                'individual_unit_price' => $request->individual_unit_price
+                'individual_unit_price' => $request->individual_unit_price,
+                'mobile_individual_unit_price' => $request->mobile_individual_unit_price,
             ]);
 
         if ($store)
@@ -167,4 +176,29 @@ class DesiListController extends Controller
     {
         //
     }
+
+    public function deleteRow(Request $request)
+    {
+
+        $deleteId = $request->destroy_id;
+        $delete = DesiList::find($deleteId)
+            ->delete();
+        return $delete ? 1 : 0;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

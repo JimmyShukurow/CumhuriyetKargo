@@ -141,8 +141,10 @@ $(document).on('click', '.check-give-perm', function () {
 
 $(document).on('click', '.trash', function () {
 
+
     var from = $(this).attr("from");
     var object;
+
 
     if (from == "role_permission") {
         url = 'Module/DestroyModuleOfRole'
@@ -171,6 +173,9 @@ $(document).on('click', '.trash', function () {
     } else if (from == "cargo_bag") {
         url = "/CargoBags/Agency/DeleteBag";
         object = "Torba & Çuval"
+    } else if (from == "desi-list") {
+        url = "/DesiListDelete";
+        object = "Desi Aralığı"
     }
 
     var destroy_id = $(this).attr('id');

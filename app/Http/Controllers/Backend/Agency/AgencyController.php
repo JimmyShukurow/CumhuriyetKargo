@@ -47,6 +47,7 @@ class AgencyController extends Controller
         $transshipmentCenter = $request->transshipmentCenter != null ? $request->transshipmentCenter : false;
         $phone = $request->phone != null ? $request->phone : null;
         $phone2 = $request->phone2 != null ? $request->phone2 : null;
+        $phone3 = $request->phone3 != null ? $request->phone3 : null;
         $address = $request->address != null ? $request->address : null;
         $maps_link = $request->maps_link != null ? $request->maps_link : null;
         $ip_address = $request->ip_address != null ? $request->ip_address : null;
@@ -82,6 +83,7 @@ class AgencyController extends Controller
             ->whereRaw($district ? "district='" . $realDistrict->district_name . "'" : ' 1 > 0')
             ->whereRaw($phone ? "phone='" . $phone . "'" : ' 1 > 0')
             ->whereRaw($phone2 ? "phone2='" . $phone2 . "'" : ' 1 > 0')
+            ->whereRaw($phone3 ? "phone3='" . $phone3 . "'" : ' 1 > 0')
             ->whereRaw($agencyCode ? 'agency_code = ' . $agencyCode : ' 1 > 0')
             ->whereRaw($agencyName ? "agency_name like '%" . $agencyName . "%'" : ' 1 > 0')
             ->whereRaw($nameSurname ? "name_surname like '%" . $nameSurname . "%'" : ' 1 > 0')
@@ -163,6 +165,7 @@ class AgencyController extends Controller
             'name_surname' => tr_strtoupper($request->name_surname),
             'phone' => $request->phone,
             'phone2' => $request->phone2,
+            'phone3' => $request->phone3,
             'transshipment_center_code' => $request->transshipment_center,
             'agency_code' => CreateAgencyCode(),
             'city' => tr_strtoupper($city->city_name),
@@ -324,6 +327,7 @@ class AgencyController extends Controller
                 'name_surname' => tr_strtoupper($request->name_surname),
                 'phone' => $request->phone,
                 'phone2' => $request->phone2,
+                'phone3' => $request->phone3,
                 'transshipment_center_code' => $request->transshipment_center,
                 'city' => tr_strtoupper($cityDistrictNeighborhood[0]->city_name),
                 'district' => tr_strtoupper($cityDistrictNeighborhood[0]->district_name),

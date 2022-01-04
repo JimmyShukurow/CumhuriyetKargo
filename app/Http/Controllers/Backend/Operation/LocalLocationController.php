@@ -355,7 +355,7 @@ class LocalLocationController extends Controller
             ->get();
 
         GeneralLog('Acente dağıtım alanlarım sayfası görüntülendi');
-        return view('backend.operation.local-location.agency_locations', compact(['agency', 'locations']));
+        return view('backend.operation.local_location.agency_locations', compact(['agency', 'locations']));
     }
 
     public function getLocationInfo(Request $request)
@@ -378,14 +378,12 @@ class LocalLocationController extends Controller
 
     public function updateLocation(Request $request)
     {
-
         $rules = [
             'id' => 'required|numeric',
             'agency' => 'required|numeric',
             'distance' => 'required|numeric',
             'areaType' => 'required|in:AB,MB',
         ];
-
 
         $validator = Validator::make($request->all(), $rules);
 

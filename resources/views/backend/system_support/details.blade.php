@@ -60,7 +60,7 @@
                             </div>
                         @elseif($ticket->status == 'CEVAPLANDI')
                             <div class="alert alert-alternate">Bu destek bildirimi yanıtlanmıştır. <b> Yanıt
-                                    vermezseniz, sistem bu destek talebini 72 saat içerisinde kapatacaktır.</b>
+                                    vermezseniz, sistem bu destek talebini 24 saat içerisinde kapatacaktır.</b>
                             </div>
                         @elseif($ticket->status == 'KAPALI')
                             <div class="alert alert-dark">Bu destek bildirimi kapatılmıştır. <b> Tekrar açık hale

@@ -22,6 +22,7 @@ Route::group(
 
             Route::resource('AdditionalServices', AdditionalServicesController::class);
             Route::resource('DesiList', DesiListController::class);
+            Route::any('DesiListDelete/', [DesiListController::class, 'deleteRow']);
 
         });
         # ==> Services Fee Transaction END

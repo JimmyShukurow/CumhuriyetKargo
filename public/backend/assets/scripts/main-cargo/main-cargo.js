@@ -728,6 +728,7 @@ function getPriceForCustomers() {
 
         // PaymentType = $('#paymentType').prop('checked') ? 'Gönderici Ödemeli' : 'Alıcı Ödemeli';
 
+
         $.ajax('/MainCargo/AjaxTransactions/GetPriceForCustomers', {
             method: 'POST',
             data: {
@@ -736,7 +737,8 @@ function getPriceForCustomers() {
                 receiverCode: receiverCode,
                 paymentType: PaymentType,
                 cargoType: $('#selectCargoType').val(),
-                desi: parseFloat($('#labelDesi').text())
+                desi: parseFloat($('#labelDesi').text()),
+                desiData: getFormData($('#formPartDesiContainer')),
             }
         }).done(function (response) {
 
@@ -1458,7 +1460,9 @@ function CalculateDesi(RealDesi, PartNumber, clickButton) {
             cargoType: CargoType,
             paymentType: PaymentType,
             currentCode: $('#gondericiCariKod').val(),
-            receiverCode: $('#aliciCariKod').val()
+            receiverCode: $('#aliciCariKod').val(),
+            desiData: getFormData($('#formPartDesiContainer')),
+            partQuantity: $('#partQuantity').text(),
         }
     }).done(function (response) {
 
@@ -1606,6 +1610,33 @@ function checkReceiver() {
     });
 }
 
+
+function getFormData($form) {
+
+    // $('.add-fee').prop('disabled', false);
+
+    var unindexed_array = $form.serializeArray();
+    var indexed_array = {};
+
+    let disableElements = $(':disabled');
+
+    let disableElementsArray = [];
+    for (let i = 0; i < disableElements.length; i++) {
+        disableElementsArray.push(i);
+        $('#' + disableElements[i].id).prop('disabled', false);
+    }
+
+    $.map(unindexed_array, function (n, i) {
+        indexed_array[n['name']] = n['value'];
+    });
+
+    for (let i = 0; i < disableElementsArray.length; i++) {
+        $('#' + disableElements[i].id).prop('disabled', false);
+    }
+    return indexed_array;
+}
+
+
 function createCargo() {
 
     // Check Parts Of Cargo Start
@@ -1621,31 +1652,6 @@ function createCargo() {
     }
 
     // Check Parts Of Cargo End
-
-    function getFormData($form) {
-
-        // $('.add-fee').prop('disabled', false);
-
-        var unindexed_array = $form.serializeArray();
-        var indexed_array = {};
-
-        let disableElements = $(':disabled');
-
-        let disableElementsArray = [];
-        for (let i = 0; i < disableElements.length; i++) {
-            disableElementsArray.push(i);
-            $('#' + disableElements[i].id).prop('disabled', false);
-        }
-
-        $.map(unindexed_array, function (n, i) {
-            indexed_array[n['name']] = n['value'];
-        });
-
-        for (let i = 0; i < disableElementsArray.length; i++) {
-            $('#' + disableElements[i].id).prop('disabled', false);
-        }
-        return indexed_array;
-    }
 
     let desiData = getFormData($('#formPartDesiContainer'));
     let addServicesData = getFormData($('#formAdditionalServices'));

@@ -810,6 +810,7 @@ class MainCargoController extends Controller
                     }
                 }
 
+
                 # evrensel posta hizmetleri ücreti start
                 $postServicePercent = GetSettingsVal('post_services_percent');
 
@@ -817,12 +818,86 @@ class MainCargoController extends Controller
                 $postServicePrice = round($postServicePrice, 2);
                 # evrensel posta hizmetleri ücreti start
 
+                ##  New Heavy Load Carrying Coast Calc START
+                $heavyLoadCarryingStatus = false;
+                $totalAgirlik = 0;
+                # Control Parts Of Cargo
+                if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
+                    $desiData = $request->desiData;
+                    $partQuantity = count($desiData) / 4;
 
-                if (($cargoType != 'Dosya' && $cargoType != 'Mi') && $desi >= 100) {
+
+                    $desiValues = array_values($desiData);
+                    $desiKeys = array_keys($desiData);
+
+                    $totalHacim = 0;
+                    $totalDesi = 0;
+                    while (true) {
+
+                        $i = 0;
+                        $en = 0;
+                        $boy = 0;
+                        $yukseklik = 0;
+                        $agirlik = 0;
+                        $hacim = 1;
+                        $desi = 1;
+
+                        if (str_contains($desiKeys[$i], 'En'))
+                            $en = $desiValues[$i];
+
+                        if (str_contains($desiKeys[$i + 1], 'Boy'))
+                            $boy = $desiValues[$i + 1];
+
+                        if (str_contains($desiKeys[$i + 2], 'Yukseklik'))
+                            $yukseklik = $desiValues[$i + 2];
+
+                        if (str_contains($desiKeys[$i + 3], 'Agirlik'))
+                            $agirlik = $desiValues[$i + 3];
+
+                        // echo $en . ' ' . $boy . ' ' . $yukseklik . ' ' . $agirlik;
+                        # calc hacim
+                        $hacim = ($en * $boy * $yukseklik) / 1000000;
+                        $hacim = round($hacim, 5);
+                        $totalHacim += $hacim;
+
+                        #calc desi
+                        $desi = ($en * $boy * $yukseklik) / 3000;
+                        $desi = $agirlik > $desi ? $agirlik : $desi;
+                        $totalDesi += round($desi, 2);
+
+                        unset($desiKeys[$i]);
+                        unset($desiValues[$i]);
+
+                        unset($desiKeys[$i + 1]);
+                        unset($desiValues[$i + 1]);
+
+                        unset($desiKeys[$i + 2]);
+                        unset($desiValues[$i + 2]);
+
+                        unset($desiKeys[$i + 3]);
+                        unset($desiValues[$i + 3]);
+                        #re-indexing
+                        $desiValues = array_values($desiValues);
+                        $desiKeys = array_values($desiKeys);
+
+                        $totalAgirlik += $agirlik;
+
+                        if ($desi > 100 || $agirlik > 300)
+                            $heavyLoadCarryingStatus = true;
+
+                        if (count($desiKeys) == 0)
+                            break;
+                    }
+
+                }
+
+                if (($cargoType != 'Dosya' && $cargoType != 'Mi') && $heavyLoadCarryingStatus == true && $request->partQuantity == 1) {
                     $heavyLoadCarryingCost = GetSettingsVal('heavy_load_carrying_cost');
                     $heavyLoadCarryingCost = $heavyLoadCarryingCost + (($heavyLoadCarryingCost * 18) / 100);
                 } else
                     $heavyLoadCarryingCost = 0;
+                ##  New Heavy Load Carrying Coast Calc END
+
 
                 $json = [
                     'service_fee' => $json['service_fee'],
@@ -1126,6 +1201,8 @@ class MainCargoController extends Controller
                         ->json(['status' => -1, 'message' => 'Posta hizmetleri bedeli eşleşmiyor, lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
 
 
+                $heavyLoadCarryingStatus = false;
+
                 $totalAgirlik = 0;
                 # Control Parts Of Cargo
                 if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
@@ -1192,6 +1269,9 @@ class MainCargoController extends Controller
 
                         $totalAgirlik += $agirlik;
 
+                        if ($desi > 100 || $agirlik > 300)
+                            $heavyLoadCarryingStatus = true;
+
                         if (count($desiKeys) == 0)
                             break;
                     }
@@ -1208,7 +1288,7 @@ class MainCargoController extends Controller
                     # return $totalHacim . ' => ' . $totalDesi;
                 }
 
-                if (($cargoType != 'Dosya' && $cargoType != 'Mi') && $totalDesi >= 100) {
+                if (($cargoType != 'Dosya' && $cargoType != 'Mi') && $heavyLoadCarryingStatus == true && $request->parcaSayisi == 1) {
                     $heavyLoadCarryingCost = GetSettingsVal('heavy_load_carrying_cost');
                     $heavyLoadCarryingCost = $heavyLoadCarryingCost + (($heavyLoadCarryingCost * 18) / 100);
                 } else

@@ -15,7 +15,8 @@ class DesiList extends Model
         'finish_desi',
         'desi_price',
         'corporate_unit_price',
-        'individual_unit_price'
+        'individual_unit_price',
+        'mobile_individual_unit_price',
     ];
 
     protected static $logAttributes = [
@@ -23,7 +24,8 @@ class DesiList extends Model
         'finish_desi',
         'desi_price',
         'corporate_unit_price',
-        'individual_unit_price'
+        'individual_unit_price',
+        'mobile_individual_unit_price',
     ];
 
     public function getDescriptionForEvent(string $eventName): string

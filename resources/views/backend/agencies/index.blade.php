@@ -144,6 +144,16 @@
 
                         <div class="col-md-3">
                             <div class="form-group position-relative">
+                                <label for="filter_phone3">Telefon 3:</label>
+                                <input name="phone" id="filter_phone3"
+                                       data-inputmask="'mask': '(999) 999 99 99'"
+                                       placeholder="(___) ___ __ __" type="text" value=""
+                                       class="form-control form-control-sm input-mask-trigger" im-insert="true">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group position-relative">
                                 <label for="filter_MapsLink">Maps Link:</label>
                                 <select id="filter_MapsLink" class="form-control form-control-sm">
                                     <option value="">Seçiniz</option>
@@ -221,6 +231,7 @@
                         <th>Acente Sahibi</th>
                         <th>Telefon</th>
                         <th>Telefon 2</th>
+                        <th>Telefon 3</th>
                         <th>Şube Kodu</th>
                         <th>Statü</th>
                         <th>Kargo Kesim</th>
@@ -264,7 +275,13 @@
                     ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
                 ],
                 order: [
-                    12, 'desc'
+                    13, 'desc'
+                ],
+                "columnDefs": [
+                    {"visible": false, "targets": [6]},
+                    {"visible": false, "targets": [7]},
+                    {"visible": false, "targets": [10]},
+                    {"visible": false, "targets": [12]},
                 ],
                 language: {
                     "sDecimal": ",",
@@ -337,6 +354,7 @@
                         d.status = $('#filter_Status').val();
                         d.phone = $('#filter_phone').val();
                         d.phone2 = $('#filter_phone2').val();
+                        d.phone3 = $('#filter_phone3').val();
                         d.maps_link = $('#filter_MapsLink').val();
                         d.address = $('#filter_address').val();
                         d.ip_address = $('#filter_IpAddress').val();
@@ -359,6 +377,7 @@
                     {data: 'name_surname', name: 'name_surname'},
                     {data: 'phone', name: 'phone'},
                     {data: 'phone2', name: 'phone2'},
+                    {data: 'phone3', name: 'phone3'},
                     {data: 'agency_code', name: 'agency_code'},
                     {data: 'status', name: 'status'},
                     {data: 'permission_of_create_cargo', name: 'permission_of_create_cargo'},
@@ -424,6 +443,7 @@
                 $('td#adress').html(response.agency[0].adress);
                 $('td#phone').html(response.agency[0].phone);
                 $('td#phone2').html(response.agency[0].phone2);
+                $('td#phone3').html(response.agency[0].phone3);
                 $('td#transshipmentCenter').html(response.agency[0].tc_name + " TRM.");
                 $('td#regionalDirectorate').html(response.agency[0].regional_directorates != null ? response.agency[0].regional_directorates + " BÖLGE MÜDÜRLÜĞÜ" : '');
                 $('td#status').html(response.agency[0].status == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>');
@@ -679,28 +699,15 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Telefon(1)</td>
-                                                    <td data-inputmask="'mask': '(999) 999 99 99'" id="phone">535 427 68
-                                                        24
-                                                    </td>
+                                                    <td data-inputmask="'mask': '(999) 999 99 99'" id="phone"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Telefon(2)</td>
-                                                    <td data-inputmask="'mask': '(999) 999 99 99'" id="phone2">535 427
-                                                        68
-                                                        24
-                                                    </td>
+                                                    <td data-inputmask="'mask': '(999) 999 99 99'" id="phone2"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="static">Bağlı Olduğu Aktarma</td>
-                                                    <td id="transshipmentCenter">İkitelli Transfer Merkezi</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Bağlı Olduğu Bölge Müdürlüğü</td>
-                                                    <td id="regionalDirectorate">Marmara Bölge Müdürlüğü</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Statü</td>
-                                                    <td id="status">Aktif</td>
+                                                    <td class="static">Telefon(3)</td>
+                                                    <td id="phone3"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Statü Açıklama</td>

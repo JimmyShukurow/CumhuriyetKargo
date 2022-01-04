@@ -39,7 +39,7 @@
                 <form id="agencyForm" method="POST" action="{{ route('agency.UpdateAgency', ['id' => $agency->id]) }}">
                     @csrf
                     <div class="form-row">
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="position-relative form-group">
                                 <label for="name_surname" class="">Ad Soyad (Acente Sahibi)*</label>
                                 <input name="name_surname" required id="name_surname"
@@ -58,10 +58,18 @@
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="position-relative form-group">
-                                <label for="phone2" class="">Telefon2 (Acente Sahibi)*</label>
+                                <label for="phone2" class="">Telefon2 (Sabit Hat)*</label>
                                 <input name="phone2" id="phone2" data-inputmask="'mask': '(999) 999 99 99'"
                                        placeholder="(___) ___ __ __" type="text"
                                        value="{{ $agency->phone2 }}" class="form-control input-mask-trigger">
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="position-relative form-group">
+                                <label for="phone3" class="">Telefon3 (GSM)*</label>
+                                <input name="phone3" id="phone3" data-inputmask="'mask': '(999) 999 99 99'"
+                                       placeholder="(___) ___ __ __" type="text"
+                                       value="{{ $agency->phone3 }}" class="form-control input-mask-trigger">
                             </div>
                         </div>
                     </div>
