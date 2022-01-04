@@ -932,6 +932,7 @@ class MainCargoController extends Controller
                     'genelToplam' => 'required',
                     'totalHacim' => 'required',
                 ];
+
                 $validator = Validator::make($request->all(), $rules);
 
                 if ($validator->fails())
@@ -1084,6 +1085,7 @@ class MainCargoController extends Controller
                             $serviceFee = $desiPrice;
                         }
                     }
+
 
                     # Gönderici Bireysel - Alıcı Kurumsal
                     if ($currentCategory == 'Bireysel' && $receiverCategory == 'Kurumsal') {
@@ -1241,7 +1243,7 @@ class MainCargoController extends Controller
                         if (str_contains($desiKeys[$i + 3], 'Agirlik'))
                             $agirlik = $desiValues[$i + 3];
 
-                        // echo $en . ' ' . $boy . ' ' . $yukseklik . ' ' . $agirlik;
+                        //echo $en . ' ' . $boy . ' ' . $yukseklik . ' ' . $agirlik;
                         # calc hacim
                         $hacim = ($en * $boy * $yukseklik) / 1000000;
                         $hacim = round($hacim, 5);
