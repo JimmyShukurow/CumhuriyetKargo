@@ -105,9 +105,10 @@
                                 </div>
                             </div>
                             {{--                            </form>--}}
+                            <input type="hidden" id="niko_token" value="{{$password}}">
                         </div>
                     </div>
-                    <div class="text-center text-white opacity-8 mt-3">Copyright © Cumhuriyet Kargo 2021 - CKGSis</div>
+                    <div class="text-center text-white opacity-8 mt-3">Copyright © Cumhuriyet Kargo 2022 | CKG-Sis</div>
                 </div>
             </div>
         </div>

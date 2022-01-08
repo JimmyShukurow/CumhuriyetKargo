@@ -51,6 +51,10 @@ Route::get('/', [DefaultController::class, 'login'])->name('Login')->middleware(
 Route::post('/', [DefaultController::class, 'authenticate'])->name('admin.Authenticate')
     ->middleware('throttle:10,1');
 
+Route::get('login', function () {
+    return redirect(\route('Login'))->with('error', 'Başka bir cihazdan hesabınıza giriş yapıldı!');
+})->name('login');
+
 Route::get('/ForgetPassword/{TimeOut?}', [DefaultController::class, 'forgetPassword'])->name('forgetPassword');
 Route::post('/ConfirmEmail', [DefaultController::class, 'confirmEmail'])->name('confirmEmail')
     ->middleware('throttle:20,1');

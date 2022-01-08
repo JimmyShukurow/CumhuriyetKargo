@@ -435,8 +435,8 @@ class AdminSystemSupportController extends Controller
 //            $data['link'] = \route('systemSupport.TicketDetails', $ticket->id);
 //            $data['reading_time'] = '2';
 //
-//            Mail::to($user->email)
-//                ->send(new SendMail($data));
+        //    Mail::to($user->email)
+        //        ->send(new SendMail($data));
 
             # Notification
             User::find($ticket->user_id)

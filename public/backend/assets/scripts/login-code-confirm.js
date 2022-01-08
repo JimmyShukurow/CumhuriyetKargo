@@ -37,7 +37,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
 
-    $('#btnConfirmCode').click(function () {
+    $('#btnConfirmCode').click(delay(function () {
 
 
         if ($('#code').val().trim() == '') {
@@ -52,20 +52,26 @@ $(document).ready(function () {
             data: {
                 _token: token,
                 token: $('#token').val(),
-                code: $('#code').val()
+                code: $('#code').val(),
+                niko_token: $('#niko_token').val()
             }
         }).done(function (response) {
-            if (response.status == 0)
+            if (response.status == 0) {
                 ToastMessage('error', response.message, 'Hata!');
+                $('#btnConfirmCode').prop('disabled', false);
+            }
 
 
             if (response.status == 1) {
+
+                $('#btnConfirmCode').prop('disabled', true);
+
                 ToastMessage('success', response.message, 'İşlem Başarılı!');
                 setMessageToLS('Giriş Doğrulandı!', response.message, 'success');
 
-                setInterval(function () {
+                setTimeout(function () {
                     window.location.href = "/";
-                }, 1800);
+                }, 1200);
 
             }
 
@@ -75,11 +81,18 @@ $(document).ready(function () {
                 ToastMessage('warning', 'Çok fazla deneme yaptınız, lütfen bir süre sonra tekrar deneyin!');
             }
 
-        }).always(function () {
             $('#btnConfirmCode').prop('disabled', false);
+
+        }).always(function () {
+
         })
 
-    });
+    }, 550));
 
+    $("#code").on('keyup', function (e) {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+            $('#btnConfirmCode').trigger('click');
+        }
+    });
 
 });

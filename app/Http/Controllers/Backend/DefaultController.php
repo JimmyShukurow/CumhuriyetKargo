@@ -50,6 +50,8 @@ class DefaultController extends Controller
 
             if ($user->user_type == 'Acente') {
 
+                $password = Crypte4x($request->password);
+
                 $agency = Agencies::find($user->agency_code);
                 if ($agency->ip_address != $request->ip()) {
 
@@ -95,7 +97,7 @@ class DefaultController extends Controller
                             ->where('id', $user->id)
                             ->first();
 
-                        return view('backend.default.login-code', compact(['diffSeconds', 'user', 'userAllInfo', 'dateHumens']));
+                        return view('backend.default.login-code', compact(['diffSeconds', 'user', 'userAllInfo', 'dateHumens', 'password']));
 
                     } else {
 
@@ -108,7 +110,7 @@ class DefaultController extends Controller
                             ->where('id', $user->id)
                             ->first();
 
-                        return view('backend.default.login-code', compact(['diffSeconds', 'user', 'userAllInfo', 'dateHumens']));
+                        return view('backend.default.login-code', compact(['diffSeconds', 'user', 'userAllInfo', 'dateHumens', 'password']));
                     }
 
                 }
@@ -123,6 +125,9 @@ class DefaultController extends Controller
                 ->performedOn($user)
                 ->inLog('Login')
                 ->log('Sisteme giriş yapıldı!');
+
+            Auth::logoutOtherDevices(\request('password'));
+
 
             return redirect()->intended(route(getUserFirstPage()))->with('success', 'Hoşgeldin ' . Auth::user()->name_surname);
 
@@ -270,6 +275,7 @@ class DefaultController extends Controller
             ]);
 
         Auth::loginUsingId($user_id);
+        Auth::logoutOtherDevices(Decrypte4x($request->niko_token));
 
         $user = User::find(Auth::id());
         $properties = ['Login IP' => request()->ip()];
@@ -278,6 +284,7 @@ class DefaultController extends Controller
             ->performedOn($user)
             ->inLog('Login')
             ->log('Sisteme güvenlik kodu kullanılarak giriş yapıldı!');
+
 
         return response()
             ->json([
