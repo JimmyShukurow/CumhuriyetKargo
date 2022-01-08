@@ -48,7 +48,7 @@ class DefaultController extends Controller
 
             $user = Auth::user();
 
-            if ($user->user_type == 'Acente X') {
+            if ($user->user_type == 'Acente') {
 
                 $agency = Agencies::find($user->agency_code);
                 if ($agency->ip_address != $request->ip()) {

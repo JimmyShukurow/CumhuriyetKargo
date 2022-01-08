@@ -604,7 +604,7 @@
     <script src="/backend/assets/scripts/backend-modules.js"></script>
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
-    <script src="/backend/assets/scripts/marketing/sender-current.js"></script>
+    <script src="/backend/assets/scripts/marketing/sender-currents/create-edit.js"></script>
 
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
     <script>

@@ -262,7 +262,7 @@ class LocalLocationController extends Controller
 
 
         GeneralLog('Lokasyon Rapor (Mahalli) görüntülendi.');
-        return view('backend.operation.local-location.report', compact('data'));
+        return view('backend.operation.local_location.report', compact('data'));
     }
 
     public function GetTrGeneralLocations(Request $request)

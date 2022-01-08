@@ -11,11 +11,6 @@ $('#district').change(function () {
 
 });
 
-
-$(document).ready(function () {
-
-});
-
 $(document).ready(function () {
     $('#tax-office').select2({
         ajax: {
