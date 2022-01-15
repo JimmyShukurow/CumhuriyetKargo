@@ -49,7 +49,7 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-6" id="container-general-info">
-                            <h6 class="text-dark text-center">Genel Bilgiler</h6>
+                            <h6 class="text-dark font-weight-bold text-center">Genel Bilgiler</h6>
                             <div class="divider"></div>
                             <div class="form-row">
                                 <div class="col-md-7">
@@ -231,7 +231,7 @@
                                 <div class="col-md-12">
                                     <div class="position-relative form-group">
                                         <label for="addressNote" class="">Adres Notu*</label>
-                                        <textarea name="adres_notu" required id="addressNote"
+                                        <textarea name="adres_notu" id="addressNote"
                                                   class="form-control form-control-sm"
                                                   cols="30"
                                                   rows="2">{{ $current->address_note}}</textarea>
@@ -241,7 +241,7 @@
 
                         </div>
                         <div class="col-md-6" id="container-communication-info">
-                            <h6 class="text-dark text-center">İletişim Bilgileri</h6>
+                            <h6 class="text-dark font-weight-bold text-center">İletişim Bilgileri</h6>
                             <div class="divider"></div>
                             <div class="form-row">
                                 <div class="col-md-6">
@@ -349,13 +349,13 @@
                         </div>
 
                         <div class="col-md-12" id="container-finance">
-                            <h6 class="text-dark text-center">Finans</h6>
+                            <h6 class="text-dark font-weight-bold text-center">Finans</h6>
                             <div class="divider"></div>
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="iban" class="">IBAN No:</label>
                                         <input name="iban" id="iban" required
@@ -366,7 +366,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="hesapSahibiTamIsim" class="">Hesap Sahibi Tam İsim:</label>
                                         <input name="hesapSahibiTamIsim" required id="hesapSahibiTamIsim"
@@ -403,7 +403,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="reference" class="">Referans:</label>
                                         <input name="referans" id="reference"
@@ -415,7 +415,12 @@
                             </div>
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12" id="container-finance">
+                            <h6 class="text-dark font-weight-bold text-center">Fiyatlar</h6>
+                            <div class="divider"></div>
+
+                        </div>
+                        <div class="col-md-12">
                             <div class="form-row">
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
@@ -548,7 +553,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="addServicePrice" class="">Tahsilat Ek Hizmet Bedeli (0-200
                                             TL):</label>
@@ -559,7 +564,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="tahsilatEkHizmetBedeli200Ustu" class="">Tahsilat Ek Hizmet Bedeli
                                             (%)
@@ -569,6 +574,19 @@
                                                id="tahsilatEkHizmetBedeli200Ustu"
                                                type="text" value="{{ $price->collect_amount_of_increase }}"
                                                class="form-control input-mask-trigger form-control-sm">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="mbStatus" class="">Mobil Bölge Ücreti
+                                            Uygulansın mı?</label><br>
+                                        <select name="mbStatus" required id="" class="form-control-sm form-control">
+                                            <option {{ $current->mb_status == '1' ? 'selected' : '' }} value="1">Evet
+                                            </option>
+                                            <option {{ $current->mb_status == '0' ? 'selected' : '' }} value="0">Hayır
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
 

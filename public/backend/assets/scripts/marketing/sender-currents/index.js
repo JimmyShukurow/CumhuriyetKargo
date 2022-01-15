@@ -199,33 +199,35 @@ function userInfo(user) {
         let fullAddress = neighborhood + street + street2 + buildingNo + floor + door + addressNote;
 
 
-        $('#agencyName').html(response.current.name);
+        $('#agencyName').html(response.current.name)
         $('#agencyCityDistrict').html(response.current.agency_city + "/" + response.current.agency_district + " - " + response.current.agency_name + " Acente " + "(" + response.current.agency_code + ")");
-        $('#titleBranch').html(response.current.name + ' - ÖZET ' + currentStatus);
+        $('#titleBranch').html(response.current.name + ' - ÖZET ' + currentStatus)
 
-        $('#currentCategory').html(response.current.category);
-        $('#modalCurrentCode').html(response.current.current_code);
-        $('#nameSurnameCompany').html(response.current.name);
+        $('#currentCategory').html(response.current.category)
+        $('#modalCurrentCode').html(response.current.current_code)
+        $('#nameSurnameCompany').html(response.current.name)
         $('#currentAgency').html(response.current.agency_city + "/" + response.current.agency_district + " - " + response.current.agency_name + " Acente " + "(" + response.current.agency_code + ")");
-        $('#taxOffice').html(response.current.tax_administration);
-        $('#tcknVkn').html(response.current.tckn);
-        $('#phone').html(response.current.phone);
-        $('#cityDistrict').html(response.current.city + "/" + response.current.district);
-        $('#address').html(fullAddress);
-        $('#gsm').html(response.current.gsm);
-        $('#gsm2').html(response.current.gsm2);
-        $('#phone2').html(response.current.phone2);
-        $('#email').html(response.current.email);
-        $('#website').html(response.current.website);
-        $('#regDate').html(response.current.created_at);
-        $('#dispatchCityDistrict').html(response.current.dispatch_city + "/" + response.current.dispatch_district);
+        $('#taxOffice').html(response.current.tax_administration)
+        $('#tcknVkn').html(response.current.tckn)
+        $('#phone').html(response.current.phone)
+        $('#cityDistrict').html(response.current.city + "/" + response.current.district)
+        $('#address').html(fullAddress)
+        $('#gsm').html(response.current.gsm)
+        $('#gsm2').html(response.current.gsm2)
+        $('#phone2').html(response.current.phone2)
+        $('#email').html(response.current.email)
+        $('#website').html(response.current.website)
+        $('#regDate').html(response.current.created_at)
+        $('#dispatchCityDistrict').html(response.current.dispatch_city + "/" + response.current.dispatch_district)
         $('#dispatchAddress').html(response.current.dispatch_adress);
-        $('#iban').html(response.current.iban);
-        $('#bankOwner').html(response.current.bank_owner_name);
-        $('#contractStartDate').html(response.current.contract_start_date);
-        $('#contractEndDate').html(response.current.contract_end_date);
-        $('#reference').html(response.current.reference);
-        $('#currentCreatorUser').html(response.current.creator_user_name + " " + creatorDisplayName);
+        $('#iban').html(response.current.iban)
+        $('#bankOwner').html(response.current.bank_owner_name)
+        $('#contractStartDate').html(response.current.contract_start_date)
+        $('#contractEndDate').html(response.current.contract_end_date)
+        $('#reference').html(response.current.reference)
+        $('#currentCreatorUser').html(response.current.creator_user_name + " " + creatorDisplayName)
+        $('#mbStatus').html(response.current.mb_status == '0' ? '<b class="text-danger">Hayır</b>' : '<b class="text-success">Evet</b>')
+
 
         if (response.current.category == 'Kurumsal') {
 
@@ -242,18 +244,18 @@ function userInfo(user) {
             $('#current41_45Desi').html(response.price.d_41_45 + "₺");
             $('#current46_50Desi').html(response.price.d_46_50 + "₺");
 
-            $('#mCurrentFilePrice').html(response.price.m_file_price + "₺");
-            $('#mCurrentMiPrice').html(response.price.m_mi_price + "₺");
-            $('#mCurrent1_5Desi').html(response.price.m_d_1_5 + "₺");
-            $('#mCurrent6_10Desi').html(response.price.m_d_6_10 + "₺");
-            $('#mCurrent11_15Desi').html(response.price.m_d_11_15 + "₺");
-            $('#mCurrent16_20Desi').html(response.price.m_d_16_20 + "₺");
-            $('#mCurrent21_25Desi').html(response.price.m_d_21_25 + "₺");
-            $('#mCurrent26_30Desi').html(response.price.m_d_26_30 + "₺");
-            $('#mCurrent31_35Desi').html(response.price.m_d_31_35 + "₺");
-            $('#mCurrent36_40Desi').html(response.price.m_d_36_40 + "₺");
-            $('#mCurrent41_45Desi').html(response.price.m_d_41_45 + "₺");
-            $('#mCurrent46_50Desi').html(response.price.m_d_46_50 + "₺");
+            // $('#mCurrentFilePrice').html(response.price.m_file_price + "₺");
+            // $('#mCurrentMiPrice').html(response.price.m_mi_price + "₺");
+            // $('#mCurrent1_5Desi').html(response.price.m_d_1_5 + "₺");
+            // $('#mCurrent6_10Desi').html(response.price.m_d_6_10 + "₺");
+            // $('#mCurrent11_15Desi').html(response.price.m_d_11_15 + "₺");
+            // $('#mCurrent16_20Desi').html(response.price.m_d_16_20 + "₺");
+            // $('#mCurrent21_25Desi').html(response.price.m_d_21_25 + "₺");
+            // $('#mCurrent26_30Desi').html(response.price.m_d_26_30 + "₺");
+            // $('#mCurrent31_35Desi').html(response.price.m_d_31_35 + "₺");
+            // $('#mCurrent36_40Desi').html(response.price.m_d_36_40 + "₺");
+            // $('#mCurrent41_45Desi').html(response.price.m_d_41_45 + "₺");
+            // $('#mCurrent46_50Desi').html(response.price.m_d_46_50 + "₺");
 
             $('#currentAmountOfIncrease').html(response.price.amount_of_increase + "₺");
             $('#currentCollectPrice').html(response.price.collect_price + "₺");

@@ -50,6 +50,7 @@ class Currents extends Model
         'created_by_user_id',
         'contract_start_date',
         'contract_end_date',
+        'mb_status',
     ];
 
     protected static $logAttributes = [
@@ -91,6 +92,7 @@ class Currents extends Model
         'created_by_user_id',
         'contract_start_date',
         'contract_end_date',
+        'mb_status',
     ];
 
     public function getDescriptionForEvent(string $eventName): string
@@ -98,7 +100,9 @@ class Currents extends Model
         $eventName = getLocalEventName($eventName);
         return "Cari $eventName.";
     }
-    public function getUserById(){
+
+    public function getUserById()
+    {
         return User::find($this->created_by_user_id)->name_surname;
     }
 

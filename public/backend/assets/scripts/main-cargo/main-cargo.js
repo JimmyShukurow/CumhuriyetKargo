@@ -570,7 +570,7 @@ function DistributionControl(neighborhood = '') {
         }
     }).done(function (response) {
 
-        console.log(response);
+        // console.log(response);
         if (response.status == 0) {
             ToastMessage('error', response.message, 'Hata!');
             $('#dagitimDurumu').val('AT DIŞI - DAĞITIM YOK');

@@ -400,6 +400,13 @@
                                                     <td class="static">Kayıt Tarihi</td>
                                                     <td id="regDate"></td>
                                                 </tr>
+
+                                                <tr>
+                                                    <td class="static">Mobil Bölge Ücreti
+                                                        Uygulansın mı</td>
+                                                    <td id="mbStatus"></td>
+                                                </tr>
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -472,62 +479,6 @@
                                             </tbody>
                                         </table>
 
-                                        <table style="white-space: nowrap" id="InfoCard"
-                                               class="TableNoPadding table table-bordered table-striped mt-3 InfoCard">
-                                            <thead>
-                                            <tr>
-                                                <th class="text-center" id="" colspan="4">Mobil Bölge Taşıma Fiyatları
-                                                </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            <tr>
-                                                <td class="static">Dosya</td>
-                                                <td class="font-weight-bold" id="mCurrentFilePrice"></td>
-                                                <td class="static">Mi</td>
-                                                <td class="font-weight-bold" id="mCurrentMiPrice"></td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="static">1-5 Desi</td>
-                                                <td class="font-weight-bold" id="mCurrent1_5Desi"></td>
-                                                <td class="static">6-10 Desi</td>
-                                                <td class="font-weight-bold" id="mCurrent6_10Desi"></td>
-                                            </tr>
-                                            <tr>
-
-                                            </tr>
-                                            <tr>
-                                                <td class="static">11-15 Desi</td>
-                                                <td class="font-weight-bold" id="mCurrent11_15Desi"></td>
-                                                <td class="static">16-20 Desi</td>
-                                                <td class="font-weight-bold" id="mCurrent16_20Desi"></td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="static">21-25 Desi</td>
-                                                <td class="font-weight-bold" id="mCurrent21_25Desi"></td>
-                                                <td class="static">26-30 Desi</td>
-                                                <td class="font-weight-bold" id="mCurrent26_30Desi"></td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="static">31-35 Desi</td>
-                                                <td class="font-weight-bold" id="mCurrent31_35Desi"></td>
-                                                <td class="static">36-40 Desi</td>
-                                                <td class="font-weight-bold" id="mCurrent36_40Desi"></td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="static">41-45 Desi</td>
-                                                <td class="font-weight-bold" id="mCurrent41_45Desi"></td>
-                                                <td class="static">46-50 Desi</td>
-                                                <td class="font-weight-bold" id="mCurrent46_50Desi"></td>
-                                            </tr>
-
-                                            </tbody>
-                                        </table>
 
 
                                         <div id="divConfirmCurrent" class="grid-menu grid-menu-2col">

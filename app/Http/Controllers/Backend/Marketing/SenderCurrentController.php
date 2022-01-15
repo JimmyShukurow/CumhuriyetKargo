@@ -102,6 +102,7 @@ class SenderCurrentController extends Controller
             'd41_45' => ['required', new PriceControl],
             'd46_50' => ['required', new PriceControl],
             'ustuDesi' => ['required', new PriceControl],
+            'mbStatus' => 'required|in:1,0'
         ]);
 
         $cityDistrict = DB::table('view_city_district_neighborhoods')
@@ -191,6 +192,7 @@ class SenderCurrentController extends Controller
             'created_by_user_id' => Auth::id(),
             'contract_start_date' => $request->sozlesmeBaslangicTarihi,
             'contract_end_date' => $endOfYear,
+            'mb_status' => $request->mbStatus,
         ]);
 
         if ($insert) {
@@ -310,6 +312,7 @@ class SenderCurrentController extends Controller
             'd41_45' => ['required', new PriceControl],
             'd46_50' => ['required', new PriceControl],
             'ustuDesi' => ['required', new PriceControl],
+            'mbStatus' => 'required|in:1,0'
         ]);
 
         $cityDistrict = DB::table('view_city_district_neighborhoods')
@@ -374,6 +377,7 @@ class SenderCurrentController extends Controller
                 'created_by_user_id' => Auth::id(),
                 'contract_start_date' => $request->sozlesmeBaslangicTarihi,
                 'contract_end_date' => $request->sozlesmeBitisTarihi . ' 23:59:58',
+                'mb_status' => $request->mbStatus,
             ]);
 
         if ($update) {

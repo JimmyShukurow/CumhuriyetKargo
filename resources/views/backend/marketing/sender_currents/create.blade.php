@@ -355,11 +355,10 @@
                         <div class="col-md-12" id="container-finance">
                             <h6 class="text-dark text-center  font-weight-bold">Finans</h6>
                             <div class="divider"></div>
-
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="iban" class="">IBAN No:</label>
                                         <input name="iban" id="iban" required
@@ -370,7 +369,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="hesapSahibiTamIsim" class="">Hesap Sahibi Tam İsim:</label>
                                         <input name="hesapSahibiTamIsim" required id="hesapSahibiTamIsim"
@@ -413,7 +412,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="reference" class="">Referans:</label>
                                         <input name="referans" id="reference"
@@ -425,7 +424,11 @@
                             </div>
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12" id="container-finance">
+                            <h6 class="text-dark text-center  font-weight-bold">Fiyatlar</h6>
+                            <div class="divider"></div>
+                        </div>
+                        <div class="col-md-12">
                             <div class="form-row">
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
@@ -557,7 +560,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="addServicePrice" class="">Tahsilat Ek Hizmet Bedeli (0-200
                                             TL):</label>
@@ -568,7 +571,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="tahsilatEkHizmetBedeli200Ustu" class="">Tahsilat Ek Hizmet Bedeli
                                             (%) (200TL+):</label>
@@ -580,8 +583,21 @@
                                     </div>
                                 </div>
 
-                            </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="mbStatus" class="">Mobil Bölge Ücreti
+                                            Uygulansın mı?</label><br>
+                                        <select name="mbStatus" id="" required class="form-control-sm form-control">
+                                            <option {{old('mbStatus') == '1' ? 'selected' : '' }} value="1">Evet
+                                            </option>
+                                            <option {{old('mbStatus') == '0' ? 'selected' : '' }} value="0">Hayır
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
 
+
+                            </div>
                         </div>
                     </div>
 

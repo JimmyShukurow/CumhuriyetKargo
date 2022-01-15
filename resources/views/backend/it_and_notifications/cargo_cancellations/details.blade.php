@@ -622,7 +622,6 @@
                                     <h3 class="text-center text-primary">Özellikler</h3>
                                     <pre id="json-renderer"></pre>
 
-
                                 </li>
                             </ul>
                         </div>
@@ -671,6 +670,7 @@
                         Güncelle
                     </button>
                 </div>
+                <input type="text" id="text" value="text bitch!!">
             </div>
         </div>
     </div>
@@ -686,7 +686,6 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                </div>
                 <div class="modal-body">
                     <p class="mb-0">Lütfen destek talebini yönlendirmek istediğiniz departmanı seçin.</p>
                     <form id="redirectToDepartmentForm" method="post"
@@ -720,7 +719,5 @@
         $('#BtnUpdateStatusOfTicket').click(function () {
             $('#updateStatusOfTicketForm').submit();
         });
-
-
     </script>
 @endsection
