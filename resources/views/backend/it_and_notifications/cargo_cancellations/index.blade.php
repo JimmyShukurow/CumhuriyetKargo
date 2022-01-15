@@ -1,6 +1,8 @@
 @extends('backend.layout')
 
 @push('css')
+    <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
+    <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/backend/assets/css/app-main-block.css">
 @endpush()
 

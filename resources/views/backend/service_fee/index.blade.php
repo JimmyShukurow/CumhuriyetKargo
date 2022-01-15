@@ -159,6 +159,7 @@
                                         <tr>
                                             <th>Kurumsal</th>
                                             <th>Bireysel</th>
+                                            <th>Mobil</th>
                                             <th>Son Güncelleme</th>
                                             <th width="10">İşlem</th>
                                         </tr>
@@ -170,6 +171,9 @@
                                             </td>
                                             <td>
                                                 <b id="individualFilePrice">₺{{$filePrice->individual_file_price}}</b>
+                                            </td>
+                                            <td>
+                                                <b id="mobileFilePrice">₺{{$filePrice->mobile_file_price}}</b>
                                             </td>
                                             <td>
                                                 <b id="filePriceUpdate">{{$filePrice->updated_at}}</b>
@@ -196,6 +200,7 @@
                                         <tr>
                                             <th>Kurumsal</th>
                                             <th>Bireysel</th>
+                                            <th>Mobil</th>
                                             <th>Son Güncelleme</th>
                                             <th width="10">İşlem</th>
                                         </tr>
@@ -207,6 +212,9 @@
                                             </td>
                                             <td>
                                                 <b id="individualMiPrice">₺{{$filePrice->individual_mi_price}}</b>
+                                            </td>
+                                            <td>
+                                                <b id="mobileMiPrice">₺{{$filePrice->mobile_mi_price}}</b>
                                             </td>
                                             <td>
                                                 <b id="miPriceUpdate">{{$filePrice->updated_at}}</b>
@@ -542,9 +550,9 @@
                 <div id="modalBodyEnabledDisabled" class="modalEnabledDisabled modal-body ">
                     <div class="row">
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label for="editCorporteFilePrice">Kurumsal dosya ücreti</label>
+                                <label for="editCorporteFilePrice">Kurumsal dosya ücreti:</label>
                                 <input class="form-control input-mask-trigger" id="editCorporteFilePrice"
                                        placeholder="₺ 0.00"
                                        type="text"
@@ -553,9 +561,9 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label for="editIndividualFilePrice">Bireysel dosya ücreti</label>
+                                <label for="editIndividualFilePrice">Bireysel dosya ücreti:</label>
                                 <input class="form-control input-mask-trigger" id="editIndividualFilePrice"
                                        placeholder="₺ 0.00"
                                        type="text"
@@ -563,6 +571,18 @@
                                        im-insert="true" style="text-align: right;">
                             </div>
                         </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="editIndividualFilePrice">Mobil dosya ücreti:</label>
+                                <input class="form-control input-mask-trigger" id="editMobileFilePrice"
+                                       placeholder="₺ 0.00"
+                                       type="text"
+                                       data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                       im-insert="true" style="text-align: right;">
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -589,9 +609,9 @@
                 <div id="modalBodyEnabledDisabled" class="modalEnabledDisabled modal-body ">
                     <div class="row">
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label for="editCorporteFilePrice">Kurumsal mi ücreti</label>
+                                <label for="editCorporteFilePrice">Kurumsal mi ücreti:</label>
                                 <input class="form-control input-mask-trigger" id="editCorporteMiPrice"
                                        placeholder="₺ 0.00"
                                        type="text"
@@ -600,10 +620,21 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label for="editIndividualFilePrice">Bireysel mi ücreti</label>
+                                <label for="editIndividualFilePrice">Bireysel mi ücreti:</label>
                                 <input class="form-control input-mask-trigger" id="editIndividualMiPrice"
+                                       placeholder="₺ 0.00"
+                                       type="text"
+                                       data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
+                                       im-insert="true" style="text-align: right;">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="editIndividualFilePrice">Mobil mi ücreti:</label>
+                                <input class="form-control input-mask-trigger" id="editMobileMiPrice"
                                        placeholder="₺ 0.00"
                                        type="text"
                                        data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"

@@ -404,6 +404,7 @@ $(document).on('click', '.editFilePrice', function () {
     edit_file = $(this).prop('id');
     $('#editCorporteFilePrice').val($("#file-price > td:nth-child(1)").text());
     $('#editIndividualFilePrice').val($("#file-price > td:nth-child(2)").text());
+    $('#editMobileFilePrice').val($("#file-price > td:nth-child(3)").text());
     $('#modalEditFilePrice').modal();
 });
 
@@ -417,6 +418,7 @@ $(document).on('click', '#btnUpdateFilePrice', function () {
             _token: token,
             corporate_file_price: $('#editCorporteFilePrice').val(),
             individual_file_price: $('#editIndividualFilePrice').val(),
+            mobile_file_price: $('#editMobileFilePrice').val(),
         }
     }).done(function (response) {
         if (response.status == 1) {
@@ -456,8 +458,10 @@ function getFilePrice() {
             ToastMessage('success', 'Fiyat Çekildi!', 'İşlem Başarılı!');
             $('#corporateFilePrice').html('₺' + response.price.corporate_file_price);
             $('#individualFilePrice').html('₺' + response.price.individual_file_price);
+            $('#mobileFilePrice').html('₺' + response.price.mobile_file_price);
             $('#individualMiPrice').html('₺' + response.price.individual_mi_price);
             $('#corporateMiPrice').html('₺' + response.price.corporate_mi_price);
+            $('#mobileMiPrice').html('₺' + response.price.mobile_mi_price);
             $('#filePriceUpdate').html(dateFormat(response.price.updated_at));
 
         } else if (response.status == 0)
@@ -478,6 +482,7 @@ $(document).on('click', '.editMiPrice', function () {
     edit_file = $(this).prop('id');
     $('#editCorporteMiPrice').val($("#mi-price > td:nth-child(1)").text());
     $('#editIndividualMiPrice').val($("#mi-price > td:nth-child(2)").text());
+    $('#editMobileMiPrice').val($("#mi-price > td:nth-child(3)").text());
     $('#modalEditMiPrice').modal();
 });
 
@@ -491,6 +496,7 @@ $(document).on('click', '#btnUpdateMiPrice', function () {
             _token: token,
             corporate_mi_price: $('#editCorporteMiPrice').val(),
             individual_mi_price: $('#editIndividualMiPrice').val(),
+            mobile_mi_price: $('#editMobileMiPrice').val(),
         }
     }).done(function (response) {
         if (response.status == 1) {

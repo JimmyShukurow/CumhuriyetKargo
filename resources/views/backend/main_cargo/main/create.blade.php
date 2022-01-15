@@ -253,8 +253,8 @@
                                        onchange="" type="checkbox"
                                        checked id="paymentType"
                                        data-toggle="toggle"
-                                       data-on="Gönd. Öd."
-                                       data-off="Alıcı Öd." data-onstyle="dark" data-offstyle="secondary">
+                                       data-on="Gönderici Öd."
+                                       data-off="Alıcı Öd." data-onstyle="primary" data-offstyle="danger">
                             </div>
                         </div>
                         <div class="form-row collection-container">
@@ -511,7 +511,7 @@
                         <div class="form-row mt-4">
 
                             <div style="padding-top: 35px; padding-left: 20px; border: 2px solid #ce2427"
-                                 class="col-md-2 unselectable">
+                                 class="col-md-3 unselectable">
                                 <h6 class="font-weight-bold">Ek Hizmetler</h6>
                                 <form id="formAdditionalServices">
                                     @foreach($data['additional_service'] as $service)
@@ -522,6 +522,7 @@
                                                    id="add-service-{{$service->id}}" {{$service->status == 0 ? 'disabled' : ''}}>
                                             <label class="form-check-label cursor-pointer"
                                                    for="add-service-{{$service->id}}">{{$service->service_name}}
+                                                ({{$service->price}}₺)
                                             </label>
                                         </div>
                                     @endforeach
@@ -541,7 +542,7 @@
                             </div>
 
                             <div style="padding: 0 40px; border: 2px solid #ce2427; border-left: 0px solid #ce2427;"
-                                 class="col-md-10">
+                                 class="col-md-9">
 
                                 <fieldset class="row ">
                                     <h3 style="width: 100%;" class="font-weight-bold text-center">Özet</h3>
@@ -561,6 +562,20 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td>Posta Hizmetleri Bedeli:</td>
+                                            <td class="text-center">
+                                                <label id="postServicePrice"
+                                                       class="font-weight-bold">{{$fee['postal_services_fee']}}</label><b>₺</b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ağır Yük Taşıma Bedeli:</td>
+                                            <td class="text-center">
+                                                <label id="heavyLoadCarryingCost"
+                                                       class="font-weight-bold">0</label><b>₺</b>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td>
                                                 <b style="text-decoration: underline" id="btnDesi"
                                                    class="cursor-pointer">Desi:</b>
@@ -573,19 +588,6 @@
                                             <td>Parça Sayısı:</td>
                                             <td class="text-center">
                                                 <label id="partQuantity" class="font-weight-bold ">1</label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>KDV Hariç:</td>
-                                            <td class="text-center">
-                                                <label id="kdvExcluding"
-                                                       class="font-weight-bold">{{$fee['first_total_no_kdv']}}</label><b>₺</b>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>KDV:</td>
-                                            <td class="text-center"><b>%</b><label id="kdvPercent"
-                                                                                   class="font-weight-bold">18</label>
                                             </td>
                                         </tr>
                                         <tr>
@@ -602,34 +604,38 @@
                                                        class="font-weight-bold">{{$fee['first_file_price']}}</label><b>₺</b>
                                             </td>
                                         </tr>
-
                                         <tr>
-                                            <td>Posta Hizmetleri Bedeli:</td>
+                                            <td>Mobil Hizmet Ücreti:</td>
                                             <td class="text-center">
-                                                <label id="postServicePrice"
-                                                       class="font-weight-bold">{{$fee['postal_services_fee']}}</label><b>₺</b>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Ağır Yük Taşıma Bedeli:</td>
-                                            <td class="text-center">
-                                                <label id="heavyLoadCarryingCost"
+                                                <label id="mobileServiceFee"
                                                        class="font-weight-bold">0</label><b>₺</b>
                                             </td>
                                         </tr>
-
                                         <tr>
-                                            <td>Genel Toplam:</td>
+                                            <td>KDV:</td>
+                                            <td class="text-center"><b>%</b><label id="kdvPercent"
+                                                                                   class="font-weight-bold">18</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>KDV Hariç:</td>
                                             <td class="text-center">
+                                                <label id="kdvExcluding"
+                                                       class="font-weight-bold">{{$fee['first_total_no_kdv']}}</label><b>₺</b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-weight-bold" style="font-size: 1.4rem; color: black;">Genel
+                                                Toplam:
+                                            </td>
+                                            <td class="text-center" style="font-size: 1.3rem; color: black;">
                                                 <label id="totalPrice"
                                                        class="font-weight-bold">{{$fee['first_total']}}</label><b>₺</b>
                                             </td>
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <div class="unselectable col-sm-12">
-                                    </div>
+                                    <div class="unselectable col-sm-12"></div>
 
                                 </fieldset>
                                 <button id="btnCargoComplate" style="width: 100%;" type="button"
@@ -692,7 +698,8 @@
                                 <div class="form-row">
                                     <div class="col-md-12">
                                         <div class="position-relative ">
-                                            <label for="currentTckn">Gönderici TCKN:</label>
+                                            <label for="currentTckn">Gönderici TCKN:</label> <b
+                                                class="text-danger">*</b>
                                         </div>
                                         <div class="input-group mb-1">
                                             <input type="text" id="currentTckn" maxlength="11"
@@ -703,7 +710,7 @@
                                 <div class="form-row">
                                     <div class="col-md-12">
                                         <div class="position-relative ">
-                                            <label for="currentName">Adı:</label>
+                                            <label for="currentName">Adı:</label><b class="text-danger">*</b>
                                         </div>
                                         <div class="input-group mb-1">
                                             <input type="text" id="currentName" class="form-control form-control-sm">
@@ -713,7 +720,7 @@
                                 <div class="form-row">
                                     <div class="col-md-12">
                                         <div class="position-relative ">
-                                            <label for="currentSurName">Soyadı:</label>
+                                            <label for="currentSurName">Soyadı:</label><b class="text-danger">*</b>
                                         </div>
                                         <div class="input-group mb-1">
                                             <input type="text" id="currentSurName" class="form-control form-control-sm">
@@ -724,7 +731,7 @@
                                 <div class="form-row">
                                     <div class="col-md-12">
                                         <div class="position-relative ">
-                                            <label for="currentYearOfBirth">Doğum Yılı:</label>
+                                            <label for="currentYearOfBirth">Doğum Yılı:</label><b class="text-danger">*</b>
                                         </div>
                                         <div class="input-group mb-1">
                                             <input type="text" id="currentYearOfBirth"
@@ -750,21 +757,22 @@
                                 <div class="form-row">
                                     <div class="col-md-4">
                                         <div class="position-relative ">
-                                            <label for="currentPhone">Telefon:</label>
+                                            <label for="currentGSM">Cep Telefonu:</label><b class="text-danger">*</b>
                                         </div>
                                         <div class="input-group mb-1">
-                                            <input type="text" id="currentPhone"
+                                            <input type="text" id="currentGSM"
                                                    data-inputmask="'mask': '(999) 999 99 99'"
                                                    placeholder="(___) ___ __ __" type="text"
                                                    class="form-control input-mask-trigger form-control-sm">
                                         </div>
                                     </div>
+
                                     <div class="col-md-4">
                                         <div class="position-relative ">
-                                            <label for="currentGSM">Cep Telefonu:</label>
+                                            <label for="currentPhone">Telefon:</label>
                                         </div>
                                         <div class="input-group mb-1">
-                                            <input type="text" id="currentGSM"
+                                            <input type="text" id="currentPhone"
                                                    data-inputmask="'mask': '(999) 999 99 99'"
                                                    placeholder="(___) ___ __ __" type="text"
                                                    class="form-control input-mask-trigger form-control-sm">
@@ -786,7 +794,7 @@
                                 <div class="form-row">
                                     <div class="col-md-4">
                                         <div class="position-relative ">
-                                            <label for="currentCity">İl:</label>
+                                            <label for="currentCity">İl:</label><b class="text-danger">*</b>
                                         </div>
                                         <div class="input-group mb-1">
                                             <select name="" id="currentCity" class="form-control form-control-sm">
@@ -801,7 +809,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="position-relative ">
-                                            <label for="currentDistrict">İlçe:</label>
+                                            <label for="currentDistrict">İlçe:</label><b class="text-danger">*</b>
                                         </div>
                                         <div class="input-group mb-1">
                                             <select name="" id="currentDistrict" class="form-control form-control-sm">
@@ -817,7 +825,7 @@
 
                                     <div class="col-md-4">
                                         <div class="position-relative ">
-                                            <label for="currentDistrict">Mahalle/Köy:</label>
+                                            <label for="currentDistrict">Mahalle/Köy:</label><b class="text-danger">*</b>
                                         </div>
                                         <div class="input-group mb-1">
                                             <select name="" id="currentNeighborhood"
@@ -837,7 +845,7 @@
                                 <div class="form-row">
                                     <div class="col-md-6">
                                         <div class="position-relative ">
-                                            <label for="currentStreet">Cadde:</label>
+                                            <label for="currentStreet">Cadde:</label><b class="text-danger">-</b>
                                         </div>
 
                                         <div class="input-group input-group-sm mb-1">
@@ -850,7 +858,7 @@
 
                                     <div class="col-md-6">
                                         <div class="position-relative ">
-                                            <label for="currentStreet2">Sokak:</label>
+                                            <label for="currentStreet2">Sokak:</label><b class="text-danger">-</b>
                                         </div>
                                         <div class="input-group input-group-sm mb-1">
                                             <input type="text" class="form-control" name="sokak" id="currentStreet2">
@@ -863,7 +871,7 @@
                                 <div class="form-row">
                                     <div class="col-md-4">
                                         <div class="position-relative">
-                                            <label for="currentBuildingNo">Bina No:</label>
+                                            <label for="currentBuildingNo">Bina No:</label><b class="text-danger">*</b>
                                         </div>
                                         <div class="input-group input-group-sm mb-1">
                                             <div class="input-group-prepend"><span
@@ -875,7 +883,7 @@
 
                                     <div class="col-md-4">
                                         <div class="position-relative">
-                                            <label for="currentFloor">Kat No:</label>
+                                            <label for="currentFloor">Kat No:</label><b class="text-danger">*</b>
                                         </div>
                                         <div class="input-group input-group-sm mb-1">
                                             <div class="input-group-prepend"><span
@@ -886,7 +894,7 @@
 
                                     <div class="col-md-4">
                                         <div class="position-relative">
-                                            <label for="currentDoorNo">Daire No:</label>
+                                            <label for="currentDoorNo">Daire No:</label><b class="text-danger">*</b>
                                         </div>
 
                                         <div class="input-group input-group-sm mb-1">
@@ -927,6 +935,8 @@
                         <button style="float: left !important;" type="reset" class="btn btn-secondary float-left">Formu
                             Temizle
                         </button>
+                        <b style="float: left;"> <b class="text-danger">*</b> ile belirtilen alanlar zorunludur.</b>
+
                         <button type="button" class="btn btn-danger float-right" data-dismiss="modal">Kapat</button>
                     </div>
                 </form>
@@ -956,7 +966,7 @@
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <div class="position-relative ">
-                                        <label for="selectReciverCategory">Kategori:</label>
+                                        <label for="selectReciverCategory">Kategori:</label><b class="text-danger">*</b>
                                     </div>
                                     <div class="input-group mb-1">
                                         <select id="selectReciverCategory" class="form-control form-control-sm" name="">
@@ -982,7 +992,7 @@
                                 <div class="form-row">
                                     <div class="col-md-12">
                                         <div class="position-relative ">
-                                            <label for="receiverIndividualName">Adı:</label>
+                                            <label for="receiverIndividualName">Adı:</label><b class="text-danger">*</b>
                                         </div>
                                         <div class="input-group mb-1">
                                             <input type="text" id="receiverIndividualName"
@@ -993,7 +1003,8 @@
                                 <div class="form-row">
                                     <div class="col-md-12">
                                         <div class="position-relative ">
-                                            <label for="receiverIndividualSurname">Soyadı:</label>
+                                            <label for="receiverIndividualSurname">Soyadı:</label><b
+                                                class="text-danger">*</b>
                                         </div>
                                         <div class="input-group mb-1">
                                             <input type="text" id="receiverIndividualSurname"
@@ -1017,7 +1028,8 @@
                                 <div class="form-row">
                                     <div class="col-md-12">
                                         <div class="position-relative ">
-                                            <label for="receiverCompanyName">Firma Ünvanı:</label>
+                                            <label for="receiverCompanyName">Firma Ünvanı:</label><b
+                                                class="text-danger">*</b>
                                         </div>
                                         <div class="input-group mb-1">
                                             <input type="text" id="receiverCompanyName"
@@ -1051,21 +1063,22 @@
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="position-relative ">
-                                        <label for="receiverPhone">Telefon:</label>
+                                        <label for="receiverGSM">Cep Telefonu:</label> <b class="text-danger">*</b>
                                     </div>
                                     <div class="input-group mb-1">
-                                        <input type="text" id="receiverPhone"
+                                        <input type="text" id="receiverGSM"
                                                data-inputmask="'mask': '(999) 999 99 99'"
                                                placeholder="(___) ___ __ __" type="text"
                                                class="form-control input-mask-trigger form-control-sm">
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="position-relative ">
-                                        <label for="receiverGSM">Cep Telefonu:</label>
+                                        <label for="receiverPhone">Telefon:</label>
                                     </div>
                                     <div class="input-group mb-1">
-                                        <input type="text" id="receiverGSM"
+                                        <input type="text" id="receiverPhone"
                                                data-inputmask="'mask': '(999) 999 99 99'"
                                                placeholder="(___) ___ __ __" type="text"
                                                class="form-control input-mask-trigger form-control-sm">
@@ -1095,7 +1108,7 @@
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="position-relative ">
-                                        <label for="receiverCity">İl:</label>
+                                        <label for="receiverCity">İl:</label><b class="text-danger">*</b>
                                     </div>
                                     <div class="input-group mb-1">
                                         <select name="" id="receiverCity" class="form-control form-control-sm">
@@ -1109,7 +1122,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="position-relative ">
-                                        <label for="receiverDistrict">İlçe:</label>
+                                        <label for="receiverDistrict">İlçe:</label><b class="text-danger">*</b>
                                     </div>
                                     <div class="input-group mb-1">
                                         <select name="" id="receiverDistrict" disabled
@@ -1122,7 +1135,8 @@
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <div class="position-relative">
-                                        <label for="receiverNeighborhood">Mahalle/Köy:</label>
+                                        <label for="receiverNeighborhood">Mahalle/Köy:</label><b
+                                            class="text-danger">*</b>
                                     </div>
                                     <div class="input-group mb-1">
                                         <select name="" id="receiverNeighborhood" disabled
@@ -1136,7 +1150,7 @@
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="position-relative">
-                                        <label for="receiverStreet">Cadde:</label>
+                                        <label for="receiverStreet">Cadde:</label><b class="text-danger">-</b>
                                     </div>
                                     <div class="input-group input-group-sm mb-1">
                                         <input type="text" class="form-control" id="receiverStreet">
@@ -1146,7 +1160,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="position-relative">
-                                        <label for="receiverStreet2">Sokak:</label>
+                                        <label for="receiverStreet2">Sokak:</label><b class="text-danger">-</b>
                                     </div>
                                     <div class="input-group input-group-sm mb-1">
                                         <input type="text" class="form-control" id="receiverStreet2">
@@ -1159,7 +1173,7 @@
                             <div class="form-row">
                                 <div class="col-md-4">
                                     <div class="position-relative">
-                                        <label for="receiverBuildingNo">Bina No:</label>
+                                        <label for="receiverBuildingNo">Bina No:</label><b class="text-danger">*</b>
                                     </div>
                                     <div class="input-group input-group-sm mb-1">
                                         <div class="input-group-prepend"><span
@@ -1170,7 +1184,7 @@
 
                                 <div class="col-md-4">
                                     <div class="position-relative">
-                                        <label for="receiverFloor">Kat No:</label>
+                                        <label for="receiverFloor">Kat No:</label><b class="text-danger">*</b>
                                     </div>
 
                                     <div class="input-group input-group-sm mb-1">
@@ -1182,7 +1196,7 @@
 
                                 <div class="col-md-4">
                                     <div class="position-relative">
-                                        <label for="receiverDoorNo">Daire No:</label>
+                                        <label for="receiverDoorNo">Daire No:</label><b class="text-danger">*</b>
                                     </div>
                                     <div class="input-group input-group-sm mb-1">
                                         <div class="input-group-prepend"><span
@@ -1217,8 +1231,10 @@
                         {{-- Gönderici END --}}
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                <div style="display: block;" class="modal-footer">
+                    <b style="float: left;"> <b class="text-danger">*</b> ile belirtilen alanlar zorunludur.</b>
+                    <button style="float: right;" type="button" class="btn btn-danger" data-dismiss="modal">Kapat
+                    </button>
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ var AdreseTeslim = $('#add-service-8');
 var SubeTeslim = $('#add-service-11');
 
 MobilBolge.prop('disabled', true);
+MobilBolge.prop('read-only', true);
 
 $(document).ready(function () {
     $('#gondericiAdi').select2({
@@ -616,6 +617,7 @@ function DistributionControl(neighborhood = '') {
     });
 }
 
+
 function clearAddServices() {
     AdreseTeslim.prop('disabled', false);
     SubeTeslim.prop('disabled', false);
@@ -742,9 +744,10 @@ function getPriceForCustomers() {
             }
         }).done(function (response) {
 
-            $('#serviceFee').text(roundLikePHP(response.service_fee, 2));
-            $('#postServicePrice').text(response.post_service_price);
-            $('#heavyLoadCarryingCost').text(response.heavy_load_carrying_cost);
+            $('#serviceFee').text(roundLikePHP(response.service_fee, 2))
+            $('#postServicePrice').text(response.post_service_price)
+            $('#heavyLoadCarryingCost').text(response.heavy_load_carrying_cost)
+            $('#mobileServiceFee').text(response.mobile_service_fee)
 
             calculateTotalPrice();
 
@@ -896,8 +899,9 @@ function calculateTotalPrice() {
     let serviceFee = parseFloat($('#serviceFee').text());
     let postServiceFee = parseFloat($('#postServicePrice').text());
     let heavyLoadCarryingCost = parseFloat($('#heavyLoadCarryingCost').text());
+    let mobileServiceFee = parseFloat($('#mobileServiceFee').text());
 
-    total += addFee + serviceFee + DistancePrice + postServiceFee;
+    total += addFee + serviceFee + DistancePrice + postServiceFee + mobileServiceFee;
     wKDV = total + (kdvPercent * (total) / 100) + heavyLoadCarryingCost;
     $('#totalPrice').text(roundLikePHP(wKDV, 2));
     // No - KDV
@@ -941,6 +945,7 @@ $('#selectCargoType').change(function () {
             calculateTotalPrice();
             // getFilePrice();
             getPriceForCustomers();
+            DistributionControl();
 
         }
 
@@ -1630,9 +1635,12 @@ function getFormData($form) {
         indexed_array[n['name']] = n['value'];
     });
 
-    for (let i = 0; i < disableElementsArray.length; i++) {
-        $('#' + disableElements[i].id).prop('disabled', false);
-    }
+    setTimeout(function () {
+        for (let i = 0; i < disableElementsArray.length; i++) {
+            $('#' + disableElements[i].id).prop('disabled', true);
+        }
+    }, 150)
+
     return indexed_array;
 }
 

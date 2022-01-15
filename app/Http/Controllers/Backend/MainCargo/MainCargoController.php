@@ -16,6 +16,7 @@ use App\Models\Currents;
 use App\Models\DesiList;
 use App\Models\Districts;
 use App\Models\FilePrice;
+use App\Models\LocalLocation;
 use App\Models\Receivers;
 use App\Models\Settings;
 use App\Models\SmsContent;
@@ -811,13 +812,75 @@ class MainCargoController extends Controller
                     }
                 }
 
+                # MobileServiceFee Start
+                $location = LocalLocation::where('neighborhood', $receiver->neighborhood)->first();
+
+                $mobileServiceFee = 0;
+                $filePrice = FilePrice::find(1);
+
+                if ($location != null && $location->area_type == 'MB') {
+
+                    switch ($cargoType) {
+                        case 'Dosya':
+                            $mobileServiceFee = $filePrice->mobile_file_price;
+                            break;
+                        case 'Mi':
+                            $mobileServiceFee = $filePrice->mobile_mi_price;
+                            break;
+
+                        case 'Paket':
+                        case 'Koli':
+                        case 'Çuval':
+                        case 'Rulo':
+                        case 'Palet':
+                        case 'Sandık':
+                        case 'Valiz':
+                            if ($current->mb_status == '0' || $receiver->mb_status == '0')
+                                $mobileServiceFee = 0;
+                            else {
+                                $desi = $request->desi;
+
+                                if ($desi > 1) {
+                                    ## calc desi price
+                                    $maxDesiInterval = DB::table('desi_lists')
+                                        ->orderBy('finish_desi', 'desc')
+                                        ->first();
+                                    $maxDesiPrice = $maxDesiInterval->mobile_individual_unit_price;
+                                    $maxDesiInterval = $maxDesiInterval->finish_desi;
+
+                                    $desiPrice = 0;
+                                    if ($desi > $maxDesiInterval) {
+                                        $desiPrice = $maxDesiPrice;
+
+                                        $amountOfIncrease = DB::table('settings')->where('key', 'mobile_desi_amount_of_increase')->first();
+                                        $amountOfIncrease = $amountOfIncrease->value;
+
+                                        for ($i = $maxDesiInterval; $i < $desi; $i++)
+                                            $desiPrice += $amountOfIncrease;
+                                    } else {
+                                        #catch interval
+                                        $desiPrice = DB::table('desi_lists')
+                                            ->where('start_desi', '<=', $desi)
+                                            ->where('finish_desi', '>=', $desi)
+                                            ->first();
+                                        $desiPrice = $desiPrice->mobile_individual_unit_price;
+                                    }
+                                    $mobileServiceFee = $desiPrice;
+                                } else
+                                    $mobileServiceFee = 0;
+                            }
+                            break;
+                    }
+                }
+                # MobileServiceFee End
+
 
                 # evrensel posta hizmetleri ücreti start
                 $postServicePercent = GetSettingsVal('post_services_percent');
 
                 $postServicePrice = ($json['service_fee'] * $postServicePercent) / 100;
                 $postServicePrice = round($postServicePrice, 2);
-                # evrensel posta hizmetleri ücreti start
+                # evrensel posta hizmetleri ücreti end
 
                 ##  New Heavy Load Carrying Coast Calc START
                 $heavyLoadCarryingStatus = false;
@@ -903,7 +966,8 @@ class MainCargoController extends Controller
                 $json = [
                     'service_fee' => $json['service_fee'],
                     'post_service_price' => $postServicePrice,
-                    'heavy_load_carrying_cost' => $heavyLoadCarryingCost
+                    'heavy_load_carrying_cost' => $heavyLoadCarryingCost,
+                    'mobile_service_fee' => $mobileServiceFee
                 ];
 
                 return response()->json($json, 200);
@@ -1191,6 +1255,67 @@ class MainCargoController extends Controller
                     return response()
                         ->json(['status' => -1, 'message' => 'Hizmet tutarları eşleşmiyor,x lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
 
+                # MobileServiceFee Start
+                $location = LocalLocation::where('neighborhood', $receiver->neighborhood)->first();
+
+                $mobileServiceFee = 0;
+                $filePrice = FilePrice::find(1);
+
+                if ($location != null && $location->area_type == 'MB') {
+
+                    switch ($cargoType) {
+                        case 'Dosya':
+                            $mobileServiceFee = $filePrice->mobile_file_price;
+                            break;
+                        case 'Mi':
+                            $mobileServiceFee = $filePrice->mobile_mi_price;
+                            break;
+
+                        case 'Paket':
+                        case 'Koli':
+                        case 'Çuval':
+                        case 'Rulo':
+                        case 'Palet':
+                        case 'Sandık':
+                        case 'Valiz':
+                            if ($current->mb_status == '0' || $receiver->mb_status == '0')
+                                $mobileServiceFee = 0;
+                            else {
+                                $desi = $request->desi;
+
+                                if ($desi > 1) {
+                                    ## calc desi price
+                                    $maxDesiInterval = DB::table('desi_lists')
+                                        ->orderBy('finish_desi', 'desc')
+                                        ->first();
+                                    $maxDesiPrice = $maxDesiInterval->mobile_individual_unit_price;
+                                    $maxDesiInterval = $maxDesiInterval->finish_desi;
+
+                                    $desiPrice = 0;
+                                    if ($desi > $maxDesiInterval) {
+                                        $desiPrice = $maxDesiPrice;
+
+                                        $amountOfIncrease = DB::table('settings')->where('key', 'mobile_desi_amount_of_increase')->first();
+                                        $amountOfIncrease = $amountOfIncrease->value;
+
+                                        for ($i = $maxDesiInterval; $i < $desi; $i++)
+                                            $desiPrice += $amountOfIncrease;
+                                    } else {
+                                        #catch interval
+                                        $desiPrice = DB::table('desi_lists')
+                                            ->where('start_desi', '<=', $desi)
+                                            ->where('finish_desi', '>=', $desi)
+                                            ->first();
+                                        $desiPrice = $desiPrice->mobile_individual_unit_price;
+                                    }
+                                    $mobileServiceFee = $desiPrice;
+                                } else
+                                    $mobileServiceFee = 0;
+                            }
+                            break;
+                    }
+                }
+                # MobileServiceFee End
 
                 # evrensel posta hizmetleri ücreti start
                 $postServicePercent = GetSettingsVal('post_services_percent');
@@ -1311,7 +1436,7 @@ class MainCargoController extends Controller
                     ->first();
 
                 ## calc total price
-                $totalPriceExceptKdv = $distancePrice + $addServicePrice + $serviceFee + $postServicePrice;
+                $totalPriceExceptKdv = $distancePrice + $addServicePrice + $serviceFee + $mobileServiceFee + $postServicePrice;
                 $kdvPrice = $totalPriceExceptKdv * 0.18;
                 $kdvPrice = round($kdvPrice, 2);
                 $totalPrice = $totalPriceExceptKdv + $kdvPrice + $heavyLoadCarryingCost;

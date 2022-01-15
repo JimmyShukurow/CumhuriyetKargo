@@ -24,10 +24,12 @@ class ServiceFeeController extends Controller
     {
         $request->corporate_file_price = substr($request->corporate_file_price, 3, strlen($request->corporate_file_price));
         $request->individual_file_price = substr($request->individual_file_price, 3, strlen($request->individual_file_price));
+        $request->mobile_file_price = substr($request->mobile_file_price, 3, strlen($request->mobile_file_price));
 
         $rules = [
             'corporate_file_price' => 'required',
             'individual_file_price' => 'required',
+            'mobile_file_price' => 'required',
         ];
         $validator = Validator::make($request->all(), $rules);
 
@@ -38,6 +40,7 @@ class ServiceFeeController extends Controller
             ->update([
                 'corporate_file_price' => $request->corporate_file_price,
                 'individual_file_price' => $request->individual_file_price,
+                'mobile_file_price' => $request->mobile_file_price,
             ]);
 
         if ($store)
@@ -50,6 +53,7 @@ class ServiceFeeController extends Controller
     {
         $request->corporate_mi_price = substr($request->corporate_mi_price, 3, strlen($request->corporate_mi_price));
         $request->individual_mi_price = substr($request->individual_mi_price, 3, strlen($request->individual_mi_price));
+        $request->mobile_mi_price = substr($request->mobile_mi_price, 3, strlen($request->mobile_mi_price));
 
         $rules = [
             'corporate_mi_price' => 'required',
@@ -64,6 +68,7 @@ class ServiceFeeController extends Controller
             ->update([
                 'corporate_mi_price' => $request->corporate_mi_price,
                 'individual_mi_price' => $request->individual_mi_price,
+                'mobile_mi_price' => $request->mobile_mi_price,
             ]);
 
         if ($store)

@@ -13,15 +13,19 @@ class FilePrice extends Model
     protected $fillable = [
         'corporate_file_price',
         'individual_file_price',
+        'mobile_file_price',
         'corporate_mi_price',
         'individual_mi_price',
+        'mobile_mi_price',
     ];
 
     protected static $logAttributes = [
         'corporate_file_price',
         'individual_file_price',
+        'mobile_file_price',
         'corporate_mi_price',
         'individual_mi_price',
+        'mobile_mi_price',
     ];
 
     public function getDescriptionForEvent(string $eventName): string
