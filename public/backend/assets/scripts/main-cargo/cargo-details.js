@@ -220,6 +220,7 @@ function cargoInfo(user) {
             $('td#kdv').text(cargo.kdv_price + "₺");
             $('td#addServiceFee').text(cargo.add_service_price + "₺");
             $('td#serviceFee').text(cargo.service_price + "₺");
+            $('td#mobileServiceFee').text(cargo.mobile_service_price + "₺");
             $('td#totalFee').text(cargo.total_price + "₺");
 
             $('#PrintStatementOfResposibility').attr('href', '/MainCargo/StatementOfResponsibility/' + cargo.tracking_no);

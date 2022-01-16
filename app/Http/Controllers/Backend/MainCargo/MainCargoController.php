@@ -1422,6 +1422,7 @@ class MainCargoController extends Controller
                 } else
                     $heavyLoadCarryingCost = 0;
 
+//                return $request->agirYukTasimaBedeli . ' - ' . $heavyLoadCarryingCost;
                 if (!(compareFloatEquality($request->agirYukTasimaBedeli, $heavyLoadCarryingCost)))
                     return response()
                         ->json(['status' => -1, 'message' => 'Ağır yük taşıma bedeli eşleşmiyor, lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
@@ -1529,6 +1530,7 @@ class MainCargoController extends Controller
                     'distance' => $distance,
                     'distance_price' => $distancePrice,
                     'service_price' => $serviceFee,
+                    'mobile_service_price' => $mobileServiceFee,
                     'add_service_price' => $addServicePrice,
                     'post_service_price' => $postServicePrice,
                     'heavy_load_carrying_cost' => $heavyLoadCarryingCost,

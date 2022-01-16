@@ -1474,6 +1474,7 @@ function CalculateDesi(RealDesi, PartNumber, clickButton) {
         $('#serviceFee').text(roundLikePHP(response.service_fee, 2));
         $('#postServicePrice').text(response.post_service_price);
         $('#heavyLoadCarryingCost').text(response.heavy_load_carrying_cost);
+        $('#mobileServiceFee').text(response.mobile_service_fee);
 
         // DistancePrice = response.distance_price;
         // $('#labelDistancePrice').text(response.distance_price);

@@ -182,6 +182,10 @@
                                                             <td id="cargoKg"></td>
                                                         </tr>
                                                         <tr>
+                                                            <td class="static">Desi:</td>
+                                                            <td id="desi"></td>
+                                                        </tr>
+                                                        <tr>
                                                             <td class="static">Hacim (m<sup>3</sup>):</td>
                                                             <td id="cubicMeterVolume"></td>
                                                         </tr>
@@ -244,10 +248,7 @@
                                                             <td id="collection_fee"
                                                                 class="font-weight-bold text-primary"></td>
                                                         </tr>
-                                                        <tr>
-                                                            <td class="static">Desi:</td>
-                                                            <td id="desi"></td>
-                                                        </tr>
+
                                                         <tr>
                                                             <td class="static">Çıkış Şube:</td>
                                                             <td class="text-primary" id="exitBranch"></td>
@@ -267,8 +268,6 @@
                                                             <td class="static">Varış Transfer:</td>
                                                             <td class="text-alternate" id="arrivalTC"></td>
                                                         </tr>
-
-
                                                         <tr>
                                                             <td class="static">Mesafe (KM):</td>
                                                             <td id="distance"></td>
@@ -307,7 +306,11 @@
                                                             <td class="font-weight-bold text-dark"
                                                                 id="serviceFee"></td>
                                                         </tr>
-
+                                                        <tr>
+                                                            <td class="static">Mobil Hizmet Ücreti:</td>
+                                                            <td class="font-weight-bold text-dark"
+                                                                id="mobileServiceFee"></td>
+                                                        </tr>
                                                         <tr>
                                                             <td class="static">Genel Toplam:</td>
                                                             <td class="font-weight-bold text-primary"
