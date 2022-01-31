@@ -72,10 +72,16 @@ Route::get('CloseTheVirtualLogin/{id}', [DefaultController::class, 'closeTheVirt
 
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
-    #GM ALL currents
-    Route::get('Customers/GetAllCustomers', [SenderCurrentController::class, 'getAllCustomers'])->name('customer.gm.getAllCustomers');
-    Route::get('Customers', [SenderCurrentController::class, 'customersIndex'])->name('customers.index');
-    Route::get('Customers/GetAllCustomers', [SenderCurrentController::class, 'getAllCustomers'])->name('customer.gm.getAllCustomers');
+
+    Route::prefix('Customers')->group(function () {
+        
+        #GM ALL currents
+        Route::get('GetAllCustomers', [SenderCurrentController::class, 'getAllCustomers'])->name('customer.gm.getAllCustomers');
+        Route::get('/', [SenderCurrentController::class, 'customersIndex'])->name('customers.index');
+        Route::get('GetAllCustomers', [SenderCurrentController::class, 'getAllCustomers'])->name('customer.gm.getAllCustomers');
+        Route::post('GetCustomerInfo', [SenderCurrentController::class, 'getCustomerById']);
+    });
+
 
 
     Route::resource('VariousCars', VariousController::class)

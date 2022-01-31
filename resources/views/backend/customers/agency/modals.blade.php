@@ -10,7 +10,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div style="overflow-y: auto; max-height: 75vh;" id="ModalBodyUserDetail" class="modal-body">
+                <div style="overflow-y: auto; max-height: 75vh;" id="ModalBodyCustomerDetails" class="modal-body">
 
                     {{-- CARD START --}}
                     <div class="col-md-12">

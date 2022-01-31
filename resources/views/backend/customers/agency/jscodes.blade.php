@@ -1,4 +1,5 @@
-<script src="/backend/assets/scripts/backend-modules.js"></script>
+    <script src="/backend/assets/scripts/backend-modules.js"></script>
+    <script src="/backend/assets/scripts/jquery.blockUI.js"></script>
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
     <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
     <link rel="stylesheet" href="/backend/assets/css/jquery.json-viewer.css">
@@ -155,7 +156,6 @@
         });
       
         $(document).on('dblclick', '.customer-detail', function () {
-            ToastMessage('warning', '', 'Yükleniyor');
             detailsID = $(this).prop('id');
             getCustomerDetails(detailsID);
         });
@@ -163,7 +163,29 @@
         var array = new Array();
 
         function getCustomerDetails(user) {
-            $.ajax('/Users/GetCustomerInfo', {
+
+
+            $('#ModalBodyCustomerDetails').block({
+                    message: $('<div class="loader mx-auto">\n' +
+                        '                            <div class="ball-grid-pulse">\n' +
+                        '                                <div class="bg-white"></div>\n' +
+                        '                                <div class="bg-white"></div>\n' +
+                        '                                <div class="bg-white"></div>\n' +
+                        '                                <div class="bg-white"></div>\n' +
+                        '                                <div class="bg-white"></div>\n' +
+                        '                                <div class="bg-white"></div>\n' +
+                        '                                <div class="bg-white"></div>\n' +
+                        '                                <div class="bg-white"></div>\n' +
+                        '                                <div class="bg-white"></div>\n' +
+                        '                            </div>\n' +
+                        '                        </div>')
+                });
+                $('.blockUI.blockMsg.blockElement').css('width', '100%');
+                $('.blockUI.blockMsg.blockElement').css('border', '0px');
+                $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+                
+            $.ajax('/Customers/GetCustomerInfo', {
                 method: 'POST',
                 data: {
                     _token: token,
@@ -172,6 +194,7 @@
                 cache: false
             }).done(function (response) {
 
+                $('#ModalBodyCustomerDetails').unblock();
 
                 var current = response.data[0];
                 var category = current.category;
@@ -291,7 +314,12 @@
                 }
 
 
+            }).error(function (jqXHR, response) {
+                ajaxError(jqXHR.status);
+            }).always(function () {
+                $('#ModalBodyCustomerDetails').unblock();
             });
+
         }
 
         $(document).on('click', '.properties-log', function () {

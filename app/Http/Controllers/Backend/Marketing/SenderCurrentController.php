@@ -595,7 +595,7 @@ class SenderCurrentController extends Controller
 
         return datatables()->of($data)
             ->editColumn('current_code', function ($current) {
-                return '<b class="customer-detail" id="'.$current->id.'" style="text-decoration:underline; color:#000; cursor:pointer">'.CurrentCodeDesign($current->current_code).'</b>';
+                return '<b class="customer-detail" id="'.$current->id.'" style="text-decoration:underline; color:#000; cursor:pointer; user-select:none">'.CurrentCodeDesign($current->current_code).'</b>';
             })
             ->editColumn('free', function ($current) {
                 return '';

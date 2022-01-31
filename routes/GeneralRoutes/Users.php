@@ -22,6 +22,5 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('GetUserInfo', [UserController::class, 'userInfo']);
         ## Ajax ==> Save Status Info
         Route::post('ChangeStatus', [UserController::class, 'changeStatus']);
-        Route::post('GetCustomerInfo', [SenderCurrentController::class, 'getCustomerById']);
     }));
 });
