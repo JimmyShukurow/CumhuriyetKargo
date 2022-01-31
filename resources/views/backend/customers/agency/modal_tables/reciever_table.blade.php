@@ -1,5 +1,5 @@
 
-    <table style="white-space: nowrap; display:none" id="AgencyCard" class="TableNoPadding table table-bordered table-striped taker-table">
+    <table style="white-space: nowrap; display:none" id="AgencyCard" class="TableNoPadding table table-bordered table-striped taker-table-display">
         {{-- Alici --}}
         <thead>
         <tr>

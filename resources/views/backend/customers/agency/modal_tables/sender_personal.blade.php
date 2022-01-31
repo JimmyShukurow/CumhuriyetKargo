@@ -1,4 +1,4 @@
-    <table style="white-space: nowrap; display:none" id="AgencyCard" class="TableNoPadding table table-bordered table-striped sender-personal">
+    <table style="white-space: nowrap; display:none" id="AgencyCard" class="TableNoPadding table table-bordered table-striped sender-personal-display">
         {{-- Gonderici bireysel --}}
         <thead>
         <tr>

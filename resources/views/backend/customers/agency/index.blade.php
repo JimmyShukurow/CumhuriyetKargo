@@ -165,9 +165,21 @@
 @endsection
 
 @section('js')
-    @include('backend/customers/agency/jscodes')
+    <script src="/backend/assets/scripts/backend-modules.js"></script>
+    <script src="/backend/assets/scripts/jquery.blockUI.js"></script>
+    <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
+    <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
+    <script src="/backend/assets/scripts/customers/customer-details.js"></script>
+    <script src="/backend/assets/scripts/customers/index.js"></script>
+    <link rel="stylesheet" href="/backend/assets/css/jquery.json-viewer.css">
+    <style type="text/css">
+        pre#json-renderer {
+            border: 1px solid #aaa;
+        }
+    </style>
 @endsection
 
 @section('modals')
-    @include('backend/customers/agency/modals')
+    @php $data = ['type' => 'customers']; @endphp
+    @include('backend/customers/agency/modal_customer_details')
 @endsection
