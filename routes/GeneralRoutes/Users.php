@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Backend\User\UserGM\UserController;
+use App\Http\Controllers\Backend\Marketing\SenderCurrentController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {

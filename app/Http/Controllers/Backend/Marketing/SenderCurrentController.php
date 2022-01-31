@@ -30,11 +30,6 @@ use PhpOffice\PhpWord\Writer\PDF;
 
 class SenderCurrentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $data['agencies'] = Agencies::all();
@@ -47,11 +42,7 @@ class SenderCurrentController extends Controller
         return view('backend.marketing.sender_currents.index', compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function create()
     {
         $data['cities'] = Cities::all();
@@ -59,12 +50,6 @@ class SenderCurrentController extends Controller
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -228,23 +213,13 @@ class SenderCurrentController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit($id)
     {
         $data['cities'] = Cities::all();
@@ -268,13 +243,7 @@ class SenderCurrentController extends Controller
         return view('backend.marketing.sender_currents.edit', compact(['data', 'current', 'price', 'agency']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -414,12 +383,7 @@ class SenderCurrentController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function destroy($id)
     {
         $destroy = Currents::find(intval($id))->delete();
@@ -631,12 +595,15 @@ class SenderCurrentController extends Controller
 
         return datatables()->of($data)
             ->editColumn('current_code', function ($current) {
-                return $current->current_code;
+                return '<b class="customer-detail" style="text-decoration:underline; color:#000; cursor:pointer">'.CurrentCodeDesign($current->current_code).'</b>';
+            })
+            ->editColumn('free', function ($current) {
+                return '';
             })
             ->addColumn('edit', 'backend.customers.agency.columns.edit')
-            ->rawColumns(['edit'])
+            ->rawColumns(['edit', 'current_code'])
             ->make(true);
-    }
+    } 
 
 
     public function getCustomerById(Request $request)

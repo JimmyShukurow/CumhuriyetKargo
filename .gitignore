@@ -11,3 +11,7 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+config/telescope.php
+database/migrations/2018_08_08_100000_create_telescope_entries_table.php
+app/Providers/TelescopeServiceProvider.php
+public/vendor/telescope
