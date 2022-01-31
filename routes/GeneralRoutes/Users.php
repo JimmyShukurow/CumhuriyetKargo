@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Backend\User\UserGM\UserController;
+use App\Http\Controllers\Backend\Marketing\SenderCurrentController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
@@ -21,6 +22,5 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::post('GetUserInfo', [UserController::class, 'userInfo']);
         ## Ajax ==> Save Status Info
         Route::post('ChangeStatus', [UserController::class, 'changeStatus']);
-        Route::post('GetCustomerInfo', [SenderCurrentController::class, 'getCustomerById']);
     }));
 });
