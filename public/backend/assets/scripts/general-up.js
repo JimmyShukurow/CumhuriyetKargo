@@ -247,11 +247,11 @@ function NikoStylePostMethod() {
             });
         }
 
-    }).error(function (jqXHR, response) {
-        ajaxError(jqXHR.status);
-    }).always(function () {
-        $('#ModalCargoDetails').unblock();
-    });
+        }).error(function (jqXHR, response) {
+            ajaxError(jqXHR.status);
+        }).always(function () {
+            $('#ModalCargoDetails').unblock();
+        });
 }
 
 $(document).on('keyup', '#search-input', delay(function (e) {
