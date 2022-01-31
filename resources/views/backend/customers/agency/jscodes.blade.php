@@ -153,6 +153,12 @@
             detailsID = $(this).prop('id');
             getCustomerDetails(detailsID);
         });
+      
+        $(document).on('dblclick', '.customer-detail', function () {
+            ToastMessage('warning', '', 'Yükleniyor');
+            detailsID = $(this).prop('id');
+            getCustomerDetails(detailsID);
+        });
 
         var array = new Array();
 
@@ -178,6 +184,12 @@
                     fillCargo('tbodyUserTopTenSenderPersonal', cargo);
 
                     $('#ModalCustomerDetails').modal();
+
+                    // Tables display are changed here
+                    $('.taker-table-display').css("display","none");
+                    $('.sender-customer-display').css("display","none");
+                    $('.sender-personal-display').css("display","block");
+
                     $('#senderPersonalCustomerType-1').html(category);
                     $('#senderPersonalCustomerTckn').html(current.tckn)
                     $('#senderPersonalNameSurname').html(current.name);
@@ -193,8 +205,8 @@
 
                     $('#senderPersonalCustomerVknCustomerVkn').html(current.vkn);
 
-                    $('#senderPersonalCustomerName').html(current.name);
-                    $('#senderPersonalCustomerType').html(current_type);
+                    $('#customerName').html(current.name);
+                    $('#customerType').html(current_type);
 
                 } else if (current_type == 'Gönderici' && category == 'Kurumsal') {
                     console.log(current);
@@ -202,6 +214,11 @@
                     fillCargo('tbodyUserTopTenSenderCorporate', cargo);
 
                     $('#ModalCustomerDetails').modal();
+
+                    // Tables display are changed here
+                    $('.taker-table-display').css("display","none");
+                    $('.sender-customer-display').css("display","block");
+                    $('.sender-personal-display').css("display","none");
 
                     $('#senderCorporateCustomerType-1').html(category);
 
@@ -242,13 +259,18 @@
 
                     $('#senderCustomerVkn').html(current.vkn);
 
-                    $('#senderCustomerName').html(current.name);
-                    $('#senderCustomerType-1').html(category);
+                    $('#customerName').html(current.name);
+                    $('#customerType').html(current_type);
 
                 } else if (current_type == 'Alıcı') {
 
                     fillCargo('tbodyUserTopTen', cargo);
-                    $('taker-table').css("display":"block");
+
+                    // Tables display are changed here
+                    $('.taker-table-display').css("display","block");
+                    $('.sender-customer-display').css("display","none");
+                    $('.sender-personal-display').css("display","none");
+
                     $('#ModalCustomerDetails').modal();
                     $('#tcknTaker').html(current.tckn)
                     $('#nameSurnameTaker').html(current.name);
