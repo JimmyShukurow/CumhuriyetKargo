@@ -80,6 +80,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('/', [SenderCurrentController::class, 'customersIndex'])->name('customers.index');
         Route::get('GetAllCustomers', [SenderCurrentController::class, 'getAllCustomers'])->name('customer.gm.getAllCustomers');
         Route::post('GetCustomerInfo', [SenderCurrentController::class, 'getCustomerById']);
+        Route::delete('/Delete/{id}',[SenderCurrentController::class,'deleteCustomer']);
     });
 
 

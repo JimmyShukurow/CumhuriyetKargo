@@ -591,7 +591,8 @@ class SenderCurrentController extends Controller
             ->whereRaw($city ? "city='" . $city . "'" : '1 > 0')
             ->whereRaw($customer_name_surname ? "name='" . $customer_name_surname . "'" : '1 > 0')
             ->whereRaw($customer_type ? "current_type='" . $customer_type . "'" : '1 > 0')
-            ->whereRaw($phone ? "gsm='" . $phone . "'" : '1 > 0');
+            ->whereRaw($phone ? "gsm='" . $phone . "'" : '1 > 0')
+            ->whereRaw('currents.deleted_at is null');
 
         return datatables()->of($data)
             ->editColumn('current_code', function ($current) {
@@ -615,7 +616,7 @@ class SenderCurrentController extends Controller
        currents.current_code,currents.current_type,currents.discount,currents.dispatch_adress,currents.dispatch_city,currents.dispatch_district,
         currents.dispatch_post_code,currents.district,currents.door_no,currents.email,currents.floor,currents.gsm,currents.gsm2,currents.id,
        currents.name,currents.neighborhood,currents.phone,currents.phone2,currents.reference,currents.status,currents.street,currents.street2,
-       currents.tax_administration,currents.tckn,currents.vkn,currents.web_site,
+       currents.tax_administration,currents.tckn,currents.vkn,currents.web_site,currents.created_at,
         agencies.city as agencies_city , agencies.district as agencies_district, agencies.agency_name FROM currents
             INNER JOIN users ON users.id = currents.created_by_user_id
             INNER JOIN agencies ON agencies.id = users.agency_code
@@ -633,6 +634,8 @@ class SenderCurrentController extends Controller
                 ->orderBy('id', 'desc')
                 ->limit(10)
                 ->get();
+
+        $data[0]->created_at = Carbon::parse($data[0]->created_at)->diffInSeconds(Carbon::now());
 
         return response()->json(['data' => $data, 'cargo' => $cargo]);
     }
@@ -702,4 +705,24 @@ class SenderCurrentController extends Controller
 
     }
 
-}
+    public function deleteCustomer($id)
+    {   
+        $current = Currents::find($id);
+        $creatorUser = User::find($current->created_by_user_id);
+    
+        if (Auth::user()->agency_code != $creatorUser->agency_code)
+            return response()
+                ->json(['status' => 0, 'message' => 'Şubenize ait bir müşteri olmadığından bu müşteriyi silemezsiniz!'],403);
+        elseif( Carbon::parse($current->created_at)->diffInSeconds(Carbon::now()) < 86400 ){
+
+            $current->delete();
+
+            return response()->json(['status'=> 1 ,'message'=> 'Bşarılı Silindi!'],200);
+        }
+        elseif(Carbon::parse($current->created_at)->diffInSeconds(Carbon::now()) > 86400 ){
+            return response()->json(['status' => 0, 'message'=> '24 saat geçtigi için silemezsiniz!'], 403);
+        }
+
+    }
+
+}   

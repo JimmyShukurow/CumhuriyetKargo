@@ -526,15 +526,19 @@
     <script src="/backend/assets/scripts/main-cargo/index.js"></script>
     <script>var typeOfJs = 'main_cargo'; </script>
     <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
-
     <script src="/backend/assets/scripts/official-report/report-view.js"></script>
+    <script src="/backend/assets/scripts/customers/customer-details.js"></script>
+
 
 @endsection
 
 @section('modals')
 
     @php $data = ['type' => 'main_cargo']; @endphp
+
     @include('backend.main_cargo.main.modal_cargo_details')
 
-    @include('backend.OfficialReports.report_modal', $data)
+    @include('backend.OfficialReports.report_modal')
+
+    @include('backend/customers/agency/modal_customer_details')
 @endsection
