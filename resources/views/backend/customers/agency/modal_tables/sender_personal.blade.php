@@ -50,7 +50,7 @@
 
         <tr>
             <td class="static">Cep Telefonu</td>
-            <td id="senderPersonalCustomer-phone-2">Aktif</td>
+            <td id="senderPersonalCustomerGsm">Aktif</td>
         </tr>
 
         <tr>
