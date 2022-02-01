@@ -213,8 +213,8 @@
                 $('#districtTaker').html(current.district);
                 $('#neighborhoodTaker').html(current.neighborhood);
 
-                $('#phoneTaker').html(current.gsm);
-                $('#phone-2-taker').html(current.gsm2);
+                $('#phoneTaker').html(current.phone);
+                $('#phoneGsm').html(current.gsm);
                 $('#adressTaker').html(addressNote);
 
                 $('#vknTaker').html(current.vkn);
