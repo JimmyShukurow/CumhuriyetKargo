@@ -890,6 +890,90 @@ function ajaxValidation($request)
 }
 
 
+function createNgiShipmentWithAddress()
+{
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://ws.yurticikargo.com/KOPSWebServices/NgiShipmentInterfaceServices?wsdl',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => '<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ngis="http://yurticikargo.com.tr/NgiShipmentInterfaceServices">
+   <soapenv:Header />
+   <soapenv:Body>
+      <ngis:createNgiShipmentWithAddress>
+         <wsUserName>GONDERGELSINKMP</wsUserName>
+         <wsPassword>kniu17DSf7ubm384</wsPassword>
+         <wsUserLanguage>TR</wsUserLanguage>
+         <shipmentData>
+            <ngiDocumentKey>TCL180430018076</ngiDocumentKey>
+            <cargoType>2</cargoType>
+            <totalCargoCount>1</totalCargoCount>
+            <totalDesi>25</totalDesi>
+            <totalWeight>0</totalWeight>
+            <personGiver>TEST ZCOBAN</personGiver>
+            <description>TEST Desc</description>
+            <productCode>STA</productCode>
+            <complementaryProductDataArray>
+            </complementaryProductDataArray>
+            <docCargoDataArray>
+               <ngiCargoKey>TCL180430018076</ngiCargoKey>
+               <cargoType>2</cargoType>
+               <cargoDesi>25</cargoDesi>
+               <cargoWeight>0</cargoWeight>
+               <cargoCount>1</cargoCount>
+            </docCargoDataArray>
+            <specialFieldDataArray>
+               <specialFieldName>54</specialFieldName>
+               <specialFieldValue>TCSVK000238076</specialFieldValue>
+            </specialFieldDataArray>
+            <codData>
+               <ttInvoiceAmount/>
+               <dcSelectedCredit/>
+            </codData>
+         </shipmentData>
+         <XSenderCustAddress>
+            <senderCustName>TEST TEDARİKÇİ TİC.A.Ş.-3</senderCustName>
+            <senderAddress>ESENKENT MAH. ENVERPAŞA CAD. NO:8 REGNUM SİTESİ ESENYURT İSTANBUL</senderAddress>
+            <cityId>34</cityId>
+            <townName>ESENYURT</townName>
+            <senderPhone>08503390022</senderPhone>
+         </XSenderCustAddress>
+         <XConsigneeCustAddress>
+            <consigneeCustName>TEST XYZ ABC ALICI ADI-8</consigneeCustName>
+            <consigneeAddress>KEMALPAŞA MAH. ALİ ŞEFİK BEY SK. NO:14 MANOLYA APT. D:7 ECEABAT ÇANAKKALE</consigneeAddress>
+            <cityId>17</cityId>
+            <townName>ECEABAT</townName>
+            <consigneeMobilePhone>5301000000</consigneeMobilePhone>
+         </XConsigneeCustAddress>
+         <payerCustData>
+            <invCustId>929621246</invCustId>
+         </payerCustData>
+      </ngis:createNgiShipmentWithAddress>
+   </soapenv:Body>
+</soapenv:Envelope>',
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: text/xml'
+        ),
+    ));
+
+    $response = curl_exec($curl);
+    curl_close($curl);
+
+    $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
+    $xml = new SimpleXMLElement($response);
+    $body = $xml->xpath('//envBody')[0];
+    $array = json_decode(json_encode((array)$body), TRUE);
+
+    return $array['ns1createNgiShipmentWithAddressResponse']['XShipmentDataResponse'];
+}
+
 
 
 

@@ -48,6 +48,8 @@ class MainCargoController extends Controller
 
     public function index()
     {
+        $val = createNgiShipmentWithAddress();
+        return $val['outFlag'];
 
         $data['agencies'] = Agencies::all();
         $data['gm_users'] = DB::table('users')
