@@ -31,7 +31,6 @@
 
 
     $(document).on('click', '#deleteCustomer', function () {
-        // deleteCustomer(detailsID);
         swal({
             title: "Silme İşlemini Onaylayın!",
             text: "Emin misiniz? Bu işlem geri alınamaz!",
@@ -133,10 +132,10 @@
                 $('#senderPersonalCustomerNeighborhood').html(current.neighborhood);
 
                 $('#senderPersonalCustomerPhone').html(current.phone);
-                $('#senderPersonalCustomer-phone-2').html(current.phone2);
+                $('#senderPersonalCustomerGsm').html(current.gsm);
                 $('#senderPersonalCustomerAdress').html(addressNote);
 
-                $('#senderPersonalCustomerVknCustomerVkn').html(current.vkn);
+                $('#senderPersonalCustomerVkn').html(current.vkn);
 
                 $('#customerName').html(current.name);
                 $('#customerType').html(current_type);
@@ -214,7 +213,7 @@
                 $('#neighborhoodTaker').html(current.neighborhood);
 
                 $('#phoneTaker').html(current.phone);
-                $('#phone-2-taker').html(current.phone2);
+                $('#phoneGsm').html(current.gsm);
                 $('#adressTaker').html(addressNote);
 
                 $('#vknTaker').html(current.vkn);

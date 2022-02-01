@@ -47,7 +47,7 @@
 
         <tr>
             <td class="static">Cep Telefonu</td>
-            <td id="phone-2-taker">Aktif</td>
+            <td id="phoneGsm">Aktif</td>
         </tr>
 
         <tr>
