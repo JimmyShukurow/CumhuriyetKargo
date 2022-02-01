@@ -717,6 +717,9 @@ class SenderCurrentController extends Controller
 
             $current->delete();
 
+            GeneralLog( $current->current_code.' Cari Kodlu müşteri silindi!');
+
+
             return response()->json(['status'=> 1 ,'message'=> 'Bşarılı Silindi!'],200);
         }
         elseif(Carbon::parse($current->created_at)->diffInSeconds(Carbon::now()) > 86400 ){

@@ -31,7 +31,6 @@
 
 
     $(document).on('click', '#deleteCustomer', function () {
-        // deleteCustomer(detailsID);
         swal({
             title: "Silme İşlemini Onaylayın!",
             text: "Emin misiniz? Bu işlem geri alınamaz!",
