@@ -133,10 +133,10 @@
                 $('#senderPersonalCustomerNeighborhood').html(current.neighborhood);
 
                 $('#senderPersonalCustomerPhone').html(current.phone);
-                $('#senderPersonalCustomer-phone-2').html(current.phone2);
+                $('#senderPersonalCustomerGsm').html(current.gsm);
                 $('#senderPersonalCustomerAdress').html(addressNote);
 
-                $('#senderPersonalCustomerVknCustomerVkn').html(current.vkn);
+                $('#senderPersonalCustomerVkn').html(current.vkn);
 
                 $('#customerName').html(current.name);
                 $('#customerType').html(current_type);
@@ -213,8 +213,8 @@
                 $('#districtTaker').html(current.district);
                 $('#neighborhoodTaker').html(current.neighborhood);
 
-                $('#phoneTaker').html(current.phone);
-                $('#phone-2-taker').html(current.phone2);
+                $('#phoneTaker').html(current.gsm);
+                $('#phone-2-taker').html(current.gsm2);
                 $('#adressTaker').html(addressNote);
 
                 $('#vknTaker').html(current.vkn);
