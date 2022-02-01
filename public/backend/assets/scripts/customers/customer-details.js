@@ -31,7 +31,41 @@
 
 
     $(document).on('click', '#deleteCustomer', function () {
-        deleteCustomer(detailsID);
+        // deleteCustomer(detailsID);
+        swal({
+            title: "Silme İşlemini Onaylayın!",
+            text: "Emin misiniz? Bu işlem geri alınamaz!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if(willDelete) {
+                 $.ajax({
+                    type:'DELETE',
+                    url:'/Customers/Delete/'+detailsID,
+                    data:{
+                         _token: token,
+                    },
+                    success:function() {
+                        $('#ModalCustomerDetails').modal('hide');
+                        oTable.draw();
+                        ToastMessage('success', 'Müşteri silindi!', 'İşlem başarılı!');
+                    }, 
+                    error:function (jqXHR, response) {
+                        if( jqXHR.status == 403) {
+                            ToastMessage('error', JSON.parse(jqXHR.responseText).message, 'İşlem başarısız');
+                        }
+                        ajaxError(jqXHR.status);
+                    }
+                 }).always(function () {
+                    $('#ModalBodyCustomerDetails').unblock();
+                }); 
+                   
+            }
+
+
+        }); 
     });
     var array = new Array();
 
@@ -197,31 +231,7 @@
         });
 
     }
-
-    function deleteCustomer(id) {
-        $.ajax('/Customers/Delete/'+id, {
-            method: 'DELETE',
-            data: {
-                _token: token,
-            },
-            cache: false
-        }).done(function (response) {
-            console.log(response);
-            if(response.status == 1 ){
-                $('#ModalCustomerDetails').modal('hide');
-                oTable.draw();
-                ToastMessage('success', 'Müşteri silindi!', 'İşlem başarılı!');
-            }
-
-        }).error(function (jqXHR, response) {
-            if( jqXHR.status == 403) {
-                ToastMessage('error', JSON.parse(jqXHR.responseText).message, 'İşlem başarısız');
-            }
-            ajaxError(jqXHR.status);
-        }).always(function () {
-            $('#ModalBodyCustomerDetails').unblock();
-        });
-    }
+    
 
     $(document).on('click', '.properties-log', function () {
         var properties = $(this).attr('properties');
@@ -236,3 +246,4 @@
         });
         $('#ModalLogProperties').modal();
     });
+
