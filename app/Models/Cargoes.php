@@ -173,5 +173,9 @@ class Cargoes extends Model
         return "Kargo $eventName.";
     }
 
+    public function partDetails()
+    {
+        return $this->hasMany(CargoPartDetails::class, 'cargo_id', 'id');
+    }
 
 }
