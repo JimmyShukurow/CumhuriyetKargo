@@ -23,38 +23,23 @@ use App\Actions\CKGSis\MainCargo\AjaxTransactions\GetReceiversAction;
 use App\Actions\CKGSis\MainCargo\AjaxTransactions\MakeCargoCancellationApplicationAction;
 use App\Actions\CKGSis\MainCargo\AjaxTransactions\SaveCurrentAction;
 use App\Actions\CKGSis\MainCargo\AjaxTransactions\SaveReceiverAction;
+use App\Actions\CKGSis\MainCargo\GetCancelledCargoesAction;
+use App\Actions\CKGSis\MainCargo\GetGlobalCargoesAction;
+use App\Actions\CKGSis\MainCargo\GetMainCargoesAction;
 use App\Http\Controllers\Controller;
 use App\Models\AdditionalServices;
 use App\Models\Agencies;
-use App\Models\CargoAddServices;
-use App\Models\CargoCancellationApplication;
 use App\Models\Cargoes;
-use App\Models\CargoMovements;
-use App\Models\CargoPartDetails;
 use App\Models\Cities;
-use App\Models\CurrentPrices;
 use App\Models\Currents;
-use App\Models\DesiList;
-use App\Models\Districts;
 use App\Models\FilePrice;
-use App\Models\LocalLocation;
-use App\Models\Receivers;
 use App\Models\Settings;
-use App\Models\SmsContent;
 use App\Models\TransshipmentCenterDistricts;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
-use App\Notifications\TicketNotify;
-use Brick\Math\Exception\DivisionByZeroException;
-use Carbon\Carbon;
-use Carbon\Traits\Creator;
-use Faker\Provider\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use PhpOffice\PhpWord\TemplateProcessor;
 
 class MainCargoController extends Controller
@@ -304,222 +289,12 @@ class MainCargoController extends Controller
 
     public function getMainCargoes(Request $request)
     {
-        $agency = Agencies::where('id', Auth::user()->agency_code)->first();
-
-        $finishDate = $request->finishDate;
-        $startDate = $request->startDate;
-        $cargoType = $request->cargoType;
-        $trackingNo = str_replace([' ', '_'], [''], $request->trackingNo);
-        $cargoContent = $request->cargoContent;
-        $invoiceNumber = $request->invoice_number;
-        $collectible = $request->collectible;
-        $currentCity = $request->currentCity;
-        $currentCode = str_replace([' ', '_'], ['', ''], $request->currentCode);
-        $receiverCode = str_replace([' ', '_'], ['', ''], $request->receiverCode);
-        $cargoType = $request->cargoType;
-        $currentName = $request->currentName;
-        $paymentType = $request->paymentType;
-        $receiverCity = $request->receiverCity;
-        $receiverName = $request->receiverName;
-        $record = $request->record;
-        $status = $request->status;
-        $statusForHuman = $request->statusForHuman;
-        $system = $request->system;
-        $transporter = $request->transporter;
-
-        $category = $request->category != -1 ? $request->category : '';
-
-        $cargoes = DB::table('cargoes')
-            ->join('users', 'users.id', '=', 'cargoes.creator_user_id')
-            ->join('currents', 'currents.id', '=', 'cargoes.sender_id')
-            ->select(['cargoes.*', 'users.name_surname'])
-            ->whereRaw($cargoType ? "cargo_type='" . $cargoType . "'" : '1 > 0')
-            ->whereRaw($cargoContent ? "cargo_content='" . $cargoContent . "'" : '1 > 0')
-            ->whereRaw($collectible ? "collectible='" . $collectible . "'" : '1 > 0')
-            ->whereRaw($currentCity ? "sender_city='" . $currentCity . "'" : '1 > 0')
-            ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
-            ->whereRaw($receiverCode ? 'current_code=' . $receiverCode : '1 > 0')
-            ->whereRaw($trackingNo ? 'tracking_no=' . $trackingNo : '1 > 0')
-            ->whereRaw($invoiceNumber ? "invoice_number='" . $invoiceNumber . "'" : '1 > 0')
-            ->whereRaw($currentName ? "sender_name='" . $currentName . "'" : '1 > 0')
-            ->whereRaw($paymentType ? "payment_type='" . $paymentType . "'" : '1 > 0')
-            ->whereRaw($receiverCity ? "receiver_city='" . $receiverCity . "'" : '1 > 0')
-            ->whereRaw($receiverName ? "receiver_name='" . $receiverName . "'" : '1 > 0')
-            ->whereRaw($status ? "cargoes.status='" . $status . "'" : '1 > 0')
-            ->whereRaw($statusForHuman ? "cargoes.status_for_human='" . $statusForHuman . "'" : '1 > 0')
-            ->whereRaw($system ? "system='" . $system . "'" : '1 > 0')
-            ->whereRaw($record == 1 ? "cargoes.deleted_at is null" : 'cargoes.deleted_at is not null')
-            ->whereRaw("cargoes.created_at between '" . $startDate . "'  and '" . $finishDate . "'")
-            ->whereRaw($transporter ? "transporter='" . $transporter . "'" : '1 > 0')
-            ->where('departure_agency_code', $agency->id);
-
-        return datatables()->of($cargoes)
-            ->setRowId(function ($cargoes) {
-                return "cargo-item-" . $cargoes->id;
-            })
-//            ->editColumn('invoice_number', function ($cargoes) {
-//                return '<b class="text-dark">' . $cargoes->invoice_number . '</b>';
-//            })
-            ->editColumn('payment_type', function ($cargoes) {
-                return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . 'GÖ' . '</b>' : '<b class="text-dark">' . 'AÖ' . '</b>';
-            })
-            ->editColumn('receiver_address', function ($cargoes) {
-                return substr($cargoes->receiver_address, 0, 30);
-            })
-            ->editColumn('sender_name', function ($cargoes) {
-                return substr($cargoes->sender_name, 0, 30);
-            })
-            ->editColumn('receiver_name', function ($cargoes) {
-                return substr($cargoes->receiver_name, 0, 30);
-            })
-            ->editColumn('collectible', function ($cargoes) {
-                return $cargoes->collectible == '1' ? '<b class="text-success">Evet</b>' : '<b class="text-danger">Hayır</b>';
-            })
-            ->editColumn('total_price', function ($cargoes) {
-                return '<b class="text-primary">' . $cargoes->total_price . '₺' . '</b>';
-            })
-            ->editColumn('collection_fee', function ($cargoes) {
-                return '<b class="text-primary">' . $cargoes->collection_fee . '₺' . '</b>';
-            })
-            ->editColumn('status', function ($cargoes) {
-                return '<b class="text-dark">' . $cargoes->status . '</b>';
-            })
-            ->editColumn('name_surname', function ($cargoes) {
-                return '<b class="text-dark">' . $cargoes->name_surname . '</b>';
-            })
-            ->editColumn('created_at', function ($cargoes) {
-                return '<b class="text-primary">' . $cargoes->created_at . '</b>';
-            })
-            ->editColumn('status_for_human', function ($cargoes) {
-                return '<b class="text-success">' . $cargoes->status_for_human . '</b>';
-            })
-            ->editColumn('free_btn', function ($t) {
-                return '';
-            })
-            ->editColumn('check', function ($t) {
-                return '<span class="unselectable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
-            })
-            ->addColumn('tracking_no', 'backend.main_cargo.main.columns.tracking_no')
-            ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
-            ->addColumn('edit', 'backend.main_cargo.main.columns.edit')
-            ->rawColumns(['edit', 'tracking_no', 'invoice_number', 'check', 'status_for_human', 'total_price', 'collectible', 'payment_type', 'collection_fee', 'status', 'name_surname', 'created_at'])
-            ->make(true);
+        return GetMainCargoesAction::run($request);
     }
 
     public function getGlobalCargoes(Request $request)
     {
-        $trackingNo = str_replace([' ', '_'], ['', ''], $request->trackingNo);
-        $invoiceNumber = $request->invoiceNumber;
-        $cargoType = $request->cargoType;
-        $currentCity = $request->senderCity;
-        $currentCode = str_replace([' ', '_'], ['', ''], $request->senderCurrentCode);
-        $receiverCurrentCode = str_replace([' ', '_'], ['', ''], $request->receiverCurrentCode);
-        $currentName = $request->senderName;
-        $receiverCity = $request->receiverCity;
-        $receiverName = tr_strtoupper($request->receiverName);
-        $receiverDistrict = $request->receiverDistrict;
-        $receiverPhone = $request->receiverPhone;
-        $currentDistrict = $request->senderDistrict;
-        $currentPhone = $request->senderPhone;
-        $finishDate = $request->finishDate;
-        $startDate = $request->startDate;
-        $filterByDAte = $request->filterByDAte;
-
-        $finishDate = new Carbon($finishDate);
-        $startDate = new Carbon($startDate);
-
-        if ($filterByDAte == "true") {
-            $diff = $startDate->diffInDays($finishDate);
-            if ($filterByDAte) {
-                if ($diff >= 30) {
-                    return response()->json([], 509);
-                }
-            }
-        }
-
-        if ($currentDistrict) {
-            $district = Districts::find($currentDistrict);
-            $currentDistrict = $district->district_name;
-        } else
-            $currentDistrict = false;
-
-        if ($receiverDistrict) {
-            $district = Districts::find($receiverDistrict);
-            $receiverDistrict = $district->district_name;
-        } else
-            $receiverDistrict = false;
-
-        $cargoes = DB::table('cargoes')
-            ->join('users', 'users.id', '=', 'cargoes.creator_user_id')
-            ->join('agencies', 'agencies.id', '=', 'users.agency_code')
-            ->select(['cargoes.*', 'agencies.city as city_name', 'agencies.district as district_name', 'agencies.agency_name', 'users.name_surname as user_name_surname'])
-            ->whereRaw($cargoType ? "cargo_type='" . $cargoType . "'" : '1 > 0')
-            ->whereRaw($currentCity ? "sender_city='" . $currentCity . "'" : '1 > 0')
-            ->whereRaw($currentDistrict ? "sender_district='" . $currentDistrict . "'" : '1 > 0')
-            ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
-            ->whereRaw($receiverCurrentCode ? 'current_code=' . $receiverCurrentCode : '1 > 0')
-            ->whereRaw($trackingNo ? 'tracking_no=' . $trackingNo : '1 > 0')
-            ->whereRaw($invoiceNumber ? "invoice_number='" . $invoiceNumber . "'" : '1 > 0')
-            ->whereRaw($currentName ? "sender_name like '" . $currentName . "%'" : '1 > 0')
-            ->whereRaw($receiverCity ? "receiver_city='" . $receiverCity . "'" : '1 > 0')
-            ->whereRaw($receiverPhone ? "receiver_phone='" . $receiverPhone . "'" : '1 > 0')
-            ->whereRaw($currentPhone ? "sender_phone='" . $currentPhone . "'" : '1 > 0')
-            ->whereRaw($receiverDistrict ? "receiver_district='" . $receiverDistrict . "'" : '1 > 0')
-            ->whereRaw($receiverName ? "receiver_name like '%" . $receiverName . "%'" : '1 > 0')
-            ->whereRaw($filterByDAte == "true" ? "cargoes.created_at between '" . $startDate . "'  and '" . $finishDate . "'" : '1 > 0')
-            ->whereRaw('cargoes.deleted_at is null')
-            ->limit(100)
-            ->orderByDesc('created_at')
-            ->get();
-
-        return datatables()->of($cargoes)
-            ->editColumn('free', function () {
-                return '';
-            })
-            ->setRowId(function ($cargoes) {
-                return "cargo-item-" . $cargoes->id;
-            })
-            ->editColumn('payment_type', function ($cargoes) {
-                return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . $cargoes->payment_type . '</b>' : '<b class="text-dark">' . $cargoes->payment_type . '</b>';
-            })
-            ->editColumn('cargo_type', function ($cargoes) {
-                return $cargoes->cargo_type == 'Koli' ? '<b class="text-primary">' . $cargoes->cargo_type . '</b>' : '<b class="text-success">' . $cargoes->cargo_type . '</b>';
-            })
-            ->editColumn('receiver_address', function ($cargoes) {
-                return substr($cargoes->receiver_address, 0, 30);
-            })
-            ->editColumn('agency_name', function ($cargoes) {
-                return $cargoes->agency_name;
-            })
-            ->editColumn('sender_name', function ($cargoes) {
-                return substr($cargoes->sender_name, 0, 30);
-            })
-            ->editColumn('receiver_name', function ($cargoes) {
-                return substr($cargoes->receiver_name, 0, 30);
-            })
-            ->editColumn('collectible', function ($cargoes) {
-                return $cargoes->collectible == '1' ? '<b class="text-success">Evet</b>' : '<b class="text-danger">Hayır</b>';
-            })
-            ->editColumn('total_price', function ($cargoes) {
-                return '<b class="text-primary">' . $cargoes->total_price . '₺' . '</b>';
-            })
-            ->editColumn('collection_fee', function ($cargoes) {
-                return '<b class="text-primary">' . $cargoes->collection_fee . '₺' . '</b>';
-            })
-            ->editColumn('status', function ($cargoes) {
-                return '<b class="text-dark">' . $cargoes->status . '</b>';
-            })
-            ->editColumn('created_at', function ($cargoes) {
-                return '<b class="text-primary">' . $cargoes->created_at . '</b>';
-            })
-            ->editColumn('status_for_human', function ($cargoes) {
-                return '<b class="text-success">' . $cargoes->status_for_human . '</b>';
-            })
-            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
-            ->addColumn('tracking_no', 'backend.main_cargo.search_cargo.columns.tracking_no')
-            ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
-            ->rawColumns(['tracking_no', 'invoice_number', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
-            ->make(true);
+       return GetGlobalCargoesAction::run($request);
     }
 
     public function statementOfResponsibility($ctn)
@@ -564,120 +339,6 @@ class MainCargoController extends Controller
 
     public function getCancelledCargoes(Request $request)
     {
-        $trackingNo = str_replace([' ', '_'], ['', ''], $request->trackingNo);
-        $invoiceNumber = $request->invoiceNumber;
-        $cargoType = $request->cargoType;
-        $currentCity = $request->senderCity;
-        $currentCode = str_replace([' ', '_'], ['', ''], $request->senderCurrentCode);
-        $receiverCurrentCode = str_replace([' ', '_'], ['', ''], $request->receiverCurrentCode);
-        $currentName = $request->senderName;
-        $receiverCity = $request->receiverCity;
-        $receiverName = $request->receiverName;
-        $receiverDistrict = $request->receiverDistrict;
-        $receiverPhone = $request->receiverPhone;
-        $currentDistrict = $request->senderDistrict;
-        $currentPhone = $request->senderPhone;
-        $finishDate = $request->finishDate;
-        $startDate = $request->startDate;
-        $filterByDAte = $request->filterByDAte;
-
-        $finishDate = new Carbon($finishDate);
-        $startDate = new Carbon($startDate);
-
-
-        if ($filterByDAte == "true") {
-            $diff = $startDate->diffInDays($finishDate);
-            if ($filterByDAte) {
-                if ($diff >= 30) {
-                    return response()->json([], 509);
-                }
-            }
-        }
-
-
-        if ($currentDistrict) {
-            $district = Districts::find($currentDistrict);
-            $currentDistrict = $district->district_name;
-        } else
-            $currentDistrict = false;
-
-        if ($receiverDistrict) {
-            $district = Districts::find($receiverDistrict);
-            $receiverDistrict = $district->district_name;
-        } else
-            $receiverDistrict = false;
-
-        $cargoes = DB::table('cargoes')
-            ->join('users', 'users.id', '=', 'cargoes.creator_user_id')
-            ->join('agencies', 'agencies.id', '=', 'users.agency_code')
-            ->select(['cargoes.*', 'agencies.city as city_name', 'agencies.district as district_name', 'agencies.agency_name', 'users.name_surname as user_name_surname'])
-            ->whereRaw($cargoType ? "cargo_type='" . $cargoType . "'" : '1 > 0')
-            ->whereRaw($currentCity ? "sender_city='" . $currentCity . "'" : '1 > 0')
-            ->whereRaw($currentDistrict ? "sender_district='" . $currentDistrict . "'" : '1 > 0')
-            ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
-            ->whereRaw($receiverCurrentCode ? 'current_code=' . $receiverCurrentCode : '1 > 0')
-            ->whereRaw($trackingNo ? 'tracking_no=' . $trackingNo : '1 > 0')
-            ->whereRaw($invoiceNumber ? "invoice_number='" . $invoiceNumber . "'" : '1 > 0')
-            ->whereRaw($currentName ? "sender_name like '" . $currentName . "%'" : '1 > 0')
-            ->whereRaw($receiverCity ? "receiver_city='" . $receiverCity . "'" : '1 > 0')
-            ->whereRaw($receiverPhone ? "receiver_phone='" . $receiverPhone . "'" : '1 > 0')
-            ->whereRaw($currentPhone ? "sender_phone='" . $currentPhone . "'" : '1 > 0')
-            ->whereRaw($receiverDistrict ? "receiver_district='" . $receiverDistrict . "'" : '1 > 0')
-            ->whereRaw($receiverName ? "receiver_name like '%" . $receiverName . "%'" : '1 > 0')
-            ->whereRaw($filterByDAte == "true" ? "cargoes.created_at between '" . $startDate . "'  and '" . $finishDate . "'" : '1 > 0')
-            ->whereRaw('cargoes.deleted_at is not null')
-            ->where('cargoes.departure_agency_code', Auth::user()->agency_code)
-            ->limit(100)
-            ->orderByDesc('created_at')
-            ->get();
-
-        return datatables()->of($cargoes)
-            ->editColumn('free', function () {
-                return '';
-            })
-            ->setRowId(function ($cargoes) {
-                return "cargo-item-" . $cargoes->id;
-            })
-            ->editColumn('payment_type', function ($cargoes) {
-                return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . $cargoes->payment_type . '</b>' : '<b class="text-dark">' . $cargoes->payment_type . '</b>';
-            })
-            ->editColumn('cargo_type', function ($cargoes) {
-                return $cargoes->cargo_type == 'Koli' ? '<b class="text-primary">' . $cargoes->cargo_type . '</b>' : '<b class="text-success">' . $cargoes->cargo_type . '</b>';
-            })
-            ->editColumn('receiver_address', function ($cargoes) {
-                return substr($cargoes->receiver_address, 0, 30);
-            })
-            ->editColumn('agency_name', function ($cargoes) {
-                return $cargoes->agency_name;
-            })
-            ->editColumn('sender_name', function ($cargoes) {
-                return substr($cargoes->sender_name, 0, 30);
-            })
-            ->editColumn('receiver_name', function ($cargoes) {
-                return substr($cargoes->receiver_name, 0, 30);
-            })
-            ->editColumn('collectible', function ($cargoes) {
-                return $cargoes->collectible == '1' ? '<b class="text-success">Evet</b>' : '<b class="text-danger">Hayır</b>';
-            })
-            ->editColumn('total_price', function ($cargoes) {
-                return '<b class="text-primary">' . $cargoes->total_price . '₺' . '</b>';
-            })
-            ->editColumn('collection_fee', function ($cargoes) {
-                return '<b class="text-primary">' . $cargoes->collection_fee . '₺' . '</b>';
-            })
-            ->editColumn('status', function ($cargoes) {
-                return '<b class="text-dark">' . $cargoes->status . '</b>';
-            })
-            ->editColumn('created_at', function ($cargoes) {
-                return '<b class="text-primary">' . $cargoes->created_at . '</b>';
-            })
-            ->editColumn('status_for_human', function ($cargoes) {
-                return '<b class="text-success">' . $cargoes->status_for_human . '</b>';
-            })
-            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
-            ->addColumn('tracking_no', 'backend.main_cargo.search_cargo.columns.tracking_no')
-            ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
-            ->rawColumns(['tracking_no', 'invoice_number', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
-            ->make(true);
+        return GetCancelledCargoesAction::run($request);
     }
 }
