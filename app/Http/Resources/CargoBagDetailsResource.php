@@ -19,6 +19,7 @@ class CargoBagDetailsResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'receiver_name' => $this->receiver_name,
+            'receiver_address' => $this->receiver_address,
             'receiver_city' => $this->receiver_city,
             'recevier_district' => $this->receiver_district,
         ];
