@@ -2,6 +2,7 @@
 
 namespace App\Actions\CKGMobile\CargoBagTransactions;
 
+use App\Http\Resources\CargoBagDetailsResource;
 use App\Models\Cargoes;
 use App\Models\CargoBags;
 use App\Models\CargoBagDetails;
@@ -83,8 +84,13 @@ class LoadCargoToCargoBagAction
                             'loader_user_id' => Auth::id(),
                         ]);
 
+                        $cargo_bag = CargoBags::find($bagID);
+
                         if ($insert)
-                            return ['status' => 1];
+                            return [
+                                'status' => 1,
+                                'cargoes' => CargoBagDetailsResource::collection($cargo_bag->bagDetails),
+                            ];
                         else
                             return [
                                 'status' =>  0,
