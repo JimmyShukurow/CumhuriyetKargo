@@ -19,4 +19,9 @@ class CargoBags extends Model
         return "Torba & Çuval $eventName.";
     }
 
+    public function bagDetails()
+    {
+        return $this->belongsToMany(Cargoes::class, 'cargo_bag_details', 'bag_id', 'cargo_id');
+    }
+
 }
