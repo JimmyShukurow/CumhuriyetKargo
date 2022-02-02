@@ -33,7 +33,7 @@
     $(document).on('click', '#deleteCustomer', function () {
         swal({
             title: "Silme İşlemini Onaylayın!",
-            text: "Emin misiniz? Bu işlem geri alınamaz!",
+            text: "Emin misiniz?",
             icon: "warning",
             buttons: true,
             dangerMode: true,
