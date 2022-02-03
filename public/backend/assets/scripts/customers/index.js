@@ -9,7 +9,7 @@ $(document).ready(function () {
             ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
         ],
         order: [
-            10, 'desc'
+            11, 'desc'
         ],
         language: {
             "sDecimal": ",",
