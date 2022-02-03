@@ -75,7 +75,16 @@ class LoadCargoToCargoBagAction
                             'message' => 'Sadece Dosya veya Mi kargoları yükleyebilirsiniz!'
                         ];
                     else {
-
+                        
+                        #check if its exists
+                        $check_if_its_exist = CargoBagDetails::where('cargo_id', $cargo->id)->where('part_no', $ctn[1])->first();
+                        if($check_if_its_exist){
+                            return [
+                                'status' => 0,
+                                'message' => 'Mükerrer yükleme işlemi engellendi',
+                            ];
+                        }
+                        
                         # load to bag
                         $insert = CargoBagDetails::create([
                             'bag_id' => $bagID,
