@@ -12,6 +12,7 @@ class CargoBagDetailsResource extends JsonResource
         return [
             'cargo_id' => $this->id,
             'ctn' => $this->tracking_no,
+            'crypted_ctn' => crypteTrackingNo($this->tracking_no . ' 1'),
             'part_no' => 1,
             'user_id' => $this->creator_user_id,
             'agency_code' => $this->creator_agency_code,
