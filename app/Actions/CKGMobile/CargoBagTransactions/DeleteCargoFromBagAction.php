@@ -5,6 +5,7 @@ namespace App\Actions\CKGMobile\CargoBagTransactions;
 use App\Models\CargoBagDetails;
 use App\Models\CargoBags;
 use App\Models\Cargoes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -39,12 +40,12 @@ class DeleteCargoFromBagAction
             return response()
                 ->json(['status' => 0, 'message' => 'Kargo bulunamadı'], 200);
 
-        $bag_details = CargoBagDetails::where('cargo_id', $cargo->id)->where('is_inside', 1)->get();
+        $bag_details = CargoBagDetails::where('cargo_id', $cargo->id)->where('is_inside', '1')->get();
 
         $ids = $bag_details->pluck('id');
         if ($bag_details != []) {
             $bag_details = $bag_details->map(function($item) use($request) {
-                $item->update(['deleted_from' => $request->deleted_from]);
+                $item->update(['deleted_from' => $request->deleted_from, 'is_inside' => '0', 'deleted_user' => Auth::id()]);
                 return $item->delete();
             });
             // $cargo_bag->update(['deleted_from' => $request->deleted_from]);
@@ -58,7 +59,7 @@ class DeleteCargoFromBagAction
         } else {
             return [
                 'status' => 0,
-                'message' => 'Hata olushtu',
+                'message' => 'Hata oluştu!',
             ];
         }
     }
