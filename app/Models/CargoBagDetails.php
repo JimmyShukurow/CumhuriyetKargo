@@ -10,4 +10,10 @@ class CargoBagDetails extends Model
 {
     use HasFactory, SoftDeletes;
     protected $guarded=[];
+
+    public function cargo()
+    {
+        return $this->belongsTo(Cargoes::class, 'cargo_id', 'id');
+    }
+
 }

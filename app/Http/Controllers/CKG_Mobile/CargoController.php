@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CKG_Mobile;
 
+use App\Actions\CKGMobile\CargoBagTransactions\DeleteCargoFromBagAction;
 use App\Actions\CKGMobile\CargoBagTransactions\LoadCargoToCargoBagAction;
 use App\Actions\CKGMobile\CargoBagTransactions\ReadCargoBagAction;
 use App\Actions\CKGMobile\CargoBagTransactions\UnLoadCargoToCargoBagAction;
@@ -138,6 +139,10 @@ class CargoController extends Controller
 
             case 'UnLoadCargoToCargoBag':
                     return UnLoadCargoToCargoBagAction::run($request);
+                break;
+           
+           case 'DeleteCargoFromBag':
+                    return DeleteCargoFromBagAction::run($request);
                 break;
 
             default:
