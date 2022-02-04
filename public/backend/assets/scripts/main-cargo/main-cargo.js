@@ -519,6 +519,7 @@ function getReceiverInfo(currentCode, tryExist = false) {
         $('#aliciAdi').append(newOption).trigger('change');
 
         $('#aliciTelNo').val(response.gsm);
+        $('#AliciTelefon').val(response.gsm);
         $('#aliciIl').val(response.city);
         $('#aliciIlce').val(response.district);
         $('#aliciMahalle').val(response.neighborhood);
@@ -670,7 +671,8 @@ function getCurrentInfo(currentCode, tryExist = false) {
         var newOption = new Option(response.name, response.name, true, true);
         $('#gondericiAdi').append(newOption).trigger('change');
 
-        $('#gondericiTelNo').val(response.gsm);
+        $('#gondericiTelNo').val(response.gsm)
+        $('#GondericiTelefon').val(response.gsm)
 
 
         let city = response.city + "/",
@@ -681,7 +683,7 @@ function getCurrentInfo(currentCode, tryExist = false) {
             buildingNo = "NO:" + response.building_no + " ",
             door = "D:" + response.door_no + " ",
             floor = "KAT:" + response.floor + " ",
-            addressNote = "(" + response.address_note + ")";
+            addressNote = response.address_note != '' ? "(" + response.address_note + ")" : '';
 
         let fullAddress = city + district + neighborhood + street + street2 + buildingNo + floor + door + addressNote;
 
@@ -792,7 +794,7 @@ $('#searchReceiver').click(function () {
     if (selectedCurrent.length != 0)
         receiverNameText = selectedCurrent[0].text;
 
-    getCustomer(receiverNameText, $('#AliciTelefon').val(),'Alıcı');
+    getCustomer(receiverNameText, $('#AliciTelefon').val(), 'Alıcı');
 });
 
 function getCustomer(name, phone, from) {

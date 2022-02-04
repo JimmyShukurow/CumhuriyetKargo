@@ -214,7 +214,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Telefon</td>
-                                                    <td id="phone">
+                                                    <td id="phoneUser">
                                                     </td>
                                                 </tr>
                                                 <tr>
