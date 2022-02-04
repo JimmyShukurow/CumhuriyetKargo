@@ -25,6 +25,7 @@ class CreateCargoAction
 
     public function handle($request)
     {
+
         # START Control Permission Of Create Cargo START
         $agency = Agencies::find(Auth::user()->agency_code);
         if ($agency->permission_of_create_cargo == '0')
@@ -55,6 +56,12 @@ class CreateCargoAction
             return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
 
         $SecondCargoType = $request->cargoType;
+
+
+        ## YK-BAD
+        if ($request->odemeTipi == 'Alıcı Ödemeli')
+            return response()
+                ->json(['status' => -1, 'message' => 'Alıcı ödemeli kargo kesimine izin verilmiyor!'], 200);
 
         if (($request->gonderiTuru != 'Dosya' && $request->gonderiTuru != 'Mi') && $request->desi == 0)
             return response()

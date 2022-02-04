@@ -269,7 +269,6 @@ function cargoInfo(user) {
                     '<td class="font-weight-bold text-primary">' + cargo.add_service_price + "₺" + '</td>' +
                     +'</tr>'
                 );
-
             }
 
             $('#tbodyCargoMovements').html('');
