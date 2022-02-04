@@ -783,11 +783,16 @@ $('#searchCurrent').click(function () {
 
 $('#searchReceiver').click(function () {
     let selectedCurrent = $('#aliciAdi').select2('data');
-    if (selectedCurrent.length == 0) {
-        ToastMessage('error', 'Önce bir alıcı adı seçmelisiniz!', 'Bilgi');
+    let receiverNameText = null;
+    if (selectedCurrent.length == 0 && $('#AliciTelefon').val() == '') {
+        ToastMessage('error', 'Önce bir alıcı adı veya telefon numarası girmelisiniz!', 'Bilgi');
         return false;
     }
-    getCustomer(selectedCurrent[0].text, 'Alıcı');
+
+    if (selectedCurrent.length != 0)
+        receiverNameText = selectedCurrent[0].text;
+
+    getCustomer(receiverNameText, $('#AliciTelefon').val(),'Alıcı');
 });
 
 function getCustomer(name, phone, from) {

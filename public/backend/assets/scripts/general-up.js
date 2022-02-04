@@ -247,11 +247,11 @@ function NikoStylePostMethod() {
             });
         }
 
-        }).error(function (jqXHR, response) {
-            ajaxError(jqXHR.status);
-        }).always(function () {
-            $('#ModalCargoDetails').unblock();
-        });
+    }).error(function (jqXHR, response) {
+        ajaxError(jqXHR.status);
+    }).always(function () {
+        $('#ModalCargoDetails').unblock();
+    });
 }
 
 $(document).on('keyup', '#search-input', delay(function (e) {
@@ -416,3 +416,9 @@ function setMessageToLS(title, message, type) {
     localStorage.setItem('swal-message', message);
     localStorage.setItem('swal-type', type);
 }
+
+$(document).ready(function () {
+    $('.alert-not-yet').click(function () {
+        ToastMessage('warning', 'Bu modül çok yakında aktif hale gelecektir!', 'Uyarı!');
+    });
+});

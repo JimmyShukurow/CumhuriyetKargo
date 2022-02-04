@@ -523,8 +523,9 @@
                                     <ul>
                                         @foreach ($sub_module_names as $subname)
                                             <li style="display: none;" class="sub-items">
-                                                <a href="{{ route("$subname->link") }}"
-                                                   class="{{ is_active($subname->link, 'mm-active') }}">
+
+                                                <a href="{{ $subname->link != 'not.yet' ? route("$subname->link") : 'javascript:void(0)' }}"
+                                                   class="{{ is_active($subname->link, 'mm-active') }} {{ $subname->link == 'not.yet' ? 'alert-not-yet' : ''  }}">
                                                     <i class="metismenu-icon">
                                                     </i>{{ $subname->sub_name }}
                                                 </a>
