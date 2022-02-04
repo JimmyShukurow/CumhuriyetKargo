@@ -131,7 +131,6 @@
                         <th>District</th>
                         <th>Neighborhood</th>
                         <th>Tel</th>
-                        <th>Tel 2</th>
                         <th>Kayıt Yapan</th>
                         <th>Kayıt Tarihi</th>
                         <th>İşlem</th>
@@ -151,7 +150,6 @@
                         <th>District</th>
                         <th>Neighborhood</th>
                         <th>Tel</th>
-                        <th>Tel 2</th>
                         <th>Kayıt Yapan</th>
                         <th>Kayıt Tarihi</th>
                         <th>İşlem</th>

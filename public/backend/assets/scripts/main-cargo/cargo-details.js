@@ -178,7 +178,6 @@ function cargoInfo(user) {
             $('#senderCurrentCode').prop('id', sender.id);
 
 
-
             $('#senderCustomerType').text(sender.category);
             $('#senderNameSurname').text(cargo.sender_name);
             $('#senderPhone').text(cargo.sender_phone);
@@ -219,8 +218,19 @@ function cargoInfo(user) {
             $('#collection_fee').text(cargo.collection_fee + "₺");
             $('#exitTransfer').text(departure_tc.city + " - " + departure_tc.tc_name + " TM");
             $('#exitBranch').text(departure.city + "/" + departure.district + " - " + departure.agency_name + " (" + departure.agency_code + ")");
-            $('#arrivalTC').text(arrival_tc.city + " - " + arrival_tc.tc_name + " TM");
-            $('#arrivalBranch').text(arrival.city + "/" + arrival.district + " - " + arrival.agency_name + " (" + arrival.agency_code + ")");
+
+
+            if (arrival_tc == null)
+                $('#arrivalTC').text(cargo.transporter);
+            else
+                $('#arrivalTC').text(arrival_tc.city + " - " + arrival_tc.tc_name + " TM");
+
+            if (arrival == null)
+                $('#arrivalBranch').text(cargo.transporter);
+            else
+                $('#arrivalBranch').text(arrival.city + "/" + arrival.district + " - " + arrival.agency_name + " (" + arrival.agency_code + ")");
+
+
             $('td#postServicesPrice').text(cargo.post_service_price + "₺");
             $('td#heavyLoadCarryingCost').text(cargo.heavy_load_carrying_cost + "₺");
             $('td#distance').text(cargo.distance + " KM");

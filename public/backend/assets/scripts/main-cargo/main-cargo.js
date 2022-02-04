@@ -767,24 +767,36 @@ function getPriceForCustomers() {
 
 
 $('#searchCurrent').click(function () {
+
     let selectedCurrent = $('#gondericiAdi').select2('data');
-    if (selectedCurrent.length == 0) {
-        ToastMessage('error', 'Önce bir gönderici adı seçmelisiniz!', 'Bilgi');
+    let senderNameText = null;
+    if (selectedCurrent.length == 0 && $('#GondericiTelefon').val() == '') {
+        ToastMessage('error', 'Önce bir gönderici adı seçin veya telefon numarası girin!', 'Bilgi');
         return false;
     }
-    getCustomer(selectedCurrent[0].text, 'Gönderici');
+
+    if (selectedCurrent.length != 0)
+        senderNameText = selectedCurrent[0].text;
+
+    getCustomer(senderNameText, $('#GondericiTelefon').val(), 'Gönderici');
 });
 
 $('#searchReceiver').click(function () {
     let selectedCurrent = $('#aliciAdi').select2('data');
-    if (selectedCurrent.length == 0) {
-        ToastMessage('error', 'Önce bir alıcı adı seçmelisiniz!', 'Bilgi');
+    let receiverNameText = null;
+    if (selectedCurrent.length == 0 && $('#AliciTelefon').val() == '') {
+        ToastMessage('error', 'Önce bir alıcı adı veya telefon numarası girmelisiniz!', 'Bilgi');
         return false;
     }
-    getCustomer(selectedCurrent[0].text, 'Alıcı');
+
+    if (selectedCurrent.length != 0)
+        receiverNameText = selectedCurrent[0].text;
+
+    getCustomer(receiverNameText, $('#AliciTelefon').val(),'Alıcı');
 });
 
-function getCustomer(name, from) {
+function getCustomer(name, phone, from) {
+
     $('#modalSelectCustomerHead').text(from + " Seçin");
 
     $('#tbodyCustomers').html('');
@@ -807,7 +819,8 @@ function getCustomer(name, from) {
         data: {
             _token: token,
             from: from,
-            name: name
+            name: name,
+            phone: phone
         }
     }).done(function (response) {
 
@@ -1894,5 +1907,31 @@ function myConfirmation() {
 }
 
 window.onbeforeunload = myConfirmation;
+
+
+$('#btnClearSenderInfo').click(function () {
+    $('#gondericiAdi').text('');
+    $('#GondericiTelefon').val('');
+});
+
+$('#btnClearReceiverInfo').click(function () {
+    $('#aliciAdi').text('');
+    $('#AliciTelefon').val('');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

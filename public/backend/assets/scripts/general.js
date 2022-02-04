@@ -24,3 +24,4 @@ $('.btnReply').click(function () {
 //     alert('gived!');
 //     $('#main-logo').addClass('logo-width-type');
 // }
+

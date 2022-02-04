@@ -101,18 +101,23 @@
 
                             <div class="col-md-6">
                                 <div class="position-relative ">
-                                    <label for="gondericiAdi">Gönderici Telefon:</label>
+                                    <label for="GondericiTelefon">Gönderici Telefon:</label>
                                 </div>
                                 <div class="input-group">
-                                    <input type="text" id="gondericiTelefon" data-inputmask="'mask': '(999) 999 99 99'"
+                                    <input type="text" id="GondericiTelefon" data-inputmask="'mask': '(999) 999 99 99'"
                                            placeholder="(___) ___ __ __"
                                            class="form-control input-mask-trigger form-control-sm" im-insert="true">
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-2">
-                            <div class="col-md-12">
-                                <button id="searchCurrent" class="float-right btn-icon btn-square btn btn-primary"><i
+                        <div class="row mt-2 mb-2">
+                            <div class="col-md-6">
+                                <button id="btnClearSenderInfo" class="float-left btn-icon btn-square btn btn-sm btn-danger"><i
+                                        class="lnr-cross btn-icon-wrapper"> </i>Temizle
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <button id="searchCurrent" class="float-right btn-icon btn-square btn btn-sm btn-primary"><i
                                         class="fa fa-search-plus btn-icon-wrapper"> </i>Ara
                                 </button>
                             </div>
@@ -318,7 +323,7 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="position-relative ">
                                     <label for="aliciAdi">Alıcının Adı:</label>
                                 </div>
@@ -329,13 +334,30 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="position-relative ">
+                                    <label for="AliciTelefon">Alıcı Telefon:</label>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" id="AliciTelefon" data-inputmask="'mask': '(999) 999 99 99'"
+                                           placeholder="(___) ___ __ __"
+                                           class="form-control input-mask-trigger form-control-sm" im-insert="true">
+                                </div>
+                            </div>
                         </div>
-                        <div class="row mt-2">
-                            <div class="col-md-12">
-                                <button id="searchReceiver" class="float-right btn-icon btn-square btn btn-primary"><i
+                        <div class="row mt-2 mb-2">
+
+                            <div class="col-md-6">
+                                <button id="btnClearReceiverInfo" class="float-left btn-icon btn-square btn btn-sm btn-danger"><i
+                                        class="lnr-cross btn-icon-wrapper"> </i>Temizle
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <button id="searchReceiver" class="float-right btn-icon btn-square btn btn-sm btn-primary"><i
                                         class="fa fa-search-plus btn-icon-wrapper"> </i>Ara
                                 </button>
                             </div>
+
                         </div>
 
                         <div class="form-row">
