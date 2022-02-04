@@ -250,7 +250,7 @@ class MainCargoController extends Controller
                 break;
 
             case 'DistributionControl':
-                    return DistributionControlAction::run($request);                
+                    return DistributionControlAction::run($request);
                 break;
 
             # INDEX TRANSACTION START
@@ -266,7 +266,7 @@ class MainCargoController extends Controller
                     return GetCargoMovementDetailsAction::run($request);
 
             case 'GetMainDailySummery':
-                    return GetMainDailySummeryAction::run($request);                
+                    return GetMainDailySummeryAction::run($request);
                 break;
 
             case 'MakeCargoCancellationApplication':
