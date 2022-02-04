@@ -31,7 +31,7 @@ class GetCargoInfoAction
                 $data['cargo']->created_at = dateFormatForJsonOutput($data['cargo']->created_at);
 
                 $data['sender'] = DB::table('currents')
-                    ->select(['current_code', 'tckn', 'category'])
+                    ->select(['id', 'current_code', 'tckn', 'category'])
                     ->where('id', $data['cargo']->sender_id)
                     ->first();
                 $data['sender']->current_code = CurrentCodeDesign($data['sender']->current_code);
@@ -44,7 +44,7 @@ class GetCargoInfoAction
                     ->get();
 
                 $data['receiver'] = DB::table('currents')
-                    ->select(['current_code', 'tckn', 'category'])
+                    ->select(['id', 'current_code', 'tckn', 'category'])
                     ->where('id', $data['cargo']->receiver_id)
                     ->first();
 

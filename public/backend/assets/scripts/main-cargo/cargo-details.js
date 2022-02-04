@@ -173,7 +173,12 @@ function cargoInfo(user) {
 
             $('#titleCargoInvoiceNumber').text(cargo.invoice_number);
             $('#senderTcknVkn').text(sender.tckn);
+
             $('#senderCurrentCode').text(sender.current_code);
+            $('#senderCurrentCode').prop('id', sender.id);
+
+
+
             $('#senderCustomerType').text(sender.category);
             $('#senderNameSurname').text(cargo.sender_name);
             $('#senderPhone').text(cargo.sender_phone);
@@ -182,7 +187,10 @@ function cargoInfo(user) {
             $('#senderAddress').text(cargo.sender_address);
 
             $('#receiverTcknVkn').text(receiver.tckn);
+
             $('#receiverCurrentCode').text(receiver.current_code);
+            $('#receiverCurrentCode').prop('id', sender.id);
+
             $('#receiverCustomerType').text(receiver.category);
             $('#receiverNameSurname').text(cargo.receiver_name);
             $('#receiverPhone').text(cargo.receiver_phone);

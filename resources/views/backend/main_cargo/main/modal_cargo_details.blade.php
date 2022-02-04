@@ -73,7 +73,9 @@
                                                         <tbody>
                                                         <tr>
                                                             <td class="static">Cari Kodu:</td>
-                                                            <td id="senderCurrentCode"></td>
+                                                            <td style="text-decoration: underline; cursor:pointer; color: #000;"
+                                                                class="customer-detail unselectable font-weight-bold"
+                                                                id="senderCurrentCode"></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="static">Müşteri Tipi:</td>
@@ -120,7 +122,9 @@
                                                         <tbody>
                                                         <tr>
                                                             <td class="static">Cari Kodu:</td>
-                                                            <td id="receiverCurrentCode"></td>
+                                                            <td style="text-decoration: underline; cursor:pointer; color: #000;"
+                                                                class="customer-detail unselectable font-weight-bold"
+                                                                id="receiverCurrentCode"></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="static">Müşteri Tipi:</td>
