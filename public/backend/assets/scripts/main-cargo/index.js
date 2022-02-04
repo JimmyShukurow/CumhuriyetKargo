@@ -208,7 +208,6 @@ $('#btnClearFilter').click(function () {
 });
 
 
-
 var array = new Array();
 
 $('#btnRefreshMainCargoPage').click(function () {
@@ -501,12 +500,27 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
 });
 
 function designBarcodes(elementStyle, className, departure, departure_tc, barcodePaymentType, invoiceNumber, cargo, val, arrival_tc, arrival, cumhuriyetCargoType) {
+
+    let slogan = "Cumhuriyet Kargo - Sevgi ve Değer Taşıyoruz..";
+    slogan = "";
+
+
+    let departureAgencyName = departure_tc.agency_name;
+    let departureTcName = departure_tc.tc_name + " TRM.";
+    departureAgencyName = "";
+    departureTcName = "";
+
+    let arrivalTcName = arrival_tc == null ? '' : arrival_tc.tc_name + " TRM.";
+    let arrivalAgencyName = arrival == null ? '' : arrival.agency_name;
+    cumhuriyetCargoType = "CUMHURİYET " + cumhuriyetCargoType + " KARGO";
+    cumhuriyetCargoType = "";
+
     $('#ContainerBarcodes').prepend('<div style="' + elementStyle + '" class="row barcode-row ' + className + '">\n' +
         '                            <div class="col-6">\n' +
-        '                                <h5 class="font-weight-bold barcode-slogan">Cumhuriyet Kargo - Sevgi ve Değer\n' +
-        '                                    Taşıyoruz..</h5>\n' +
-        '                                <h4 class="font-weight-bold  text-dark m-0 barcodeDepartureTC">' + departure_tc.tc_name + " TRM." + '</h4>\n' +
-        '                                <b class="barcodeDepartureAgency">' + departure.agency_name + '</b>\n' +
+        '                                <h5 class="font-weight-bold barcode-slogan">' + slogan + '\n' +
+        '                                    </h5>\n' +
+        '                                <h4 class="font-weight-bold  text-dark m-0 barcodeDepartureTC">' + departureTcName + '</h4>\n' +
+        '                                <b class="barcodeDepartureAgency">' + departureAgencyName + '</b>\n' +
         '                            </div>\n' +
         '\n' +
         '                            <div class="col-6">\n' +
@@ -523,6 +537,8 @@ function designBarcodes(elementStyle, className, departure, departure_tc, barcod
         '                                        <td>\n' +
         '                                            <p class="barcode-mini-text p-1 m-0 font-weight-bold barcodeSenderName">\n' +
         '                                                ' + cargo.sender_name + '</p>\n' +
+        '                                            <p class="barcodeReceiverAddress barcode-mini-text p-1 m-0 font-weight-bold">\n' +
+        '                                                ' + cargo.sender_address + '</p>\n' +
         '                                            <p class="barcode-mini-text p-1 m-0 font-weight-bold">\n' +
         '                                                <span id="barcodeSenderCityDistrict">' + cargo.sender_city + "/" + cargo.sender_district + '</span>\n' +
         '                                                <span class="text-right barcodeSenderPhone">' + "TEL: " + cargo.sender_phone + '</span>\n' +
@@ -567,7 +583,7 @@ function designBarcodes(elementStyle, className, departure, departure_tc, barcod
         '\n' +
         '                            <div class="col-12 text-right">\n' +
         '                                <h3 class="font-weight-bold text-dark barcodeArrivalTC">\n' +
-        '                                    ' + arrival_tc.tc_name + " TRM." + '</h3>\n' +
+        '                                    ' + arrivalTcName + '</h3>\n' +
         '                            </div>\n' +
         '\n' +
         '                            <div style="height: 100px;" class="col-12 code39-container">\n' +
@@ -575,11 +591,11 @@ function designBarcodes(elementStyle, className, departure, departure_tc, barcod
         '                            </div>\n' +
         '\n' +
         '                            <div class="col-12 text-right">\n' +
-        '                                <b class="barcodeArrivalAgency color-black">' + arrival.agency_name + '</b>\n' +
+        '                                <b class="barcodeArrivalAgency color-black">' + arrivalAgencyName + '</b>\n' +
         '                                            <p class="barcode-mini-text p-1 m-0 font-weight-bold barcodeSenderName barcodePaymentType">\n' +
         '                                                ' + barcodePaymentType + '</p>\n' +
         '                            </div>\n' +
-        '                                <b style="position: relative; left: -130px; top: -200px; height: 2px;" class="vertical-rl">' + 'CUMHURİYET ' + cumhuriyetCargoType + ' KARGO' + '</b>\n' +
+        '                                <b style="position: relative; left: -130px; top: -200px; height: 2px;" class="vertical-rl">' + cumhuriyetCargoType + '</b>\n' +
         '\n' +
         '                        </div>\n' +
         '<div style="clear: both;" class="barcode-divider"></div>'
@@ -694,8 +710,6 @@ $('#btnPrintSelectedBarcode').click(function () {
                     className = "barcode-row-first-child";
                 } else
                     className = "";
-
-
 
 
                 if (cargo.collectible == 1)

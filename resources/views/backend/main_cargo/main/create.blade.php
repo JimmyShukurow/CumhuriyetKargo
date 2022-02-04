@@ -357,7 +357,6 @@
                                         class="fa fa-search-plus btn-icon-wrapper"> </i>Ara
                                 </button>
                             </div>
-
                         </div>
 
                         <div class="form-row">
