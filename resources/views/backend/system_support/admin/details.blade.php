@@ -406,7 +406,6 @@
 
                                         <div class="summery">
                                             {{ $detail->name_surname }} <b>({{ $detail->display_name }})</b> <br>
-                                            {{ $ticket->phone }}<br>
                                             {{ $detail->branch_city . '/' . $detail->branch_district . ' - ' . $detail->branch_name . ' ' . tr_strtoupper($detail->user_type)  }}
                                         </div>
                                     </div>
