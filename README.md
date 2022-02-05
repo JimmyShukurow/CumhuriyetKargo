@@ -17,3 +17,8 @@ Proje 29 Mart 2021, Pazartesi 16:27'de NURULLAH GÜÇ tarafından oluşturulmuş
 
 
 <a target="_blank" href="https://www.cumhuriyetkargo.com.tr">Cumhuriyet Kargo Kurumsal Web Sitesi</a>
+
+## Kurulum 
+Web servisin çalışabilmesi için passport kütüphanesinin dahil edilmesi gerekmektedir. 
+
+php artisan passport:install
