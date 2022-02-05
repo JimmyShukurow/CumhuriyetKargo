@@ -218,7 +218,7 @@
                         <th>Ödeme Tipi</th>
                         <th>Ücret</th>
                         <th>Tahsilat Tipi</th>
-                        <th>Tahilatlı</th>
+                        <th>Tahsilatlı</th>
                         <th>Fatura Tutarı</th>
                         <th>Statü</th>
                         <th>Durum</th>
@@ -246,7 +246,7 @@
                         <th>Ödeme Tipi</th>
                         <th>Ücret</th>
                         <th>Tahsilat Tipi</th>
-                        <th>Tahilatlı</th>
+                        <th>Tahsilatlı</th>
                         <th>Fatura Tutarı</th>
                         <th>Statü</th>
                         <th>Durum</th>

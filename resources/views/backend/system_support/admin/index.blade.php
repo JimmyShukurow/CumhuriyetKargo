@@ -64,7 +64,7 @@
                                     <option value="">Seçiniz</option>
                                     <option value="AÇIK">Açık</option>
                                     <option value="BEKLEMEDE">Beklemede</option>
-                                    <option value="KAPALI">Kapalı</option>
+                                    <option value="KAPANDI">Kapandı</option>
                                     <option value="CEVAPLANDI">Cevaplandı</option>
                                 </select>
                             </div>

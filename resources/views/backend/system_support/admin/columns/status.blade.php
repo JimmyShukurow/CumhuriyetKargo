@@ -4,6 +4,6 @@
     <div class="badge badge-warning">{{$status}}</div>
 @elseif($status == 'CEVAPLANDI')
     <div class="badge badge-alternate">{{$status}}</div>
-@elseif($status == 'KAPALI')
+@elseif($status == 'KAPANDI')
     <div class="badge badge-dark">{{$status}}</div>
 @endif

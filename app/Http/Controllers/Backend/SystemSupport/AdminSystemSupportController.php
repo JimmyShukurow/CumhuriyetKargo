@@ -239,7 +239,7 @@ class AdminSystemSupportController extends Controller
             ->whereRaw($priority != '' ? 'tickets.priority=\'' . $priority . '\'' : '1 > 0')
             ->whereRaw($name_surname != '' ? 'view_users_all_info.name_surname like \'%' . $name_surname . '%\'' : '1 > 0')
             ->whereRaw($title != '' ? 'tickets.title like \'%' . $title . '%\'' : '1 > 0')
-            ->where('tickets.status', 'KAPALI')
+            ->where('tickets.status', 'KAPANDI')
             ->whereRaw('region_id in(' . $regionArray . ')')
             ->count();
 
@@ -363,7 +363,7 @@ class AdminSystemSupportController extends Controller
         # status control
         $ticketStatus = collect(['Açık', 'Kapandı', 'Beklemede', 'Cevaplandı']);
         if ((!$ticketStatus->contains($request->status)))
-            return back()->with('error', 'Lütfen geçerli bir bildirim durumu  seçin! (Örn:Açık, Kapalı, Beklemede, Cevaplandı)');
+            return back()->with('error', 'Lütfen geçerli bir bildirim durumu  seçin! (Örn:Açık, Kapandı, Beklemede, Cevaplandı)');
 
 
         if ($is_there_department_permission == 0)
@@ -531,9 +531,9 @@ class AdminSystemSupportController extends Controller
         $ticket_id = Decrypte4x($request->x_token);
 
         # status control
-        $ticketStatus = collect(['Açık', 'Kapalı', 'Beklemede', 'Cevaplandı']);
+        $ticketStatus = collect(['Açık', 'KAPANDI', 'Beklemede', 'Cevaplandı']);
         if ((!$ticketStatus->contains($request->status)))
-            return back()->with('error', 'Lütfen geçerli bir bildirim durumu  seçin! (Örn:Açık, Kapalı, Beklemede, Cevaplandı)');
+            return back()->with('error', 'Lütfen geçerli bir bildirim durumu  seçin! (Örn:Açık, Kapandı, Beklemede, Cevaplandı)');
 
 
         $update = Tickets::find($ticket_id)

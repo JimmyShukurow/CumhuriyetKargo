@@ -32,7 +32,6 @@ class ReadCargoBagAction
          $bagCode = decryptTrackingNo($request->bagCode);
 
          $control  = CargoBags::where('tracking_no', $bagCode)->first();
-         $cargoes = $control->bagDetails;
 
          if ($control == null) {
              return [
@@ -40,6 +39,8 @@ class ReadCargoBagAction
                  'message' => 'Torba veya Çuval Bulunamadı!'
              ];
          } else {
+             $cargoes = $control->bagDetails;
+
              return [
                  'status' => 1,
                  'bag' => new CargoBagResource($control),

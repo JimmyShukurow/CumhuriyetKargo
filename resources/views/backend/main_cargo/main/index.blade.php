@@ -463,7 +463,7 @@
                             <th>Ağırlık (KG)</th>
                             <th>Hacim (m<sup>3</sup>)</th>
                             <th>Tahsilat Tipi</th>
-                            <th>Tahilatlı</th>
+                            <th>Tahsilatlı</th>
                             <th>Fatura Tutarı</th>
                             <th>Statü</th>
                             <th>Durum</th>
@@ -495,7 +495,7 @@
                             <th>Ağırlık (KG)</th>
                             <th>Hacim (m<sup>3</sup>)</th>
                             <th>Tahsilat Tipi</th>
-                            <th>Tahilatlı</th>
+                            <th>Tahsilatlı</th>
                             <th>Fatura Tutarı</th>
                             <th>Statü</th>
                             <th>Durum</th>
