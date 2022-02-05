@@ -361,7 +361,7 @@ class AdminSystemSupportController extends Controller
             ->count();
 
         # status control
-        $ticketStatus = collect(['Açık', 'Kapalı', 'Beklemede', 'Cevaplandı']);
+        $ticketStatus = collect(['Açık', 'Kapandı', 'Beklemede', 'Cevaplandı']);
         if ((!$ticketStatus->contains($request->status)))
             return back()->with('error', 'Lütfen geçerli bir bildirim durumu  seçin! (Örn:Açık, Kapalı, Beklemede, Cevaplandı)');
 

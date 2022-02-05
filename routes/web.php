@@ -74,7 +74,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
 
     Route::prefix('Customers')->group(function () {
-        
+
         #GM ALL currents
         Route::get('GetAllCustomers', [SenderCurrentController::class, 'getAllCustomers'])->name('customer.gm.getAllCustomers');
         Route::get('/', [SenderCurrentController::class, 'customersIndex'])->name('customers.index');
@@ -197,6 +197,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 });
 
 Route::get('notyet', [DefaultController::class, 'notyet'])->name('not.yet');
+Route::get('notyeXt', [DefaultController::class, 'notyet'])->name('CemIndex');
 
 //Route::get('not.yet', [DefaultController::class, 'notyet'])->name('not.yet');
 //Route::get('nxot.yet', [DefaultController::class, 'notyet'])->name('mainCargo.search');
