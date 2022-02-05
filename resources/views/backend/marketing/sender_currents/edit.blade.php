@@ -637,7 +637,7 @@
                 }
             });
 
-            var agencyOption = new Option('{{$agency->agency_name}}', {{ $current->agency}}, true, true);
+            var agencyOption = new Option('{{@$agency->agency_name}}', {{ $current->agency}}, true, true);
             $('#agency').append(agencyOption).trigger('change');
 
             var taxOfficeOption = new Option('{{$current->tax_administration}}', '{{$current->tax_administration}}', true, true);

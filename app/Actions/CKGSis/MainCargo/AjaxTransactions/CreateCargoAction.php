@@ -14,6 +14,7 @@ use App\Models\LocalLocation;
 use App\Models\Settings;
 use App\Models\SmsContent;
 use App\Models\TransshipmentCenterDistricts;
+use App\Models\TransshipmentCenters;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -103,27 +104,30 @@ class CreateCargoAction
             ->where('neighborhood', $receiver->neighborhood)
             ->first();
 
-        if ($distribution == null)
+        #YK-BAD
+
+        /*if ($distribution == null)
             return response()
                 ->json([
                     'status' => -1,
                     'message' => 'Alıcı için dağıtım yapılmayan bölge: ' . $receiver->neighborhood
-                ]);
+                ]);*/
 
-        $arrivalAgency = DB::table('agencies')
-            ->where('id', $distribution->agency_code)
-            ->first();
+//        $arrivalAgency = DB::table('agencies')
+//            ->where('id', $distribution->agency_code)
+//            ->first();
 
-        if ($arrivalAgency->status == '0')
-            return response()
-                ->json([
-                    'status' => -1,
-                    'message' => 'Alıcı [' . $arrivalAgency->agency_name . '] şube pasif olduğundan kargo kesimi gerçekleştiremezsiniz.'
-                ]);
+//        if ($arrivalAgency->status == '0')
+//            return response()
+//                ->json([
+//                    'status' => -1,
+//                    'message' => 'Alıcı [' . $arrivalAgency->agency_name . '] şube pasif olduğundan kargo kesimi gerçekleştiremezsiniz.'
+//                ]);
 
-        $arrivalTC = getTCofAgency($arrivalAgency->id);
+//        $arrivalTC = getTCofAgency($arrivalAgency->id);
         ### Distribution Control END ###
-
+        $arrivalTC = TransshipmentCenters::find(9);
+        $arrivalAgency = Agencies::find(1);
 
         if ($request->tahsilatliKargo == 'true' && $permission_collectible_cargo->value == '0')
             return response()->json(['status' => -1, 'message' => 'Tahsilatlı kargo Türkiye geneli pasif durumda, tahsilatlı kargo çıkaramazsınız!'], 200);
