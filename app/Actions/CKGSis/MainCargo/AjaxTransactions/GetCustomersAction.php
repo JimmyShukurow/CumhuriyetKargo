@@ -14,7 +14,7 @@ class GetCustomersAction
     {
         $Customers = DB::table('currents')
             ->whereRaw($request->name != null ? "name like '%" . $request->name . "%'" : ' 1 > 0')
-            ->whereRaw($request->phone != null ? "phone like '%" . $request->phone . "%'" : ' 1 > 0')
+            ->whereRaw($request->phone != null ? "gsm like '%" . $request->phone . "%'" : ' 1 > 0')
             ->where('confirmed', '1')
             ->limit(300)
             ->orderBy('created_at', 'desc')

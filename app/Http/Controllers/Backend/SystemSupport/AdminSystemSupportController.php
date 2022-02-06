@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Traits\CapsuleManagerTrait;
 use App\Mail\SendMail;
@@ -435,8 +436,8 @@ class AdminSystemSupportController extends Controller
 //            $data['link'] = \route('systemSupport.TicketDetails', $ticket->id);
 //            $data['reading_time'] = '2';
 //
-        //    Mail::to($user->email)
-        //        ->send(new SendMail($data));
+            //    Mail::to($user->email)
+            //        ->send(new SendMail($data));
 
             # Notification
             User::find($ticket->user_id)
