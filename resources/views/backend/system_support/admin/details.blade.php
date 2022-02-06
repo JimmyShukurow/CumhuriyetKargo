@@ -659,7 +659,7 @@
                                 <option value="Açık">Açık</option>
                                 <option value="Beklemede">Beklemede</option>
                                 <option value="Cevaplandı">Cevaplandı</option>
-                                <option value="Kapalı">Kapalı</option>
+                                <option value="Kapandı">Kapandı</option>
                             </select>
                         </div>
                     </form>

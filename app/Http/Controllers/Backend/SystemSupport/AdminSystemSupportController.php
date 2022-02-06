@@ -531,7 +531,7 @@ class AdminSystemSupportController extends Controller
         $ticket_id = Decrypte4x($request->x_token);
 
         # status control
-        $ticketStatus = collect(['Açık', 'KAPANDI', 'Beklemede', 'Cevaplandı']);
+        $ticketStatus = collect(['Açık', 'Kapandı', 'Beklemede', 'Cevaplandı']);
         if ((!$ticketStatus->contains($request->status)))
             return back()->with('error', 'Lütfen geçerli bir bildirim durumu  seçin! (Örn:Açık, Kapandı, Beklemede, Cevaplandı)');
 
