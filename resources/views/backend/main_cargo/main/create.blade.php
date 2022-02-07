@@ -679,7 +679,7 @@
 
 @section('js')
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
-    <script src="/backend/assets/scripts/main-cargo/main-cargo.js"></script>
+    <script src="/backend/assets/scripts/main-cargo/main-cargo.js?v=1.0.0.0"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
 @endsection
 

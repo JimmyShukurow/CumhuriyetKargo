@@ -218,7 +218,7 @@
                         <th>Ödeme Tipi</th>
                         <th>Ücret</th>
                         <th>Tahsilat Tipi</th>
-                        <th>Tahilatlı</th>
+                        <th>Tahsilatlı</th>
                         <th>Fatura Tutarı</th>
                         <th>Statü</th>
                         <th>Durum</th>
@@ -246,7 +246,7 @@
                         <th>Ödeme Tipi</th>
                         <th>Ücret</th>
                         <th>Tahsilat Tipi</th>
-                        <th>Tahilatlı</th>
+                        <th>Tahsilatlı</th>
                         <th>Fatura Tutarı</th>
                         <th>Statü</th>
                         <th>Durum</th>
@@ -275,8 +275,8 @@
     <script src="/backend/assets/scripts/main-cargo/search-cargo.js"></script>
     <script>var typeOfJs = 'search_cargo'; </script>
     <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
-
     <script src="/backend/assets/scripts/official-report/report-view.js"></script>
+    <script src="/backend/assets/scripts/customers/customer-details.js"></script>
 @endsection
 
 
@@ -284,5 +284,7 @@
     @php $data = ['type' => 'search_cargo']; @endphp
     @include('backend.main_cargo.main.modal_cargo_details')
 
-    @include('backend.OfficialReports.report_modal', $data)
+    @include('backend.OfficialReports.report_modal')
+
+    @include('backend/customers/agency/modal_customer_details')
 @endsection

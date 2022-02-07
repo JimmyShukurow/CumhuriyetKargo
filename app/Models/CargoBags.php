@@ -21,7 +21,11 @@ class CargoBags extends Model
 
     public function bagDetails()
     {
-        return $this->belongsToMany(Cargoes::class, 'cargo_bag_details', 'bag_id', 'cargo_id')->wherePivotNull('deleted_at');
+        return $this
+            ->belongsToMany(Cargoes::class, 'cargo_bag_details', 'bag_id', 'cargo_id')
+            ->wherePivotNull('deleted_at')
+            ->where('is_inside', '=','1')
+            ->wherePivotNull('unloaded_time');
     }
 
 }

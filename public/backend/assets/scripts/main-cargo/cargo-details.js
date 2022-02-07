@@ -180,7 +180,7 @@ function cargoInfo(user) {
 
             $('#senderCustomerType').text(sender.category);
             $('#senderNameSurname').text(cargo.sender_name);
-            $('#senderPhone').text(cargo.sender_phone);
+            $('td#senderPhone').text(cargo.sender_phone);
             $('#senderCityDistrict').text(cargo.sender_city + "/" + cargo.sender_district);
             $('#senderNeighborhood').text(cargo.sender_neighborhood);
             $('#senderAddress').text(cargo.sender_address);
@@ -192,7 +192,7 @@ function cargoInfo(user) {
 
             $('#receiverCustomerType').text(receiver.category);
             $('#receiverNameSurname').text(cargo.receiver_name);
-            $('#receiverPhone').text(cargo.receiver_phone);
+            $('td#receiverPhone').text(cargo.receiver_phone);
             $('#receiverCityDistrict').text(cargo.receiver_city + "/" + cargo.receiver_district);
             $('#receiverNeighborhood').text(cargo.receiver_neighborhood);
             $('#receiverAddress').text(cargo.receiver_address);
