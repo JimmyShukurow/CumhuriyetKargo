@@ -1497,17 +1497,17 @@ function CalculateDesi(RealDesi, PartNumber, clickButton) {
         $('#modalCalcDesi').modal('hide');
 
 
-        if ($('#selectCargoType').val() != 'Paket') {
-            if (RealDesi > 1 && RealDesi < 5) {
-                ToastMessage('warning', 'Kargo türü paket olarak değiştirildi!', 'Bilgi!');
-                $('#selectCargoType').val('Paket');
-            }
-        } else {
-            if (RealDesi >= 5) {
-                ToastMessage('warning', 'Kargo türü koli olarak değiştirildi!', 'Bilgi!');
-                $('#selectCargoType').val('Koli');
-            }
-        }
+        // if ($('#selectCargoType').val() != 'Paket') {
+        //     if (RealDesi > 1 && RealDesi < 5) {
+        //         ToastMessage('warning', 'Kargo türü paket olarak değiştirildi!', 'Bilgi!');
+        //         $('#selectCargoType').val('Paket');
+        //     }
+        // } else {
+        //     if (RealDesi >= 5) {
+        //         ToastMessage('warning', 'Kargo türü koli olarak değiştirildi!', 'Bilgi!');
+        //         $('#selectCargoType').val('Koli');
+        //     }
+        // }
     }).error(function (jqXHR, exception) {
         ajaxError(jqXHR.status)
     }).always(function () {

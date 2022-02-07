@@ -384,6 +384,12 @@ function makeBarcodeQRCode(selector, val) {
 }
 
 $(document).on('click', '#btnCargoPrintBarcode', function () {
+
+
+    // window.location = "ckg-barcoder:TestData";
+    //
+    // return false;
+
     let tracking_no = $(this).attr('tracking-no');
 
     let preparedBarcodCount = 0;
