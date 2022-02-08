@@ -385,7 +385,6 @@ function makeBarcodeQRCode(selector, val) {
 
 $(document).on('click', '#btnCargoPrintBarcode', function () {
 
-
     // window.location = "ckg-barcoder:TestData";
     //
     // return false;
@@ -394,7 +393,6 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
 
     let preparedBarcodCount = 0;
     $('#ModalShowBarcode').modal();
-
 
     $('#ModalBarcodes').block({
         message: $('<div class="loader mx-auto">\n' +
