@@ -223,60 +223,64 @@ class GetPriceForCustomersAction
         $mobileServiceFee = 0;
         $filePrice = FilePrice::find(1);
 
-        if ($location != null && $location->area_type == 'MB') {
+        ## YK-BAD
+        if (true)
+            $mobileServiceFee = 0;
+        else
+            if ($location != null && $location->area_type == 'MB') {
 
-            switch ($cargoType) {
-                case 'Dosya':
-                    $mobileServiceFee = $filePrice->mobile_file_price;
-                    break;
-                case 'Mi':
-                    $mobileServiceFee = $filePrice->mobile_mi_price;
-                    break;
+                switch ($cargoType) {
+                    case 'Dosya':
+                        $mobileServiceFee = $filePrice->mobile_file_price;
+                        break;
+                    case 'Mi':
+                        $mobileServiceFee = $filePrice->mobile_mi_price;
+                        break;
 
-                case 'Paket':
-                case 'Koli':
-                case 'Çuval':
-                case 'Rulo':
-                case 'Palet':
-                case 'Sandık':
-                case 'Valiz':
-                    if ($current->mb_status == '0' || $receiver->mb_status == '0')
-                        $mobileServiceFee = 0;
-                    else {
-                        $desi = $request->desi;
-
-                        if ($desi > 1) {
-                            ## calc desi price
-                            $maxDesiInterval = DB::table('desi_lists')
-                                ->orderBy('finish_desi', 'desc')
-                                ->first();
-                            $maxDesiPrice = $maxDesiInterval->mobile_individual_unit_price;
-                            $maxDesiInterval = $maxDesiInterval->finish_desi;
-
-                            $desiPrice = 0;
-                            if ($desi > $maxDesiInterval) {
-                                $desiPrice = $maxDesiPrice;
-
-                                $amountOfIncrease = DB::table('settings')->where('key', 'mobile_desi_amount_of_increase')->first();
-                                $amountOfIncrease = $amountOfIncrease->value;
-
-                                for ($i = $maxDesiInterval; $i < $desi; $i++)
-                                    $desiPrice += $amountOfIncrease;
-                            } else {
-                                #catch interval
-                                $desiPrice = DB::table('desi_lists')
-                                    ->where('start_desi', '<=', $desi)
-                                    ->where('finish_desi', '>=', $desi)
-                                    ->first();
-                                $desiPrice = $desiPrice->mobile_individual_unit_price;
-                            }
-                            $mobileServiceFee = $desiPrice;
-                        } else
+                    case 'Paket':
+                    case 'Koli':
+                    case 'Çuval':
+                    case 'Rulo':
+                    case 'Palet':
+                    case 'Sandık':
+                    case 'Valiz':
+                        if ($current->mb_status == '0' || $receiver->mb_status == '0')
                             $mobileServiceFee = 0;
-                    }
-                    break;
+                        else {
+                            $desi = $request->desi;
+
+                            if ($desi > 1) {
+                                ## calc desi price
+                                $maxDesiInterval = DB::table('desi_lists')
+                                    ->orderBy('finish_desi', 'desc')
+                                    ->first();
+                                $maxDesiPrice = $maxDesiInterval->mobile_individual_unit_price;
+                                $maxDesiInterval = $maxDesiInterval->finish_desi;
+
+                                $desiPrice = 0;
+                                if ($desi > $maxDesiInterval) {
+                                    $desiPrice = $maxDesiPrice;
+
+                                    $amountOfIncrease = DB::table('settings')->where('key', 'mobile_desi_amount_of_increase')->first();
+                                    $amountOfIncrease = $amountOfIncrease->value;
+
+                                    for ($i = $maxDesiInterval; $i < $desi; $i++)
+                                        $desiPrice += $amountOfIncrease;
+                                } else {
+                                    #catch interval
+                                    $desiPrice = DB::table('desi_lists')
+                                        ->where('start_desi', '<=', $desi)
+                                        ->where('finish_desi', '>=', $desi)
+                                        ->first();
+                                    $desiPrice = $desiPrice->mobile_individual_unit_price;
+                                }
+                                $mobileServiceFee = $desiPrice;
+                            } else
+                                $mobileServiceFee = 0;
+                        }
+                        break;
+                }
             }
-        }
         # MobileServiceFee End
 
 
