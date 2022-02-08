@@ -977,6 +977,8 @@ function createNgiShipmentWithAddress()
 
 function getDesiPrice($desi)
 {
+    $desi = round($desi);
+
     ## calc desi price
     $maxDesiInterval = DB::table('desi_lists')
         ->orderBy('finish_desi', 'desc')
@@ -986,6 +988,7 @@ function getDesiPrice($desi)
 
     $desiPrice = 0;
     if ($desi > $maxDesiInterval) {
+
         $desiPrice = $maxDesiPrice;
 
         $amountOfIncrease = DB::table('settings')->where('key', 'desi_amount_of_increase')->first();

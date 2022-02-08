@@ -181,6 +181,7 @@ class GetPriceForCustomersAction
 
 //                                echo $desi . " => " . getDesiPrice($desi) . " <br>";
 
+
                                 $parcaBasiFiyat = $parcaBasiFiyat + getDesiPrice($desi);
                                 unset($desiKeys[$i]);
                                 unset($desiValues[$i]);
