@@ -32,6 +32,7 @@ use App\Http\Controllers\Backend\Reports\ReportController;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Backend\OfficialReports\OfficialReportController;
+use App\Http\Controllers\Safe\AgencySafeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,15 +75,22 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
 
     Route::prefix('Customers')->group(function () {
-
         #GM ALL currents
         Route::get('GetAllCustomers', [SenderCurrentController::class, 'getAllCustomers'])->name('customer.gm.getAllCustomers');
         Route::get('/', [SenderCurrentController::class, 'customersIndex'])->name('customers.index');
         Route::get('GetAllCustomers', [SenderCurrentController::class, 'getAllCustomers'])->name('customer.gm.getAllCustomers');
         Route::post('GetCustomerInfo', [SenderCurrentController::class, 'getCustomerById']);
-        Route::delete('/Delete/{id}',[SenderCurrentController::class,'deleteCustomer']);
+        Route::delete('/Delete/{id}', [SenderCurrentController::class, 'deleteCustomer']);
     });
 
+
+    Route::group(['prefix' => 'Safe', 'as' => 'safe.'], function () {
+
+        Route::group(['prefix' => 'Agency', 'as' => 'agency.'], function () {
+            Route::get('/', [AgencySafeController::class, 'index'])->name('index');
+        });
+
+    });
 
 
     Route::resource('VariousCars', VariousController::class)
