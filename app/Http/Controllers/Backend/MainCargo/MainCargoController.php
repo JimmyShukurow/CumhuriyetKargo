@@ -16,6 +16,7 @@ use App\Actions\CKGSis\MainCargo\AjaxTransactions\GetCustomerAction;
 use App\Actions\CKGSis\MainCargo\AjaxTransactions\GetCustomersAction;
 use App\Actions\CKGSis\MainCargo\AjaxTransactions\GetDistanceAction;
 use App\Actions\CKGSis\MainCargo\AjaxTransactions\GetFilePriceAction;
+use App\Actions\CKGSis\MainCargo\AjaxTransactions\GetGlobalCargoesGmAction;
 use App\Actions\CKGSis\MainCargo\AjaxTransactions\GetMainDailySummeryAction;
 use App\Actions\CKGSis\MainCargo\AjaxTransactions\GetMultipleCargoInfoAction;
 use App\Actions\CKGSis\MainCargo\AjaxTransactions\GetPriceForCustomersAction;
@@ -342,5 +343,25 @@ class MainCargoController extends Controller
     public function getCancelledCargoes(Request $request)
     {
         return GetCancelledCargoesAction::run($request);
+    }
+
+    public function searchCargoGM(){
+        $data['cities'] = Cities::all();
+
+        $data['agencies'] = DB::table('agencies')
+            ->orderBy('agency_name')
+            ->whereRaw('deleted_at is null')
+            ->get();
+        $data['regions'] = DB::table('regional_directorates')
+            ->get();
+
+
+        GeneralLog('GM Kargo sorgulama sayfası görüntülendi.');
+        return view('backend.main_cargo.search_cargo.gm', compact(['data']));
+    }
+
+    public function getGlobalCargoesGM(Request $request)
+    {
+        return GetGlobalCargoesGmAction::run($request);
     }
 }
