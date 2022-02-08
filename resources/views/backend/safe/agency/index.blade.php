@@ -11,7 +11,7 @@
     </style>
 @endpush
 
-@section('title', 'Kargo Sorgulama Ekranı')
+@section('title', 'Acente Kasa Ekranı')
 @section('content')
 
     <div class="app-main__inner">
@@ -23,7 +23,7 @@
                         <i class="pe-7s-box2 icon-gradient bg-ck">
                         </i>
                     </div>
-                    <div>Kargo Sorgulama
+                    <div>Gelen Kargo Sorgulama
                         <div class="page-title-subheading">Bu sayfa üzerinden Cumhuriyet Kargo'nun taşıdığı tüm
                             kargoları sorgulayabilirsiniz (Tek seferde en fazla 30 günlük kayıt görüntüleyebilirsiniz).
                         </div>
@@ -35,7 +35,7 @@
         <div class="card mt-3">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                        class="header-icon pe-7s-box2 mr-3 text-muted opacity-6"> </i> CKG-Sis Kargo Sorgulama Ekranı
+                        class="header-icon pe-7s-box2 mr-3 text-muted opacity-6"> </i> CKG-Sis Gelen Kargo Sorgulama Ekranı
                 </div>
                 <div class="btn-actions-pane-right actions-icon-btn">
                     <div class="btn-group dropdown">
@@ -207,7 +207,7 @@
                         <th></th>
                         <th>Fatura No</th>
                         <th>KTNO</th>
-                        <th>Çıkış Şube</th>
+                        <th>Oluş.Acente</th>
                         <th>Gönderici Adı</th>
                         <th>Gönderici İl</th>
                         <th>Alıcı Adı</th>
@@ -218,7 +218,7 @@
                         <th>Ödeme Tipi</th>
                         <th>Ücret</th>
                         <th>Tahsilat Tipi</th>
-                        <th>Tahsilatlı</th>
+                        <th>Tahilatlı</th>
                         <th>Fatura Tutarı</th>
                         <th>Statü</th>
                         <th>Durum</th>
@@ -235,7 +235,7 @@
                         <th></th>
                         <th>Fatura No</th>
                         <th>KTNO</th>
-                        <th>Çıkış Şube</th>
+                        <th>Oluş.Acente</th>
                         <th>Gönderici Adı</th>
                         <th>Gönderici İl</th>
                         <th>Alıcı Adı</th>
@@ -246,7 +246,7 @@
                         <th>Ödeme Tipi</th>
                         <th>Ücret</th>
                         <th>Tahsilat Tipi</th>
-                        <th>Tahsilatlı</th>
+                        <th>Tahilatlı</th>
                         <th>Fatura Tutarı</th>
                         <th>Statü</th>
                         <th>Durum</th>
@@ -272,19 +272,16 @@
     <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
-    <script src="/backend/assets/scripts/main-cargo/search-cargo.js"></script>
-    <script>var typeOfJs = 'search_cargo'; </script>
+    <script src="/backend/assets/scripts/reports/incoming.js"></script>
+
+    <script>var typeOfJs = 'index_cargo'; </script>
     <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
-    <script src="/backend/assets/scripts/official-report/report-view.js"></script>
-    <script src="/backend/assets/scripts/customers/customer-details.js"></script>
 @endsection
 
 
 @section('modals')
-    @php $data = ['type' => 'search_cargo']; @endphp
+
+    @php $data = ['type' => 'incoming_cargo']; @endphp
     @include('backend.main_cargo.main.modal_cargo_details')
 
-    @include('backend.OfficialReports.report_modal')
-
-    @include('backend/customers/agency/modal_customer_details')
 @endsection

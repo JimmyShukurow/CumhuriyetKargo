@@ -3,6 +3,7 @@
 namespace App\Actions\CKGSis\MainCargo\AjaxTransactions;
 
 use App\Models\Cargoes;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -29,6 +30,7 @@ class GetCargoInfoAction
                 $data['cargo']->distance = getDotter($data['cargo']->distance);
 
                 $data['cargo']->created_at = dateFormatForJsonOutput($data['cargo']->created_at);
+                $data['cargo']->crypte_invoice_no = Crypt::encryptString($data['cargo']->invoice_number);
 
                 $data['sender'] = DB::table('currents')
                     ->select(['id', 'current_code', 'tckn', 'category'])

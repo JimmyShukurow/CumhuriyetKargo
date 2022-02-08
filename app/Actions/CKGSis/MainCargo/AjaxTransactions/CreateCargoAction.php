@@ -368,7 +368,6 @@ class CreateCargoAction
             }
         }
 
-//                return $request->hizmetUcreti . '=>' . $serviceFee;
         if (!(compareFloatEquality($request->hizmetUcreti, $serviceFee)))
             return response()
                 ->json(['status' => -1, 'message' => 'Hizmet tutarları eşleşmiyor, lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
