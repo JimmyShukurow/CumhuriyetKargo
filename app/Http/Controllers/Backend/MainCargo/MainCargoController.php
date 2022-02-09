@@ -352,7 +352,8 @@ class MainCargoController extends Controller
             ->orderBy('agency_name')
             ->whereRaw('deleted_at is null')
             ->get();
-        $data['regions'] = DB::table('regional_directorates')
+        $data['tc'] = DB::table('transshipment_centers')
+            ->orderBy('tc_name')
             ->get();
 
 

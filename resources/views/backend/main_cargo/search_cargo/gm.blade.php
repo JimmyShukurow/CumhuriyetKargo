@@ -132,8 +132,8 @@
                             <select id="filterDepartureRegion"
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
-                                @foreach($data['regions'] as $key)
-                                    <option value="{{$key->id}}">{{$key->name . ' B.M.'}}</option>
+                                @foreach($data['tc'] as $key)
+                                    <option value="{{$key->id}}">{{$key->tc_name . ' TRM.'}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -161,8 +161,8 @@
                             <select id="filterArrivalRegion"
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
-                                @foreach($data['regions'] as $key)
-                                    <option value="{{$key->id}}">{{$key->name . ' B.M.'}}</option>
+                                @foreach($data['tc'] as $key)
+                                    <option value="{{$key->id}}">{{$key->tc_name . ' TRM.'}}</option>
                                 @endforeach
                             </select>
                         </div>
