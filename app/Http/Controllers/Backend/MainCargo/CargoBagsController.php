@@ -46,8 +46,8 @@ class CargoBagsController extends Controller
         $startDate = $request->startDate;
         $endDate = $request->endDate;
 
-        $data = CargoBags::
-            selectRaw('cargo_bags.*, (select count(*) from cargo_bag_details where bag_id = cargo_bags.id and deleted_at is null and is_inside = 1)  as included_cargo_count, users.name_surname')
+        $data =  DB::table('cargo_bags')
+            ->selectRaw('cargo_bags.*, (select count(*) from cargo_bag_details where bag_id = cargo_bags.id and deleted_at is null and is_inside = "1")  as included_cargo_count, users.name_surname')
             ->join('users', 'cargo_bags.creator_user_id', '=', 'users.id')
             ->whereRaw($creator ? "users.name_surname like '%" . $creator . "%'" : ' 1 > 0 ')
             ->whereRaw("cargo_bags.created_at between '" . $startDate . " 00:00:00" . "' and '" . $endDate . " 23:59:59" . "'");
