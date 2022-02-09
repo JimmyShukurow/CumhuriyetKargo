@@ -46,8 +46,8 @@ class CargoBagsController extends Controller
         $startDate = $request->startDate;
         $endDate = $request->endDate;
 
-        $data = DB::table('cargo_bags')
-            ->selectRaw('cargo_bags.*, (select count(*) from cargo_bag_details where bag_id = cargo_bags.id)  as included_cargo_count, users.name_surname')
+        $data = CargoBags::
+            selectRaw('cargo_bags.*, (select count(*) from cargo_bag_details where bag_id = cargo_bags.id and deleted_at is null and is_inside = 1)  as included_cargo_count, users.name_surname')
             ->join('users', 'cargo_bags.creator_user_id', '=', 'users.id')
             ->whereRaw($creator ? "users.name_surname like '%" . $creator . "%'" : ' 1 > 0 ')
             ->whereRaw("cargo_bags.created_at between '" . $startDate . " 00:00:00" . "' and '" . $endDate . " 23:59:59" . "'");
@@ -107,33 +107,29 @@ class CargoBagsController extends Controller
             return response()
                 ->json(['status' => 0, 'message' => 'Bulunamadı!'], 200);
 
-        $bag_details = DB::table('cargo_bag_details')
-            ->select(['cargo_bag_details.*', 'cargoes.invoice_number', 'receiver_name', 'sender_name', 'arrival_city', 'arrival_district', 'cargo_type', 'users.name_surname'])
-            ->where('cargo_bag_details.bag_id', $bag_id)
-            ->join('cargoes', 'cargoes.id', '=', 'cargo_bag_details.cargo_id')
-            ->join('users', 'users.id', '=', 'cargo_bag_details.loader_user_id')
-            ->get();
-
+        $bag_details = CargoBagDetails::with(['cargo', 'loaderUser'])->where('bag_id', $bag_id)->where('is_inside', '1')->get();
+        
+        
         $data = [];
 
         foreach ($bag_details as $key) {
             $data[] = [
-                'arrival_city' => $key->arrival_city,
-                'arrival_district' => $key->arrival_district,
+                'arrival_city' => $key->cargo->arrival_city,
+                'arrival_district' => $key->cargo->arrival_district,
                 'bag_id' => $key->bag_id,
                 'cargo_id' => $key->cargo_id,
-                'cargo_type' => $key->cargo_type,
+                'cargo_type' => $key->cargo->cargo_type,
                 'created_at' => $key->created_at,
                 'id' => $key->id,
-                'invoice_number' => $key->invoice_number,
+                'invoice_number' => $key->cargo->invoice_number,
                 'is_inside' => $key->is_inside,
                 'loader_user_id' => $key->loader_user_id,
                 'part_no' => $key->part_no,
-                'receiver_name' => getNameFirstLatter($key->receiver_name),
-                'sender_name' => getNameFirstLatter($key->sender_name),
+                'receiver_name' => getNameFirstLatter($key->cargo->receiver_name),
+                'sender_name' => getNameFirstLatter($key->cargo->sender_name),
                 'unloaded_time' => $key->unloaded_time,
                 'unloader_user_id' => $key->unloader_user_id,
-                'name_surname' => $key->name_surname,
+                'name_surname' => $key->loaderUser->name_surname,
                 'updated_at' => $key->updated_at
             ];
         }
