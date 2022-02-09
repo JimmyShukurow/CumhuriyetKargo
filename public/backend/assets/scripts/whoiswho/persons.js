@@ -148,10 +148,12 @@ function userInfo(user) {
         var region = response.region;
 
 
+        console.log(user.phone);
+
         $('#agencyName').html(user.name_surname);
         $('#agencyCityDistrict').html(user.branch_city + '/' + user.branch_district + ' - ' + user.branch_name + ' ' + user.user_type);
         $('#titleBranch').html(user.name_surname + ' ÖZET');
-        $('#phone').html(user.phone);
+        $('td#phoneUser').html(user.phone);
         $('#email').html(user.email);
         $('td#name_surname').html(user.name_surname);
         $('#authority').html(user.display_name);

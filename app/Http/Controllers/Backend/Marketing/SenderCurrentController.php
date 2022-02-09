@@ -42,7 +42,7 @@ class SenderCurrentController extends Controller
         return view('backend.marketing.sender_currents.index', compact('data'));
     }
 
-   
+
     public function create()
     {
         $data['cities'] = Cities::all();
@@ -213,13 +213,13 @@ class SenderCurrentController extends Controller
 
     }
 
-   
+
     public function show($id)
     {
         //
     }
 
-    
+
     public function edit($id)
     {
         $data['cities'] = Cities::all();
@@ -243,7 +243,7 @@ class SenderCurrentController extends Controller
         return view('backend.marketing.sender_currents.edit', compact(['data', 'current', 'price', 'agency']));
     }
 
-   
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -383,7 +383,7 @@ class SenderCurrentController extends Controller
         }
     }
 
-   
+
     public function destroy($id)
     {
         $destroy = Currents::find(intval($id))->delete();
@@ -592,6 +592,7 @@ class SenderCurrentController extends Controller
             ->whereRaw($customer_name_surname ? "name='" . $customer_name_surname . "'" : '1 > 0')
             ->whereRaw($customer_type ? "current_type='" . $customer_type . "'" : '1 > 0')
             ->whereRaw($phone ? "gsm='" . $phone . "'" : '1 > 0')
+            ->where('agency', Auth::user()->agency_code)
             ->whereRaw('currents.deleted_at is null');
 
         return datatables()->of($data)
@@ -604,7 +605,7 @@ class SenderCurrentController extends Controller
             ->addColumn('edit', 'backend.customers.agency.columns.edit')
             ->rawColumns(['edit', 'current_code'])
             ->make(true);
-    } 
+    }
 
 
     public function getCustomerById(Request $request)
@@ -706,10 +707,10 @@ class SenderCurrentController extends Controller
     }
 
     public function deleteCustomer($id)
-    {   
+    {
         $current = Currents::find($id);
         $creatorUser = User::find($current->created_by_user_id);
-    
+
         if (Auth::user()->agency_code != $creatorUser->agency_code)
             return response()
                 ->json(['status' => 0, 'message' => 'Şubenize ait bir müşteri olmadığından bu müşteriyi silemezsiniz!'],403);
@@ -728,4 +729,4 @@ class SenderCurrentController extends Controller
 
     }
 
-}   
+}

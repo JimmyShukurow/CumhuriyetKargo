@@ -406,7 +406,6 @@
 
                                         <div class="summery">
                                             {{ $detail->name_surname }} <b>({{ $detail->display_name }})</b> <br>
-                                            {{ $ticket->phone }}<br>
                                             {{ $detail->branch_city . '/' . $detail->branch_district . ' - ' . $detail->branch_name . ' ' . tr_strtoupper($detail->user_type)  }}
                                         </div>
                                     </div>
@@ -660,7 +659,7 @@
                                 <option value="Açık">Açık</option>
                                 <option value="Beklemede">Beklemede</option>
                                 <option value="Cevaplandı">Cevaplandı</option>
-                                <option value="Kapalı">Kapalı</option>
+                                <option value="Kapandı">Kapandı</option>
                             </select>
                         </div>
                     </form>

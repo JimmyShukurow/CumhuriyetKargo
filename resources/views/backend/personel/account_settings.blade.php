@@ -214,7 +214,7 @@
                                         </tr>
                                         <tr>
                                             <td>Acente Müdürü</td>
-                                            <td class="font-weight-bold text-danger"><?php echo e($agency_director->name_surname); ?></td>
+                                            <td class="font-weight-bold text-danger"><?php echo e(@$agency_director->name_surname); ?></td>
                                         </tr>
                                         </tbody>
                                     </table>

@@ -42,9 +42,9 @@
 
                                 <li class="list-group-item">
                                     <div class="widget-content pt-4 pb-4 pr-1 pl-1">
-                                        
+
                                         @if($data['type'] == 'customers')
-                                            <ul class="list-group list-group-flush" id="deleteButton">
+                                            <ul style="display: none;" class="list-group list-group-flush" id="deleteButton">
                                                 <li class="p-0 list-group-item">
                                                     <div class="grid-menu grid-menu-2col">
                                                         <div class="no-gutters row">
@@ -65,7 +65,7 @@
                                         @endif
 
 
-                                        <div style="overflow-x: scroll" class="cont">
+                                        <div style="overflow-x: auto;" class="cont">
                                             @include('backend/customers/agency/modal_tables/reciever_table')
                                             @include('backend/customers/agency/modal_tables/sender_corporate')
                                             @include('backend/customers/agency/modal_tables/sender_personal')

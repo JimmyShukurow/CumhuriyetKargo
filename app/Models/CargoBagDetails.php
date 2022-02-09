@@ -16,4 +16,9 @@ class CargoBagDetails extends Model
         return $this->belongsTo(Cargoes::class, 'cargo_id', 'id');
     }
 
+    public function loaderUser()
+    {
+        return $this->belongsTo(User::class, 'loader_user_id', 'id');
+    }
+
 }

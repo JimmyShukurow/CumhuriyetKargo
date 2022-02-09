@@ -131,30 +131,86 @@ class GetPriceForCustomersAction
                     $filePrice = $filePrice->individual_mi_price;
                     $json = ['service_fee' => $filePrice];
                 } else {
-                    ## calc desi price
-                    $maxDesiInterval = DB::table('desi_lists')
-                        ->orderBy('finish_desi', 'desc')
-                        ->first();
-                    $maxDesiPrice = $maxDesiInterval->individual_unit_price;
-                    $maxDesiInterval = $maxDesiInterval->finish_desi;
 
-                    $desiPrice = 0;
-                    if ($desi > $maxDesiInterval) {
-                        $desiPrice = $maxDesiPrice;
+                    #parça başı start
+                    if (true) {
+                        $parcaBasiFiyat = 0;
+                        $totalAgirlik = 0;
+                        # Control Parts Of Cargo
+                        if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
+                            $desiData = $request->desiData;
+                            $partQuantity = count($desiData) / 4;
 
-                        $amountOfIncrease = DB::table('settings')->where('key', 'desi_amount_of_increase')->first();
-                        $amountOfIncrease = $amountOfIncrease->value;
+                            $desiValues = array_values($desiData);
+                            $desiKeys = array_keys($desiData);
 
-                        for ($i = $maxDesiInterval; $i < $desi; $i++)
-                            $desiPrice += $amountOfIncrease;
-                    } else {
-                        #catch interval
-                        $desiPrice = DB::table('desi_lists')
-                            ->where('start_desi', '<=', $desi)
-                            ->where('finish_desi', '>=', $desi)
-                            ->first();
-                        $desiPrice = $desiPrice->individual_unit_price;
-                    }
+                            $totalHacim = 0;
+                            $totalDesi = 0;
+                            while (true) {
+
+                                $i = 0;
+                                $en = 0;
+                                $boy = 0;
+                                $yukseklik = 0;
+                                $agirlik = 0;
+                                $hacim = 1;
+                                $desi = 1;
+
+                                if (str_contains($desiKeys[$i], 'En'))
+                                    $en = $desiValues[$i];
+
+                                if (str_contains($desiKeys[$i + 1], 'Boy'))
+                                    $boy = $desiValues[$i + 1];
+
+                                if (str_contains($desiKeys[$i + 2], 'Yukseklik'))
+                                    $yukseklik = $desiValues[$i + 2];
+
+                                if (str_contains($desiKeys[$i + 3], 'Agirlik'))
+                                    $agirlik = $desiValues[$i + 3];
+
+                                //echo $en . ' ' . $boy . ' ' . $yukseklik . ' ' . $agirlik;
+                                # calc hacim
+                                $hacim = ($en * $boy * $yukseklik) / 1000000;
+                                $hacim = round($hacim, 5);
+                                $totalHacim += $hacim;
+
+                                #calc desi
+                                $desi = ($en * $boy * $yukseklik) / 3000;
+                                $desi = $agirlik > $desi ? $agirlik : $desi;
+                                $totalDesi += round($desi, 2);
+
+//                                echo $desi . " => " . getDesiPrice($desi) . " <br>";
+
+
+                                $parcaBasiFiyat = $parcaBasiFiyat + getDesiPrice($desi);
+                                unset($desiKeys[$i]);
+                                unset($desiValues[$i]);
+
+                                unset($desiKeys[$i + 1]);
+                                unset($desiValues[$i + 1]);
+
+                                unset($desiKeys[$i + 2]);
+                                unset($desiValues[$i + 2]);
+
+                                unset($desiKeys[$i + 3]);
+                                unset($desiValues[$i + 3]);
+                                #re-indexing
+                                $desiValues = array_values($desiValues);
+                                $desiKeys = array_values($desiKeys);
+
+                                $totalAgirlik += $agirlik;
+
+                                if ($desi > 100 || $agirlik > 300)
+                                    $heavyLoadCarryingStatus = true;
+
+                                if (count($desiKeys) == 0)
+                                    break;
+                            }
+                            $desiPrice = $parcaBasiFiyat;
+                        }
+
+                    } else
+                        $desiPrice = getDesiPrice($desi);
 
                     $json = ['service_fee' => $desiPrice];
                 }

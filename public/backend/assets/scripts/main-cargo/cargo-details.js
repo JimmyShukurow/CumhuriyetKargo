@@ -173,19 +173,26 @@ function cargoInfo(user) {
 
             $('#titleCargoInvoiceNumber').text(cargo.invoice_number);
             $('#senderTcknVkn').text(sender.tckn);
+
             $('#senderCurrentCode').text(sender.current_code);
+            $('#senderCurrentCode').prop('id', sender.id);
+
+
             $('#senderCustomerType').text(sender.category);
             $('#senderNameSurname').text(cargo.sender_name);
-            $('#senderPhone').text(cargo.sender_phone);
+            $('td#senderPhone').text(cargo.sender_phone);
             $('#senderCityDistrict').text(cargo.sender_city + "/" + cargo.sender_district);
             $('#senderNeighborhood').text(cargo.sender_neighborhood);
             $('#senderAddress').text(cargo.sender_address);
 
             $('#receiverTcknVkn').text(receiver.tckn);
+
             $('#receiverCurrentCode').text(receiver.current_code);
+            $('#receiverCurrentCode').prop('id', sender.id);
+
             $('#receiverCustomerType').text(receiver.category);
             $('#receiverNameSurname').text(cargo.receiver_name);
-            $('#receiverPhone').text(cargo.receiver_phone);
+            $('td#receiverPhone').text(cargo.receiver_phone);
             $('#receiverCityDistrict').text(cargo.receiver_city + "/" + cargo.receiver_district);
             $('#receiverNeighborhood').text(cargo.receiver_neighborhood);
             $('#receiverAddress').text(cargo.receiver_address);
@@ -211,8 +218,19 @@ function cargoInfo(user) {
             $('#collection_fee').text(cargo.collection_fee + "₺");
             $('#exitTransfer').text(departure_tc.city + " - " + departure_tc.tc_name + " TM");
             $('#exitBranch').text(departure.city + "/" + departure.district + " - " + departure.agency_name + " (" + departure.agency_code + ")");
-            $('#arrivalTC').text(arrival_tc.city + " - " + arrival_tc.tc_name + " TM");
-            $('#arrivalBranch').text(arrival.city + "/" + arrival.district + " - " + arrival.agency_name + " (" + arrival.agency_code + ")");
+
+
+            if (arrival_tc == null)
+                $('#arrivalTC').text(cargo.transporter);
+            else
+                $('#arrivalTC').text(arrival_tc.city + " - " + arrival_tc.tc_name + " TM");
+
+            if (arrival == null)
+                $('#arrivalBranch').text(cargo.transporter);
+            else
+                $('#arrivalBranch').text(arrival.city + "/" + arrival.district + " - " + arrival.agency_name + " (" + arrival.agency_code + ")");
+
+
             $('td#postServicesPrice').text(cargo.post_service_price + "₺");
             $('td#heavyLoadCarryingCost').text(cargo.heavy_load_carrying_cost + "₺");
             $('td#distance').text(cargo.distance + " KM");
@@ -251,7 +269,6 @@ function cargoInfo(user) {
                     '<td class="font-weight-bold text-primary">' + cargo.add_service_price + "₺" + '</td>' +
                     +'</tr>'
                 );
-
             }
 
             $('#tbodyCargoMovements').html('');

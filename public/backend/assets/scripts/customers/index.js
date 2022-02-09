@@ -9,7 +9,7 @@ $(document).ready(function () {
             ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
         ],
         order: [
-            10, 'desc'
+            11, 'desc'
         ],
         language: {
             "sDecimal": ",",
@@ -93,7 +93,6 @@ $(document).ready(function () {
             {data: 'district', name: 'current_type'},
             {data: 'neighborhood', name: 'current_type'},
             {data: 'phone', name: 'current_type'},
-            {data: 'phone2', name: 'current_type'},
             {data: 'name_surname', name: 'name_surname'},
             {data: 'created_at', name: 'created_at'},
             {data: 'edit', name: 'edit'},

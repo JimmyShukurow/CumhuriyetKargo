@@ -138,7 +138,6 @@
                                 <select name="" id="bag_type" class="font-weight-bold form-control form-control-sm">
                                     <option value="">Seçiniz</option>
                                     <option value="Torba">Torba</option>
-                                    <option value="Çuval">Çuval</option>
                                 </select>
                             </div>
                         </div>

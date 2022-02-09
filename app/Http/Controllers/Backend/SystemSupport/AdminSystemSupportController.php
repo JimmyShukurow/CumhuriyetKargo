@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Traits\CapsuleManagerTrait;
 use App\Mail\SendMail;
@@ -239,7 +240,7 @@ class AdminSystemSupportController extends Controller
             ->whereRaw($priority != '' ? 'tickets.priority=\'' . $priority . '\'' : '1 > 0')
             ->whereRaw($name_surname != '' ? 'view_users_all_info.name_surname like \'%' . $name_surname . '%\'' : '1 > 0')
             ->whereRaw($title != '' ? 'tickets.title like \'%' . $title . '%\'' : '1 > 0')
-            ->where('tickets.status', 'KAPALI')
+            ->where('tickets.status', 'KAPANDI')
             ->whereRaw('region_id in(' . $regionArray . ')')
             ->count();
 
@@ -361,9 +362,9 @@ class AdminSystemSupportController extends Controller
             ->count();
 
         # status control
-        $ticketStatus = collect(['Açık', 'Kapalı', 'Beklemede', 'Cevaplandı']);
+        $ticketStatus = collect(['Açık', 'Kapandı', 'Beklemede', 'Cevaplandı']);
         if ((!$ticketStatus->contains($request->status)))
-            return back()->with('error', 'Lütfen geçerli bir bildirim durumu  seçin! (Örn:Açık, Kapalı, Beklemede, Cevaplandı)');
+            return back()->with('error', 'Lütfen geçerli bir bildirim durumu  seçin! (Örn:Açık, Kapandı, Beklemede, Cevaplandı)');
 
 
         if ($is_there_department_permission == 0)
@@ -435,8 +436,8 @@ class AdminSystemSupportController extends Controller
 //            $data['link'] = \route('systemSupport.TicketDetails', $ticket->id);
 //            $data['reading_time'] = '2';
 //
-        //    Mail::to($user->email)
-        //        ->send(new SendMail($data));
+            //    Mail::to($user->email)
+            //        ->send(new SendMail($data));
 
             # Notification
             User::find($ticket->user_id)
@@ -531,9 +532,9 @@ class AdminSystemSupportController extends Controller
         $ticket_id = Decrypte4x($request->x_token);
 
         # status control
-        $ticketStatus = collect(['Açık', 'Kapalı', 'Beklemede', 'Cevaplandı']);
+        $ticketStatus = collect(['Açık', 'Kapandı', 'Beklemede', 'Cevaplandı']);
         if ((!$ticketStatus->contains($request->status)))
-            return back()->with('error', 'Lütfen geçerli bir bildirim durumu  seçin! (Örn:Açık, Kapalı, Beklemede, Cevaplandı)');
+            return back()->with('error', 'Lütfen geçerli bir bildirim durumu  seçin! (Örn:Açık, Kapandı, Beklemede, Cevaplandı)');
 
 
         $update = Tickets::find($ticket_id)

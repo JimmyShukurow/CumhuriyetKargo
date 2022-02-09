@@ -62,7 +62,7 @@
                             <div class="alert alert-alternate">Bu destek bildirimi yanıtlanmıştır. <b> Yanıt
                                     vermezseniz, sistem bu destek talebini 24 saat içerisinde kapatacaktır.</b>
                             </div>
-                        @elseif($ticket->status == 'KAPALI')
+                        @elseif($ticket->status == 'KAPANDI')
                             <div class="alert alert-dark">Bu destek bildirimi kapatılmıştır. <b> Tekrar açık hale
                                     getirmek için cevap yazın.</b>
                             </div>

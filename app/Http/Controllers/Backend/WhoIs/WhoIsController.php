@@ -56,6 +56,8 @@ class WhoIsController extends Controller
             ->editColumn('phone', function ($key) {
                 if ($key->agency_code == '1')
                     return '(***) *** ** **';
+                else
+                    return $key->phone;
             })
             ->addColumn('detail', 'backend.who_is_who.columns.edit')
             ->rawColumns(['detail'])

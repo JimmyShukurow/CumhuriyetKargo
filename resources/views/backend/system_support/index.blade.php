@@ -78,7 +78,7 @@
                                     <div class="badge badge-warning">{{$ticket->status}}</div>
                                 @elseif($ticket->status == 'CEVAPLANDI')
                                     <div class="badge badge-alternate">{{$ticket->status}}</div>
-                                @elseif($ticket->status == 'KAPALI')
+                                @elseif($ticket->status == 'KAPANDI')
                                     <div class="badge badge-dark">{{$ticket->status}}</div>
                                 @endif
                             </td>

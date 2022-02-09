@@ -22,19 +22,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="page-title-actions">
-                    <div class="d-inline-block dropdown">
-                        <a href="{{ route('agency.AddAgency') }}">
-                            <button type="button" aria-haspopup="true" aria-expanded="false"
-                                    class="btn-shadow btn btn-info">
-                                <span class="btn-icon-wrapper pr-2 opacity-7">
-                                    <i class="fa fa-plus fa-w-20"></i>
-                                </span>
-                                Yeni Acente Ekle
-                            </button>
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
 
