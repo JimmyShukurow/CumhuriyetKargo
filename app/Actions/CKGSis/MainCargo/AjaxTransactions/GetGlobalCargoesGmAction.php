@@ -65,7 +65,7 @@ class GetGlobalCargoesGmAction
         $cargoes = DB::table('cargoes')
             ->join('users', 'users.id', '=', 'cargoes.creator_user_id')
             ->join('view_agency_region', 'view_agency_region.id', '=', 'cargoes.departure_agency_code')
-            ->select(['cargoes.*', 'view_agency_region.city as city_name','view_agency_region.agency_code as departure_real_agency_code', 'view_agency_region.district as district_name', 'view_agency_region.agency_name', 'users.name_surname as user_name_surname', 'view_agency_region.regional_directorate_id'])
+            ->select(['cargoes.*', 'view_agency_region.city as city_name','view_agency_region.agency_code as departure_real_agency_code', 'view_agency_region.district as district_name', 'view_agency_region.agency_name', 'users.name_surname as user_name_surname', 'view_agency_region.tc_id'])
             ->whereRaw($cargoType ? "cargo_type='" . $cargoType . "'" : '1 > 0')
             ->whereRaw($currentCity ? "sender_city='" . $currentCity . "'" : '1 > 0')
             ->whereRaw($currentDistrict ? "sender_district='" . $currentDistrict . "'" : '1 > 0')
@@ -73,7 +73,7 @@ class GetGlobalCargoesGmAction
 
             ->whereRaw($departureAgency ? 'view_agency_region.agency_code=' . $departureAgency : '1 > 0')
             ->whereRaw($departureAgencyCode ? 'view_agency_region.agency_code=' . $departureAgencyCode : '1 > 0')
-            ->whereRaw($departureRegion ? 'regional_directorate_id=' . $departureRegion : '1 > 0')
+            ->whereRaw($departureRegion ? 'departure_tc_code=' . $departureRegion : '1 > 0')
             ->whereRaw($arrivalAgency ? 'arrival_agency_code=' . $arrivalAgency : '1 > 0')
             ->whereRaw($arrivalAgencyCode ? 'arrival_agency_code=' . $arrivalAgencyCode : '1 > 0')
 //            ->whereRaw($arrivalRegion ? 'current_code=' . $currentCode : '1 > 0')
