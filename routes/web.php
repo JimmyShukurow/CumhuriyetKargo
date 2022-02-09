@@ -33,6 +33,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Backend\OfficialReports\OfficialReportController;
 use App\Http\Controllers\Safe\AgencySafeController;
+use App\Http\Controllers\Backend\Region\RegionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,11 @@ Route::get('Logout', [DefaultController::class, 'logout'])->name('admin.Logout')
 Route::get('CloseTheVirtualLogin/{id}', [DefaultController::class, 'closeTheVirtualLogin'])->name('closeTheVirtualLogin');
 
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
+
+
+    Route::group(['prefix' => 'Region', 'as' => 'region.'], function (){
+        Route::get('RelationPlaces', [RegionController::class, 'relationPlaces'])->name('relationPlaces');
+    });
 
 
     Route::prefix('Customers')->group(function () {
