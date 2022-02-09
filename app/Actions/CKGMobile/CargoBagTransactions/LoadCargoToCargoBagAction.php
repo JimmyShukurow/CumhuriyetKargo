@@ -77,7 +77,7 @@ class LoadCargoToCargoBagAction
                     else {
                         
                         #check if its exists
-                        $check_if_its_exist = CargoBagDetails::where('cargo_id', $cargo->id)->where('part_no', $ctn[1])->first();
+                        $check_if_its_exist = CargoBagDetails::where('cargo_id', $cargo->id)->where('part_no', $ctn[1])->where('is_inside', '1')->first();
                         if($check_if_its_exist){
                             return [
                                 'status' => 0,
