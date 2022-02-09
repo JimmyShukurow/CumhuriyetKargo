@@ -73,7 +73,7 @@ class CargoBagsController extends Controller
             return response()
                 ->json(['status' => 0, 'message' => 'Tip alanı zorunludur.'], 200);
 
-        if ($request->bag_type != 'Çuval' && $request->bag_type != 'Torba')
+        if ($request->bag_type != 'Torba')
             return response()
                 ->json(['status' => 0, 'message' => 'Lütfen geçerli bir tip seçiniz.'], 200);
 
