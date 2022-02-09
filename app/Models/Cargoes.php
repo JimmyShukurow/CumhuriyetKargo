@@ -178,4 +178,9 @@ class Cargoes extends Model
         return $this->hasMany(CargoPartDetails::class, 'cargo_id', 'id');
     }
 
+    public function bagDetails()
+    {
+        return $this->belongsToMany(CargoBags::class, 'cargo_bag_details', 'cargo_id', 'bag_id')->wherePivot('is_inside', '1');
+    }
+
 }
