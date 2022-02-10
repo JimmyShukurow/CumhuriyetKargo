@@ -201,6 +201,7 @@
                                     </thead>
                                     <tbody id="tbodyBagDetails"></tbody>
                                 </table>
+                                <div id="numberOfCargoesInBag"></div>
                             </div>
                         </div>
                     </div>

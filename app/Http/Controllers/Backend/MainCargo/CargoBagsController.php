@@ -138,7 +138,8 @@ class CargoBagsController extends Controller
             ->json([
                 'status' => 1,
                 'bag' => $bag,
-                'bag_details' => $data
+                'bag_details' => $data,
+                'number_of_cargoes' => $bag_details->count(),
             ], 200);
 
     }
