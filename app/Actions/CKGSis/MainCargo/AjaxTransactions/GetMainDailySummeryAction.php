@@ -27,7 +27,7 @@ class GetMainDailySummeryAction
                 $daily['file_count'] = DB::table('cargoes')
                     ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
                     ->whereRaw('deleted_at is null')
-                    ->where('cargo_type', 'Dosya-Mi')
+                    ->whereIn('cargo_type', ['Dosya', 'Mi'])
                     ->where('departure_agency_code', $agency->id)
                     ->count();
                 $daily['file_count'] = getDotter($daily['file_count']);
