@@ -94,7 +94,7 @@
                             <input type="datetime-local" id="finishDate" value="{{ date('Y-m-d') }}T23:59"
                                    class="form-control form-control-sm  niko-select-filter">
                         </div>
-
+{{--s--}}
                         <div class="col-md-2">
                             <label for="filterTransporter">Taşıyan:</label>
                             <select id="filterTransporter"
@@ -102,6 +102,7 @@
                                 <option value="">Seçiniz</option>
                                 <option value="CK">CK</option>
                                 <option value="YK">YK</option>
+                                <option value="MNG">MNG</option>
                             </select>
                         </div>
 
