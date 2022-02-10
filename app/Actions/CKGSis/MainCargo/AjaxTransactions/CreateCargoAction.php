@@ -666,7 +666,7 @@ class CreateCargoAction
             'pick_up_address' => $pickUpAddress,
             'agency_delivery' => $homeDelivery == '1' ? '0' : '1',
             'status_for_human' => 'HAZIRLANIYOR',
-//            'transporter' => 'CK',
+// s           'transporter' => 'CK',
             'transporter' => $transporter,
             'system' => 'CKG-Sis',
         ]);
