@@ -205,7 +205,8 @@
                         </div>
                     </div>
                 </div>
-                <div style="display: flex;align-items: center; justify-content: center;" class="modal-footer">
+                <div style="display: flex;align-items: center; justify-content:center" class="modal-footer">
+                    <div id="numberOfCargoesInBag" style="position: absolute; left: 20px"></div>
                     <button id="btnRefreshBagDetails" class="btn btn-warning">Yenile</button>
                 </div>
             </div>

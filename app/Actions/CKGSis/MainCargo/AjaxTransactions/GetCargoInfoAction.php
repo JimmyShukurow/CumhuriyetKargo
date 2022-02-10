@@ -121,6 +121,12 @@ class GetCargoInfoAction
 
                 $data['status'] = 1;
 
+                if($data['cargo']->bagDetails->isNotEmpty()){
+                    $data['referance_no'] = $data['cargo']->bagDetails()->first()->tracking_no;
+                }else{
+                    $data['referance_no'] = null;
+                }
+
                 return response()
                     ->json($data, 200);
     }
