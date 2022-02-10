@@ -102,6 +102,7 @@
                                 <option value="">Seçiniz</option>
                                 <option value="CK">CK</option>
                                 <option value="YK">YK</option>
+                                <option value="MNG">MNG</option>
                             </select>
                         </div>
 

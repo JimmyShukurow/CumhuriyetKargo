@@ -592,9 +592,9 @@ class CreateCargoAction
 
         $invoiceNumber = DesignInvoiceNumber();
 
-        $transporter = 'YK';
+        $transporter = 'MNG';
 
-        if ($transporter == 'YK') {
+        if ($transporter == 'MNG') {
             $arrivalAgency->id = -1;
             $arrivalTC->id = -1;
         }
