@@ -18,7 +18,7 @@ class DistributionControlAction
             'status' => 1,
             'arrival_agency' => '-',
             'arrival_tc' => '-',
-            'area_type' => 'YURTİÇİ KARGO',
+            'area_type' => 'MNG KARGO',
         ];
 
         return response()
