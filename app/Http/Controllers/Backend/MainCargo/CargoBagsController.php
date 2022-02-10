@@ -119,7 +119,7 @@ class CargoBagsController extends Controller
                 'bag_id' => $key->bag_id,
                 'cargo_id' => $key->cargo_id,
                 'cargo_type' => $key->cargo->cargo_type,
-                'created_at' => $key->created_at,
+                'created_at' => $key->created_at->format('Y-m-d H:m:s'),
                 'id' => $key->id,
                 'invoice_number' => $key->cargo->invoice_number,
                 'is_inside' => $key->is_inside,
@@ -130,7 +130,7 @@ class CargoBagsController extends Controller
                 'unloaded_time' => $key->unloaded_time,
                 'unloader_user_id' => $key->unloader_user_id,
                 'name_surname' => $key->loaderUser->name_surname,
-                'updated_at' => $key->updated_at
+                'updated_at' => $key->updated_at->format('Y-m-d H:m:s')
             ];
         }
 
@@ -138,7 +138,8 @@ class CargoBagsController extends Controller
             ->json([
                 'status' => 1,
                 'bag' => $bag,
-                'bag_details' => $data
+                'bag_details' => $data,
+                'number_of_cargoes' => $bag_details->count(),
             ], 200);
 
     }

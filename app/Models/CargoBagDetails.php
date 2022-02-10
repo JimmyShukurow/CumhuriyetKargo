@@ -21,4 +21,9 @@ class CargoBagDetails extends Model
         return $this->belongsTo(User::class, 'loader_user_id', 'id');
     }
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:m:s',
+        'updated_at' => 'datetime:Y-m-d H:m:s',
+        'deleted_at' => 'datetime:Y-m-d H:m:s',
+    ];
 }

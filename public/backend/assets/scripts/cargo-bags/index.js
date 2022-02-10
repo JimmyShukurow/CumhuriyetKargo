@@ -209,6 +209,7 @@ function getBagDetails(bag_id) {
 
             let bag = response.bag;
             let bag_details = response.bag_details;
+            let number_of_cargoes = response.number_of_cargoes;
 
             $('#modalBagDetailHeader').text("#" + bag.tracking_no + " - " + bag.type + " DETAYLARI");
 
@@ -216,6 +217,7 @@ function getBagDetails(bag_id) {
 
             if (bag_details.length == 0) {
                 $('#tbodyBagDetails').html(' <tr><td class="font-weight-bold text-danger text-center" colspan="8">Burda hiç veri yok!</td></tr>');
+                $('#numberOfCargoesInBag').css('display', 'none');
             } else {
                 $.each(bag_details, function (key, val) {
                     $('#tbodyBagDetails').append('<tr>' +
@@ -229,6 +231,9 @@ function getBagDetails(bag_id) {
                         '<td>' + (val['created_at']) + '</td>' +
                         '</tr>');
                 });
+
+                $('#numberOfCargoesInBag').css('display', 'block').html('Toplam ' + number_of_cargoes + ' kargo');
+
             }
         }
 
