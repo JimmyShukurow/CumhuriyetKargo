@@ -108,8 +108,9 @@ class CargoBagsController extends Controller
                 ->json(['status' => 0, 'message' => 'Bulunamadı!'], 200);
 
         $bag_details = CargoBagDetails::with(['cargo', 'loaderUser'])->where('bag_id', $bag_id)->where('is_inside', '1')->get();
-        
-        
+
+        return  $bag_details;
+
         $data = [];
 
         foreach ($bag_details as $key) {
