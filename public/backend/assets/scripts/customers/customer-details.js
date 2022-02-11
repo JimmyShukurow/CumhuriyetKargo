@@ -3,7 +3,7 @@ function fillCargo(tbodyId, cargo) {
     $.each(cargo, function (index, value) {
             $(mytbodyId).append(
                 '<tr>' +
-                '<td>' + arrangeCargoTrackingNumber(String(value.tracking_no)) + '</td>' +
+                '<td>' + arrangeCargoTrackingNumber(String(value.invoice_number)) + '</td>' +
                 '<td class="font-weight-bold">' + value.sender_name + '</td>' +
                 '<td class="font-weight-bold">' + value.receiver_name + '</td>' +
                 '<td class="font-weight-bold text-success">' + value.status + '</td>' +
