@@ -626,13 +626,13 @@ class SenderCurrentController extends Controller
         if ($data[0]->current_type == 'Gönderici') {
             $cargo = Cargoes::where('sender_id', $id)
                 ->select(['sender_name', 'tracking_no', 'receiver_name', 'status', 'cargo_type', 'total_price'])
-                ->orderBy('id', 'desc')
+                ->orderBy('created_at', 'desc')
                 ->limit(10)
                 ->get();
         } else if ($data[0]->current_type == 'Alıcı')
             $cargo = Cargoes::where('receiver_id', $id)
                 ->select(['sender_name', 'tracking_no', 'receiver_name', 'status', 'cargo_type', 'total_price'])
-                ->orderBy('id', 'desc')
+                ->orderBy('created_at', 'desc')
                 ->limit(10)
                 ->get();
 

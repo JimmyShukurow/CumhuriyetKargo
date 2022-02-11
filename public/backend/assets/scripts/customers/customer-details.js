@@ -116,7 +116,7 @@ function getCustomerDetails(user) {
             $('#deleteButton').css("display", "block");
 
         if (current_type == 'Gönderici' && category == 'Bireysel') {
-            fillCargo('tbodyUserTopTenSenderPersonal', cargo);
+            fillCargo('tbodyUserTopTen', cargo);
 
 
             // Tables display are changed here
@@ -145,7 +145,7 @@ function getCustomerDetails(user) {
         } else if (current_type == 'Gönderici' && category == 'Kurumsal') {
 
 
-            fillCargo('tbodyUserTopTenSenderCorporate', cargo);
+            fillCargo('tbodyUserTopTen', cargo);
 
 
             // Tables display are changed here
