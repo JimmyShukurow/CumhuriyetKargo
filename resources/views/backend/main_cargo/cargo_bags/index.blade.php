@@ -83,6 +83,9 @@
                         <th>İçerdiği Kargo Sayısı</th>
                         <th>Statü</th>
                         <th>Oluşturan</th>
+                        <th>Son İndiren Kişi</th>
+                        <th>Son İndirme Tarihi</th>
+                        <th>İndirme Yapıldı</th>
                         <th>Oluşturulma Zamanı</th>
                         <th>İşlem</th>
                     </tr>
@@ -97,6 +100,9 @@
                         <th>İçerdiği Kargo Sayısı</th>
                         <th>Statü</th>
                         <th>Oluşturan</th>
+                        <th>Son İndiren Kişi</th>
+                        <th>Son İndirme Tarihi</th>
+                        <th>İndirme Yapıldı</th>
                         <th>Oluşturulma Zamanı</th>
                         <th>İşlem</th>
                     </tr>
