@@ -67,8 +67,8 @@ class PersonelController extends Controller
             ->where('district', $person->branch_district)
             ->first();
 
-        $region_info = RegioanalDirectorates::where('id', $region->region_id)
-            ->first();
+        $region_info = RegioanalDirectorates::find($region->region_id);
+
         $rd_director = User::where('id', $region_info->director_id)->first();
         $rd_assistant_director = User::where('id', $region_info->assistant_director_id)->first();
 
