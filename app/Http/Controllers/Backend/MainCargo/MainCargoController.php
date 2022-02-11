@@ -55,9 +55,6 @@ class MainCargoController extends Controller
 
     public function index()
     {
-        $val = createNgiShipmentWithAddress();
-//        return $val['outFlag'];
-
         $data['agencies'] = Agencies::all();
         $data['gm_users'] = DB::table('users')
             ->where('agency_code', 1)
@@ -97,7 +94,7 @@ class MainCargoController extends Controller
         $daily['file_count'] = DB::table('cargoes')
             ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
             ->whereRaw('deleted_at is null')
-            ->where('cargo_type', 'Dosya-Mi')
+            ->whereIn('cargo_type', ['Dosya', 'Mi'])
             ->where('departure_agency_code', $agency->id)
             ->count();
 

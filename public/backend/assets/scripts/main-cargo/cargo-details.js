@@ -188,7 +188,7 @@ function cargoInfo(user) {
             $('#receiverTcknVkn').text(receiver.tckn);
 
             $('#receiverCurrentCode').text(receiver.current_code);
-            $('#receiverCurrentCode').prop('id', sender.id);
+            $('#receiverCurrentCode').prop('id', receiver.id);
 
             $('#receiverCustomerType').text(receiver.category);
             $('#receiverNameSurname').text(cargo.receiver_name);

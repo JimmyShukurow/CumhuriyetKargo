@@ -207,6 +207,7 @@ function getBagDetails(bag_id) {
             ToastMessage('error', response.message, 'Hata!');
         else if (response.status == 1) {
 
+
             let bag = response.bag;
             let bag_details = response.bag_details;
             let number_of_cargoes = response.number_of_cargoes;

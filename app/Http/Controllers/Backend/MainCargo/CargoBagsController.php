@@ -109,8 +109,6 @@ class CargoBagsController extends Controller
 
         $bag_details = CargoBagDetails::with(['cargo', 'loaderUser'])->where('bag_id', $bag_id)->where('is_inside', '1')->get();
 
-        return  $bag_details;
-
         $data = [];
 
         foreach ($bag_details as $key) {
@@ -144,7 +142,6 @@ class CargoBagsController extends Controller
             ], 200);
 
     }
-
     public function deleteCargoBag(Request $request)
     {
         $cargoBag = CargoBags::find($request->destroy_id);

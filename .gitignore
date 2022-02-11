@@ -26,3 +26,5 @@ database/migrations/2018_08_08_100000_create_telescope_entries_table.php
 app/Providers/TelescopeServiceProvider.php
 public/vendor/telescope
 >>>>>>> f9441d0a9ddd4abbd8b0ec7009dcaa24bc94c704
+app/Providers/AppServiceProvider.php
+
