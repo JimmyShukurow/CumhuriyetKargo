@@ -23,7 +23,7 @@
                         <div class="page-title-wrapper">
                             <div class="page-title-heading">
                                 <div class="page-title-icon"><i
-                                        class="pe-7s-umbrella icon-gradient bg-sunny-morning"></i>
+                                        class="lnr-bookmark icon-gradient bg-premium-dark"></i>
                                 </div>
                                 <div>
                                     {{$data['tc']->tc_name . ' TRM.' }} BÖLGE DURUM RAPORU
@@ -388,9 +388,13 @@
                                 </div>
 
                                 <div class="col-md-2">
-                                    <label for="creatorUser">Oluşturan:</label>
-                                    <select name="creatorUser" class="form-control form-control-sm niko-select-filter">
+                                    <label for="creatorAgency">Oluşturan Acente:</label>
+                                    <select name="creatorAgency"
+                                            class="form-control form-control-sm niko-select-filter">
                                         <option value="">Seçiniz</option>
+                                        @foreach($agenciesOfRegion as $key)
+                                            <option value="{{$key->id}}">{{$key->agency_name . ' ŞUBE'}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
 
@@ -472,6 +476,8 @@
                                 <th class="check"></th>
                                 <th>Fatura NO</th>
                                 <th>KTNO</th>
+                                <th>Çıkış Şube</th>
+                                <th>Ç.Ş. Kodu</th>
                                 <th>Gönderici Adı</th>
                                 <th>Gönderici İl</th>
                                 <th>Alıcı Adı</th>
@@ -504,6 +510,8 @@
                                 <th class="check"></th>
                                 <th>Fatura NO</th>
                                 <th>KTNO</th>
+                                <th>Çıkış Şube</th>
+                                <th>Ç.Ş. Kodu</th>
                                 <th>Gönderici Adı</th>
                                 <th>Gönderici İl</th>
                                 <th>Alıcı Adı</th>

@@ -122,7 +122,7 @@ $(document).ready(function () {
                 d.transporter = $('#transporter').val();
                 d.system = $('#system').val();
                 d.invoice_number = $('#invoice_number').val();
-                d.creatorUser = $('#creatorUser').val();
+                d.creatorAgency = $('#creatorAgency').val();
                 d.cargoContent = $('#cargoContent').val();
                 d.receiverCode = $('#receiverCode').val();
                 d.receiverName = $('#receiverName').val();
@@ -149,6 +149,8 @@ $(document).ready(function () {
             {data: 'check', name: 'check'},
             {data: 'invoice_number', name: 'invoice_number'},
             {data: 'tracking_no', name: 'tracking_no'},
+            {data: 'agency_name', name: 'agency_name'},
+            {data: 'agency_code', name: 'agency_code'},
             {data: 'sender_name', name: 'sender_name'},
             {data: 'sender_city', name: 'sender_city'},
             {data: 'receiver_name', name: 'receiver_name'},

@@ -39,6 +39,10 @@ class RegionController extends Controller
 
         $regionAgencies = $regionAgencies->pluck('id');
 
+        $agenciesOfRegion = DB::table('view_agency_region')
+            ->where('tc_id', Auth::user()->tc_code)
+            ->get();
+
         $data['user_district'] = $agency->district;
         $data['user_city'] = $agency->city;
         $data['status'] = $status = DB::table('cargoes')
@@ -101,7 +105,7 @@ class RegionController extends Controller
         $daily['total_desi'] = round($daily['total_desi'], 2);
 
         GeneralLog('Kargolar Ana Menü görüntülendi.');
-        return view('backend.region.region_situation', compact(['data', 'daily']));
+        return view('backend.region.region_situation', compact(['data', 'daily', 'agenciesOfRegion']));
     }
 
     public function relationPlaces()
