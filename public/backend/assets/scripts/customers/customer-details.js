@@ -3,13 +3,12 @@ function fillCargo(tbodyId, cargo) {
     $.each(cargo, function (index, value) {
             $(mytbodyId).append(
                 '<tr>' +
-                '<td>' + arrangeCargoTrackingNumber(String(value.invoice_number)) + '</td>' +
+                '<td class="font-weight-bold">' + value.invoice_number + '</td>' +
                 '<td class="font-weight-bold">' + value.sender_name + '</td>' +
                 '<td class="font-weight-bold">' + value.receiver_name + '</td>' +
                 '<td class="font-weight-bold text-success">' + value.status + '</td>' +
                 '<td class="text-primary">' + value.cargo_type + '</td>' +
                 '<td class="font-weight-bold text-primary">' + value.total_price + '₺' + '</td>' +
-                '<td>' + '<button type="button" class="btn btn-sm btn-primary">Detay</button>' + '</td>' +
                 '</tr>'
             )
         }
@@ -105,7 +104,7 @@ function getCustomerDetails(user) {
         var current = response.data[0];
         var category = current.category;
         var current_type = current.current_type;
-        var current_code = '#' + current.current_code;
+        var current_code = '#' + arrangeCargoTrackingNumber(String(current.current_code));
         let addressNote = adresMaker(current.city, current.district, current.neighborhood, current.street, current.street2, current.building_no, current.door_no, current.floor, current.address_note);
         let branch_office = current.agencies_city + " / " + current.agencies_district + " / " + current.agency_name + " Acente";
         let cargo = response.cargo;
