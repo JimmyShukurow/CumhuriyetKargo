@@ -57,6 +57,12 @@ class UnLoadCargoToCargoBagAction
                         'message' => 'Kargo ' . $bag->type . ' içerinde bulunamadı!'
                     ];
                 } else {
+                    $bag->update(
+                        [
+                            'last_opener' => Auth::id(),
+                            'last_opening_date' => now(),
+                        ]
+                    );
 
                     $update = CargoBagDetails::where('cargo_id', $cargo->id) //->first();
                         ->where('part_no', $ctn[1])

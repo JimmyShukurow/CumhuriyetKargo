@@ -40,7 +40,12 @@ class LoadCargoToCargoBagAction
                 'status' =>  0,
                 'message' => 'Çuval & Torba Bulunamadı!'
             ];
-        } else {
+        } elseif( $bag->last_opener != null ) {
+                return[
+                    'status' => 0,
+                    'message' => 'Bu torbadan indirme işlemi yapıldığı için, yükleme işlemi yapılımaz'
+                ];
+        }else {
 
             $cargo = Cargoes::where('tracking_no', $ctn[0])->where('confirm', '1')->first();
 

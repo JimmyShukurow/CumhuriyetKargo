@@ -3,13 +3,12 @@ function fillCargo(tbodyId, cargo) {
     $.each(cargo, function (index, value) {
             $(mytbodyId).append(
                 '<tr>' +
-                '<td>' + arrangeCargoTrackingNumber(String(value.tracking_no)) + '</td>' +
+                '<td class="font-weight-bold">' + value.invoice_number + '</td>' +
                 '<td class="font-weight-bold">' + value.sender_name + '</td>' +
                 '<td class="font-weight-bold">' + value.receiver_name + '</td>' +
                 '<td class="font-weight-bold text-success">' + value.status + '</td>' +
                 '<td class="text-primary">' + value.cargo_type + '</td>' +
                 '<td class="font-weight-bold text-primary">' + value.total_price + '₺' + '</td>' +
-                '<td>' + '<button type="button" class="btn btn-sm btn-primary">Detay</button>' + '</td>' +
                 '</tr>'
             )
         }
@@ -105,6 +104,7 @@ function getCustomerDetails(user) {
         var current = response.data[0];
         var category = current.category;
         var current_type = current.current_type;
+        var current_code = '#' + current.current_code;
         let addressNote = adresMaker(current.city, current.district, current.neighborhood, current.street, current.street2, current.building_no, current.door_no, current.floor, current.address_note);
         let branch_office = current.agencies_city + " / " + current.agencies_district + " / " + current.agency_name + " Acente";
         let cargo = response.cargo;
@@ -115,7 +115,7 @@ function getCustomerDetails(user) {
             $('#deleteButton').css("display", "block");
 
         if (current_type == 'Gönderici' && category == 'Bireysel') {
-            fillCargo('tbodyUserTopTenSenderPersonal', cargo);
+            fillCargo('tbodyUserTopTen', cargo);
 
 
             // Tables display are changed here
@@ -139,12 +139,12 @@ function getCustomerDetails(user) {
             $('#senderPersonalCustomerVkn').html(current.vkn);
 
             $('#customerName').html(current.name);
-            $('#customerType').html(current_type);
+            $('#customerType').html(current_code + " " + current_type);
 
         } else if (current_type == 'Gönderici' && category == 'Kurumsal') {
 
 
-            fillCargo('tbodyUserTopTenSenderCorporate', cargo);
+            fillCargo('tbodyUserTopTen', cargo);
 
 
             // Tables display are changed here
@@ -192,7 +192,7 @@ function getCustomerDetails(user) {
             $('#senderCustomerVkn').html(current.vkn);
 
             $('#customerName').html(current.name);
-            $('#customerType').html(current_type);
+            $('#customerType').html(current_code + " " + current_type);
 
         } else if (current_type == 'Alıcı') {
 
@@ -219,7 +219,7 @@ function getCustomerDetails(user) {
             $('#vknTaker').html(current.vkn);
 
             $('#customerName').html(current.name);
-            $('#customerType').html(current_type);
+            $('#customerType').html(current_code + " " + current_type);
         }
 
 
