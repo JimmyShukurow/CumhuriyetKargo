@@ -636,6 +636,10 @@ class SenderCurrentController extends Controller
                 ->limit(10)
                 ->get();
 
+                $data[0]->current_code = CurrentCodeDesign($data[0]->current_code);
+
+
+
         $data[0]->created_at = Carbon::parse($data[0]->created_at)->diffInSeconds(Carbon::now());
 
         return response()->json(['data' => $data, 'cargo' => $cargo]);

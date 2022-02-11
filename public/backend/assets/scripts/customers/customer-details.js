@@ -104,7 +104,7 @@ function getCustomerDetails(user) {
         var current = response.data[0];
         var category = current.category;
         var current_type = current.current_type;
-        var current_code = '#' + arrangeCargoTrackingNumber(String(current.current_code));
+        var current_code = '#' + current.current_code;
         let addressNote = adresMaker(current.city, current.district, current.neighborhood, current.street, current.street2, current.building_no, current.door_no, current.floor, current.address_note);
         let branch_office = current.agencies_city + " / " + current.agencies_district + " / " + current.agency_name + " Acente";
         let cargo = response.cargo;
