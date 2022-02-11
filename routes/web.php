@@ -77,7 +77,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
     Route::group(['prefix' => 'Region', 'as' => 'region.'], function (){
         Route::get('RelationPlaces', [RegionController::class, 'relationPlaces'])->name('relationPlaces');
-        Route::get('Situation', [RegionController::class, ''])->name();
+        // Route::get('Situation', [RegionController::class, ''])->name();
     });
 
 
