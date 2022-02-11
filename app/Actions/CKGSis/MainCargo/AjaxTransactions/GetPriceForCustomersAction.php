@@ -355,7 +355,7 @@ class GetPriceForCustomersAction
 
                 $totalAgirlik += $agirlik;
 
-                if ($desi > 100 || $agirlik > 300)
+                if ($desi > 300 || $agirlik > 100)
                     $heavyLoadCarryingStatus = true;
 
                 if (count($desiKeys) == 0)
