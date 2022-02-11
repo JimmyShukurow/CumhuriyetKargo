@@ -74,10 +74,10 @@ Route::get('CloseTheVirtualLogin/{id}', [DefaultController::class, 'closeTheVirt
 
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
-
-    Route::group(['prefix' => 'Region', 'as' => 'region.'], function (){
+    Route::group(['prefix' => 'Region', 'as' => 'region.'], function () {
+        Route::get('Situation', [RegionController::class, 'situationIndex'])->name('situationIndex');
         Route::get('RelationPlaces', [RegionController::class, 'relationPlaces'])->name('relationPlaces');
-//        Route::get('Situation', [RegionController::class, ''])->name();
+        Route::any('AjaxTransactions/{val}', [RegionController::class, 'ajaxTransactions']);
     });
 
 
