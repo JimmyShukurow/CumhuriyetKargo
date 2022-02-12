@@ -8,6 +8,7 @@ use App\Models\Cargoes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Illuminate\Support\Str;
 
 class DeleteCargoFromBagAction
 {
@@ -48,8 +49,9 @@ class DeleteCargoFromBagAction
                 $item->update(['deleted_from' => $request->deleted_from, 'is_inside' => '0', 'deleted_user' => Auth::id()]);
                 return $item->delete();
             });
-            // $cargo_bag->update(['deleted_from' => $request->deleted_from]);
-            // $cargo_bag->delete();
+
+            RegisterMovementAction::run($ctn[0],$cargo_bag, $cargo->id, Auth::id(),1, Str::random(10),  'delete_from_cargo_bag', $request->deleted_from);
+
             return [
                 'id' => $ids,
                 'cargo_id' => $cargo->id,
