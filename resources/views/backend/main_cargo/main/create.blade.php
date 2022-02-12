@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 @endpush
 
-@section('title', 'Yeni Kargo')
+@section('title', 'Yeni Fatura')
 
 @section('content')
 
@@ -19,7 +19,7 @@
                         <i class="pe-7s-box2 icon-gradient bg-ck">
                         </i>
                     </div>
-                    <div>Yeni Kargo
+                    <div>Yeni Fatura
                         <div class="page-title-subheading">Bu sayfa üzerinden yeni kargo girişi yapabilirsiniz.
                         </div>
                     </div>

@@ -743,6 +743,7 @@ function getPriceForCustomers() {
                 cargoType: $('#selectCargoType').val(),
                 desi: parseFloat($('#labelDesi').text()),
                 desiData: getFormData($('#formPartDesiContainer')),
+                partQuantity: $('#partQuantity').text(),
             }
         }).done(function (response) {
 
@@ -1921,8 +1922,13 @@ $('#btnClearReceiverInfo').click(function () {
     $('#AliciTelefon').val('');
 });
 
+$('#gondericiAdi').change(function () {
+    $('#GondericiTelefon').val('');
+});
 
-
+$('#aliciAdi').change(function () {
+    $('#AliciTelefon').val('');
+});
 
 
 

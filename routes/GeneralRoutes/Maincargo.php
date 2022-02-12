@@ -32,6 +32,6 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('SearchGlobalCargoGM', [MainCargoController::class, 'getGlobalCargoesGM'])
             ->middleware('throttle:30,1');
 
-        Route::get('CalculateServiseFee', [MainCargoController::class, 'calculateServiseFee'])->name('calculateServiseFee');
+        Route::get('CalculateServiceFee', [MainCargoController::class, 'calculateServiceFee'])->name('calculateServiceFee');
     });
 });

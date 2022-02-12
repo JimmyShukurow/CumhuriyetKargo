@@ -7,6 +7,16 @@ MobilBolge.prop('disabled', true);
 MobilBolge.prop('read-only', true);
 
 $(document).ready(function () {
+
+
+    $('#divider-calculate').block({
+        message: $('<div class="loader mx-auto">\n' + '<h1 style="color: #fff;">Desi Hesaplamak İçin Gönderi Türünü Koli Seçin</h1>' + '</div>')
+    });
+    $('.blockUI.blockMsg.blockElement').css('width', '100%');
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('left', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
     $('#gondericiAdi').select2({
         ajax: {
             url: "/MainCargo/AjaxTransactions/GetCurrents",
@@ -710,8 +720,8 @@ function getCurrentInfo(currentCode, tryExist = false) {
 function getPriceForCustomers() {
 
 
-    let currentCode = $('#gondericiCariKod').val();
-    let receiverCode = $('#aliciCariKod').val();
+    let currentCode = '645 829 860';
+    let receiverCode = '645 829 860';
 
     if (currentCode != '' && receiverCode != '' && (CargoType != 'Koli' || parseInt($('#labelDesi').val()) != 0)) {
 
@@ -931,53 +941,18 @@ $('#divCargoType').click(function () {
 
 $('#selectCargoType').change(function () {
 
-    let receiverSelect = $('#aliciAdi').select2('data');
-    let currentSelect = $('#gondericiAdi').select2('data');
-
-    if (receiverSelect.length == 0 || currentSelect.length == 0) {
-        ToastMessage('error', 'Önce Göndericiyi ve Alıcıyı Seçmelisiniz!', 'Hata!');
-        $('#selectCargoType').val('');
-        return false;
-    }
-    if ($('#gondericiTCKN').val().trim() == '' || $('#gondericiTelNo').val().trim() == '' || $('#gondericiCariKod').val().trim() == '' ||
-        $('#aliciCariKod').val().trim() == '' || $('#aliciTelNo').val().trim() == '' || $('#aliciIl').val().trim() == '' || $('#aliciIlce').val().trim() == '') {
-        ToastMessage('error', 'Önce Göndericiyi ve Alıcıyı Seçmelisiniz!', 'Hata!');
-        $('#checkCargoType').prop('disabled', true);
+    if ($(this).val() != 'Dosya' && $(this).val() != 'Mi' && $(this).val() != '') {
+        $('#divider-calculate').unblock();
     } else {
-        $('#checkCargoType').prop('disabled', false);
-
-
-        if ($('#selectCargoType').val() != 'Dosya' && $('#selectCargoType').val() != 'Mi') {
-
-            $('#modalCalcDesi').modal();
-            CargoType = 'Koli';
-
-        } else {
-
-            CargoType = 'Dosya';
-            $('#labelDesi').text('0');
-            $('#partQuantity').text('1');
-            calculateTotalPrice();
-            // getFilePrice();
-            getPriceForCustomers();
-            DistributionControl();
-
-        }
-
-        //
-        // if ($('#checkCargoType').prop('checked') == true) {
-        //     $('#modalCalcDesi').modal();
-        //     CargoType = 'Koli';
-        // } else {
-        //     CargoType = 'Dosya';
-        //     $('#labelDesi').text('0');
-        //     $('#partQuantity').text('1');
-        //     calculateTotalPrice();
-        //     // getFilePrice();
-        //     getPriceForCustomers();
-        // }
+        $('#divider-calculate').block({
+            message: $('<div class="loader mx-auto">\n' + '<h1 style="color: #fff;">Desi Hesaplamak İçin Gönderi Türünü Koli Seçin</h1>' + '</div>')
+        });
+        $('.blockUI.blockMsg.blockElement').css('width', '100%');
+        $('.blockUI.blockMsg.blockElement').css('border', '0px');
+        $('.blockUI.blockMsg.blockElement').css('left', '0px');
+        $('.blockUI.blockMsg.blockElement').css('background-color', '');
+        getPriceForCustomers();
     }
-
 
 });
 
@@ -1477,10 +1452,10 @@ function CalculateDesi(RealDesi, PartNumber, clickButton) {
             startPoint: CurrentCity,
             endPoint: $('#aliciIl').val(),
             desi: RealDesi,
-            cargoType: CargoType,
+            cargoType: $('#selectCargoType').val(),
             paymentType: PaymentType,
-            currentCode: $('#gondericiCariKod').val(),
-            receiverCode: $('#aliciCariKod').val(),
+            currentCode: '645 829 860',
+            receiverCode: '645 829 860',
             desiData: getFormData($('#formPartDesiContainer')),
             partQuantity: $('#partQuantity').text(),
         }
@@ -1922,20 +1897,6 @@ $('#btnClearReceiverInfo').click(function () {
 });
 
 
-$(document).ready(function () {
-
-    setTimeout(function () {
-        $('#divider-calculate').block({
-            message: $('<div class="loader mx-auto">\n' +
-
-                '                        </div>')
-        });
-        $('.blockUI.blockMsg.blockElement').css('width', '100%');
-        $('.blockUI.blockMsg.blockElement').css('border', '0px');
-        $('.blockUI.blockMsg.blockElement').css('left', '0px');
-        $('.blockUI.blockMsg.blockElement').css('background-color', '');
-    }, 250);
-})
 
 
 

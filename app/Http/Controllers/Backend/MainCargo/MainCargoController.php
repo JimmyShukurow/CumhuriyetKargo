@@ -364,7 +364,7 @@ class MainCargoController extends Controller
         return GetGlobalCargoesGmAction::run($request);
     }
 
-    public function calculateServiseFee()
+    public function calculateServiceFee()
     {
         $data['additional_service'] = AdditionalServices::all();
         $data['cities'] = Cities::all();
@@ -399,7 +399,7 @@ class MainCargoController extends Controller
             ->sum('price');
 
         $filePrice = FilePrice::first();
-        $fee['first_file_price'] = $filePrice->individual_file_price;
+        $fee['first_file_price'] = 0;
 
         # evrensel posta hizmetleri ücreti
         $postServicePercent = DB::table('settings')
