@@ -84,45 +84,17 @@ class SystemSupportController extends Controller
         }
     }
 
-
     public function myTickets()
     {
         GeneralLog('Destek taleplerim sayfası görüntülendi.');
 
-        $whereClause = "";
-
-        if (Auth::user()->user_type == 'Acente') {
-            if (Auth::user()->role_id == 1) {
-                $usersOfAgency = DB::table('users')
-                    ->where('agency_code', Auth::user()->agency_code)
-                    ->get();
-                $usersOfAgency = $usersOfAgency->pluck('id');
-                $data['tickets'] = DB::table('tickets')
-                    ->join('departments', 'tickets.department_id', '=', 'departments.id')
-                    ->join('users', 'users.id', '=', 'tickets.user_id')
-                    ->select('tickets.*', 'departments.department_name', 'users.name_surname')
-                    ->orderBy('id', 'desc')
-                    ->whereIn('user_id', $usersOfAgency)
-                    ->paginate(10);
-            } else
-                $data['tickets'] = DB::table('tickets')
-                    ->join('departments', 'tickets.department_id', '=', 'departments.id')
-                    ->join('users', 'users.id', '=', 'tickets.user_id')
-                    ->select('tickets.*', 'departments.department_name', 'users.name_surname')
-                    ->orderBy('id', 'desc')
-                    ->where('user_id', Auth::id())
-                    ->paginate(10);
-        } else {
-
-        }
-
-
-        $data['count'] = DB::table('tickets')
+        $data['tickets'] = DB::table('tickets')
             ->join('departments', 'tickets.department_id', '=', 'departments.id')
-            ->select('tickets.*', 'departments.department_name')
+            ->join('users', 'users.id', '=', 'tickets.user_id')
+            ->select('tickets.*', 'departments.department_name', 'users.name_surname')
             ->orderBy('id', 'desc')
             ->where('user_id', Auth::id())
-            ->count();
+            ->paginate(10);
 
         return view('backend.system_support.index', compact('data'));
     }
