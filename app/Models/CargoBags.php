@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use PhpParser\Builder\Class_;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class CargoBags extends Model
@@ -33,4 +34,9 @@ class CargoBags extends Model
         'updated_at' => 'datetime:Y-m-d H:m:s',
         'last_opening_date' => 'datetime:Y-m-d H:m:s',
     ];
+
+    public function bagLastOpener()
+    {
+        return $this->hasOne(User::class, 'id', 'last_opener');
+    }
 }

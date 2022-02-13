@@ -46,8 +46,8 @@ class CargoBagsController extends Controller
         $startDate = $request->startDate;
         $endDate = $request->endDate;
 
-        $data =  DB::table('cargo_bags')
-            ->selectRaw('cargo_bags.*, (select count(*) from cargo_bag_details where bag_id = cargo_bags.id and deleted_at is null and is_inside = "1")  as included_cargo_count, users.name_surname')
+        $data =  CargoBags::
+            selectRaw('cargo_bags.*, (select count(*) from cargo_bag_details where bag_id = cargo_bags.id and deleted_at is null and is_inside = "1")  as included_cargo_count, users.name_surname')
             ->join('users', 'cargo_bags.creator_user_id', '=', 'users.id')
             ->whereRaw($creator ? "users.name_surname like '%" . $creator . "%'" : ' 1 > 0 ')
             ->whereRaw("cargo_bags.created_at between '" . $startDate . " 00:00:00" . "' and '" . $endDate . " 23:59:59" . "'");
@@ -62,8 +62,17 @@ class CargoBagsController extends Controller
             ->editColumn('status', function ($key) {
                 return $key->status == '1' ? '<b class="text-primary">Açık</b>' : '<b class="text-dark">Kapalı</b>';
             })
+            ->editColumn('last_opener', function ($key) {
+                return $key->bagLastOpener != null ? $key->bagLastOpener->name_surname : null;
+            })
+            ->editColumn('last_opening_date', function ($key) {
+                return $key->last_opening_date;
+            })
+            ->editColumn('is_opened', function ($key) {
+                return $key->last_opener != null ? '<b class="text-success">Evet</b>' : '<b class="text-danger">Hayır</b>';
+            })
             ->addColumn('edit', 'backend.main_cargo.cargo_bags.columns.edit')
-            ->rawColumns(['edit', 'tracking_no', 'status'])
+            ->rawColumns(['edit', 'tracking_no', 'status', 'is_opened'])
             ->make(true);
     }
 

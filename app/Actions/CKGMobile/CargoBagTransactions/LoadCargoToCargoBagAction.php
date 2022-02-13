@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Illuminate\Support\Str;
 
 class LoadCargoToCargoBagAction
 {
@@ -100,11 +101,13 @@ class LoadCargoToCargoBagAction
 
                         $cargo_bag = CargoBags::find($bagID);
 
-                        if ($insert)
+                        if ($insert){
+                            RegisterMovementAction::run($ctn[0],$cargo_bag, $cargo->id, Auth::id(),1, Str::random(10), 'load_cargo_bag');
                             return [
                                 'status' => 1,
                                 'cargoes' => CargoBagDetailsResource::collection($cargo_bag->bagDetails),
                             ];
+                        }
                         else
                             return [
                                 'status' =>  0,
