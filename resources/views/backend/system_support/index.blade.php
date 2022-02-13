@@ -59,6 +59,7 @@
                     <tr>
                         <th>Durum</th>
                         <th>Departman</th>
+                        <th>Oluşturan</th>
                         <th>Başlık</th>
                         <th>Öncelik</th>
                         <th>Oluşt. Tarihi</th>
@@ -83,6 +84,7 @@
                                 @endif
                             </td>
                             <td width="130">{{$ticket->department_name}}</td>
+                            <td width="130">{{$ticket->name_surname}}</td>
                             <td>
                                 <a class="text-primary font-weight-bold"
                                    href="{{route('systemSupport.TicketDetails', ['TicketID' => $ticket->id])}}">

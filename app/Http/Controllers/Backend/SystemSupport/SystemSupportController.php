@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\SystemSupport;
 
 use App\Http\Controllers\Controller;
+use App\Models\Agencies;
 use App\Models\Departments;
 use App\Models\TicketDetails;
 use App\Models\Tickets;
@@ -87,12 +88,34 @@ class SystemSupportController extends Controller
     public function myTickets()
     {
         GeneralLog('Destek taleplerim sayfası görüntülendi.');
-        $data['tickets'] = DB::table('tickets')
-            ->join('departments', 'tickets.department_id', '=', 'departments.id')
-            ->select('tickets.*', 'departments.department_name')
-            ->orderBy('id', 'desc')
-            ->where('user_id', Auth::id())
-            ->paginate(10);
+
+        $whereClause = "";
+
+        if (Auth::user()->user_type == 'Acente') {
+            if (Auth::user()->role_id == 1) {
+                $usersOfAgency = DB::table('users')
+                    ->where('agency_code', Auth::user()->agency_code)
+                    ->get();
+                $usersOfAgency = $usersOfAgency->pluck('id');
+                $data['tickets'] = DB::table('tickets')
+                    ->join('departments', 'tickets.department_id', '=', 'departments.id')
+                    ->join('users', 'users.id', '=', 'tickets.user_id')
+                    ->select('tickets.*', 'departments.department_name', 'users.name_surname')
+                    ->orderBy('id', 'desc')
+                    ->whereIn('user_id', $usersOfAgency)
+                    ->paginate(10);
+            } else
+                $data['tickets'] = DB::table('tickets')
+                    ->join('departments', 'tickets.department_id', '=', 'departments.id')
+                    ->join('users', 'users.id', '=', 'tickets.user_id')
+                    ->select('tickets.*', 'departments.department_name', 'users.name_surname')
+                    ->orderBy('id', 'desc')
+                    ->where('user_id', Auth::id())
+                    ->paginate(10);
+        } else {
+
+        }
+
 
         $data['count'] = DB::table('tickets')
             ->join('departments', 'tickets.department_id', '=', 'departments.id')
