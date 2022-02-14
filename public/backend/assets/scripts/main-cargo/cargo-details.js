@@ -243,6 +243,12 @@ function cargoInfo(user) {
 
             $('#PrintStatementOfResposibility').attr('href', '/MainCargo/StatementOfResponsibility/' + cargo.tracking_no);
 
+            if (response.bag_tracking_no == null)
+                $('#inBag').html('<b class="text-danger">HAYIR</b>')
+            else
+                $('#inBag').html('<b class="text-success">EVET</b> / <b style="color:#000;">REFERANS NO: ' + response.bag_tracking_no + '</b>')
+
+
             var addServiceTotalPrice = 0;
             $('#tbodyCargoAddServices').html('');
 

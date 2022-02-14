@@ -244,6 +244,10 @@
 
                                                         <tbody>
                                                         <tr>
+                                                            <td class="static">Torbada mı:</td>
+                                                            <td id="inBag"></td>
+                                                        </tr>
+                                                        <tr>
                                                             <td class="static">Tahislatlı:</td>
                                                             <td id="collectible"></td>
                                                         </tr>
