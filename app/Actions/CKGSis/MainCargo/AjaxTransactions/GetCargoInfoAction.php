@@ -43,6 +43,7 @@ class GetCargoInfoAction
                     ->groupBy('group_id')
                     ->join('cargoes', 'cargoes.tracking_no', '=', 'cargo_movements.ctn')
                     ->where('ctn', '=', str_replace(' ', '', $data['cargo']->tracking_no))
+                    ->orderBy('created_at')
                     ->get();
 
                 $data['receiver'] = DB::table('currents')
