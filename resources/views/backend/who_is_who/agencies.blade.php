@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="col-md-2">
-                            <label for="dependency_tc">Bağlı Olduğu Aktarma</label>
+                            <label for="dependency_tc">Bağ. Old TRM.</label>
                             <select name="dependency_tc" id="dependency_tc" class="form-control">
                                 <option value="">Seçiniz</option>
                                 @foreach($data['tc'] as $key)
