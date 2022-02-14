@@ -64,9 +64,10 @@ $(document).ready(function () {
         ajax: {
             url: '/CargoBags/Agency/GetCargoBags',
             data: function (d) {
-                d.startDate = $('#startDate').val();
-                d.endDate = $('#endDate').val();
-                d.creatorUser = $('#creatorUser').val();
+                d.startDate = $('#startDate').val()
+                d.endDate = $('#endDate').val()
+                d.creatorUser = $('#creatorUser').val()
+                d.dateFilterStatus = $('#filter-by-time').prop('checked')
             },
             error: function (xhr, error, code) {
                 if (code == "Too Many Requests") {
@@ -88,7 +89,12 @@ $(document).ready(function () {
         ],
         scrollY: "400px",
     });
+
+ 
+
 });
+
+
 
 $('#search-form').on('submit', function (e) {
     oTable.draw();

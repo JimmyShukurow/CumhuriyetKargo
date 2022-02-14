@@ -70,6 +70,10 @@
                         </div>
                     </div>
                 </div>
+                <div class="p-2">
+                    <input type="checkbox" name="filter-by-time" id="filter-by-time">
+                    <label for="filter-by-time"> Zamana göre filtrele</label>
+                </div>
             </form>
 
             <div class="card-body">
