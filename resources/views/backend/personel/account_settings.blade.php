@@ -104,14 +104,14 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="tcCity">Aktarma İl</label>
-                                            <input type="text" readonly value="<?php echo e($tc->city); ?>"
+                                            <input type="text" readonly value="<?php echo e(@$tc->city); ?>"
                                                    class="form-control" id="tcCity">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="tcDistrict">Aktarma İlçe</label>
-                                            <input type="text" readonly value="<?php echo e($tc->district); ?>"
+                                            <input type="text" readonly value="<?php echo e(@$tc->district); ?>"
                                                    class="form-control" id="tcDistrict">
                                         </div>
                                     </div>
@@ -120,7 +120,7 @@
                                         <div class="form-group">
                                             <label for="tcName">Aktarma Adı</label>
                                             <input type="text" readonly
-                                                   value="<?php echo e($tc->tc_name) . ' TRANSFER MERKEZİ';  ?>"
+                                                   value="<?php echo e(@$tc->tc_name) . ' TRANSFER MERKEZİ';  ?>"
                                                    class="form-control" id="tcName">
                                         </div>
                                     </div>
@@ -133,7 +133,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="rdCity">Bölge Müdürlüğü İl</label>
-                                            <input type="text" readonly value="<?php echo e($region_info->city); ?>"
+                                            <input type="text" readonly value="<?php echo e(@$region_info->city); ?>"
                                                    class="form-control" id="rdCity">
                                         </div>
                                     </div>
@@ -160,182 +160,185 @@
                             <div class="divider"></div>
                             <h4 class="pb-3 card-title text-center">Bağımlılıklar</h4>
 
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="dropdown-menu-header">
-                                        <div class="dropdown-menu-header-inner bg-danger">
-                                            <div class="menu-header-image opacity-2"
-                                                 style="background-image: url('/backend/assets/images/dropdown-header/abstract2.jpg');"></div>
-                                            <div class="menu-header-content"><h5
-                                                    class="menu-header-title"><?php echo e($agency->agency_name . ' ACENTE'); ?></h5>
-                                                <h6 class="menu-header-subtitle"><?php echo e($agency->city . '/' . $agency->district . ' (' . $agency->agency_code . ')'); ?></h6>
+
+                            @if(\Illuminate\Support\Facades\Auth::user()->user_type == 'Acente')
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="dropdown-menu-header">
+                                            <div class="dropdown-menu-header-inner bg-danger">
+                                                <div class="menu-header-image opacity-2"
+                                                     style="background-image: url('/backend/assets/images/dropdown-header/abstract2.jpg');"></div>
+                                                <div class="menu-header-content"><h5
+                                                        class="menu-header-title"><?php echo e($agency->agency_name . ' ACENTE'); ?></h5>
+                                                    <h6 class="menu-header-subtitle"><?php echo e($agency->city . '/' . $agency->district . ' (' . $agency->agency_code . ')'); ?></h6>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <table class="table table-striped table-bordered TableNoPadding">
-                                        <thead>
-                                        <tr class="text-center">
-                                            <th colspan="2"> <?php echo e($agency->agency_name . ' ACENTE BİLGİLERİ'); ?> </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td style="width: 9rem">İl</td>
-                                            <td><?php echo e($agency->city); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>İlçe</td>
-                                            <td><?php echo e($agency->district); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mahalle</td>
-                                            <td><?php echo e($agency->neighborhood); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Adres</td>
-                                            <td><?php echo e($agency->adress); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Şube Kodu</td>
-                                            <td><?php echo e($agency->agency_code); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Acente Sahibi</td>
-                                            <td class="font-weight-bold"><?php echo e($agency->name_surname); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Acente İletişim</td>
-                                            <td><?php echo e($agency->phone); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Acente Geliştirme Sorumlusu</td>
-                                            <td class="font-weight-bold text-primary"><?php echo e($agency->agency_development_officer); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Acente Müdürü</td>
-                                            <td class="font-weight-bold text-danger"><?php echo e(@$agency_director->name_surname); ?></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="dropdown-menu-header">
-                                        <div class="dropdown-menu-header-inner bg-success">
-                                            <div class="menu-header-image opacity-1"
-                                                 style="background-image: url('/backend/assets/images/dropdown-header/abstract3.jpg');"></div>
-                                            <div class="menu-header-content"><h5
-                                                    class="menu-header-title"><?php echo e($tc->tc_name . ' TRANSFER MERKEZİ'); ?></h5>
-                                                <h6 class="menu-header-subtitle"><?php echo e($tc->city . '/' . $tc->district); ?></h6>
+                                        <table class="table table-striped table-bordered TableNoPadding">
+                                            <thead>
+                                            <tr class="text-center">
+                                                <th colspan="2"> <?php echo e($agency->agency_name . ' ACENTE BİLGİLERİ'); ?> </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td style="width: 9rem">İl</td>
+                                                <td><?php echo e($agency->city); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>İlçe</td>
+                                                <td><?php echo e($agency->district); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mahalle</td>
+                                                <td><?php echo e($agency->neighborhood); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Adres</td>
+                                                <td><?php echo e($agency->adress); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Şube Kodu</td>
+                                                <td><?php echo e($agency->agency_code); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Acente Sahibi</td>
+                                                <td class="font-weight-bold"><?php echo e($agency->name_surname); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Acente İletişim</td>
+                                                <td><?php echo e($agency->phone); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Acente Geliştirme Sorumlusu</td>
+                                                <td class="font-weight-bold text-primary"><?php echo e($agency->agency_development_officer); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Acente Müdürü</td>
+                                                <td class="font-weight-bold text-danger"><?php echo e(@$agency_director->name_surname); ?></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="dropdown-menu-header">
+                                            <div class="dropdown-menu-header-inner bg-success">
+                                                <div class="menu-header-image opacity-1"
+                                                     style="background-image: url('/backend/assets/images/dropdown-header/abstract3.jpg');"></div>
+                                                <div class="menu-header-content"><h5
+                                                        class="menu-header-title"><?php echo e($tc->tc_name . ' TRANSFER MERKEZİ'); ?></h5>
+                                                    <h6 class="menu-header-subtitle"><?php echo e($tc->city . '/' . $tc->district); ?></h6>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <table class="table table-striped table-bordered TableNoPadding">
-                                        <thead>
-                                        <tr class="text-center">
-                                            <th colspan="2"> <?php echo e($tc->tc_name . ' TRANSFER MERKEZİ BİLGİLERİ'); ?> </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td style="width: 9rem">İl</td>
-                                            <td><?php echo e($tc->city); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>İlçe</td>
-                                            <td><?php echo e($tc->district); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mahalle</td>
-                                            <td><?php echo e($tc->neighborhood); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Adres</td>
-                                            <td><?php echo e($tc->adress); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Aktarma İletişim</td>
-                                            <td><?php echo e($tc->phone); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Aktarma Müdürü</td>
-                                            <td class="font-weight-bold text-danger"><?php echo e(isset($tc_director->name_surname) ? $tc_director->name_surname : 'ATANMADI'); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Aktarma Müdürü İletişim</td>
-                                            <td class="font-weight-bold text-danger"><?php echo e(isset($tc_director->phone) ? $tc_director->phone : ''); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Aktarma Müdür Yard.</td>
-                                            <td class="font-weight-bold text-primary"><?php echo e(isset($tc_assistant_director->name_surname) ? $tc_assistant_director->name_surname : 'ATANMADI'); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Aktarma Müdür Yard. İletişim</td>
-                                            <td class="font-weight-bold text-primary"><?php echo e(isset($tc_assistant_director->phone) ? $tc_assistant_director->phone : ''); ?></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                        <table class="table table-striped table-bordered TableNoPadding">
+                                            <thead>
+                                            <tr class="text-center">
+                                                <th colspan="2"> <?php echo e($tc->tc_name . ' TRANSFER MERKEZİ BİLGİLERİ'); ?> </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td style="width: 9rem">İl</td>
+                                                <td><?php echo e($tc->city); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>İlçe</td>
+                                                <td><?php echo e($tc->district); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mahalle</td>
+                                                <td><?php echo e($tc->neighborhood); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Adres</td>
+                                                <td><?php echo e($tc->adress); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Aktarma İletişim</td>
+                                                <td><?php echo e($tc->phone); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Aktarma Müdürü</td>
+                                                <td class="font-weight-bold text-danger"><?php echo e(isset($tc_director->name_surname) ? $tc_director->name_surname : 'ATANMADI'); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Aktarma Müdürü İletişim</td>
+                                                <td class="font-weight-bold text-danger"><?php echo e(isset($tc_director->phone) ? $tc_director->phone : ''); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Aktarma Müdür Yard.</td>
+                                                <td class="font-weight-bold text-primary"><?php echo e(isset($tc_assistant_director->name_surname) ? $tc_assistant_director->name_surname : 'ATANMADI'); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Aktarma Müdür Yard. İletişim</td>
+                                                <td class="font-weight-bold text-primary"><?php echo e(isset($tc_assistant_director->phone) ? $tc_assistant_director->phone : ''); ?></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
 
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="dropdown-menu-header">
-                                        <div class="dropdown-menu-header-inner bg-dark">
-                                            <div class="menu-header-image opacity-1"
-                                                 style="background-image: url('/backend/assets/images/dropdown-header/abstract10.jpg');"></div>
-                                            <div class="menu-header-content"><h5
-                                                    class="menu-header-title"><?php echo e($region_info->name . ' BÖLGE MÜDÜRLÜĞÜ'); ?></h5>
-                                                <h6 class="menu-header-subtitle"><?php echo e($region_info->city . '/' . $region_info->district); ?></h6>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="dropdown-menu-header">
+                                            <div class="dropdown-menu-header-inner bg-dark">
+                                                <div class="menu-header-image opacity-1"
+                                                     style="background-image: url('/backend/assets/images/dropdown-header/abstract10.jpg');"></div>
+                                                <div class="menu-header-content"><h5
+                                                        class="menu-header-title"><?php echo e($region_info->name . ' BÖLGE MÜDÜRLÜĞÜ'); ?></h5>
+                                                    <h6 class="menu-header-subtitle"><?php echo e($region_info->city . '/' . $region_info->district); ?></h6>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <table class="table table-striped table-bordered TableNoPadding">
-                                        <thead>
-                                        <tr class="text-center">
-                                            <th colspan="2"> <?php echo e($region_info->name . ' BÖLGE MÜDÜRLÜĞÜ'); ?> </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td style="width: 9rem">İl</td>
-                                            <td><?php echo e($region_info->city); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>İlçe</td>
-                                            <td><?php echo e($region_info->district); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mahalle</td>
-                                            <td><?php echo e($region_info->neighborhood); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Adres</td>
-                                            <td><?php echo e($region_info->adress); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bölge İletişim</td>
-                                            <td><?php echo e($region_info->phone); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bölge Müdürü</td>
-                                            <td class="font-weight-bold text-danger"><?php echo e(isset($rd_director->name_surname) ? $rd_director->name_surname : 'ATANMADI'); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bölge Müdürü İletişim</td>
-                                            <td class="font-weight-bold text-danger"><?php echo e(isset($rd_director->phone) ? $rd_director->phone : ''); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bölge Müdür Yard.</td>
-                                            <td class="font-weight-bold text-primary"><?php echo e(isset($rd_assistant_director->name_surname) ? $rd_assistant_director->name_surname : 'ATANMADI'); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bölge Müdür Yard. İletişim</td>
-                                            <td class="font-weight-bold text-primary"><?php echo e(isset($rd_assistant_director->phone) ? $rd_assistant_director->phone : ''); ?></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                        <table class="table table-striped table-bordered TableNoPadding">
+                                            <thead>
+                                            <tr class="text-center">
+                                                <th colspan="2"> <?php echo e($region_info->name . ' BÖLGE MÜDÜRLÜĞÜ'); ?> </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td style="width: 9rem">İl</td>
+                                                <td><?php echo e($region_info->city); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>İlçe</td>
+                                                <td><?php echo e($region_info->district); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mahalle</td>
+                                                <td><?php echo e($region_info->neighborhood); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Adres</td>
+                                                <td><?php echo e($region_info->adress); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Bölge İletişim</td>
+                                                <td><?php echo e($region_info->phone); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Bölge Müdürü</td>
+                                                <td class="font-weight-bold text-danger"><?php echo e(isset($rd_director->name_surname) ? $rd_director->name_surname : 'ATANMADI'); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Bölge Müdürü İletişim</td>
+                                                <td class="font-weight-bold text-danger"><?php echo e(isset($rd_director->phone) ? $rd_director->phone : ''); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Bölge Müdür Yard.</td>
+                                                <td class="font-weight-bold text-primary"><?php echo e(isset($rd_assistant_director->name_surname) ? $rd_assistant_director->name_surname : 'ATANMADI'); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Bölge Müdür Yard. İletişim</td>
+                                                <td class="font-weight-bold text-primary"><?php echo e(isset($rd_assistant_director->phone) ? $rd_assistant_director->phone : ''); ?></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
 
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
 
 
                             <div class="divider"></div>

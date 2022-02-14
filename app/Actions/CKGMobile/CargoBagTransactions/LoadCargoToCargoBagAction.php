@@ -44,7 +44,7 @@ class LoadCargoToCargoBagAction
         } elseif( $bag->last_opener != null ) {
                 return[
                     'status' => 0,
-                    'message' => 'Bu torbadan indirme işlemi yapıldığı için, yükleme işlemi yapılımaz'
+                    'message' => 'Bu torbadan daha önce indirme işlemi yapıldığı için, artık yükleme işlemi yapılımaz!'
                 ];
         }else {
 
@@ -81,7 +81,7 @@ class LoadCargoToCargoBagAction
                             'message' => 'Sadece Dosya veya Mi kargoları yükleyebilirsiniz!'
                         ];
                     else {
-                        
+
                         #check if its exists
                         $check_if_its_exist = CargoBagDetails::where('cargo_id', $cargo->id)->where('part_no', $ctn[1])->where('is_inside', '1')->first();
                         if($check_if_its_exist){
@@ -90,7 +90,7 @@ class LoadCargoToCargoBagAction
                                 'message' => 'Mükerrer yükleme işlemi engellendi',
                             ];
                         }
-                        
+
                         # load to bag
                         $insert = CargoBagDetails::create([
                             'bag_id' => $bagID,

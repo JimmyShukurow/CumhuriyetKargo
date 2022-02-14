@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\SystemSupport;
 
 use App\Http\Controllers\Controller;
+use App\Models\Agencies;
 use App\Models\Departments;
 use App\Models\TicketDetails;
 use App\Models\Tickets;
@@ -83,23 +84,17 @@ class SystemSupportController extends Controller
         }
     }
 
-
     public function myTickets()
     {
         GeneralLog('Destek taleplerim sayfası görüntülendi.');
+
         $data['tickets'] = DB::table('tickets')
             ->join('departments', 'tickets.department_id', '=', 'departments.id')
-            ->select('tickets.*', 'departments.department_name')
+            ->join('users', 'users.id', '=', 'tickets.user_id')
+            ->select('tickets.*', 'departments.department_name', 'users.name_surname')
             ->orderBy('id', 'desc')
             ->where('user_id', Auth::id())
             ->paginate(10);
-
-        $data['count'] = DB::table('tickets')
-            ->join('departments', 'tickets.department_id', '=', 'departments.id')
-            ->select('tickets.*', 'departments.department_name')
-            ->orderBy('id', 'desc')
-            ->where('user_id', Auth::id())
-            ->count();
 
         return view('backend.system_support.index', compact('data'));
     }

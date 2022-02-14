@@ -22,7 +22,7 @@ class RegisterMovementAction
 
         $agency = Agencies::where('id', Auth::user()->agency_code)->first();
 
-        if (Auth::user()->user_type == 'Acente') $infoText = str_replace(['[branch]'], [$agency->city . ' - ' . $agency->district . ' - '. $agency->agency_name . ' ŞUBE'], $info->content);
+        if (Auth::user()->user_type == 'Acente') $infoText = str_replace(['[branch]'], [$agency->city . ' - ' . $agency->district . ' - '. $agency->agency_name . ' ŞUBESI'], $info->content);
         elseif (Auth::user()->user_type == 'Aktarma') $infoText = str_replace(['[branch]'], [$agency->city . ' - ' . $agency->district . ' - '. $agency->agency_name . ' TRM.'], $info->content);
 
         $infoText = str_replace(['[bag_tracking_no]'], [$bag->tracking_no], $infoText );
