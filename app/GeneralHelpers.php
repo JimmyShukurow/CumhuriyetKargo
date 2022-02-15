@@ -686,7 +686,7 @@ function FileUrlGenerator($file)
 
 }
 
-function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $group_id)
+function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $group_id, $importance = 1)
 {
     $insert = CargoMovements::create([
         'ctn' => $ctn,
@@ -696,6 +696,7 @@ function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $
         'info' => $info,
         'status' => $status,
         'group_id' => $group_id,
+        'importance' => $importance
     ]);
 
     if ($insert)
