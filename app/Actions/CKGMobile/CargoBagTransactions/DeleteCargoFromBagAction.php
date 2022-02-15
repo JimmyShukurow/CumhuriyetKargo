@@ -50,7 +50,7 @@ class DeleteCargoFromBagAction
                 return $item->delete();
             });
 
-            RegisterMovementAction::run($ctn[0],$cargo_bag, $cargo->id, Auth::id(),1, Str::random(10),  'delete_from_cargo_bag', $request->deleted_from);
+            RegisterMovementAction::run($ctn[0],$cargo_bag, $cargo->id, Auth::id(),1, Str::random(10),  'delete_from_cargo_bag', 2, $request->deleted_from,);
 
             return [
                 'id' => $ids,

@@ -100,7 +100,7 @@ class LoadCargoToCargoBagAction
                         $cargo_bag = CargoBags::find($bagID);
 
                         if ($insert) {
-                            RegisterMovementAction::run($ctn[0], $cargo_bag, $cargo->id, Auth::id(), 1, Str::random(10), 'load_cargo_bag');
+                            RegisterMovementAction::run($ctn[0], $cargo_bag, $cargo->id, Auth::id(), 1, Str::random(10), 'load_cargo_bag', 2);
                             return [
                                 'status' => 1,
                                 'cargoes' => CargoBagDetailsResource::collection($cargo_bag->bagDetails),
