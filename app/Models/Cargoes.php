@@ -87,6 +87,8 @@ class Cargoes extends Model
         'deleted_by_user_id',
         'delete_reason',
         'system',
+        'collection_entered',
+        'collection_type_entered',
     ];
 
     protected static $logAttributes = [
@@ -165,6 +167,8 @@ class Cargoes extends Model
         'deleted_by_user_id',
         'delete_reason',
         'system',
+        'collection_entered',
+        'collection_type_entered',
     ];
 
     public function getDescriptionForEvent(string $eventName): string
