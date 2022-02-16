@@ -13,6 +13,7 @@ use App\Models\Debits;
 use App\Models\Agencies;
 use App\Models\TransshipmentCenters;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 function tr_strtoupper($text)
 {
@@ -701,24 +702,31 @@ function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $
 
     if ($insert)
         return $insert;
-    else
+    } catch(Exception $e){
         return false;
+    }
+
 }
 
 function InsertDebits($ctn, $cargoID, $partNo, $userID, $movementID)
 {
-    $agency = Agencies::find(Auth::user()->agency_code);
+    try {
+        $agency = Agencies::find(Auth::user()->agency_code);
 
-    $insert = Debits::create([
-        'cargo_id' => $cargoID,
-        'ctn' => $ctn,
-        'part_no' => $partNo,
-        'user_id' => $userID,
-        'agency_code' => $agency->id,
-        'movement_id' => $movementID,
-    ]);
+         Debits::create([
+            'cargo_id' => $cargoID,
+            'ctn' => $ctn,
+            'part_no' => $partNo,
+            'user_id' => $userID,
+            'agency_code' => $agency->id,
+            'movement_id' => $movementID,
+        ]);
 
-    return $insert == true ? true : false;
+        return true;
+    } catch(Exception $e){
+        return false;
+    }
+
 }
 
 function crypteTrackingNo($number)
