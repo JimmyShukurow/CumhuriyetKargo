@@ -354,7 +354,6 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane show" id="tabCargoMovements" role="tabpanel">
-                                            <h3 class="text-dark text-center mb-4">Kargo Hareketleri</h3>
 
 
                                             <div class="mb-3 card">
@@ -432,6 +431,8 @@
                                                 </div>
 
                                             </div>
+
+
                                         </div>
                                         <div class="tab-pane show" id="tabCargoSMS" role="tabpanel">
                                             <h3 class="text-dark text-center mb-4">Gönderilen SMS'ler</h3>
