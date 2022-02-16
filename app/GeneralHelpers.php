@@ -689,20 +689,21 @@ function FileUrlGenerator($file)
 
 function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $group_id, $importance = 1)
 {
-    $insert = CargoMovements::create([
-        'ctn' => $ctn,
-        'cargo_id' => $cargoID,
-        'user_id' => $userID,
-        'part_no' => $partNo,
-        'info' => $info,
-        'status' => $status,
-        'group_id' => $group_id,
-        'importance' => $importance
-    ]);
+    try {
+        $insert = CargoMovements::create([
+            'ctn' => $ctn,
+            'cargo_id' => $cargoID,
+            'user_id' => $userID,
+            'part_no' => $partNo,
+            'info' => $info,
+            'status' => $status,
+            'group_id' => $group_id,
+            'importance' => $importance
+        ]);
 
-    if ($insert)
         return $insert;
-    } catch(Exception $e){
+
+    } catch (Exception $e) {
         return false;
     }
 
@@ -713,7 +714,7 @@ function InsertDebits($ctn, $cargoID, $partNo, $userID, $movementID)
     try {
         $agency = Agencies::find(Auth::user()->agency_code);
 
-         Debits::create([
+        Debits::create([
             'cargo_id' => $cargoID,
             'ctn' => $ctn,
             'part_no' => $partNo,
@@ -723,7 +724,7 @@ function InsertDebits($ctn, $cargoID, $partNo, $userID, $movementID)
         ]);
 
         return true;
-    } catch(Exception $e){
+    } catch (Exception $e) {
         return false;
     }
 
