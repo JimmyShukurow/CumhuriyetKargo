@@ -674,9 +674,9 @@ class CreateCargoAction
                 'transporter' => $transporter,
                 'system' => 'CKG-Sis',
             ]);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['status' => -1, 'exception' => $e->getMessage(), 'message' => 'Kargo kaydı esnasında hata oluştu']);
+            return response()->json(['status' => -1, 'message' => 'Kargo kaydı esnasında hata oluştu']);
         }
 
         # Get Movement Text
@@ -691,7 +691,7 @@ class CreateCargoAction
 
 
         if ($CreateCargo) {
-            try{
+            try {
 
                 ## Insert Add Services START
                 foreach ($addServices as $key => $value) {
@@ -703,23 +703,23 @@ class CreateCargoAction
                         'service_name' => $service->service_name,
                         'price' => $service->price
                     ]);
-    
+
                     if (!$insert) {
                         activity()
                             ->performedOn($CreateCargo)
                             ->inLog('Critical Error')
                             ->withProperties(['ktno' => $ctn, 'user' => Auth::id(), 'service-id' => $serviceID])
                             ->log('Ek servis eklenirken hata oluştu!');
-    
+
                         return response()
                             ->json(['status' => -1, 'message' => 'Bir hata oluştu, sistem destek ile iletişime geçin! [CargoAddService]'], 200);
                         break;
                     }
                 }
                 # Insert Add Services END
-            } catch(Exception $e){
+            } catch (Exception $e) {
                 DB::rollBack();
-                return response()->json(['status' => -1, 'exception' => $e->getMessage(), 'message' => 'Ek işlem esnasında hata oluştu']);
+                return response()->json(['status' => -1, 'message' => 'Ek hizmetlerin kaydı esnasında hata oluştu']);
             }
 
 
@@ -764,7 +764,7 @@ class CreateCargoAction
                     $desi = ($en * $boy * $yukseklik) / 3000;
                     $desi = $agirlik > $desi ? $agirlik : $desi;
                     $desi = round($desi, 2);
-                    try{
+                    try {
                         $insert = CargoPartDetails::create([
                             'cargo_id' => $CreateCargo->id,
                             'tracking_no' => $ctn,
@@ -776,16 +776,17 @@ class CreateCargoAction
                             'desi' => $desi,
                             'cubic_meter_volume' => $hacim
                         ]);
-    
+
                         # INSERT Movements START
                         $insert = InsertCargoMovement($ctn, $CreateCargo->id, Auth::id(), $reversePartQuantity, $infoText, $info->status, $group_id);
                         #inert debit
                         $insert = InsertDebits($ctn, $CreateCargo->id, $reversePartQuantity, Auth::id(), $insert->id);
                         # INSERT Movements END
 
-                    } catch(Exception $e){
+                    } catch (Exception $e) {
                         DB::rollBack();
-                        return response()->json(['status' => -1, 'exception' => $e->getMessage(), 'message' => 'Kargo parça ekleme esnasında hata oluştu']);
+//                        return response()->json(['status' => -1,  'message' => 'Kargo parça ekleme esnasında hata oluştu']);
+                        return response()->json(['status' => -1, 'message' => 'Kargo parça ekleme esnasında hata oluştu']);
                     }
 
                     if ($insert)
@@ -822,7 +823,7 @@ class CreateCargoAction
                 }
             } else {
 
-                try{
+                try {
 
                     $insert = CargoPartDetails::create([
                         'cargo_id' => $CreateCargo->id,
@@ -835,23 +836,19 @@ class CreateCargoAction
                         'desi' => 0,
                         'cubic_meter_volume' => 0
                     ]);
-    
+
                     # INSERT Movements START
                     $insert = InsertCargoMovement($ctn, $CreateCargo->id, Auth::id(), 1, $infoText, $info->status, $group_id);
-                    #inert debit
+                    #insert debit
                     $insert = InsertDebits($ctn, $CreateCargo->id, 1, Auth::id(), $insert->id);
                     # INSERT Movements END
-                } catch(Exception $e){
+                } catch (Exception $e) {
                     DB::rollBack();
-                    return response()->json(['status' => -1, 'exception' => $e->getMessage(), 'message' => 'Kargolar ve Ek parçalar esnasında hata oluştu']);
+                    return response()->json(['status' => -1, 'message' => 'Parçaların kaydı esnasında hata oluştu!']);
                 }
 
             }
             ## INSERT Cargo Parts END
-
-
-//                    return CharacterCleaner($receiver->gsm);
-//                    return CharacterCleaner($current->gsm);
 
             ## SMS Transactions
             if ($insert != false) {
