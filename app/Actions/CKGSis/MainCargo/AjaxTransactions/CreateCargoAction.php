@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Exception;
 
 class CreateCargoAction
 {
@@ -599,77 +600,84 @@ class CreateCargoAction
             $arrivalTC->id = -1;
         }
 
-        # start create new Cargo
-        $CreateCargo = Cargoes::create([
-            'receiver_id' => $receiver->id,
-            'receiver_name' => $receiver->name,
-            'receiver_phone' => $receiver->gsm,
-            'receiver_city' => $receiver->city,
-            'receiver_district' => $receiver->district,
-            'receiver_neighborhood' => $receiver->neighborhood,
-            'receiver_street' => $receiver->street,
-            'receiver_street2' => $receiver->street2,
-            'receiver_building_no' => $receiver->building_no,
-            'receiver_door_no' => $receiver->door_no,
-            'receiver_floor' => $receiver->floor,
-            'receiver_address_note' => $receiver->address_note,
-            'receiver_address' => $receiverAddress,
-            'sender_id' => $current->id,
-            'sender_name' => $current->name,
-            'sender_phone' => $current->gsm,
-            'sender_city' => $current->city,
-            'sender_district' => $current->district,
-            'sender_neighborhood' => $current->neighborhood,
-            'sender_street' => $current->street,
-            'sender_street2' => $current->street2,
-            'sender_building_no' => $current->building_no,
-            'sender_door_no' => $current->door_no,
-            'sender_floor' => $current->floor,
-            'sender_address_note' => $current->address_note,
-            'sender_address' => $currentAddress,
-            'customer_code' => $request->musteriKodu,
-            'payment_type' => $request->odemeTipi,
-            'number_of_pieces' => $number_of_pieces,
-            'cargo_type' => $cargoType,
-            'cargo_content' => tr_strtoupper($request->kargoIcerigi),
-            'cargo_content_ex' => tr_strtoupper($request->kargoIcerigiAciklama),
-            'tracking_no' => $ctn,
-            'invoice_number' => $invoiceNumber,
-            'arrival_city' => $receiver->city,
-            'arrival_district' => $receiver->district,
-            'arrival_agency_code' => $arrivalAgency->id,
-            'arrival_tc_code' => $arrivalTC->id,
-            'departure_city' => $userGeneralInfo->branch_city,
-            'departure_district' => $userGeneralInfo->branch_district,
-            'departure_agency_code' => Auth::user()->agency_code,
-            'departure_tc_code' => $tc->tc_id,
-            'creator_agency_code' => Auth::user()->agency_code,
-            'creator_user_id' => Auth::id(),
-            'status' => 'İRSALİYE KESİLDİ',
-            'collectible' => $request->tahsilatliKargo == 'true' ? '1' : '0',
-            'collection_fee' => $request->tahsilatliKargo == 'true' ? getDoubleValue($request->faturaTutari) : 0,
-            'collection_payment_type' => $request->tahsilatliKargo == 'true' ? 'Nakit' : '0',
-            'desi' => $desi,
-            'kg' => $totalAgirlik,
-            'kdv_percent' => 18,
-            'cubic_meter_volume' => $cubic_meter_volume,
-            'kdv_price' => $kdvPrice,
-            'distance' => $distance,
-            'distance_price' => $distancePrice,
-            'service_price' => $serviceFee,
-            'mobile_service_price' => $mobileServiceFee,
-            'add_service_price' => $addServicePrice,
-            'post_service_price' => $postServicePrice,
-            'heavy_load_carrying_cost' => $heavyLoadCarryingCost,
-            'total_price' => $totalPrice,
-            'home_delivery' => $homeDelivery,
-            'pick_up_address' => $pickUpAddress,
-            'agency_delivery' => $homeDelivery == '1' ? '0' : '1',
-            'status_for_human' => 'HAZIRLANIYOR',
-// s           'transporter' => 'CK',
-            'transporter' => $transporter,
-            'system' => 'CKG-Sis',
-        ]);
+        DB::beginTransaction();
+        try {
+
+            # start create new Cargo
+            $CreateCargo = Cargoes::create([
+                'receiver_id' => $receiver->id,
+                'receiver_name' => $receiver->name,
+                'receiver_phone' => $receiver->gsm,
+                'receiver_city' => $receiver->city,
+                'receiver_district' => $receiver->district,
+                'receiver_neighborhood' => $receiver->neighborhood,
+                'receiver_street' => $receiver->street,
+                'receiver_street2' => $receiver->street2,
+                'receiver_building_no' => $receiver->building_no,
+                'receiver_door_no' => $receiver->door_no,
+                'receiver_floor' => $receiver->floor,
+                'receiver_address_note' => $receiver->address_note,
+                'receiver_address' => $receiverAddress,
+                'sender_id' => $current->id,
+                'sender_name' => $current->name,
+                'sender_phone' => $current->gsm,
+                'sender_city' => $current->city,
+                'sender_district' => $current->district,
+                'sender_neighborhood' => $current->neighborhood,
+                'sender_street' => $current->street,
+                'sender_street2' => $current->street2,
+                'sender_building_no' => $current->building_no,
+                'sender_door_no' => $current->door_no,
+                'sender_floor' => $current->floor,
+                'sender_address_note' => $current->address_note,
+                'sender_address' => $currentAddress,
+                'customer_code' => $request->musteriKodu,
+                'payment_type' => $request->odemeTipi,
+                'number_of_pieces' => $number_of_pieces,
+                'cargo_type' => $cargoType,
+                'cargo_content' => tr_strtoupper($request->kargoIcerigi),
+                'cargo_content_ex' => tr_strtoupper($request->kargoIcerigiAciklama),
+                'tracking_no' => $ctn,
+                'invoice_number' => $invoiceNumber,
+                'arrival_city' => $receiver->city,
+                'arrival_district' => $receiver->district,
+                'arrival_agency_code' => $arrivalAgency->id,
+                'arrival_tc_code' => $arrivalTC->id,
+                'departure_city' => $userGeneralInfo->branch_city,
+                'departure_district' => $userGeneralInfo->branch_district,
+                'departure_agency_code' => Auth::user()->agency_code,
+                'departure_tc_code' => $tc->tc_id,
+                'creator_agency_code' => Auth::user()->agency_code,
+                'creator_user_id' => Auth::id(),
+                'status' => 'İRSALİYE KESİLDİ',
+                'collectible' => $request->tahsilatliKargo == 'true' ? '1' : '0',
+                'collection_fee' => $request->tahsilatliKargo == 'true' ? getDoubleValue($request->faturaTutari) : 0,
+                'collection_payment_type' => $request->tahsilatliKargo == 'true' ? 'Nakit' : '0',
+                'desi' => $desi,
+                'kg' => $totalAgirlik,
+                'kdv_percent' => 18,
+                'cubic_meter_volume' => $cubic_meter_volume,
+                'kdv_price' => $kdvPrice,
+                'distance' => $distance,
+                'distance_price' => $distancePrice,
+                'service_price' => $serviceFee,
+                'mobile_service_price' => $mobileServiceFee,
+                'add_service_price' => $addServicePrice,
+                'post_service_price' => $postServicePrice,
+                'heavy_load_carrying_cost' => $heavyLoadCarryingCost,
+                'total_price' => $totalPrice,
+                'home_delivery' => $homeDelivery,
+                'pick_up_address' => $pickUpAddress,
+                'agency_delivery' => $homeDelivery == '1' ? '0' : '1',
+                'status_for_human' => 'HAZIRLANIYOR',
+                // 'transporter' => 'CK',
+                'transporter' => $transporter,
+                'system' => 'CKG-Sis',
+            ]);
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json(['status' => -1, 'exception' => $e->getMessage(), 'message' => 'Kargo kaydı esnasında hata oluştu']);
+        }
 
         # Get Movement Text
         $info = DB::table('cargo_movement_contents')
@@ -683,31 +691,36 @@ class CreateCargoAction
 
 
         if ($CreateCargo) {
+            try{
 
-            ## Insert Add Services START
-            foreach ($addServices as $key => $value) {
-                $serviceID = substr($key, 12, strlen($key));
-                $service = AdditionalServices::find($serviceID);
-                $insert = CargoAddServices::create([
-                    'cargo_tracking_no' => $ctn,
-                    'add_service_id' => $serviceID,
-                    'service_name' => $service->service_name,
-                    'price' => $service->price
-                ]);
-
-                if (!$insert) {
-                    activity()
-                        ->performedOn($CreateCargo)
-                        ->inLog('Critical Error')
-                        ->withProperties(['ktno' => $ctn, 'user' => Auth::id(), 'service-id' => $serviceID])
-                        ->log('Ek servis eklenirken hata oluştu!');
-
-                    return response()
-                        ->json(['status' => -1, 'message' => 'Bir hata oluştu, sistem destek ile iletişime geçin! [CargoAddService]'], 200);
-                    break;
+                ## Insert Add Services START
+                foreach ($addServices as $key => $value) {
+                    $serviceID = substr($key, 12, strlen($key));
+                    $service = AdditionalServices::find($serviceID);
+                    $insert = CargoAddServices::create([
+                        'cargo_tracking_no' => $ctn,
+                        'add_service_id' => $serviceID,
+                        'service_name' => $service->service_name,
+                        'price' => $service->price
+                    ]);
+    
+                    if (!$insert) {
+                        activity()
+                            ->performedOn($CreateCargo)
+                            ->inLog('Critical Error')
+                            ->withProperties(['ktno' => $ctn, 'user' => Auth::id(), 'service-id' => $serviceID])
+                            ->log('Ek servis eklenirken hata oluştu!');
+    
+                        return response()
+                            ->json(['status' => -1, 'message' => 'Bir hata oluştu, sistem destek ile iletişime geçin! [CargoAddService]'], 200);
+                        break;
+                    }
                 }
+                # Insert Add Services END
+            } catch(Exception $e){
+                DB::rollBack();
+                return response()->json(['status' => -1, 'exception' => $e->getMessage(), 'message' => 'Ek işlem esnasında hata oluştu']);
             }
-            # Insert Add Services END
 
 
             $group_id = uniqid('n_');
@@ -751,24 +764,29 @@ class CreateCargoAction
                     $desi = ($en * $boy * $yukseklik) / 3000;
                     $desi = $agirlik > $desi ? $agirlik : $desi;
                     $desi = round($desi, 2);
+                    try{
+                        $insert = CargoPartDetails::create([
+                            'cargo_id' => $CreateCargo->id,
+                            'tracking_no' => $ctn,
+                            'part_no' => $reversePartQuantity,
+                            'width' => $en,
+                            'size' => $boy,
+                            'height' => $yukseklik,
+                            'weight' => $agirlik,
+                            'desi' => $desi,
+                            'cubic_meter_volume' => $hacim
+                        ]);
+    
+                        # INSERT Movements START
+                        $insert = InsertCargoMovement($ctn, $CreateCargo->id, Auth::id(), $reversePartQuantity, $infoText, $info->status, $group_id);
+                        #inert debit
+                        $insert = InsertDebits($ctn, $CreateCargo->id, $reversePartQuantity, Auth::id(), $insert->id);
+                        # INSERT Movements END
 
-                    $insert = CargoPartDetails::create([
-                        'cargo_id' => $CreateCargo->id,
-                        'tracking_no' => $ctn,
-                        'part_no' => $reversePartQuantity,
-                        'width' => $en,
-                        'size' => $boy,
-                        'height' => $yukseklik,
-                        'weight' => $agirlik,
-                        'desi' => $desi,
-                        'cubic_meter_volume' => $hacim
-                    ]);
-
-                    # INSERT Movements START
-                    $insert = InsertCargoMovement($ctn, $CreateCargo->id, Auth::id(), $reversePartQuantity, $infoText, $info->status, $group_id);
-                    #inert debit
-                    $insert = InsertDebits($ctn, $CreateCargo->id, $reversePartQuantity, Auth::id(), $insert->id);
-                    # INSERT Movements END
+                    } catch(Exception $e){
+                        DB::rollBack();
+                        return response()->json(['status' => -1, 'exception' => $e->getMessage(), 'message' => 'Kargo parça ekleme esnasında hata oluştu']);
+                    }
 
                     if ($insert)
                         $reversePartQuantity--;
@@ -804,23 +822,30 @@ class CreateCargoAction
                 }
             } else {
 
-                $insert = CargoPartDetails::create([
-                    'cargo_id' => $CreateCargo->id,
-                    'tracking_no' => $ctn,
-                    'part_no' => 1,
-                    'width' => 0,
-                    'size' => 0,
-                    'height' => 0,
-                    'weight' => 0,
-                    'desi' => 0,
-                    'cubic_meter_volume' => 0
-                ]);
+                try{
 
-                # INSERT Movements START
-                $insert = InsertCargoMovement($ctn, $CreateCargo->id, Auth::id(), 1, $infoText, $info->status, $group_id);
-                #inert debit
-                $insert = InsertDebits($ctn, $CreateCargo->id, 1, Auth::id(), $insert->id);
-                # INSERT Movements END
+                    $insert = CargoPartDetails::create([
+                        'cargo_id' => $CreateCargo->id,
+                        'tracking_no' => $ctn,
+                        'part_no' => 1,
+                        'width' => 0,
+                        'size' => 0,
+                        'height' => 0,
+                        'weight' => 0,
+                        'desi' => 0,
+                        'cubic_meter_volume' => 0
+                    ]);
+    
+                    # INSERT Movements START
+                    $insert = InsertCargoMovement($ctn, $CreateCargo->id, Auth::id(), 1, $infoText, $info->status, $group_id);
+                    #inert debit
+                    $insert = InsertDebits($ctn, $CreateCargo->id, 1, Auth::id(), $insert->id);
+                    # INSERT Movements END
+                } catch(Exception $e){
+                    DB::rollBack();
+                    return response()->json(['status' => -1, 'exception' => $e->getMessage(), 'message' => 'Kargolar ve Ek parçalar esnasında hata oluştu']);
+                }
+
             }
             ## INSERT Cargo Parts END
 
@@ -861,7 +886,7 @@ class CreateCargoAction
 
         }
         # end create new Cargo
-
+        DB::commit();
 
         return $request->all();
     }
