@@ -291,7 +291,7 @@ function cargoInfo(user) {
                     $('#tbodyCargoMovements').append(
                         '<tr>' +
                         '<td>' + val['status'] + '</td>' +
-                        '<td>' + val['info'] + '</td>' +
+                        '<td style="white-space: initial;">' + val['info'] + '</td>' +
                         '<td class="' + result + ' font-weight-bold">' + val['number_of_pieces'] + '/' + val['current_pieces'] + '</td>' +
                         '<td>' + val['created_at'] + '</td>' +
                         '<td><button group_id="' + val['group_id'] + '" class="btn btn-primary btn-xs btnMovementDetail">Detay</button></td>' +
