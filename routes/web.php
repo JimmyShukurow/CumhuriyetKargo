@@ -95,6 +95,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
         Route::group(['prefix' => 'Agency', 'as' => 'agency.'], function () {
             Route::get('/', [AgencySafeController::class, 'index'])->name('index');
+            Route::get('AjaxTransactions/{val?}', [AgencySafeController::class, 'ajaxTransactions']);
         });
 
     });

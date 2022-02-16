@@ -696,7 +696,7 @@ function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $
         'info' => $info,
         'status' => $status,
         'group_id' => $group_id,
-        'importance' => $importance
+        'importancex' => $importance
     ]);
 
     if ($insert)
