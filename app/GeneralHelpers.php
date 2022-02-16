@@ -687,7 +687,7 @@ function FileUrlGenerator($file)
 
 }
 
-function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $group_id)
+function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $group_id, $importance = 1)
 {
     try{
 
