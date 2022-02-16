@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class GetCollectionsAction
+class GetPendingCollectionsAction
 {
     use AsAction;
 
@@ -35,16 +35,12 @@ class GetCollectionsAction
             ->editColumn('sender_current_code', function ($key) {
                 return '<b class="text-dark">' . CurrentCodeDesign($key->sender_current_code) . '</b>';
             })
-            ->editColumn('invoice_date', function ($key) {
+            ->editColumn('created_at', function ($key) {
                 return date('d/m/Y', strtotime($key->created_at));
-            })
-            ->editColumn('collection_type_entered', function ($key) {
-                return $key->collection_type_entered == 'NAKİT' ? '<b class="text-success">NAKİT</b>' : '<b class="text-primary">POS</b>';
             })
             ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
             ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
-            ->rawColumns(['tracking_no', 'collection_type_entered', 'sender_current_code', 'invoice_number', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->rawColumns(['tracking_no', 'sender_current_code', 'invoice_number', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
-
 }

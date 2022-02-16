@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Safe;
 
+use App\Actions\CKGSis\Safe\AgencySafe\GetPendingCollectionsAction;
 use App\Actions\CKGSis\Safe\AgencySafe\GetCollectionsAction;
 use App\Http\Controllers\Controller;
 use App\Models\Cities;
@@ -22,6 +23,10 @@ class AgencySafeController extends Controller
         switch ($val) {
             case 'GetCollections':
                 return GetCollectionsAction::run($request);
+                break;
+
+            case 'GetPendingCollections':
+                return GetPendingCollectionsAction::run($request);
                 break;
 
             default:

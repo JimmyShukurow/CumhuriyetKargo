@@ -10,7 +10,7 @@ class AddCollectionEnteredAndCollectionTypeEnteredToCargoesTable extends Migrati
     public function up()
     {
         Schema::table('cargoes', function (Blueprint $table) {
-            $table->string('collection_entered')->default('HAYIR')->after('delivery_date');
+            $table->string('collection_entered')->default('EVET')->after('delivery_date');
             $table->string('collection_type_entered')->nullable()->after('collection_entered');
         });
     }

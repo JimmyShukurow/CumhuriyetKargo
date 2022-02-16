@@ -49,7 +49,7 @@
                            class="mr-1 ml-1 btn-pill btn-wide border-0 btn-transition btn btn-outline-danger">Bekleyen
                             Tahsilatlar</a>
                         <a data-toggle="tab" href="#tab-eg4-2"
-                           class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Tab 3</a>
+                           class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Kasa</a>
                     </div>
                 </div>
             </div>

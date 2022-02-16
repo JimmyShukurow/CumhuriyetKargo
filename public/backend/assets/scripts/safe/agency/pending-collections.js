@@ -1,19 +1,12 @@
 $(document).ready(function () {
-    $('#agency').select2();
-    $('#creatorUser').select2();
 
     oTable = $('#tablePendingCollections').DataTable({
         pageLength: 10,
-        columnDefs: [{
-            orderable: false,
-            className: 'select-checkbox',
-            targets: 1
-        }],
         lengthMenu: [
             [10, 25, 50, 100, 250, 500, -1],
             ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
         ],
-        order: [23, 'desc'],
+        order: [6, 'desc'],
         language: {
             "sDecimal": ",",
             "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
@@ -48,24 +41,9 @@ $(document).ready(function () {
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
         select: {
             style: 'multi',
-            selector: 'td:nth-child(2)'
+            selector: 'td:nth-child(0)'
         },
         buttons: [
-            {
-                extend: 'selectAll',
-                text: 'Tümünü Seç'
-            },
-            {
-                extend: 'selectNone',
-                text: 'Tümünü Bırak'
-            },
-            {
-                extend: 'excelHtml5',
-                exportOptions: {
-                    columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
-                },
-                title: "CK - Kesilen Kargolar"
-            },
             {
                 text: 'Yenile',
                 action: function (e, dt, node, config) {
@@ -75,50 +53,16 @@ $(document).ready(function () {
                     id: 'datatableRefreshBtn'
                 }
             },
-            {
-                extend: 'excel',
-                text: 'Ex Akt',
-                exportOptions: {
-                    modifier: {
-                        selected: true
-                    },
-                    columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
-                },
-                attr: {
-                    id: 'selectedExcelBtn'
-                }
-            },
-            {
-                extend: 'colvis',
-                text: 'Sütun Görünüm'
-            },
         ],
         responsive: true,
         processing: true,
         serverSide: true,
         ajax: {
-            url: '/MainCargo/GetCargoes',
+            url: '/Safe/Agency/AjaxTransactions/GetPendingCollections',
             data: function (d) {
-                d.startDate = $('#startDate').val();
-                d.finishDate = $('#finishDate').val();
-                d.record = $('#record').val();
-                d.paymentType = $('#paymentType').val();
-                d.collectible = $('#collectible').val();
-                d.trackingNo = $('#trackingNo').val();
-                d.cargoType = $('#cargoType').val();
-                d.status = $('#status').val();
-                d.statusForHuman = $('#statusForHuman').val();
-                d.transporter = $('#transporter').val();
-                d.system = $('#system').val();
-                d.invoice_number = $('#invoice_number').val();
-                d.creatorUser = $('#creatorUser').val();
-                d.cargoContent = $('#cargoContent').val();
-                d.receiverCode = $('#receiverCode').val();
-                d.receiverName = $('#receiverName').val();
-                d.receiverCity = $('#receiverCity').val();
-                d.currentCode = $('#currentCode').val();
-                d.currentName = $('#currentName').val();
-                d.currentCity = $('#currentCity').val();
+                d.firstDate = $('#pendingCollectionFirstDate').val()
+                d.lastDate = $('#pendingCollectionLastDate').val()
+                d.dateFilter = $('#pendingCollectionDateFilter').prop('checked')
             },
             error: function (xhr, error, code) {
                 if (code == "Too Many Requests") {
@@ -134,31 +78,14 @@ $(document).ready(function () {
             }
         },
         columns: [
-            {data: 'free_btn', name: 'free_btn'},
-            {data: 'check', name: 'check'},
-            {data: 'invoice_number', name: 'invoice_number'},
-            {data: 'tracking_no', name: 'tracking_no'},
-            {data: 'sender_name', name: 'sender_name'},
-            {data: 'sender_city', name: 'sender_city'},
-            {data: 'receiver_name', name: 'receiver_name'},
-            {data: 'receiver_city', name: 'receiver_city'},
-            {data: 'receiver_district', name: 'receiver_district'},
-            {data: 'cargo_type', name: 'cargo_type'},
-            {data: 'payment_type', name: 'payment_type'},
-            {data: 'total_price', name: 'total_price'},
-            {data: 'number_of_pieces', name: 'number_of_pieces'},
-            {data: 'kg', name: 'kg'},
-            {data: 'cubic_meter_volume', name: 'cubic_meter_volume'},
-            {data: 'collectible', name: 'collectible'},
-            {data: 'collectible', name: 'collectible'},
-            {data: 'collection_fee', name: 'collection_fee'},
-            {data: 'status', name: 'status'},
-            {data: 'status_for_human', name: 'status_for_human'},
-            {data: 'transporter', name: 'transporter'},
-            {data: 'system', name: 'system'},
-            {data: 'name_surname', name: 'name_surname'},
             {data: 'created_at', name: 'created_at'},
-            {data: 'edit', name: 'edit'},
+            {data: 'invoice_number', name: 'invoice_number'},
+            {data: 'total_price', name: 'total_price'},
+            {data: 'sender_name', name: 'sender_name'},
+            {data: 'sender_current_code', name: 'sender_current_code'},
+            {data: 'receiver_name', name: 'receiver_name'},
+            {data: 'invoice_number', name: 'invoice_number'},
+            {data: 'invoice_number', name: 'invoice_number'},
         ],
         // scrollY: '450px',
         // scrollX: false,
