@@ -13,6 +13,7 @@ class GetCollectionsAction
 
     public function handle($request)
     {
+
         $firstDate = new Carbon($request->firstDate);
         $lastDate = new Carbon($request->lastDate);
         $dateFilter = $request->dateFilter;
