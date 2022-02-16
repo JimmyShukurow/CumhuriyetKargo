@@ -13,7 +13,7 @@ class RegisterMovementAction
 {
     use AsAction;
 
-    public function handle($ctn, $bag, $cargoID, $authID, $reversePartQuantity, $groupID, $movement_key, $deleted_from = null)
+    public function handle($ctn, $bag, $cargoID, $authID, $reversePartQuantity, $groupID, $movement_key, $importance, $deleted_from = null )
     {
         # Get Movement Text
         $info = DB::table('cargo_movement_contents')
@@ -40,7 +40,7 @@ class RegisterMovementAction
         elseif( Auth::user()->user_type == 'Aktarma' && Auth::user()->tc_code == $cargo->arrival_tc_code )                                                      $variable = 'VARIŞ TRANSFER MERKEZİNDE';
         elseif( Auth::user()->user_type == 'Aktarma' && Auth::user()->tc_code != $cargo->arrival_tc_code && Auth::user()->tc_code != $cargo->arrival_tc_code)   $variable = 'TRANSFER MERKEZİNDE';
 
-        InsertCargoMovement($ctn, $cargoID, $authID, $reversePartQuantity, $infoText, $variable, $groupID );
+        InsertCargoMovement($ctn, $cargoID, $authID, $reversePartQuantity, $infoText, $variable, $groupID, $importance);
 
     }
 }

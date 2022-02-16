@@ -70,7 +70,7 @@ class UnLoadCargoToCargoBagAction
                         ->update(['is_inside' => '0', 'unloader_user_id' => Auth::user()->id, 'unloaded_time' => now()]);
 
                     if ($update){
-                        RegisterMovementAction::run($ctn[0],$bag, $cargo->id, Auth::id(),1, Str::random(10), 'unload_cargo_bag');
+                        RegisterMovementAction::run($ctn[0],$bag, $cargo->id, Auth::id(),1, Str::random(10), 'unload_cargo_bag', 2);
                         return ['status' => 1];
                     }
                     else

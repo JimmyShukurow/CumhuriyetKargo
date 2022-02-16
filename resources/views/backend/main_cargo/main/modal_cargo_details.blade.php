@@ -403,10 +403,29 @@
                                                             </div>
                                                         </div>
                                                         <div class="tab-pane" id="tab-eg5-1" role="tabpanel">
-                                                            <p>Like Aldus PageMaker including versions of Lorem. It has
-                                                                survived not only five centuries, but also the leap into
-                                                                electronic typesetting, remaining
-                                                                essentially unchanged. </p>
+                                                            <div
+                                                            style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
+                                                            class="cont">
+                                                            <table style="white-space: nowrap" id="TableEmployees"
+                                                                   class="Table30Padding table table-bordered table-striped mt-3">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>Durum</th>
+                                                                    <th>Bilgi</th>
+                                                                    <th>Parça</th>
+                                                                    <th>İşlem Zamanı</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="tbodyCargoMovementsSecondary">
+                                                                <tr>
+                                                                    <td colspan="4" class="text-center">Burda hiç
+                                                                        veri yok.
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                         </div>
                                                     </div>
                                                 </div>

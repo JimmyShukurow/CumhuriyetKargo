@@ -44,6 +44,15 @@ class GetCargoInfoAction
             ->groupBy('group_id')
             ->join('cargoes', 'cargoes.tracking_no', '=', 'cargo_movements.ctn')
             ->where('ctn', '=', str_replace(' ', '', $data['cargo']->tracking_no))
+            ->where('importance', '=', 1)
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        $data['movementsSecondary'] = DB::table('cargo_movements')
+            ->selectRaw('cargo_movements.*, number_of_pieces,  cargo_movements.group_id as testmebitch, (SELECT Count(*) FROM cargo_movements where cargo_movements.group_id = testmebitch) as current_pieces')
+            ->groupBy('group_id')
+            ->join('cargoes', 'cargoes.tracking_no', '=', 'cargo_movements.ctn')
+            ->where('ctn', '=', str_replace(' ', '', $data['cargo']->tracking_no))
             ->orderBy('created_at', 'asc')
             ->get();
 
