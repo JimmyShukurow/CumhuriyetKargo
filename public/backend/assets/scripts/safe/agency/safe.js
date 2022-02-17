@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    oTable = $('#tableCollections').DataTable({
+    oTable = $('#tableSafe').DataTable({
         pageLength: 10,
         lengthMenu: [
             [10, 25, 50, 100, 250, 500, -1],
@@ -62,7 +62,8 @@ $(document).ready(function () {
             data: function (d) {
                 d.firstDate = $('#collectionFirstDate').val()
                 d.lastDate = $('#collectionLastDate').val()
-                d.dateFilter = $('#collectionDateFilter').prop('checked')
+                // d.dateFilter = $('#collectionDateFilter').prop('checked')
+                d.dateFilter = 'true'
             },
             error: function (xhr, error, code) {
                 if (code == "Too Many Requests") {
@@ -74,7 +75,6 @@ $(document).ready(function () {
 
                 if ($('#datatableRefreshBtn').prop('disabled') == true)
                     $('#datatableRefreshBtn').prop('disabled', false);
-
             }
         },
         columns: [
@@ -88,7 +88,7 @@ $(document).ready(function () {
             {data: 'created_at', name: 'created_at'},
             {data: 'invoice_number', name: 'invoice_number'},
         ],
-        scrollY: '450px',
+        // scrollY: '450px',
         // scrollX: false,
     });
 

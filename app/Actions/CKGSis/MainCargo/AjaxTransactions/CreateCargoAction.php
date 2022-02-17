@@ -600,9 +600,8 @@ class CreateCargoAction
             $arrivalTC->id = -1;
         }
 
-        DB::beginTransaction();
+//        DB::beginTransaction();
         try {
-
             # start create new Cargo
             $CreateCargo = Cargoes::create([
                 'receiver_id' => $receiver->id,
