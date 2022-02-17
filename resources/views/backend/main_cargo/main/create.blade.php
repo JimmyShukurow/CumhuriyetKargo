@@ -413,7 +413,7 @@
                             </div>
                         </div>
 
-                        <div class="form-row">
+                        {{-- <div class="form-row">
                             <div class="col-md-6">
                                 <div class="position-relative">
                                     <label for="aliciIl">Alıcı İl:</label>
@@ -496,20 +496,17 @@
                                            class="form-control form-control-sm">
                                 </div>
                             </div>
-                        </div>
-
+                        </div> --}}
                         <div class="form-row">
                             <div class="col-md-12">
                                 <div class="position-relative">
-                                    <label for="aliciAdresNotu">Adres Notu:</label>
+                                    <label for="aliciAdresNotu">Alıcı Adres:</label>
                                 </div>
                                 <div class="input-group mb-1">
-                                    <textarea name="" id="aliciAdresNotu" cols="30" rows="3"
-                                              class="form-control"></textarea>
+                                    <textarea name="" id="aliciAdresNotu" cols="30" rows="3" class="form-control form-control-sm"></textarea>
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-row">
                             <div class="col-md-12">
                                 <div class="position-relative">
@@ -519,6 +516,45 @@
                                     <input type="text" id="musteriKodu"
                                            type="text"
                                            class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-row">
+                            <label for="selectCollectionType" class="col-sm-5 col-form-label">Tahsilat Türü:</label>
+                                <div id="divCargoType" class="col-sm-7 pt-2 pb-2">
+                                    <select name="selectCollectionType" id="selectCollectionType" class="form-control form-control-sm">
+                                            <option value="nakit">Nakit</option>
+                                            <option value="pos">Pos</option>
+                                    </select>
+                                </div>
+                        </div>
+                        <div class="form-row" >
+                            <div class="col-md-6">
+                                <div class="position-relative ">
+                                    <label for="TahsilatOnaykodu">Onay Kodu:</label>
+                                </div>
+                                <div class="input-group mb-1">
+                                    <input type="text"  id="TahsilatOnaykodu" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="position-relative ">
+                                    <label for="KartSahibi">Kart Sahibi:</label>
+                                </div>
+                                <div class="input-group mb-1">
+                                    <input type="text"  id="KartSahibi" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="position-relative">
+                                    <label for="TahsilatNotu">Açıklama:</label>
+                                </div>
+                                <div class="input-group mb-1">
+                                    <textarea name="" id="TahsilatNotu" cols="30" rows="3" class="form-control form-control-sm"></textarea>
                                 </div>
                             </div>
                         </div>

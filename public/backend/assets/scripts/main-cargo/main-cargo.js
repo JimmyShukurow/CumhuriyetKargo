@@ -529,6 +529,21 @@ function getReceiverInfo(currentCode, tryExist = false) {
         $('#aliciDaireNo').val(response.door_no);
         $('#aliciKatNo').val(response.floor);
         $('#aliciAdresNotu').val(response.address_note);
+        
+        let city = response.city + "/",
+            district = response.district + " ",
+            neighborhood = response.neighborhood + " ",
+            street = response.street != '' && response.street != null ? response.street + " CAD. " : "",
+            street2 = response.street2 != '' && response.street2 != null ? response.street2 + " SK. " : "",
+            buildingNo = "NO:" + response.building_no + " ",
+            door = "D:" + response.door_no + " ",
+            floor = "KAT:" + response.floor + " ",
+            addressNote = response.address_note != '' ? "(" + response.address_note + ")" : '';
+
+        let fullAddress = city + district + neighborhood + street + street2 + buildingNo + floor + door + addressNote;
+
+        $('#aliciAdresNotu').val(fullAddress);
+
         getDistance(CurrentCity, response.city);
 
         getPriceForCustomers();
@@ -980,6 +995,18 @@ $('#selectCargoType').change(function () {
     }
 
 
+});
+
+$('#selectCollectionType').on('change', function(){
+    if($(this).val() == 'pos'){
+        $('#TahsilatOnaykodu').val('').attr('disabled', 'disabled');
+        $('#KartSahibi').val('').attr('disabled', 'disabled');
+        $('#TahsilatNotu').val('').attr('disabled', 'disabled');
+    } else {
+        $('#TahsilatOnaykodu').removeAttr('disabled');
+        $('#KartSahibi').removeAttr('disabled');
+        $('#TahsilatNotu').removeAttr('disabled');
+    }
 });
 
 $('#divPaymentType').click(function () {
@@ -1707,8 +1734,14 @@ function createCargo() {
             agirYukTasimaBedeli: $('#heavyLoadCarryingCost').text(),
             genelToplam: $('#totalPrice').text(),
             totalHacim: $('#hPartsTotalM3').text(),
-            kargoIcerigi: $('#cargoIcerigi').val(),
-            kargoIcerigiAciklama: $('#explantion').val()
+            // kargoIcerigi: $('#cargoIcerigi').val(),
+            kargoIcerigiAciklama: $('#explantion').val(),
+            paymentDetails: {
+                competetionType: $('#selectCollectionType').val(),
+                confirmationCode: $('#TahsilatOnaykodu').val(),
+                cardOwner: $('#KartSahibi').val(),
+                competetionNote: $('#TahsilatNotu').val(),
+            }
         }
     }).done(function (response) {
 

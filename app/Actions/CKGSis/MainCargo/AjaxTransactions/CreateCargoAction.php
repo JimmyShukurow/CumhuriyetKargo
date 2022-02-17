@@ -600,7 +600,7 @@ class CreateCargoAction
             $arrivalTC->id = -1;
         }
 
-        DB::beginTransaction();
+        // DB::beginTransaction();
         try {
 
             # start create new Cargo
@@ -674,9 +674,9 @@ class CreateCargoAction
                 'transporter' => $transporter,
                 'system' => 'CKG-Sis',
             ]);
-        }catch(Exception $e){
-            DB::rollBack();
-            return response()->json(['status' => -1, 'exception' => $e->getMessage(), 'message' => 'Kargo kaydı esnasında hata oluştu']);
+        } catch (Exception $e) {
+            // DB::rollBack();
+            return response()->json(['status' => -1, 'message' => 'Kargo kaydı esnasında hata oluştu']);
         }
 
         # Get Movement Text
@@ -717,9 +717,9 @@ class CreateCargoAction
                     }
                 }
                 # Insert Add Services END
-            } catch(Exception $e){
-                DB::rollBack();
-                return response()->json(['status' => -1, 'exception' => $e->getMessage(), 'message' => 'Ek işlem esnasında hata oluştu']);
+            } catch (Exception $e) {
+                // DB::rollBack();
+                return response()->json(['status' => -1, 'message' => 'Ek hizmetlerin kaydı esnasında hata oluştu']);
             }
 
 
@@ -783,9 +783,9 @@ class CreateCargoAction
                         $insert = InsertDebits($ctn, $CreateCargo->id, $reversePartQuantity, Auth::id(), $insert->id);
                         # INSERT Movements END
 
-                    } catch(Exception $e){
-                        DB::rollBack();
-                        return response()->json(['status' => -1, 'exception' => $e->getMessage(), 'message' => 'Kargo parça ekleme esnasında hata oluştu']);
+                    } catch (Exception $e) {
+                        // DB::rollBack();
+                        return response()->json(['status' => -1, 'message' => 'Kargo parça ekleme esnasında hata oluştu']);
                     }
 
                     if ($insert)
@@ -841,9 +841,9 @@ class CreateCargoAction
                     #inert debit
                     $insert = InsertDebits($ctn, $CreateCargo->id, 1, Auth::id(), $insert->id);
                     # INSERT Movements END
-                } catch(Exception $e){
-                    DB::rollBack();
-                    return response()->json(['status' => -1, 'exception' => $e->getMessage(), 'message' => 'Kargolar ve Ek parçalar esnasında hata oluştu']);
+                } catch (Exception $e) {
+                    // DB::rollBack();
+                    return response()->json(['status' => -1, 'message' => 'Parçaların kaydı esnasında hata oluştu!']);
                 }
 
             }
@@ -884,6 +884,9 @@ class CreateCargoAction
                 return response()
                     ->json(['status' => -1, 'message' => 'Bir hata oluştu, sistem destek ile iletişime geçin!'], 200);
 
+        }else{
+            // DB::rollBack();
+            return response()->json(['status' => -1, 'message' => 'Hata ya!']);
         }
         # end create new Cargo
         DB::commit();
