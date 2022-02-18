@@ -5,6 +5,7 @@ namespace App\Actions\CKGSis\MainCargo\AjaxTransactions;
 use App\Models\AdditionalServices;
 use App\Models\Agencies;
 use App\Models\CargoAddServices;
+use App\Models\CargoCollection;
 use App\Models\Cargoes;
 use App\Models\CargoPartDetails;
 use App\Models\CurrentPrices;
@@ -50,15 +51,13 @@ class CreateCargoAction
             'agirYukTasimaBedeli' => 'required',
             'genelToplam' => 'required',
             'totalHacim' => 'required',
+            'collectionDetails' => 'required'
         ];
 
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails())
             return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
-
-        $SecondCargoType = $request->cargoType;
-
 
         ## YK-BAD
         if ($request->odemeTipi == 'Alıcı Ödemeli')
@@ -602,7 +601,6 @@ class CreateCargoAction
 
         DB::beginTransaction();
         try {
-
             # start create new Cargo
             $CreateCargo = Cargoes::create([
                 'receiver_id' => $receiver->id,
@@ -722,6 +720,36 @@ class CreateCargoAction
                 return response()->json(['status' => -1, 'message' => 'Ek hizmetlerin kaydı esnasında hata oluştu']);
             }
 
+            try {
+
+                if ($request->odemeTipi == 'Gönderici Ödemeli') {
+                    $collectionPaymentType = $request->collectionDetails['collectionType'];
+                    $collectionEntered = 'EVET';
+                    if ($collectionPaymentType == 'NAKİT')
+                        $enteredUserId = Auth::id();
+                    else
+                        $enteredUserId = null;
+                } else {
+                    $collectionPaymentType = null;
+                    $collectionEntered = 'HAYIR';
+                    $enteredUserId = null;
+                }
+
+                $createCargoCollectionDetails = CargoCollection::create([
+                    'cargo_id' => $CreateCargo->id,
+                    'collection_entered' => $collectionEntered,
+                    'collection_entered_user_id' => $enteredUserId,
+                    'collection_type_entered' => $collectionPaymentType,
+                    'confirm_code' => $request->collectionDetails['collectionConfirmationCode'],
+                    'card_owner_name' => $request->collectionDetails['collectionCardOwner'],
+                    'description' => $request->collectionDetails['collectionDescription']
+                ]);
+
+            } catch (Exception $e) {
+                DB::rollBack();
+                return response()->json(['status' => -1, 'exception' => $e->getMessage(), 'message' => 'Tahsilat detay kaydı esnasında hata oluştu']);
+            }
+
 
             $group_id = uniqid('n_');
             ## INSERT Cargo Parts START
@@ -824,7 +852,6 @@ class CreateCargoAction
             } else {
 
                 try {
-
                     $insert = CargoPartDetails::create([
                         'cargo_id' => $CreateCargo->id,
                         'tracking_no' => $ctn,
@@ -875,15 +902,16 @@ class CreateCargoAction
                     SendSMS($sms, CharacterCleaner($receiver->gsm), 'Yeni Kargo', 'CUMHURIYETK', $ctn);
                 }
 
+                DB::commit();
                 return response()
                     ->json(['status' => 1, 'message' => 'İşlem başarılı, Kargo oluşturuldu!'], 200);
-            } else
+            } else {
+                DB::rollBack();
                 return response()
                     ->json(['status' => -1, 'message' => 'Bir hata oluştu, sistem destek ile iletişime geçin!'], 200);
-
+            }
         }
         # end create new Cargo
-        DB::commit();
 
         return $request->all();
     }

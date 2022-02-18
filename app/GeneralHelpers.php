@@ -689,18 +689,17 @@ function FileUrlGenerator($file)
 
 function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $group_id, $importance = 1)
 {
-    $insert = CargoMovements::create([
-        'ctn' => $ctn,
-        'cargo_id' => $cargoID,
-        'user_id' => $userID,
-        'part_no' => $partNo,
-        'info' => $info,
-        'status' => $status,
-        'group_id' => $group_id,
-        'importance' => $importance
-    ]);
-
-    if ($insert)
+    try{
+        $insert = CargoMovements::create([
+            'ctn' => $ctn,
+            'cargo_id' => $cargoID,
+            'user_id' => $userID,
+            'part_no' => $partNo,
+            'info' => $info,
+            'status' => $status,
+            'group_id' => $group_id,
+            'importance' => $importance
+        ]);
         return $insert;
     } catch(Exception $e){
         return false;
