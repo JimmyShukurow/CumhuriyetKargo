@@ -24,8 +24,7 @@
                         </i>
                     </div>
                     <div>Acente Kasa Modülü
-                        <div class="page-title-subheading">Bu sayfa üzerinden Cumhuriyet Kargo'nun taşıdığı tüm
-                            kargoları sorgulayabilirsiniz (Tek seferde en fazla 30 günlük kayıt görüntüleyebilirsiniz).
+                        <div class="page-title-subheading">Bu modül üzerinden acentenizin ile ilgili kasa işlemlerini yapabilirsiniz.
                         </div>
                     </div>
                 </div>
@@ -62,11 +61,7 @@
                         @include('backend.safe.agency.tabs.pending_collections')
                     </div>
                     <div class="tab-pane" id="tab-eg4-2" role="tabpanel">
-                        <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                            printer took a galley of type and scrambled it to make a
-                            type specimen book. It has
-                            survived not only five centuries, but also the leap into electronic typesetting, remaining
-                            essentially unchanged. </p>
+                        @include('backend.safe.agency.tabs.safe')
                     </div>
                 </div>
             </div>

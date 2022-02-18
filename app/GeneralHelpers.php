@@ -700,8 +700,10 @@ function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $
             'group_id' => $group_id,
             'importance' => $importance
         ]);
+
         return $insert;
-    } catch(Exception $e){
+
+    } catch (Exception $e) {
         return false;
     }
 
@@ -712,7 +714,7 @@ function InsertDebits($ctn, $cargoID, $partNo, $userID, $movementID)
     try {
         $agency = Agencies::find(Auth::user()->agency_code);
 
-         Debits::create([
+        Debits::create([
             'cargo_id' => $cargoID,
             'ctn' => $ctn,
             'part_no' => $partNo,
@@ -722,7 +724,7 @@ function InsertDebits($ctn, $cargoID, $partNo, $userID, $movementID)
         ]);
 
         return true;
-    } catch(Exception $e){
+    } catch (Exception $e) {
         return false;
     }
 
