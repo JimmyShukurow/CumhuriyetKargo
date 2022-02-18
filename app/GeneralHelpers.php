@@ -689,7 +689,7 @@ function FileUrlGenerator($file)
 
 function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $group_id, $importance = 1)
 {
-    try {
+    try{
         $insert = CargoMovements::create([
             'ctn' => $ctn,
             'cargo_id' => $cargoID,

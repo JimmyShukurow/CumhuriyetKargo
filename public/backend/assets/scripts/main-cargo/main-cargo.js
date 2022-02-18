@@ -528,7 +528,22 @@ function getReceiverInfo(currentCode, tryExist = false) {
         $('#aliciBinaNo').val(response.building_no);
         $('#aliciDaireNo').val(response.door_no);
         $('#aliciKatNo').val(response.floor);
-        $('#aliciAdresNotu').val(response.address_note);
+        $('#aliciAdres').val(response.address_note);
+
+        let city = response.city + "/",
+            district = response.district + " ",
+            neighborhood = response.neighborhood + " ",
+            street = response.street != '' && response.street != null ? response.street + " CAD. " : "",
+            street2 = response.street2 != '' && response.street2 != null ? response.street2 + " SK. " : "",
+            buildingNo = "NO:" + response.building_no + " ",
+            door = "D:" + response.door_no + " ",
+            floor = "KAT:" + response.floor + " ",
+            addressNote = response.address_note != '' ? "(" + response.address_note + ")" : '';
+
+        let fullAddress = city + district + neighborhood + street + street2 + buildingNo + floor + door + addressNote;
+
+        $('#aliciAdres').val(fullAddress);
+
         getDistance(CurrentCity, response.city);
 
         getPriceForCustomers();
@@ -941,7 +956,7 @@ $('#selectCargoType').change(function () {
         return false;
     }
     if ($('#gondericiTCKN').val().trim() == '' || $('#gondericiTelNo').val().trim() == '' || $('#gondericiCariKod').val().trim() == '' ||
-        $('#aliciCariKod').val().trim() == '' || $('#aliciTelNo').val().trim() == '' || $('#aliciIl').val().trim() == '' || $('#aliciIlce').val().trim() == '') {
+        $('#aliciCariKod').val().trim() == '' || $('#aliciTelNo').val().trim() == '' || $('#aliciAdres').val().trim() == '') {
         ToastMessage('error', 'Önce Göndericiyi ve Alıcıyı Seçmelisiniz!', 'Hata!');
         $('#checkCargoType').prop('disabled', true);
     } else {
@@ -982,8 +997,24 @@ $('#selectCargoType').change(function () {
 
 });
 
-$('#divPaymentType').click(function () {
+$('#selectCollectionType').on('change', function () {
+    if ($(this).val() == 'POS') {
 
+        $('#tahsilatOnayKodu').val('').prop('disabled', false);
+        $('#tahsilatKartSahibi').val('').prop('disabled', false);
+
+        $('#tahsilatAciklama').val('Kargo pos tahsilat:')
+
+    } else if ($(this).val() == 'NAKİT') {
+
+        $('#tahsilatOnayKodu').val('').prop('disabled', true);
+        $('#tahsilatKartSahibi').val('').prop('disabled', true);
+
+        $('#tahsilatAciklama').val('Kargo nakit tahsilat:')
+    }
+});
+
+$('.radio-payment-type').click(function () {
     let receiverSelect = $('#aliciAdi').select2('data');
     let currentSelect = $('#gondericiAdi').select2('data');
 
@@ -992,17 +1023,17 @@ $('#divPaymentType').click(function () {
         return false;
     }
     if ($('#gondericiTCKN').val().trim() == '' || $('#gondericiTelNo').val().trim() == '' || $('#gondericiCariKod').val().trim() == '' ||
-        $('#aliciCariKod').val().trim() == '' || $('#aliciTelNo').val().trim() == '' || $('#aliciIl').val().trim() == '' || $('#aliciIlce').val().trim() == '') {
+        $('#aliciCariKod').val().trim() == '' || $('#aliciTelNo').val().trim() == '' || $('#aliciAdres').val().trim() == '') {
         ToastMessage('error', 'Önce Göndericiyi ve Alıcıyı Seçmelisiniz!', 'Hata!');
 
         $('#paymentType').prop('disabled', true);
     } else {
-        $('#paymentType').prop('disabled', false);
 
-        if ($('#paymentType').prop('checked') == false)
-            PaymentType = 'Gönderici Ödemeli';
-        else
-            PaymentType = 'Alıcı Ödemeli';
+        PaymentType = $('input[name="radioPaymentType"]:checked').val();
+        if (PaymentType != 'Alıcı Ödemeli' && PaymentType != 'Gönderici Ödemeli') {
+            ToastMessage('error', 'Lütfen geçerli bir ödeme tipi seçiniz!');
+            return false;
+        }
 
         if ($('#add-service-tahsilatli').prop('checked') == true && PaymentType == 'Alıcı Ödemeli')
             ToastMessage('error', 'Alıcı ödemeli tahsilatlı kargo çıkaramazsınız. Sadece gönderici ödemeli tahsilatlı kargo çıkarılabilir!', 'Hata!');
@@ -1011,7 +1042,25 @@ $('#divPaymentType').click(function () {
         $('#fakeButton').trigger('click');
     }
 
+    if (PaymentType == 'Alıcı Ödemeli') {
+
+        $('#selectCollectionType').attr('disabled', 'disabled');
+        $('#tahsilatOnayKodu').val('').attr('disabled', 'disabled');
+        $('#tahsilatKartSahibi').val('').attr('disabled', 'disabled');
+
+        $('#tahsilatAciklama').val('Kargo ücreti alıcıdan tahsil edilecek:')
+
+    } else if (PaymentType == 'Gönderici Ödemeli') {
+        $('#selectCollectionType').removeAttr('disabled');
+        $('#tahsilatOnayKodu').val('').prop('disabled', true);
+        $('#tahsilatKartSahibi').val('').prop('disabled', true);
+
+        $('#selectCollectionType').val('NAKİT')
+        $('#tahsilatAciklama').val('Kargo nakit tahsilat:')
+    }
+
 });
+
 
 $('#fakeButton').click(delay(function () {
     getPriceForCustomers();
@@ -1640,7 +1689,7 @@ function getFormData($form) {
     var unindexed_array = $form.serializeArray();
     var indexed_array = {};
 
-    let disableElements = $(':disabled');
+    let disableElements = $(':disabled:not(:radio)');
 
     let disableElementsArray = [];
     for (let i = 0; i < disableElements.length; i++) {
@@ -1707,8 +1756,14 @@ function createCargo() {
             agirYukTasimaBedeli: $('#heavyLoadCarryingCost').text(),
             genelToplam: $('#totalPrice').text(),
             totalHacim: $('#hPartsTotalM3').text(),
-            kargoIcerigi: $('#cargoIcerigi').val(),
-            kargoIcerigiAciklama: $('#explantion').val()
+            // kargoIcerigi: $('#cargoIcerigi').val(),
+            kargoIcerigiAciklama: $('#explantion').val(),
+            collectionDetails: {
+                collectionType: $('#selectCollectionType').val(),
+                collectionConfirmationCode: $('#tahsilatOnayKodu').val(),
+                collectionCardOwner: $('#tahsilatKartSahibi').val(),
+                collectionDescription: $('#tahsilatAciklama').val(),
+            }
         }
     }).done(function (response) {
 
@@ -1800,6 +1855,20 @@ $('#btnCargoComplate').click(delay(function () {
         ToastMessage('error', 'Lütfen kargo için desi bilgisi giriniz!', 'Hata');
         goCreate = false;
         return false;
+    }
+
+    if (PaymentType == 'Gönderici Ödemeli') {
+        if ($('#selectCollectionType').val() == 'POS' && $('#tahsilatOnayKodu').val().trim() == '') {
+            ToastMessage('error', 'Lütfen postan çıkan fiş üzerindeki onay kodunu giriniz.', 'Hata');
+            goCreate = false;
+            return false;
+        }
+
+        if ($('#selectCollectionType').val() == 'POS' && $('#tahsilatKartSahibi').val().trim() == '') {
+            ToastMessage('error', 'Lütfen postan çekim yaptığınız kart sahibinin ad soyad bilgisini girin.', 'Hata');
+            goCreate = false;
+            return false;
+        }
     }
 
     $('#btnCargoComplate').prop('disabled', true);
