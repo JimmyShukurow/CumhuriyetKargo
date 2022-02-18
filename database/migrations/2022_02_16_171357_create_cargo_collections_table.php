@@ -12,8 +12,8 @@ class CreateCargoCollectionsTable extends Migration
             $table->id();
             $table->unsignedInteger('cargo_id');
             $table->string('collection_entered')->default('EVET');
-            $table->integer('collection_entered_user_id');
-            $table->string('collection_type_entered');
+            $table->integer('collection_entered_user_id')->nullable();
+            $table->string('collection_type_entered')->nullable();
             $table->string('confirm_code', 80)->nullable();
             $table->string('card_owner_name', 120)->nullable();
             $table->string('description', 500)->nullable();
