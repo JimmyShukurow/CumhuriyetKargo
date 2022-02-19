@@ -1,16 +1,16 @@
-let paymentAppsInit = false;
+let myPaymentInit = false;
 
-$('#tabPaymentApps').click(function () {
-    if (paymentAppsInit == false) {
+$('#tabMyPayments').click(function () {
+    if (myPaymentInit == false) {
 
-        paymentAppsInit = true
-        tablePaymentApp = $('#tablePaymentApps').DataTable({
+        myPaymentInit = true
+        tablePaymentApp = $('#tableMyPayments').DataTable({
             pageLength: 50,
             lengthMenu: [
                 [10, 25, 50, 100, 250, 500, -1],
                 ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
             ],
-            order: [12, 'desc'],
+            order: [8, 'desc'],
             language: {
                 "sDecimal": ",",
                 "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
@@ -62,7 +62,7 @@ $('#tabPaymentApps').click(function () {
             processing: true,
             serverSide: true,
             ajax: {
-                url: '/Safe/Agency/AjaxTransactions/GetPaymentApps',
+                url: '/Safe/Agency/AjaxTransactions/GetMyPayments',
                 data: function (d) {
                     d.firstDate = $('#paymentAppFirstDate').val()
                     d.lastDate = $('#paymentAppLastDate').val()
@@ -90,20 +90,16 @@ $('#tabPaymentApps').click(function () {
                 }
             },
             columns: [
-                {data: 'id', name: 'id'},
                 {data: 'agency_name', name: 'agency_name'},
-                {data: 'name_surname', name: 'name_surname'},
-                {data: 'paid', name: 'paid'},
-                {data: 'confirm_paid', name: 'confirm_paid'},
+                {data: 'row_type', name: 'row_type'},
+                {data: 'app_id', name: 'app_id'},
+                {data: 'payment', name: 'payment'},
                 {data: 'payment_channel', name: 'payment_channel'},
-                {data: 'add_files', name: 'add_files'},
+                {data: 'payment_date', name: 'payment_date'},
+                {data: 'paying_name_surname', name: 'paying_name_surname'},
                 {data: 'description', name: 'description'},
-                {data: 'currency', name: 'currency'},
-                {data: 'confirm', name: 'confirm'},
-                {data: 'confirming_user_name_surname', name: 'confirming_user_name_surname'},
-                {data: 'confirming_date', name: 'confirming_date'},
+                {data: 'name_surname', name: 'name_surname'},
                 {data: 'created_at', name: 'created_at'},
-                {data: 'delete', name: 'delete'},
             ],
             scrollY: '500px',
             scrollX: true,
@@ -115,35 +111,3 @@ $('#tabPaymentApps').click(function () {
     }
 });
 
-$(document).on('click', '.delete-app', function () {
-    swal({
-        title: "Silme İşlemini Onaylayın!",
-        text: "Emin misiniz? Ödeme başvurusu silme işlemine devam etmek istiyor musunuz?",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-    })
-        .then((willDelete) => {
-            if (willDelete) {
-
-                $.ajax({
-                    type: "GET",
-                    url: '/Safe/Agency/AjaxTransactions/DeletePaymentApp',
-                    data: {destroy_id: $(this).prop('id')},
-                    success: function (response) {
-                        if (response.status == 1) {
-                            ToastMessage('success', response.message, 'İşlem Başarılı!');
-                            tablePaymentApp.ajax.reload();
-                        } else
-                            ToastMessage('error', response.message, 'İşlem Başarısız!');
-                    },
-                    error: function (jqXHR, exception) {
-                        ajaxError(jqXHR.status)
-                    }
-                });
-
-            } else {
-                ToastMessage('info', 'Silme işlemi iptal edilidi.', 'Bilgi');
-            }
-        });
-});

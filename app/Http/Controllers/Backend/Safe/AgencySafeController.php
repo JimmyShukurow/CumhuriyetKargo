@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Safe;
+namespace App\Http\Controllers\Backend\Safe;
 
+use App\Actions\CKGSis\Safe\AgencySafe\DeletePaymentApp;
+use App\Actions\CKGSis\Safe\AgencySafe\GetMyPaymentsAction;
 use App\Actions\CKGSis\Safe\AgencySafe\GetPaymentAppAction;
 use App\Actions\CKGSis\Safe\AgencySafe\GetPendingCollectionsAction;
 use App\Actions\CKGSis\Safe\AgencySafe\GetCollectionsAction;
@@ -24,28 +26,7 @@ class AgencySafeController extends Controller
 
     public function index()
     {
-
-//        $cargo = DB::table('cargoes')->get();
-//
-//        foreach ($cargo as $key) {
-//            echo 'id => ' . $key->id . '<br>';
-//            echo 'creator_user_id => ' . $key->creator_user_id . '<br>';
-//            echo 'creator_user_id => ' . $key->id . '<br>';
-//            echo '<hr>';
-//
-//
-//            $insert = DB::table('cargo_collections')
-//                ->insert([
-//                    'cargo_id' => $key->id,
-//                    'collection_entered_user_id' => $key->creator_user_id,
-//                    'collection_type_entered' => 'NAKİT',
-//                    'created_at' => $key->created_at,
-//                    'updated_at' => $key->updated_at,
-//                ]);
-//        }
-
         GeneralLog('Acente Kasası görüntülendi.');
-
 
         $data['devreden_kasa'] = Cargoes::all()
             ->where('departure_agency_code', '=', Auth::user()->agency_code)
@@ -88,6 +69,14 @@ class AgencySafeController extends Controller
                 return GetPaymentAppAction::run($request);
                 break;
 
+            case 'DeletePaymentApp':
+                return DeletePaymentApp::run($request);
+                break;
+
+            case 'GetMyPayments':
+                return GetMyPaymentsAction::run($request);
+                break;
+
             default:
                 return response()
                     ->json(['status' => 0, 'message' => 'no-case!'], 200);
@@ -116,17 +105,16 @@ class AgencySafeController extends Controller
 
         global $file1, $file2, $file3, $file4;
 
-
         if ($request->hasFile('file1')) {
-            $file1 = uniqid() . '_' . uniqid() . '.' . $request->file1->getClientOriginalExtension();
+            $file1 = getJustFileName($request->file1->getClientOriginalName()) . '_' . uniqid() . '_' . uniqid() . '.' . $request->file1->getClientOriginalExtension();
             $request->file1->move(public_path('files/app_files'), $file1);
         }
         if ($request->hasFile('file2')) {
-            $file2 = uniqid() . '_' . uniqid() . '.' . $request->file2->getClientOriginalExtension();
+            $file2 = getJustFileName($request->file2->getClientOriginalName()) . '_' . uniqid() . '_' . uniqid() . '.' . $request->file2->getClientOriginalExtension();
             $request->file2->move(public_path('files/app_files'), $file2);
         }
         if ($request->hasFile('file3')) {
-            $file3 = uniqid() . '_' . uniqid() . '.' . $request->file3->getClientOriginalExtension();
+            $file3 = getJustFileName($request->file3->getClientOriginalName()) . '_' . uniqid() . '_' . uniqid() . '.' . $request->file3->getClientOriginalExtension();
             $request->file3->move(public_path('files/app_files'), $file3);
         }
 

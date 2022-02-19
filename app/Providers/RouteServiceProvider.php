@@ -106,14 +106,55 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->namespace($this->namespace)
-                ->group(base_path('routes/GeneralRoutes/CargoBag.php'));
+                ->group(base_path('routes/GeneralRoutes/CargoBagsRoutes.php'));
 
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/GeneralRoutes/GeneralServicesFeeMid.php'));
+
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/GeneralRoutes/SystemSupport.php'));
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/GeneralRoutes/SafeRoutes.php'));
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/GeneralRoutes/OfficialReportsRoutes.php'));
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/GeneralRoutes/AjaxRoutes.php'));
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/GeneralRoutes/RegionRoutes.php'));
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/GeneralRoutes/CustomersRoutes.php'));
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/GeneralRoutes/ReportsRoutes.php'));
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/GeneralRoutes/TcUsersRoutes.php'));
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/GeneralRoutes/AgencyUsersRoutes.php'));
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/GeneralRoutes/CarsRoutes.php'));
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/GeneralRoutes/SenderCurrentsRoutes.php'));
         });
     }
 

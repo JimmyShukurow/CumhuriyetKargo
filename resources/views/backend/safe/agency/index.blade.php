@@ -57,6 +57,9 @@
                         <a id="tabPaymentApps" data-toggle="tab" href="#paymentApps"
                            class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Ödeme Bildirgesi</a>
 
+                        <a id="tabMyPayments" data-toggle="tab" href="#myPayments"
+                           class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Ödemelerim</a>
+
                     </div>
                 </div>
             </div>
@@ -74,14 +77,14 @@
                     <div class="tab-pane" id="paymentApps" role="tabpanel">
                         @include('backend.safe.agency.tabs.payment_apps')
                     </div>
+                    <div class="tab-pane" id="myPayments" role="tabpanel">
+                        @include('backend.safe.agency.tabs.my_payments')
+                    </div>
                 </div>
             </div>
 
         </div>
 
-        {{--Statistics--}}
-        <div>
-        </div>
     </div>
 @endsection
 
@@ -94,8 +97,6 @@
 
 
 @section('modals')
-
     @php $data = ['type' => 'incoming_cargo']; @endphp
     @include('backend.main_cargo.main.modal_cargo_details')
-
 @endsection

@@ -725,10 +725,7 @@ class CreateCargoAction
                 if ($request->odemeTipi == 'Gönderici Ödemeli') {
                     $collectionPaymentType = $request->collectionDetails['collectionType'];
                     $collectionEntered = 'EVET';
-                    if ($collectionPaymentType == 'NAKİT')
-                        $enteredUserId = Auth::id();
-                    else
-                        $enteredUserId = null;
+                    $enteredUserId = Auth::id();
                 } else {
                     $collectionPaymentType = null;
                     $collectionEntered = 'HAYIR';

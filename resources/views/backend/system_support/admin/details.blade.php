@@ -375,28 +375,28 @@
                                                 @if($detail->file1 != '')
                                                     <b class="attachment">
                                                         <a target="_blank"
-                                                           href="/backend/assets/ticket_files/{{$detail->file1}}">Ek1</a>
+                                                           href="/files/ticket_files/{{$detail->file1}}">Ek1</a>
                                                     </b>
                                                 @endif
 
                                                 @if($detail->file2 != '')
                                                     <b class="attachment">
                                                         <a target="_blank"
-                                                           href="/backend/assets/ticket_files/{{$detail->file2}}">Ek2</a>
+                                                           href="/files/ticket_files/{{$detail->file2}}">Ek2</a>
                                                     </b>
                                                 @endif
 
                                                 @if($detail->file3 != '')
                                                     <b class="attachment">
                                                         <a target="_blank"
-                                                           href="/backend/assets/ticket_files/{{$detail->file3}}">Ek3</a>
+                                                           href="/files/ticket_files/{{$detail->file3}}">Ek3</a>
                                                     </b>
                                                 @endif
 
                                                 @if($detail->file4 != '')
                                                     <b class="attachment">
                                                         <a target="_blank"
-                                                           href="/backend/assets/ticket_files/{{$detail->file4}}">Ek4</a>
+                                                           href="/files/ticket_files/{{$detail->file4}}">Ek4</a>
                                                     </b>
                                                 @endif
                                             </div>
@@ -444,28 +444,28 @@
                                         @if($ticket->file1 != '')
                                             <b class="attachment">
                                                 <a target="_blank"
-                                                   href="/backend/assets/ticket_files/{{$ticket->file1}}">Ek1</a>
+                                                   href="/files/ticket_files/{{$ticket->file1}}">Ek1</a>
                                             </b>
                                         @endif
 
                                         @if($ticket->file2 != '')
                                             <b class="attachment">
                                                 <a target="_blank"
-                                                   href="/backend/assets/ticket_files/{{$ticket->file2}}">Ek2</a>
+                                                   href="/files/ticket_files/{{$ticket->file2}}">Ek2</a>
                                             </b>
                                         @endif
 
                                         @if($ticket->file3 != '')
                                             <b class="attachment">
                                                 <a target="_blank"
-                                                   href="/backend/assets/ticket_files/{{$ticket->file3}}">Ek3</a>
+                                                   href="/files/ticket_files/{{$ticket->file3}}">Ek3</a>
                                             </b>
                                         @endif
 
                                         @if($ticket->file4 != '')
                                             <b class="attachment">
                                                 <a target="_blank"
-                                                   href="/backend/assets/ticket_files/{{$ticket->file4}}">Ek4</a>
+                                                   href="/files/ticket_files/{{$ticket->file4}}">Ek4</a>
                                             </b>
                                         @endif
                                     </div>
