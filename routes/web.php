@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgencyTransferCarsController;
 use App\Http\Controllers\Backend\DefaultController;
 use App\Http\Controllers\Backend\RegionalDirectorate\RDController;
 use App\Http\Controllers\TransferCarsController;
@@ -108,6 +109,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
     Route::resource('TransferCars', TransferCarsController::class)
         ->middleware('TransferCarsMid');
+
+        Route::resource('AgencyTransferCars', AgencyTransferCarsController::class);
 
     Route::group(['middleware' => 'TransferCarsMid'], function () {
         Route::get('AllTransferCarsData', [TransferCarsController::class, 'allData'])->name('transfer.car.all');
