@@ -9,17 +9,8 @@
         <input type="date" id="pendingCollectionLastDate" value="{{ date('Y-m-d') }}"
                class="form-control form-control-sm  niko-select-filter">
     </div>
-    <div class="col-auto my-1">
-        <div class="custom-control custom-checkbox mr-sm-2">
-            <input type="checkbox" class="custom-control-input cursor-pointer" id="pendingCollectionDateFilter">
-            <label class="custom-control-label cursor-pointer unselectable" for="pendingCollectionDateFilter">Tarih
-                filtresi uygula</label>
-        </div>
-    </div>
 </div>
-<div class="form-group row">
 
-</div>
 
 <table style="width: 100%;" id="tablePendingCollections" class="table table-bordered table-hover">
     <thead>

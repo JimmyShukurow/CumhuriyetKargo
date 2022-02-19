@@ -24,7 +24,8 @@
                         </i>
                     </div>
                     <div>Acente Kasa Modülü
-                        <div class="page-title-subheading">Bu modül üzerinden acentenizin ile ilgili kasa işlemlerini yapabilirsiniz.
+                        <div class="page-title-subheading">Bu modül üzerinden acentenizin ile ilgili kasa işlemlerini
+                            yapabilirsiniz.
                         </div>
                     </div>
                 </div>
@@ -42,13 +43,20 @@
                 <i class="header-icon pe-7s-safe icon-gradient bg-ck"> </i>Acente Kasa
                 <div class="btn-actions-pane-right">
                     <div class="nav">
+
                         <a data-toggle="tab" href="#collections"
                            class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger active">Tahsilatlar</a>
-                        <a data-toggle="tab" href="#pendingCollections"
+
+                        <a id="tabPendingCollection" data-toggle="tab" href="#pendingCollections"
                            class="mr-1 ml-1 btn-pill btn-wide border-0 btn-transition btn btn-outline-danger">Bekleyen
                             Tahsilatlar</a>
-                        <a data-toggle="tab" href="#tab-eg4-2"
+
+                        <a id="tabSafe" data-toggle="tab" href="#safe"
                            class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Kasa</a>
+
+                        <a id="tabPaymentApps" data-toggle="tab" href="#paymentApps"
+                           class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Ödeme Bildirgesi</a>
+
                     </div>
                 </div>
             </div>
@@ -60,8 +68,11 @@
                     <div class="tab-pane" id="pendingCollections" role="tabpanel">
                         @include('backend.safe.agency.tabs.pending_collections')
                     </div>
-                    <div class="tab-pane" id="tab-eg4-2" role="tabpanel">
+                    <div class="tab-pane" id="safe" role="tabpanel">
                         @include('backend.safe.agency.tabs.safe')
+                    </div>
+                    <div class="tab-pane" id="paymentApps" role="tabpanel">
+                        @include('backend.safe.agency.tabs.payment_apps')
                     </div>
                 </div>
             </div>
@@ -79,7 +90,6 @@
 
     <script>var typeOfJs = 'index_cargo'; </script>
     <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
-
 @endsection
 
 

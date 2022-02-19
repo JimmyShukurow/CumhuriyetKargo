@@ -1,10 +1,10 @@
-let safeInit = false;
+let paymentAppsInit = false;
 
-$('#tabSafe').click(function () {
-    if (safeInit == false) {
+$('#tabPaymentApps').click(function () {
+    if (paymentAppsInit == false) {
 
-        safeInit = true
-        oTable = $('#tableSafe').DataTable({
+        paymentAppsInit = true
+        oTable = $('#tablePaymentApps').DataTable({
             pageLength: 50,
             lengthMenu: [
                 [10, 25, 50, 100, 250, 500, -1],
@@ -62,10 +62,10 @@ $('#tabSafe').click(function () {
             processing: true,
             serverSide: true,
             ajax: {
-                url: '/Safe/Agency/AjaxTransactions/GetSafe',
+                url: '/Safe/Agency/AjaxTransactions/GetPaymentApps',
                 data: function (d) {
-                    d.firstDate = $('#safeFirstDate').val()
-                    d.lastDate = $('#safeLastDate').val()
+                    d.firstDate = $('#paymentAppFirstDate').val()
+                    d.lastDate = $('#paymentAppLastDate').val()
                 },
                 error: function (xhr, error, code) {
 
@@ -90,17 +90,18 @@ $('#tabSafe').click(function () {
                 }
             },
             columns: [
-                {data: 'invoice_date', name: 'invoice_date'},
-                {data: 'invoice_number', name: 'invoice_number'},
-                {data: 'total_price', name: 'total_price'},
-                {data: 'collection_type_entered', name: 'collection_type_entered'},
                 {data: 'agency_name', name: 'agency_name'},
-                {data: 'receiver_city', name: 'receiver_city'},
-                {data: 'sender_name', name: 'sender_name'},
-                {data: 'sender_current_code', name: 'sender_current_code'},
-                {data: 'receiver_name', name: 'receiver_name'},
+                {data: 'name_surname', name: 'name_surname'},
+                {data: 'paid', name: 'paid'},
+                {data: 'confirm_paid', name: 'confirm_paid'},
+                {data: 'payment_channel', name: 'payment_channel'},
+                {data: 'file1', name: 'file1'},
+                {data: 'description', name: 'description'},
+                {data: 'currency', name: 'currency'},
+                {data: 'paid', name: 'paid'},
+                {data: 'paid', name: 'paid'},
+                {data: 'confirming_date', name: 'confirming_date'},
                 {data: 'created_at', name: 'created_at'},
-                {data: 'collection_description', name: 'collection_description'},
             ],
             scrollY: '500px',
             scrollX: true,

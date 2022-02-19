@@ -9,30 +9,25 @@
         <input type="date" id="collectionLastDate" value="{{ date('Y-m-d') }}"
                class="form-control form-control-sm  niko-select-filter">
     </div>
-    <div class="col-auto my-1">
-        <div class="custom-control custom-checkbox mr-sm-2">
-            <input type="checkbox" class="custom-control-input cursor-pointer" id="collectionDateFilter">
-            <label class="custom-control-label cursor-pointer unselectable" for="collectionDateFilter">Tarih
-                filtresi uygula</label>
-        </div>
-    </div>
 </div>
 <div class="form-group row">
 
 </div>
 
-<table style="width: 100%;" id="tableCollections" class="table table-bordered table-hover">
+<table style="width: 100%; white-space: nowrap;" id="tableCollections" class="table Table20Padding table-bordered table-hover">
     <thead>
     <tr>
         <th>Fatura Tarihi</th>
         <th>Fatura No</th>
         <th>Toplam Tutar</th>
         <th>Ödeme Tipi</th>
+        <th>Çıkış BR.</th>
+        <th>Varış İl</th>
         <th>Gönd. Cari Ünvanı</th>
         <th>Gönd. Cari Kodu</th>
         <th>Alıcı Cari Ünvanı</th>
         <th>Tahsilat Tarihi</th>
-        <th>İşlem</th>
+        <th>Açıklama</th>
     </tr>
     </thead>
 </table>

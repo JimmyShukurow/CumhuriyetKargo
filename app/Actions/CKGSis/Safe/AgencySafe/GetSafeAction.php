@@ -6,9 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
-use Psy\Util\Str;
 
-class GetCollectionsAction
+class GetSafeAction
 {
     use AsAction;
 
@@ -42,6 +41,7 @@ class GetCollectionsAction
             ->whereRaw($dateFilter == 'true' ? "cargoes.created_at between '" . $firstDate . " 00:00:00'  and '" . $lastDate . " 23:59:59'" : ' 1 > 0')
             ->whereRaw('cargoes.deleted_at is null')
             ->where('cargoes.departure_agency_code', Auth::user()->agency_code)
+            ->where('cargo_collections.collection_type_entered', '=', 'NAKİT')
             ->get();
 
         return datatables()->of($cargoes)

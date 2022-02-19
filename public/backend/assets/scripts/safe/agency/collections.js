@@ -1,12 +1,12 @@
 $(document).ready(function () {
 
     oTable = $('#tableCollections').DataTable({
-        pageLength: 10,
+        pageLength: 50,
         lengthMenu: [
             [10, 25, 50, 100, 250, 500, -1],
             ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
         ],
-        order: [7, 'desc'],
+        order: [9, 'desc'],
         language: {
             "sDecimal": ",",
             "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
@@ -54,7 +54,7 @@ $(document).ready(function () {
                 }
             },
         ],
-        responsive: true,
+        responsive: false,
         processing: true,
         serverSide: true,
         ajax: {
@@ -65,8 +65,17 @@ $(document).ready(function () {
                 d.dateFilter = $('#collectionDateFilter').prop('checked')
             },
             error: function (xhr, error, code) {
+
+                let response = JSON.parse(xhr.responseText);
+                if (response.status == 0) {
+                    ToastMessage('error', response.message, 'HATA!');
+                    return false;
+                }
+                ajaxError(code);
                 if (code == "Too Many Requests") {
                     SnackMessage('Aşırı istekte bulundunuz, Lütfen bir süre sonra tekrar deneyin!', 'error', 'bl');
+                } else if (code == 590) {
+                    ToastMessage('error', 'Tarih aralığı max. 90 gün olabilir!', 'HATA!');
                 }
             },
             complete: function () {
@@ -82,14 +91,16 @@ $(document).ready(function () {
             {data: 'invoice_number', name: 'invoice_number'},
             {data: 'total_price', name: 'total_price'},
             {data: 'collection_type_entered', name: 'collection_type_entered'},
+            {data: 'agency_name', name: 'agency_name'},
+            {data: 'receiver_city', name: 'receiver_city'},
             {data: 'sender_name', name: 'sender_name'},
             {data: 'sender_current_code', name: 'sender_current_code'},
             {data: 'receiver_name', name: 'receiver_name'},
             {data: 'created_at', name: 'created_at'},
-            {data: 'invoice_number', name: 'invoice_number'},
+            {data: 'collection_description', name: 'collection_description'},
         ],
-        scrollY: '450px',
-        // scrollX: false,
+        scrollY: '500px',
+        scrollX: true,
     });
 
     $('#selectedExcelBtn').hide();

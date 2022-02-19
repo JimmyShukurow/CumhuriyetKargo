@@ -90,4 +90,14 @@ class User extends Authenticatable
     }
 
 
+    public function userRole()
+    {
+        return $this->hasOne(Roles::class, 'id', 'role_id');
+    }
+
+    public function getAgency()
+    {
+        return $this->hasOne(Agencies::class, 'id', 'agency_code');
+    }
+
 }
