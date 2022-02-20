@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AjaxController;
+use App\Http\Controllers\Backend\Module\ModuleController;
 
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::prefix('Ajax')->group(function () {

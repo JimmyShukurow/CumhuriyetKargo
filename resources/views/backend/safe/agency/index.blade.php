@@ -51,6 +51,9 @@
                            class="mr-1 ml-1 btn-pill btn-wide border-0 btn-transition btn btn-outline-danger">Bekleyen
                             Tahsilatlar</a>
 
+                        <a id="tabCardCollections" data-toggle="tab" href="#cardCollections"
+                           class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Pos Çekimleri</a>
+
                         <a id="tabSafe" data-toggle="tab" href="#safe"
                            class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Kasa</a>
 
@@ -70,6 +73,9 @@
                     </div>
                     <div class="tab-pane" id="pendingCollections" role="tabpanel">
                         @include('backend.safe.agency.tabs.pending_collections')
+                    </div>
+                    <div class="tab-pane" id="cardCollections" role="tabpanel">
+                        @include('backend.safe.agency.tabs.card_collections')
                     </div>
                     <div class="tab-pane" id="safe" role="tabpanel">
                         @include('backend.safe.agency.tabs.safe')

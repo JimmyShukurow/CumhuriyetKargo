@@ -2,6 +2,7 @@
 
 namespace App\Actions\CKGSis\Safe\AgencySafe;
 
+use App\Http\Controllers\Backend\Safe\AgencySafeController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;

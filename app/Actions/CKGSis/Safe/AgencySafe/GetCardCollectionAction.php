@@ -6,9 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
-use Psy\Util\Str;
 
-class GetCollectionsAction
+class GetCardCollectionAction
 {
     use AsAction;
 
@@ -34,15 +33,15 @@ class GetCollectionsAction
 
 
         $cargoes = DB::table('cargoes')
+            ->join('users', 'users.id', '=', 'cargoes.creator_user_id')
+            ->join('agencies', 'agencies.id', '=', 'users.agency_code')
             ->join('currents', 'currents.id', '=', 'cargoes.sender_id')
             ->join('cargo_collections', 'cargo_collections.cargo_id', '=', 'cargoes.id')
-            ->join('users', 'users.id', '=', 'cargo_collections.collection_entered_user_id')
-            ->join('agencies', 'agencies.id', '=', 'users.agency_code')
-            ->join('roles', 'roles.id', '=', 'users.role_id')
-            ->select(['cargoes.*', 'agencies.city as city_name', 'cargo_collections.collection_type_entered', 'collection_entered_user_id', 'cargo_collections.description as collection_description', 'currents.current_code as sender_current_code', 'agencies.district as district_name', 'agencies.agency_name', 'users.name_surname as user_name_surname', 'roles.display_name'])
+            ->select(['cargoes.*', 'agencies.city as city_name', 'cargo_collections.collection_type_entered', 'cargo_collections.description as collection_description', 'currents.current_code as sender_current_code', 'agencies.district as district_name', 'agencies.agency_name', 'users.name_surname as user_name_surname'])
             ->whereRaw($dateFilter == 'true' ? "cargoes.created_at between '" . $firstDate . " 00:00:00'  and '" . $lastDate . " 23:59:59'" : ' 1 > 0')
             ->whereRaw('cargoes.deleted_at is null')
             ->where('cargoes.departure_agency_code', Auth::user()->agency_code)
+            ->where('cargo_collections.collection_type_entered', '=', 'POS')
             ->get();
 
         return datatables()->of($cargoes)
@@ -67,12 +66,9 @@ class GetCollectionsAction
             ->editColumn('receiver_name', function ($key) {
                 return \Illuminate\Support\Str::words($key->receiver_name, 3, '...');
             })
-            ->editColumn('user_name_surname', function ($key) {
-                return $key->user_name_surname . ' (' . $key->display_name . ')';
-            })
-            ->addColumn('edit', 'backend.safe.agency.columns.edit')
+            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
             ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
-            ->rawColumns(['tracking_no', 'edit', 'collection_description', 'collection_type_entered', 'sender_current_code', 'invoice_number', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->rawColumns(['tracking_no', 'collection_description', 'collection_type_entered', 'sender_current_code', 'invoice_number', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
     }
 

@@ -8,7 +8,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
     Route::group(['prefix' => 'Safe', 'as' => 'safe.'], function () {
 
-        Route::group(['middleware' => 'AgencySafeMid', 'prefix' => 'Agency', 'as' => 'agency.'], function () {
+        Route::group(['middleware' => ['AgencySafeMid', 'throttle:30,1'], 'prefix' => 'Agency', 'as' => 'agency.'], function () {
             Route::get('/', [AgencySafeController::class, 'index'])->name('index');
             Route::get('AjaxTransactions/{val?}', [AgencySafeController::class, 'ajaxTransactions']);
             Route::get('CreatePaymentApp', [AgencySafeController::class, 'createPaymentApp'])->name('createPaymentApp');

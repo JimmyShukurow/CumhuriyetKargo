@@ -1,10 +1,10 @@
-let safeInit = false;
+let cardCollectionInit = false;
 
-$('#tabSafe').click(function () {
-    if (safeInit == false) {
+$('#tabCardCollections').click(function () {
+    if (cardCollectionInit == false) {
 
-        safeInit = true
-        oTable = $('#tableSafe').DataTable({
+        cardCollectionInit = true
+        cardCollectionDataTable = $('#tableCardCollections').DataTable({
             pageLength: 50,
             lengthMenu: [
                 [10, 25, 50, 100, 250, 500, -1],
@@ -54,7 +54,7 @@ $('#tabSafe').click(function () {
                         dt.ajax.reload();
                     },
                     attr: {
-                        id: 'safeDataTableRefreshBtn'
+                        id: 'dtRefreshButton'
                     }
                 },
             ],
@@ -62,10 +62,10 @@ $('#tabSafe').click(function () {
             processing: true,
             serverSide: true,
             ajax: {
-                url: '/Safe/Agency/AjaxTransactions/GetSafe',
+                url: '/Safe/Agency/AjaxTransactions/GetCardCollections',
                 data: function (d) {
-                    d.firstDate = $('#safeFirstDate').val()
-                    d.lastDate = $('#safeLastDate').val()
+                    d.firstDate = $('#cardCollectionFirstDate').val()
+                    d.lastDate = $('#cardCollectionLastDate').val()
                 },
                 error: function (xhr, error, code) {
 
@@ -106,50 +106,7 @@ $('#tabSafe').click(function () {
             scrollX: true,
         });
 
-
-        // Local Storage Transaction START
-        let cargoSuccees = localStorage.getItem('cargo-success');
-        if (cargoSuccees) {
-            swal('İşlem Başarılı!', 'Kargo Oluşturuldu!', 'success');
-            localStorage.clear();
-        }
-        // Local Storage Transaction END
     }
 });
 
-$(document).on('click', '#safeDataTableRefreshBtn', function () {
-
-    $('#SafeDailySummeryRow').block({
-        message: $('<div class="loader mx-auto">\n' +
-            '                            <div class="ball-grid-pulse">\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                            </div>\n' +
-            '                        </div>')
-    });
-    $('.blockUI.blockMsg.blockElement').css('border', '0px');
-    $('.blockUI.blockMsg.blockElement').css('background-color', '');
-
-    $.ajax('/Safe/Agency/AjaxTransactions/GetDailySafeReport', {method: 'GET'})
-        .done(function (response) {
-            if (response.status == 1) {
-                $('#spanDevredenKasa').html(response.data.devreden_kasa);
-                $('#spanGunIci').html(response.data.gun_ici);
-                $('#spanTotal').html(response.data.total);
-            }
-
-        }).error(function (jqXHR, response) {
-        ajaxError(jqXHR.status);
-    }).always(function () {
-        $('#SafeDailySummeryRow').unblock();
-    });
-
-});
 
