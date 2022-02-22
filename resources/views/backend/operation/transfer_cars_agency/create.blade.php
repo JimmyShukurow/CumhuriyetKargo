@@ -39,7 +39,7 @@
 
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <form id="tc_car_form" method="POST" action="{{ route('TransferCars.store') }}">
+                <form id="tc_car_form" method="POST" action="{{ route('AgencyTransferCars.store') }}">
                     @csrf
                     <div class="row">
                         <div class="col-md-6" id="container-general-info">
@@ -91,10 +91,10 @@
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="model_yili" class="font-weight-bold">Bağlı olduğu birim</label>
-                                        <input name="model_yili" required id="model_yili"
+                                        <input name="branch_code" required id="branch_code"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"
-                                               value="{{ old('model_yili') }}"
+                                               value= "{{ $branch ?? ''}}"
                                                class="form-control form-control form-control-sm">
                                     </div>
                                 </div>
@@ -118,120 +118,6 @@
                                                class="form-control form-control form-control-sm">
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-12">
-                                    <div class="form-row">
-                                        <div class="col-md-4">
-                                            <div class="position-relative form-group">
-                                                <label for="hat" class="font-weight-bold">Hat</label>
-                                                <select name="hat" required id="hat"
-                                                        class="form-control form-control-sm">
-                                                    <option value=""> Seçiniz</option>
-                                                    <option {{old('hat') == 'Anahat' ? 'selected' : ''}} value="Anahat">
-                                                        Anahat
-                                                    </option>
-                                                    <option {{old('hat') == 'Arahat' ? 'selected' : ''}} value="Arahat">
-                                                        Arahat
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="position-relative form-group">
-                                                <label for="cikis_aktarma" class="font-weight-bold">Çıkış
-                                                    Aktarma </label>
-                                                <select name="cikis_aktarma" required id="cikis_aktarma"
-                                                        class="form-control form-control-sm">
-                                                    <option value=""> Seçiniz</option>
-                                                    @foreach($data['transshipment_centers'] as $trasferCars)
-                                                        <option
-                                                            {{old('cikis_aktarma') == $trasferCars->id ? 'selected' : ''}}
-                                                            value="{{$trasferCars->id}}">{{$trasferCars->tc_name.' T.M.'}} </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="position-relative form-group">
-                                                <label for="varis_aktarma" class="font-weight-bold">Varış
-                                                    Aktarma</label>
-                                                <select name="varis_aktarma" required id="varis_aktarma"
-                                                        class="form-control form-control-sm">
-                                                    <option value=""> Seçiniz</option>
-                                                    @foreach($data['transshipment_centers'] as $trasferCars)
-                                                        <option
-                                                            {{old('varis_aktarma') == $trasferCars->id ? 'selected' : ''}}
-                                                            value="{{$trasferCars->id}}">{{$trasferCars->tc_name.' T.M.'}} </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="position-relative form-group">
-                                                <label for="ugradigi_aktarmalar" class="font-weight-bold">Uğradığı
-                                                    Aktarmalar</label>
-                                                <select style="display: none;width: 100%;" multiple="multiple" required
-                                                        name="ugradigi_aktarmalarx"
-                                                        id="ugradigi_aktarmalar"
-                                                        class="form-control">
-                                                    @foreach($data['transshipment_centers'] as $trasferCars)
-                                                        <option
-                                                            value="{{$trasferCars->id}}">{{$trasferCars->tc_name. ' ('.$trasferCars->type.')' . ' T.M.' }} </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <input type="hidden" name="ugradigi_aktarmalar"
-                                               value="{{old('ugradigi_aktarmalar')}}"
-                                               id="ugradigi_aktarmalar_dizi">
-
-                                        <div class="col-md-6">
-                                            <div class="position-relative form-group">
-                                                <label for="muayene_baslangic_tarihi">Muayene Başlangıç Tarihi</label>
-                                                <input type="date" required class="form-control form-control-sm"
-                                                       name="muayene_baslangic_tarihi"
-                                                       value="{{old('muayene_baslangic_tarihi')}}"
-                                                       id="muayene_baslangic_tarihi">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="position-relative form-group">
-                                                <label for="muayene_bitis_tarihi">Muayene Bitiş Tarihi</label>
-                                                <input type="date" required class="form-control form-control-sm"
-                                                       name="muayene_bitis_tarihi"
-                                                       value="{{old('muayene_bitis_tarihi')}}"
-                                                       id="muayene_bitis_tarihi">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="position-relative form-group">
-                                                <label for="trafik_sigortasi_baslangic_tarihi">Trafik Sigortası
-                                                    Başlangıç Tarihi</label>
-                                                <input type="date" required class="form-control form-control-sm"
-                                                       name="trafik_sigortasi_baslangic_tarihi"
-                                                       value="{{old('trafik_sigortasi_baslangic_tarihi')}}"
-                                                       id="trafik_sigortasi_baslangic_tarihi">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="position-relative form-group">
-                                                <label for="trafik_sigortasi_bitis_tarihi">Trafik Sigortası Bitiş
-                                                    Tarihi</label>
-                                                <input type="date" required class="form-control form-control-sm"
-                                                       name="trafik_sigortasi_bitis_tarihi"
-                                                       value="{{old('trafik_sigortasi_bitis_tarihi')}}"
-                                                       id="trafik_sigortasi_bitis_tarihi">
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-
-                                </div> --}}
                             </div>
 
                         </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AgencyTransferCarRequest;
 use App\Models\Cities;
 use App\Models\TcCars;
 use App\Models\TransshipmentCenters;
@@ -9,6 +10,7 @@ use App\Models\Various;
 use Carbon\Carbon;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AgencyTransferCarsController extends Controller
 {
@@ -23,10 +25,12 @@ class AgencyTransferCarsController extends Controller
 
     public function create()
     {
+        $user = Auth::user();
         $data['transshipment_centers'] = TransshipmentCenters::all();
         $data['cities'] = Cities::all();
+        $data['branch'] = $user->getAgency->tc_name;
         GeneralLog('Aktarma aracı oluştur sayfası görüntülendi.');
-        return view('backend.operation.transfer_cars_agency.create', compact(['data']));
+        return view('backend.operation.transfer_cars_agency.create', ['branch'=> $user->getAgency->agency_name]);
     }
 
     public function allData(Request $request)
@@ -106,5 +110,10 @@ class AgencyTransferCarsController extends Controller
             ->addColumn('edit', 'backend.operation.transfer_cars.column')
             ->rawColumns(['edit', 'varis_aktarma', 'cikis_aktarma', 'kdv_haric_hakedis', 'yakit_orani', 'bir_sefer_kira_maliyeti', 'hakedis_arti_mazot', 'aylik_yakit', 'sefer_km', 'tur_km', 'bir_sefer_yakit_maliyeti'])
             ->make(true);
+    }
+
+    public function store(AgencyTransferCarRequest $request)
+    {
+        $validated = $request->validated();
     }
 }
