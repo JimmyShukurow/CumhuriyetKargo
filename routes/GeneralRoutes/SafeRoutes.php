@@ -17,7 +17,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
         Route::group(['middleware' => 'GeneralSafeMid', 'prefix' => 'General', 'as' => 'general.'], function () {
             Route::get('/', [GeneralSafeController::class, 'index'])->name('index');
-            Route::get('AjaxTransactions/{val?}', [GeneralSafeController::class, 'ajaxTransactions']);
+            Route::any('AjaxTransactions/{val?}', [GeneralSafeController::class, 'ajaxTransactions']);
         });
 
     });

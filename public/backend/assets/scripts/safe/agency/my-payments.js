@@ -4,7 +4,7 @@ $('#tabMyPayments').click(function () {
     if (myPaymentInit == false) {
 
         myPaymentInit = true
-        tablePaymentApp = $('#tableMyPayments').DataTable({
+        tableMyPayments = $('#tableMyPayments').DataTable({
             pageLength: 50,
             lengthMenu: [
                 [10, 25, 50, 100, 250, 500, -1],

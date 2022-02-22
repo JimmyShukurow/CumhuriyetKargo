@@ -1,14 +1,20 @@
 @extends('backend.layout')
 
 @push('css')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/backend/assets/css/app-main-block.css">
+    <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
+    <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
     <style>
         table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child:before, table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child:before {
             top: 6px;
             left: 5px;
         }
     </style>
+@endpush
+
+@push('css')
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 @endpush
 
 @section('title', 'Genel Kasa Ekranı')
@@ -43,20 +49,33 @@
                 <i class="header-icon pe-7s-safe icon-gradient bg-ck"> </i>Genel Kasa
                 <div class="btn-actions-pane-right">
                     <div class="nav">
-
-                        <a data-toggle="tab" href="#collections"
+                        <a id="tabAgencySafeStatus" data-toggle="tab" href="#agencySafeStatus"
                            class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger active">Acente Kasa
                             Durumu</a>
 
+                        <a id="tabAgencyPaymentApps" data-toggle="tab" href="#agencyPaymentApps"
+                           class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Acente Ödeme
+                            Bildirgeleri</a>
+
+                        <a id="tabAgencyPayments" data-toggle="tab" href="#agencyPayments"
+                           class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Acente Ödemeleri</a>
                     </div>
                 </div>
             </div>
+
             <div class="card-body">
                 <div class="tab-content">
-                    <div class="tab-pane active" id="collections" role="tabpanel">
+                    <div class="tab-pane active" id="agencySafeStatus" role="tabpanel">
                         @include('backend.safe.general.tabs.agency_safe_status')
                     </div>
 
+                    <div class="tab-pane" id="agencyPaymentApps" role="tabpanel">
+                        @include('backend.safe.general.tabs.agency_payment_apps')
+                    </div>
+
+                    <div class="tab-pane" id="agencyPayments" role="tabpanel">
+                        @include('backend.safe.general.tabs.agency_payments')
+                    </div>
                 </div>
             </div>
 
