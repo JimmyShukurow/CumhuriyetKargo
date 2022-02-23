@@ -91,7 +91,7 @@ class GetGlobalCargoesGmAction
             ->whereRaw($receiverName ? "receiver_name like '%" . $receiverName . "%'" : '1 > 0')
             ->whereRaw($filterByDAte == "true" ? "cargoes.created_at between '" . $startDate . "'  and '" . $finishDate . "'" : '1 > 0')
             ->whereRaw('cargoes.deleted_at is null')
-            ->limit(10000)
+            ->limit(350)
             ->orderByDesc('created_at')
             ->get();
 

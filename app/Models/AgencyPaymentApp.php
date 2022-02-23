@@ -12,8 +12,8 @@ class AgencyPaymentApp extends Model
 
     protected $guarded = [];
 
-
     protected static $logAttributes = [
+        'id',
         'agency_id',
         'user_id',
         'paid',
