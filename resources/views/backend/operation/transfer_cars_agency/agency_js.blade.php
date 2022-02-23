@@ -187,7 +187,7 @@
                 let cars = response.cars;
 
                 $('#tdPlaka').html(cars.plaka);
-                $('#branch').html(cars.branch.agency_name);
+                $('#branch').html(cars.branch ? cars.branch.agency_name : '');
                 $('#creator').html(cars.creator ? cars.creator.name_surname : '');
                 $('#car_type').html(cars.car_type);
                 $('#created_at').html(cars.created_at);
