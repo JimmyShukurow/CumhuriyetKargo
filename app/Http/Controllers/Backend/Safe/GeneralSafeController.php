@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\Safe;
 
 use App\Actions\CKGSis\Safe\AgencySafe\GetPaymentAppAction;
+use App\Actions\CKGSis\Safe\GeneralSafe\DeleteAgencyPayment;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyPaymentAppAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyPaymentAppDetails;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyPaymentsAction;
@@ -10,6 +11,7 @@ use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyStatusAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\PaymentAppSetConfirmRejectAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\PaymentAppSetConfirmSuccessAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\PaymentAppSetConfirmWaitingAction;
+use App\Actions\CKGSis\Safe\GeneralSafe\SaveAgencyPaymentAction;
 use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\Cargoes;
@@ -62,9 +64,16 @@ class GeneralSafeController extends Controller
                 return PaymentAppSetConfirmRejectAction::run($request);
                 return;
 
-
             case 'GetAgencyPayments':
                 return GetAgencyPaymentsAction::run($request);
+                break;
+
+            case 'SaveAgencyPayment':
+                return SaveAgencyPaymentAction::run($request);
+                break;
+
+            case 'DeleteAgencyPayment':
+                return DeleteAgencyPayment::run($request);
                 break;
 
             default:
