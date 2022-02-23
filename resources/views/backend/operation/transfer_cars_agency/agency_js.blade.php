@@ -117,7 +117,7 @@
                     {data: 'creator', name: 'creator'},
                     {data: 'car_type', name: 'car_type'},
                     {data: 'created_at', name: 'created_at'},
-                    {data: 'confirm', name: 'confirm'},
+                    {data: 'confirmation_status', name: 'confirmation_status'},
                     {data: 'details', name: 'details'},
                 ],
                 scrollY:false,

@@ -71,9 +71,14 @@ class AgencyTransferCarsController extends Controller
             ->editColumn('creator', function ($cars) {
                 return '<b class="text-success">' . $cars->creator . '</b>';
             })
+            ->editColumn('confirmation_status', function ($cars) {
+                if($cars->confirm == 0) return '<b class="text-warning"> Onay Bekliyor </b>';
+                else if($cars->confirm == 1) return '<b class="text-success"> Onaylandı </b>';
+                else if($cars->confirm == -1) return '<b class="text-danger"> Onaylandı </b>';
+            })
           
             ->addColumn('details', 'backend.operation.transfer_cars_agency.column')
-            ->rawColumns(['details', 'branch', 'creator'])
+            ->rawColumns(['details', 'branch', 'creator', 'confirmation_status'])
             ->make(true);
     }
 
