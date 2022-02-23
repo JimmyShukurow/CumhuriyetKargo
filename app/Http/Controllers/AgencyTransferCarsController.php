@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AgencyTransferCarsController extends Controller
 {
@@ -26,8 +27,6 @@ class AgencyTransferCarsController extends Controller
     public function create()
     {
         $user = Auth::user();
-        $data['transshipment_centers'] = TransshipmentCenters::all();
-        $data['cities'] = Cities::all();
         GeneralLog('Aktarma aracı oluştur sayfası görüntülendi.');
         return view('backend.operation.transfer_cars_agency.create', ['branch'=> $user->getAgency->agency_name, 'user' => $user->name_surname]);
     }
@@ -57,58 +56,24 @@ class AgencyTransferCarsController extends Controller
             ->get();
 
         $cars->each(function($key){ 
-            $key['cikishAktarma'] = $key->cikishAktarma->tc_name ?? null; 
-            $key['varishAktarma'] = $key->varishAktarma->tc_name ?? null; 
-            $muayene_date_diff = Carbon::now()->diffInDays($key->muayene_bitis_tarihi);
-            $key['muayene_kalan_sure'] = Carbon::now() < Carbon::parse($key->muayene_bitis_tarihi) ? $muayene_date_diff : - $muayene_date_diff;
-            $sigorta_date_diff = Carbon::now()->diffInDays($key->trafik_sigortasi_bitis_tarihi);
-            $key['sigorta_kalan_sure'] = Carbon::now() < Carbon::parse($key->muayene_bitis_tarihi) ? $sigorta_date_diff : - $sigorta_date_diff;
+            $key['branch'] = $key->branch->agency_name ?? null; 
+            $key['creator'] = $key->creator->name_surname ?? null; 
         });
-            
 
-
+        // This part is Yajra Datatables, you can google it to research ...
         return DataTables::of($cars)
             ->setRowId(function ($cars) {
                 return 'car-item-' . $cars->id;
             })
+            ->editColumn('branch', function ($cars) {
+                return '<b class="text-success">' . $cars->branch . '</b>';
+            })
+            ->editColumn('creator', function ($cars) {
+                return '<b class="text-success">' . $cars->creator . '</b>';
+            })
           
-            ->editColumn('kdv_haric_hakedis', function ($cars) {
-                return '<b class="text-primary">₺' . getDotter($cars->kdv_haric_hakedis) . '</b>';
-            })
-            ->editColumn('bir_sefer_kira_maliyeti', function ($cars) {
-                return '<b class="text-primary">₺' . getDotter($cars->bir_sefer_kira_maliyeti) . '</b>';
-            })
-            ->editColumn('yakit_orani', function ($cars) {
-                return '<b class="text-alternate">%' . getDotter($cars->yakit_orani) . '</b>';
-            })
-            ->editColumn('tur_km', function ($cars) {
-                return '<b class="text-dark">' . getDotter($cars->tur_km) . '</b>';
-            })
-            ->editColumn('sefer_km', function ($cars) {
-                return '<b class="text-dark">' . getDotter($cars->sefer_km) . '</b>';
-            })
-            ->editColumn('bir_sefer_yakit_maliyeti', function ($cars) {
-                return '<b class="text-primary">₺' . getDotter($cars->bir_sefer_yakit_maliyeti) . '</b>';
-            })
-            ->editColumn('aylik_yakit', function ($cars) {
-                return '<b class="text-primary">₺' . getDotter($cars->aylik_yakit) . '</b>';
-            })
-            ->editColumn('bir_sefer_yakit_maliyeti', function ($cars) {
-                return '<b class="text-primary">₺' . getDotter($cars->bir_sefer_yakit_maliyeti) . '</b>';
-            })
-            ->editColumn('hakedis_arti_mazot', function ($cars) {
-                return '<b class="text-primary">₺' . getDotter($cars->hakedis_arti_mazot) . '</b>';
-            })
-            ->editColumn('cikis_aktarma', function ($cars) {
-                return '<b class="text-danger">' . $cars->cikishAktarma . '</b>';
-            })
-            ->editColumn('varis_aktarma', function ($cars) {
-                return '<b class="text-success">' . $cars->varishAktarma . '</b>';
-            })
-            
-          
-            ->addColumn('edit', 'backend.operation.transfer_cars.column')
-            ->rawColumns(['edit', 'varis_aktarma', 'cikis_aktarma', 'kdv_haric_hakedis', 'yakit_orani', 'bir_sefer_kira_maliyeti', 'hakedis_arti_mazot', 'aylik_yakit', 'sefer_km', 'tur_km', 'bir_sefer_yakit_maliyeti'])
+            ->addColumn('details', 'backend.operation.transfer_cars_agency.column')
+            ->rawColumns(['details', 'branch', 'creator'])
             ->make(true);
     }
 
@@ -128,5 +93,19 @@ class AgencyTransferCarsController extends Controller
         else
             return back()
                 ->with('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!');
+    }
+
+    public function getAgencyTransferCar(Request $request)
+    {
+        $car = TcCars::with('branch', 'creator')->where('id', $request->carID)
+            ->first();
+        // $car['branch'] = $car->branch->agency_name;
+
+        return response()
+            ->json([
+                'cars' => $car
+            ], 200);
+
+        return $car;
     }
 }

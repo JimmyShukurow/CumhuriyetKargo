@@ -112,6 +112,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
         Route::resource('AgencyTransferCars', AgencyTransferCarsController::class);
         Route::get('AllAgencyTransferCars', [AgencyTransferCarsController::class, 'allData'])->name('agency.transfer.car.all');
+        Route::post('GetAgencyTransferCar', [AgencyTransferCarsController::class, 'getAgencyTransferCar'])->name('getAgencyTransferCar');
 
     Route::group(['middleware' => 'TransferCarsMid'], function () {
         Route::get('AllTransferCarsData', [TransferCarsController::class, 'allData'])->name('transfer.car.all');

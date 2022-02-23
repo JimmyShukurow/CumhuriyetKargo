@@ -149,21 +149,20 @@
             </div>
 
             <div class="card-body">
-                <table id="AgenciesTable"
+                <table  style="width:100%;" id="AgenciesTable"
                        class="align-middle mb-0 table Table30Padding table-borderless table-striped NikolasDataTable">
                     <thead>
                     <tr>
                         <th>Marka</th>
                         <th>Model</th>
                         <th>Plaka</th>
-                        <th>Hat</th>
-                        <th>Kapasite (KG)</th>
-                        <th>Çıkış Akt.</th>
-                        <th>Varış Akt.</th>
-                        <th>Aylık Kira Bedeli (KDV Dahil)</th>
-                        <th>KDV Hariç Hakediş</th>
-                        <th>1 Sefer Kira Maliyeti</th>
-                        <th class="text-center">İşlem</th>
+                        <th>Baglı Birim</th>
+                        <th>Şöför Adı</th>
+                        <th>Ekleyen</th>
+                        <th>Araç Tipi</th>
+                        <th>Kayıt Tarihi</th>
+                        <th>Onay Durumu</th>
+                        <th class="text-center">Detay</th>
                     </tr>
                     </thead>
 
@@ -176,14 +175,13 @@
                         <th>Marka</th>
                         <th>Model</th>
                         <th>Plaka</th>
-                        <th>Hat</th>
-                        <th>Kapasite (KG)</th>
-                        <th>Çıkış Akt.</th>
-                        <th>Varış Akt.</th>
-                        <th>Aylık Kira Bedeli (KDV Dahil)</th>
-                        <th>KDV Hariç Hakediş</th>
-                        <th>1 Sefer Kira Maliyeti</th>
-                        <th class="text-center">İşlem</th>
+                        <th>Baglı Birim</th>
+                        <th>Şöför Adı</th>
+                        <th>Ekleyen</th>
+                        <th>Araç Tipi</th>
+                        <th>Kayıt Tarihi</th>
+                        <th>Onay Durumu</th>
+                        <th class="text-center">Detay</th>
                     </tr>
                     </tfoot>
                 </table>

@@ -81,7 +81,7 @@
                         text: 'Sütun Görünüm'
                     },
                 ],
-                responsive: true,
+                responsive: false,
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -112,16 +112,16 @@
                     {data: 'marka', name: 'marka'},
                     {data: 'model', name: 'model'},
                     {data: 'plaka', name: 'plaka'},
-                    {data: 'hat', name: 'hat'},
-                    {data: 'arac_kapasitesi', name: 'arac_kapasitesi'},
-                    {data: 'cikis_aktarma', name: 'cikis_aktarma'},
-                    {data: 'varis_aktarma', name: 'varis_aktarma'},
-                    {data: 'aylik_kira_bedeli', name: 'aylik_kira_bedeli'},
-                    {data: 'kdv_haric_hakedis', name: 'kdv_haric_hakedis'},
-                    {data: 'bir_sefer_kira_maliyeti', name: 'bir_sefer_kira_maliyeti'},
-                    // {data: 'name_surname', name: 'name_surname'},
-                    {data: 'edit', name: 'edit'},
+                    {data: 'branch', name: 'branch'},
+                    {data: 'sofor_ad', name: 'sofor_ad'},
+                    {data: 'creator', name: 'creator'},
+                    {data: 'car_type', name: 'car_type'},
+                    {data: 'created_at', name: 'created_at'},
+                    {data: 'confirm', name: 'confirm'},
+                    {data: 'details', name: 'details'},
                 ],
+                scrollY:false,
+                scrollX:true,
             });
         });
 
@@ -175,7 +175,7 @@
             $('.blockUI.blockMsg.blockElement').css('border', '0px');
             $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
-            $.ajax('{{route('getTransferCars')}}', {
+            $.ajax('{{route('getAgencyTransferCar')}}', {
                 method: 'POST',
                 data: {
                     _token: token,
@@ -187,66 +187,14 @@
                 let cars = response.cars;
 
                 $('#tdPlaka').html(cars.plaka);
-                $('#marka').html(cars.marka);
-                $('#model').html(cars.model);
-                $('#modelYili').html(cars.model_yili);
-                $('#aracKapasitesi').html(cars.arac_kapasitesi);
-                $('#tonaj').html(cars.tonaj);
-                $('#aracTakipSistemi').html(cars.arac_takip_sistemi);
-                $('#hat').html(cars.hat);
-                $('#cikisAktarma').html(cars.cikis_akt + " T.M.");
-                $('#varisAktarma').html(cars.varis_akt + " T.M.");
-                $('#ugradigiAktarmalar').html(response.aktarmalar);
-                $('#muayeneBaslangicBitisTarihi').html(cars.muayene_baslangic_tarihi + " - " + cars.muayene_bitis_tarihi);
-                $('#muayeneBitimiKalanGun').html(cars.muayene_kalan_sure);
-                $('#sigortaBaslangicBitisTarihi').html(cars.trafik_sigortasi_baslangic_tarihi + " - " + cars.trafik_sigortasi_bitis_tarihi);
-                $('#sigortaBitimiKalanGun').html(cars.sigorta_kalan_sure);
-                $('#kayitTarihi').html(cars.created_at);
-
-                $('#aylikKiraBedeli').html("₺" + getDotter(cars.aylik_kira_bedeli));
-                $('#yakitOrani').html("%" + cars.yakit_orani);
-                $('#turKm').html(getDotter(cars.tur_km));
-                $('#seferKM').html(cars.sefer_km);
-                $('#aylikYakit').html("₺" + getDotter(cars.aylik_yakit));
-                $('#kdvHaricHakedis').html("₺" + getDotter(cars.kdv_haric_hakedis));
-                $('#birSeferKiraMaliyeti').html("₺" + getDotter(cars.bir_sefer_kira_maliyeti));
-                $('#birSeferYakitMaliyeti').html("₺" + getDotter(cars.bir_sefer_yakit_maliyeti));
-                $('#hakedisArtiMazot').html("₺" + getDotter(cars.hakedis_arti_mazot));
-                $('#seferMaliyeti').html("₺" + getDotter(cars.sefer_maliyeti));
-
+                $('#branch').html(cars.branch.agency_name);
+                $('#creator').html(cars.creator ? cars.creator.name_surname : '');
+                $('#car_type').html(cars.car_type);
+                $('#created_at').html(cars.created_at);
+                $('#confirmer').html(cars.confirmed_user);
                 $('#soforAdi').html(cars.sofor_ad);
                 $('#soforIletisim').html(cars.sofor_telefon);
                 $('#soforAders').html(cars.sofor_adres);
-                $('#aracSahibiAdi').html(cars.arac_sahibi_ad);
-                $('#aracSahibiIletisim').html(cars.arac_sahibi_telefon);
-                $('#aracSahibiAders').html(cars.arac_sahibi_adres);
-                $('#aracSahibiYakiniAdi').html(cars.arac_sahibi_yakini_ad);
-                $('#aracSahibiYakiniIletisim').html(cars.arac_sahibi_yakini_telefon);
-                $('#aracSahibiYakiniAders').html(cars.arac_sahibi_yakini_adres);
-
-                $('#stepne').html(cars.stepne);
-                $('#kriko').html(cars.kriko);
-                $('#Zincir').html(cars.zincir);
-                $('#bijonAnahtari').html(cars.bijon_anahtari);
-                $('#reflektor').html(cars.reflektor);
-                $('#yanginTupu').html(cars.yangin_tupu);
-                $('#ilkYardimCantasi').html(cars.ilk_yardim_cantasi);
-                $('#seyyarLamba').html(cars.seyyar_lamba);
-                $('#cekmeHalati').html(cars.cekme_halati);
-                $('#giydirme').html(cars.giydirme);
-                $('#korNoktaUyarisi').html(cars.kor_nokta_uyarisi);
-                $('#hataBildirimHatti').html(cars.hata_bildirim_hatti);
-
-                $('#muayeneEvragi').html(cars.sigorta_belgesi);
-                $('#sigortaBelgesi').html(cars.sigorta_belgesi);
-                $('#soforEhliyet').html(cars.sofor_ehliyet);
-                $('#srcBelgesi').html(cars.src_belgesi);
-                $('#ruhsatEkspertizRaporu').html(cars.ruhsat_ekspertiz_raporu);
-                $('#tasimaBelgesi').html(cars.tasima_belgesi);
-                $('#soforAdliSicilKaydi').html(cars.sofor_adli_sicil_kaydi);
-                $('#aracSahibiSicilKaydi').html(cars.arac_sahibi_sicil_kaydi);
-                $('#soforYakiniIkametgahBelgesi').html(cars.sofor_yakini_ikametgah_belgesi);
-
                 $('.modal-body').unblock();
                 return false;
             });

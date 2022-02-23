@@ -18,11 +18,7 @@ use Yajra\DataTables\DataTables;
 
 class TransferCarsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+  
     public function index()
     {
         $data['agencies'] = Various::all();
@@ -32,11 +28,6 @@ class TransferCarsController extends Controller
         return view('backend.operation.transfer_cars.index', compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     public function create()
     {
@@ -57,15 +48,28 @@ class TransferCarsController extends Controller
         $varisAktarma = $request->varisAktarma;
         $soforIletisim = $request->soforIletisim;
 
-        $cars = DB::table('tc_cars_all_data')
-            ->whereRaw($marka ? "marka like '%" . $marka . "%'" : ' 1 > 0')
-            ->whereRaw($model ? "model like '%" . $model . "%'" : ' 1 > 0')
-            ->whereRaw($plaka ? "plaka like '%" . $plaka . "%'" : ' 1 > 0')
-            ->whereRaw($hat ? "hat='" . $hat . "'" : ' 1 > 0')
-            ->whereRaw($aracKapasitesi ? "arac_kapasitesi='" . $aracKapasitesi . "'" : ' 1 > 0')
-            ->whereRaw($soforIletisim ? "sofor_telefon='" . $soforIletisim . "'" : ' 1 > 0')
-            ->whereRaw($varisAktarma ? "varis_aktarma = $varisAktarma" : ' 1 > 0')
-            ->whereRaw($cikisAktarma ? "cikis_aktarma = $cikisAktarma" : ' 1 > 0');
+        $cars = TcCars::with('creator', 'cikishAktarma', 'varishAktarma')
+            ->when($marka, function($q) use($marka){ return $q->where('marka', 'like', '%'.$marka.'%');})
+            ->when($model, function($q) use($model){ return $q->where('model', 'like', '%'.$model.'%');})
+            ->when($plaka, function($q) use($plaka){ return $q->where('plaka', 'like', '%'.$plaka.'%');})
+            ->when($hat, function($q) use($hat){ return $q->where('hat', 'like', '%'.$hat.'%');})
+            ->when($aracKapasitesi, function($q) use($aracKapasitesi){ return $q->where('arac_kapasitesi', 'like', '%'.$aracKapasitesi.'%');})
+            ->when($soforIletisim, function($q) use($soforIletisim){ return $q->where('sofor_telefon', 'like', '%'.$soforIletisim.'%');})
+            ->when($soforIletisim, function($q) use($soforIletisim){ return $q->where('arac_sahibi_yakini_telefon', 'like', '%'.$soforIletisim.'%');})
+            ->when($varisAktarma, function($q) use($varisAktarma){ return $q->where('varis_aktarma', 'like', $varisAktarma);})
+            ->when($cikisAktarma, function($q) use($cikisAktarma){ return $q->where('cikis_aktarma', 'like', $cikisAktarma);})
+            ->get();
+            // logger($cars);
+        $cars->each(function($key){ 
+            $key['cikishAktarma'] = $key->cikishAktarma->tc_name ?? null; 
+            $key['varishAktarma'] = $key->varishAktarma->tc_name ?? null; 
+            $key['name_surname'] = $key->creator->name_surname ?? null; 
+            $muayene_date_diff = Carbon::now()->diffInDays($key->muayene_bitis_tarihi);
+            $key['muayene_kalan_sure'] = Carbon::now() < Carbon::parse($key->muayene_bitis_tarihi) ? $muayene_date_diff : - $muayene_date_diff;
+            $sigorta_date_diff = Carbon::now()->diffInDays($key->trafik_sigortasi_bitis_tarihi);
+            $key['sigorta_kalan_sure'] = Carbon::now() < Carbon::parse($key->muayene_bitis_tarihi) ? $sigorta_date_diff : - $sigorta_date_diff;
+        });
+            
 
 
         return DataTables::of($cars)
@@ -103,10 +107,10 @@ class TransferCarsController extends Controller
                 return '<b class="text-primary">₺' . getDotter($cars->hakedis_arti_mazot) . '</b>';
             })
             ->editColumn('cikis_aktarma', function ($cars) {
-                return '<b class="text-danger">' . $cars->cikis_akt . '</b>';
+                return '<b class="text-danger">' . $cars->cikishAktarma . '</b>';
             })
             ->editColumn('varis_aktarma', function ($cars) {
-                return '<b class="text-success">' . $cars->varis_akt . '</b>';
+                return '<b class="text-success">' . $cars->varishAktarma . '</b>';
             })
             ->editColumn('muayene_kalan_sure', function ($cars) {
                 if ($cars->muayene_kalan_sure > 0)
@@ -125,12 +129,7 @@ class TransferCarsController extends Controller
             ->make(true);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
+   
     public function store(Request $request)
     {
         $request->validate([
@@ -262,8 +261,7 @@ class TransferCarsController extends Controller
 
     public function getTransferCar(Request $request)
     {
-        $cars = DB::table('tc_cars_all_data')
-            ->where('id', $request->carID)
+        $cars = TcCars::with('cikishAktarma')->where('id', $request->carID)
             ->first();
 
         $value = $cars->ugradigi_aktarmalar;
@@ -292,23 +290,12 @@ class TransferCarsController extends Controller
     }
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $data['transshipment_centers'] = TransshipmentCenters::all();
@@ -318,13 +305,7 @@ class TransferCarsController extends Controller
         return view('backend.operation.transfer_cars.edit', compact(['data', 'car']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -455,12 +436,7 @@ class TransferCarsController extends Controller
                 ->with('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
+  
     public function destroy($id)
     {
         $destroy = TcCars::find($id);

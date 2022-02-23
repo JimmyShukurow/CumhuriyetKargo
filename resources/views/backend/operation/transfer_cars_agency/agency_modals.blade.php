@@ -46,105 +46,21 @@
                                                 <tr>
                                                     <td class="static">Plaka:</td>
                                                     <td class="modal-data" id="tdPlaka"></td>
-                                                    <td class="static">Marka:</td>
-                                                    <td class="modal-data" id="marka"></td>
+                                                    <td class="static">Baglı Birim:</td>
+                                                    <td class="modal-data" id="branch"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="static">Model</td>
-                                                    <td class="modal-data" id="model"></td>
-                                                    <td class="static">Model Yılı</td>
-                                                    <td class="modal-data" id="modelYili"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Araç Kapasitesi</td>
-                                                    <td class="modal-data" id="aracKapasitesi"></td>
-                                                    <td class="static">Tonaj</td>
-                                                    <td class="modal-data" id="tonaj"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Araç Takip Sistemi</td>
-                                                    <td class="modal-data" id="aracTakipSistemi"></td>
-                                                    <td class="static">hat</td>
-                                                    <td class="modal-data" id="hat"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Çıkış Aktarma</td>
-                                                    <td class="modal-data" id="cikisAktarma"></td>
-                                                    <td class="static">Varış Aktarma</td>
-                                                    <td class="modal-data" id="varisAktarma"></td>
-                                                </tr>
-                                                <tr aria-rowspan="2">
-                                                    <td class="static">Uğradığı Aktarmalar</td>
-                                                    <td class="modal-data" colspan="3" id="ugradigiAktarmalar"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Muayene Baş.-Bit. Tarhi</td>
-                                                    <td class="modal-data" id="muayeneBaslangicBitisTarihi"></td>
-                                                    <td class="static">Muayene Bitimi Kalan Gün</td>
-                                                    <td class="modal-data" id="muayeneBitimiKalanGun"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Sigorta Baş.-Bit. Tarhi</td>
-                                                    <td class="modal-data" id="sigortaBaslangicBitisTarihi"></td>
-                                                    <td class="static">Sigorta Bitimi Kalan Gün</td>
-                                                    <td class="modal-data" id="sigortaBitimiKalanGun"></td>
+                                                    <td class="static">Ekleyen</td>
+                                                    <td class="modal-data" id="creator"></td>
+                                                    <td class="static">Araç Tipip</td>
+                                                    <td class="modal-data" id="car_type"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Kayıt Tarihi</td>
-                                                    <td class="modal-data" id="kayitTarihi"></td>
-                                                    <td class="static"></td>
-                                                    <td id=""></td>
+                                                    <td class="modal-data" id="created_at"></td>
+                                                    <td class="static">Onaylayan</td>
+                                                    <td class="modal-data" id="confirmer"></td>
                                                 </tr>
-                                                </tbody>
-                                            </table>
-
-                                            {{-- HESAPLAMALAR --}}
-                                            <table style="white-space: nowrap" id="AgencyCard"
-                                                   class="TableNoPadding table mt-4 table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th class="text-center" id="titleBranch" colspan="4">Hesaplamalar
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                <tr>
-                                                    <td class="static">Aylık Kira Bedeli</td>
-                                                    <td class="modal-data" id="aylikKiraBedeli"></td>
-                                                    <td class="static">Yakıt Oranı</td>
-                                                    <td class="modal-data" id="yakitOrani"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Tur KM</td>
-                                                    <td class="modal-data" id="turKm"></td>
-                                                    <td class="static">Sefer KM</td>
-                                                    <td class="modal-data" id="seferKM"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Aylık Yakıt</td>
-                                                    <td class="modal-data" id="aylikYakit"></td>
-                                                    <td class="static">KDV Hariç Hakediş</td>
-                                                    <td class="modal-data" id="kdvHaricHakedis"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">1 Sefer Kira Maliyeti</td>
-                                                    <td class="modal-data" id="birSeferKiraMaliyeti"></td>
-                                                    <td class="static">1 Sefer Yakıt Maliyeti</td>
-                                                    <td class="modal-data" id="birSeferYakitMaliyeti"></td>
-                                                </tr>
-
-
-                                                <tr>
-                                                    <td class="static">Sefer Maliyeti</td>
-                                                    <td class="modal-data" id="seferMaliyeti"></td>
-                                                    <td class="static">Hakediş + Mazot</td>
-                                                    <td class="modal-data" id="hakedisArtiMazot"></td>
-                                                </tr>
-
                                                 </tbody>
                                             </table>
 
@@ -163,124 +79,12 @@
                                                 <tr>
                                                     <td class="static">Şoför Adı</td>
                                                     <td class="modal-data" id="soforAdi"></td>
-                                                    <td class="static">Şoför İletişim</td>
+                                                    <td class="static">Şoför Telefon</td>
                                                     <td class="modal-data" id="soforIletisim"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Şoför Adres</td>
                                                     <td class="modal-data" colspan="3" id="soforAders"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Araç Sahibi Adı</td>
-                                                    <td class="modal-data" id="aracSahibiAdi"></td>
-                                                    <td class="static">Araç Sahibi İletişim</td>
-                                                    <td class="modal-data" id="aracSahibiIletisim"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Araç Sahibi Adres</td>
-                                                    <td class="modal-data" colspan="3" id="aracSahibiAders"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Araç Sahibi Yakını Adı</td>
-                                                    <td class="modal-data" id="aracSahibiYakiniAdi"></td>
-                                                    <td class="static">Araç Sahibi Yakını İletişim</td>
-                                                    <td class="modal-data" id="aracSahibiYakiniIletisim"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Araç Sahibi Yakını Adres</td>
-                                                    <td class="modal-data" colspan="3" id="aracSahibiYakiniAders"></td>
-                                                </tr>
-
-                                                </tbody>
-                                            </table>
-
-                                            {{-- TRAFİK SETİ --}}
-                                            <table style="white-space: nowrap" id="AgencyCard"
-                                                   class="TableNoPadding table mt-4 table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th class="text-center" id="titleBranch" colspan="6">Trafik Seti
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                <tr>
-                                                    <td class="static">Stepne</td>
-                                                    <td class="modal-data" id="stepne"></td>
-                                                    <td class="static">Kriko</td>
-                                                    <td class="modal-data" id="kriko"></td>
-                                                    <td class="static">Zincir</td>
-                                                    <td class="modal-data" id="Zincir"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Bijon Anahtarı</td>
-                                                    <td class="modal-data" id="bijonAnahtari"></td>
-                                                    <td class="static">Reflektör</td>
-                                                    <td class="modal-data" id="reflektor"></td>
-                                                    <td class="static">Yangın Tüpü</td>
-                                                    <td class="modal-data" id="yanginTupu"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">İlk Yardım Çantası</td>
-                                                    <td class="modal-data" id="ilkYardimCantasi"></td>
-                                                    <td class="static">Seyyar Lamba</td>
-                                                    <td class="modal-data" id="seyyarLamba"></td>
-                                                    <td class="static">Çekme Halatı</td>
-                                                    <td class="modal-data" id="cekmeHalati"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Giydirme</td>
-                                                    <td class="modal-data" id="giydirme"></td>
-                                                    <td class="static">Kör Nokta Uyarısı</td>
-                                                    <td class="modal-data" id="korNoktaUyarisi"></td>
-                                                    <td class="static">Hata Bildirim Hattı</td>
-                                                    <td class="modal-data" id="hataBildirimHatti"></td>
-                                                </tr>
-
-                                                </tbody>
-                                            </table>
-
-                                            {{-- EVRAKLAR --}}
-                                            <table style="white-space: nowrap" id="AgencyCard"
-                                                   class="TableNoPadding table mt-4 table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th class="text-center" id="titleBranch" colspan="6">Evraklar</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                <tr>
-                                                    <td class="static">Muayene Evrağı</td>
-                                                    <td class="modal-data" id="muayeneEvragi"></td>
-                                                    <td class="static">Sigorta Belgesi</td>
-                                                    <td class="modal-data" id="sigortaBelgesi"></td>
-                                                    <td class="static">Şoför Ehliyet</td>
-                                                    <td class="modal-data" id="soforEhliyet"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Src Belgesi</td>
-                                                    <td class="modal-data" id="srcBelgesi"></td>
-                                                    <td class="static">Ruhsat Ekspertiz Raporu</td>
-                                                    <td class="modal-data" id="ruhsatEkspertizRaporu"></td>
-                                                    <td class="static">Taşıma Belgesi</td>
-                                                    <td class="modal-data" id="tasimaBelgesi"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Şoför Adli Sicil Kaydı</td>
-                                                    <td class="modal-data" id="soforAdliSicilKaydi"></td>
-                                                    <td class="static">Araç Sahibi Sicil Kaydi</td>
-                                                    <td class="modal-data" id="aracSahibiSicilKaydi"></td>
-                                                    <td class="static">Şoför Yakını İkametgah Belgesi</td>
-                                                    <td class="modal-data" id="soforYakiniIkametgahBelgesi"></td>
                                                 </tr>
                                                 </tbody>
                                             </table>

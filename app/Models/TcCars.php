@@ -12,6 +12,10 @@ class TcCars extends Model
     use HasFactory, LogsActivity, SoftDeletes;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:m:s',
+    ];
     
     protected static $logAttributes = [
         'plaka',
@@ -92,5 +96,10 @@ class TcCars extends Model
     public function creator()
     {
         return $this->hasOne(User::class,'id', 'creator_id');
+    }
+
+    public function branch()
+    {
+        return $this->hasOne(Agencies::class, 'id', 'branch_code');
     }
 }
