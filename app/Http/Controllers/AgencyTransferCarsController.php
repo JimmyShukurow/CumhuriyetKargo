@@ -99,7 +99,6 @@ class AgencyTransferCarsController extends Controller
     {
         $car = TcCars::with('branch', 'creator')->where('id', $request->carID)
             ->first();
-        // $car['branch'] = $car->branch->agency_name;
 
         return response()
             ->json([
