@@ -4,6 +4,7 @@ namespace App\Actions\CKGSis\Safe\AgencySafe;
 
 use App\Http\Controllers\Backend\Safe\AgencySafeController;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -36,7 +37,8 @@ class GetMyPaymentsAction
             ->join('roles', 'users.role_id', '=', 'roles.id')
             ->join('agencies', 'agencies.id', '=', 'agency_payments.agency_id')
             ->select(['agency_payments.*', 'users.name_surname', 'roles.display_name', 'agencies.agency_name'])
-            ->whereRaw($dateFilter == 'true' ? "agency_payments.created_at between '" . $firstDate . " 00:00:00'  and '" . $lastDate . " 23:59:59'" : ' 1 > 0');
+            ->whereRaw($dateFilter == 'true' ? "agency_payments.created_at between '" . $firstDate . " 00:00:00'  and '" . $lastDate . " 23:59:59'" : ' 1 > 0')
+            ->where('agency_id', '=', Auth::user()->agency_code);
 
         return datatables()->of($rows)
             ->editColumn('description', function ($key) {

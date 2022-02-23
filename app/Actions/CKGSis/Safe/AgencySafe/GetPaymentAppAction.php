@@ -32,7 +32,8 @@ class GetPaymentAppAction
 
 
         $rows = DB::table('view_agency_payment_app_details')
-            ->whereRaw($dateFilter == 'true' ? "created_at between '" . $firstDate . " 00:00:00'  and '" . $lastDate . " 23:59:59'" : ' 1 > 0');
+            ->whereRaw($dateFilter == 'true' ? "created_at between '" . $firstDate . " 00:00:00'  and '" . $lastDate . " 23:59:59'" : ' 1 > 0')
+            ->where('agency_id', '=', Auth::user()->agency_code);
 
 
         return datatables()->of($rows)
