@@ -28,9 +28,8 @@ class AgencyTransferCarsController extends Controller
         $user = Auth::user();
         $data['transshipment_centers'] = TransshipmentCenters::all();
         $data['cities'] = Cities::all();
-        $data['branch'] = $user->getAgency->tc_name;
         GeneralLog('Aktarma aracı oluştur sayfası görüntülendi.');
-        return view('backend.operation.transfer_cars_agency.create', ['branch'=> $user->getAgency->agency_name]);
+        return view('backend.operation.transfer_cars_agency.create', ['branch'=> $user->getAgency->agency_name, 'user' => $user->name_surname]);
     }
 
     public function allData(Request $request)
@@ -45,6 +44,7 @@ class AgencyTransferCarsController extends Controller
         $soforIletisim = $request->soforIletisim;
 
         $cars = TcCars::with('creator', 'cikishAktarma', 'varishAktarma')
+            ->where('car_type', 'Acente')
             ->when($marka, function($q) use($marka){ return $q->where('marka', 'like', '%'.$marka.'%');})
             ->when($model, function($q) use($model){ return $q->where('model', 'like', '%'.$model.'%');})
             ->when($plaka, function($q) use($plaka){ return $q->where('plaka', 'like', '%'.$plaka.'%');})
@@ -114,6 +114,19 @@ class AgencyTransferCarsController extends Controller
 
     public function store(AgencyTransferCarRequest $request)
     {
+        $user = Auth::user();
         $validated = $request->validated();
+        $validated['branch_code'] = $user->getAgency->id;
+        $validated['confirm'] = '0';
+        $validated['creator_id'] = $user->id;
+
+        $create = TcCars::create($validated);
+
+        if ($create)
+            return back()
+                ->with('success', 'Aktarma aracı başarıyla kaydedildi!');
+        else
+            return back()
+                ->with('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!');
     }
 }

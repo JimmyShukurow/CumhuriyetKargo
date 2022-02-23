@@ -39,7 +39,7 @@
 
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <form id="tc_car_form" method="POST" action="{{ route('AgencyTransferCars.store') }}">
+                <form id="agency_tc_car_form" method="POST" action="{{ route('AgencyTransferCars.store') }}">
                     @csrf
                     <div class="row">
                         <div class="col-md-6" id="container-general-info">
@@ -92,30 +92,29 @@
                                     <div class="position-relative form-group">
                                         <label for="model_yili" class="font-weight-bold">Bağlı olduğu birim</label>
                                         <input name="branch_code" required id="branch_code"
-                                               placeholder="Aracın markasını giriniz."
                                                type="text"
                                                value= "{{ $branch ?? ''}}"
-                                               class="form-control form-control form-control-sm">
+                                               class="form-control form-control form-control-sm" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="model_yili" class="font-weight-bold">Ekleyen</label>
-                                        <input name="model_yili" required id="model_yili"
+                                        <input name="creator" required id="creator"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"
-                                               value="Auth"
-                                               class="form-control form-control form-control-sm">
+                                               value="{{$user ?? ''}}"
+                                               class="form-control form-control form-control-sm" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="model_yili" class="font-weight-bold">Araç tipi</label>
-                                        <input name="model_yili" required id="model_yili"
+                                        <input name="car_type" required id="car_type"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"
-                                               value="Auth"
-                                               class="form-control form-control form-control-sm">
+                                               value="Acente"
+                                               class="form-control form-control form-control-sm" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -179,7 +178,7 @@
 
         $(document).ready(() => {
 
-            $("#tc_car_form").submit(function (e) {
+            $("#agency_tc_car_form").submit(function (e) {
 
                 if ($('#ugradigi_aktarmalar').val() == '') {
                     ToastMessage('error', 'Aracın Uğradığı Aktarmaları Giriniz!', 'Hata');
@@ -228,7 +227,7 @@
             }
 
 
-            $("#tc_car_form").validate({
+            $("#agency_tc_car_form").validate({
                 errorElement: "em",
                 errorPlacement: function (error, element) {
                     // Add the `invalid-feedback` class to the error element
