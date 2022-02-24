@@ -11,7 +11,6 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-<<<<<<< HEAD
 app/Providers/TelescopeServiceProvider.php
 config/telescope.php
 database/migrations/2018_08_08_100000_create_telescope_entries_table.php
@@ -20,9 +19,8 @@ public/vendor/telescope/app.css
 public/vendor/telescope/app.js
 public/vendor/telescope/favicon.ico
 public/vendor/telescope/mix-manifest.json
-=======
 config/telescope.php
 database/migrations/2018_08_08_100000_create_telescope_entries_table.php
 app/Providers/TelescopeServiceProvider.php
 public/vendor/telescope
->>>>>>> f9441d0a9ddd4abbd8b0ec7009dcaa24bc94c704
+storage/debugbar
