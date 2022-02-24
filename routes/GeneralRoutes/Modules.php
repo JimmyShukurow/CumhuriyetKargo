@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Backend\Module\ModuleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Module\SortingController;
+use App\Http\Controllers\Backend\Module\ModuleController;
 
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::group(['prefix' => '/Module', 'middleware' => ['ModulesMid']], (function () {
@@ -16,7 +16,6 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
             Route::get('/SystemUpdate/Edit/{id}', [ModuleController::class, 'systemUpdateEdit'])->name('systemUpdate.Edit');
             Route::post('/SystemUpdate/Update/{id}', [ModuleController::class, 'systemUpdateUpdate'])->name('systemUpdate.Update');
             Route::get('/SystemUpdate/Delete/{id}', [ModuleController::class, 'systemUpdateDelete'])->name('systemUpdate.Delete');
-
 
             ### Role Transactions ###
             Route::get('AddRole', [ModuleController::class, 'addRole'])->name('AddRole');

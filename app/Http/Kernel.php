@@ -8,7 +8,9 @@ use App\Http\Middleware\AuthSahareInfo;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckLogin;
 use App\Http\Middleware\MidsOfCont\AgenciesMid;
+use App\Http\Middleware\MidsOfCont\AgencySafeMid;
 use App\Http\Middleware\MidsOfCont\DepartmentsMid;
+use App\Http\Middleware\MidsOfCont\GeneralSafeMid;
 use App\Http\Middleware\MidsOfCont\GeneralServicesFeeMid;
 use App\Http\Middleware\MidsOfCont\LocalLocationMid;
 use App\Http\Middleware\MidsOfCont\MainCargoMid;
@@ -117,6 +119,8 @@ class Kernel extends HttpKernel
         'ItAndNotificationMidX' => ItAndNotificationMidX::class,
         'MainCargoMid' => MainCargoMid::class,
         'ManageReportMid' => ManageReportMid::class,
+        'GeneralSafeMid' => GeneralSafeMid::class,
+        'AgencySafeMid' => AgencySafeMid::class,
 
     ];
 }

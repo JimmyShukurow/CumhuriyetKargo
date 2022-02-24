@@ -78,13 +78,12 @@
                                                    class="Table30Padding table table-striped mt-3">
                                                 <thead>
                                                 <tr>
-                                                    <th class="font-weight-bold">KTNO</th>
+                                                    <th class="font-weight-bold">Fatura No</th>
                                                     <th class="font-weight-bold">Gönderici Ad Soyad</th>
                                                     <th class="font-weight-bold">Alıcı Ad Soyad</th>
                                                     <th class="font-weight-bold">Durum</th>
                                                     <th class="font-weight-bold">Kargo Tipi</th>
                                                     <th class="font-weight-bold">Tutar</th>
-                                                    <th class="font-weight-bold">Detay</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="tbodyUserTopTen">

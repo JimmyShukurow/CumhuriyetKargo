@@ -10,7 +10,7 @@ class Roles extends Model
 {
     use HasFactory, LogsActivity;
 
-    protected $fillable = ['name', 'display_name', 'description'];
+    protected $guarded = [];
 
     protected static $logAttributes = ['name', 'display_name', 'description'];
 

@@ -70,6 +70,10 @@
                         </div>
                     </div>
                 </div>
+                <div class="p-2">
+                    <input type="checkbox" name="filter-by-time" id="filter-by-time">
+                    <label for="filter-by-time"> Zamana göre filtrele</label>
+                </div>
             </form>
 
             <div class="card-body">
@@ -83,6 +87,9 @@
                         <th>İçerdiği Kargo Sayısı</th>
                         <th>Statü</th>
                         <th>Oluşturan</th>
+                        <th>Son İndiren Kişi</th>
+                        <th>Son İndirme Tarihi</th>
+                        <th>İndirme Yapıldı</th>
                         <th>Oluşturulma Zamanı</th>
                         <th>İşlem</th>
                     </tr>
@@ -97,6 +104,9 @@
                         <th>İçerdiği Kargo Sayısı</th>
                         <th>Statü</th>
                         <th>Oluşturan</th>
+                        <th>Son İndiren Kişi</th>
+                        <th>Son İndirme Tarihi</th>
+                        <th>İndirme Yapıldı</th>
                         <th>Oluşturulma Zamanı</th>
                         <th>İşlem</th>
                     </tr>

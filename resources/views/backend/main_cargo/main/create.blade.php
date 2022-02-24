@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 @endpush
 
-@section('title', 'Yeni Kargo')
+@section('title', 'Yeni Fatura')
 
 @section('content')
 
@@ -19,7 +19,7 @@
                         <i class="pe-7s-box2 icon-gradient bg-ck">
                         </i>
                     </div>
-                    <div>Yeni Kargo
+                    <div>Yeni Fatura
                         <div class="page-title-subheading">Bu sayfa üzerinden yeni kargo girişi yapabilirsiniz.
                         </div>
                     </div>
@@ -112,12 +112,14 @@
                         </div>
                         <div class="row mt-2 mb-2">
                             <div class="col-md-6">
-                                <button id="btnClearSenderInfo" class="float-left btn-icon btn-square btn btn-sm btn-danger"><i
+                                <button id="btnClearSenderInfo"
+                                        class="float-left btn-icon btn-square btn btn-sm btn-danger"><i
                                         class="lnr-cross btn-icon-wrapper"> </i>Temizle
                                 </button>
                             </div>
                             <div class="col-md-6">
-                                <button id="searchCurrent" class="float-right btn-icon btn-square btn btn-sm btn-primary"><i
+                                <button id="searchCurrent"
+                                        class="float-right btn-icon btn-square btn btn-sm btn-primary"><i
                                         class="fa fa-search-plus btn-icon-wrapper"> </i>Ara
                                 </button>
                             </div>
@@ -249,17 +251,31 @@
 
                         <input style="display: none;" type="button" id="fakeButton">
 
+
                         <div class="form-group row">
                             <label for="colFormLabelSm"
                                    class="col-sm-5 col-form-label">Ödeme Tipi:</label>
-                            <div id="divPaymentType" class="col-sm-7 p-0">
-                                <input class="check_user_type" data-width="100%"
-                                       style="display: none; "
-                                       onchange="" type="checkbox"
-                                       checked id="paymentType"
-                                       data-toggle="toggle"
-                                       data-on="Gönderici Öd."
-                                       data-off="Alıcı Öd." data-onstyle="primary" data-offstyle="danger">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input radio-payment-type" checked type="radio"
+                                       name="radioPaymentType" id="radioPaymentType1"
+                                       value="Gönderici Ödemeli">
+                                <label class="form-check-label cursor-pointer" for="radioPaymentType1">Gönderici
+                                    Ödemeli</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input radio-payment-type" type="radio" name="radioPaymentType"
+                                       id="radioPaymentType2"
+                                       value="Alıcı Ödemeli">
+                                <label class="form-check-label cursor-pointer" for="radioPaymentType2">Alıcı
+                                    Ödemeli</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="radioPaymentType"
+                                       id="radioPaymentType3"
+                                       value="PÖCH" disabled>
+
+                                <label class="form-check-label cursor-pointer" for="radioPaymentType3">PÖCH
+                                    (disabled)</label>
                             </div>
                         </div>
                         <div class="form-row collection-container">
@@ -348,12 +364,14 @@
                         <div class="row mt-2 mb-2">
 
                             <div class="col-md-6">
-                                <button id="btnClearReceiverInfo" class="float-left btn-icon btn-square btn btn-sm btn-danger"><i
+                                <button id="btnClearReceiverInfo"
+                                        class="float-left btn-icon btn-square btn btn-sm btn-danger"><i
                                         class="lnr-cross btn-icon-wrapper"> </i>Temizle
                                 </button>
                             </div>
                             <div class="col-md-6">
-                                <button id="searchReceiver" class="float-right btn-icon btn-square btn btn-sm btn-primary"><i
+                                <button id="searchReceiver"
+                                        class="float-right btn-icon btn-square btn btn-sm btn-primary"><i
                                         class="fa fa-search-plus btn-icon-wrapper"> </i>Ara
                                 </button>
                             </div>
@@ -413,7 +431,7 @@
                             </div>
                         </div>
 
-                        <div class="form-row">
+                        {{-- <div class="form-row">
                             <div class="col-md-6">
                                 <div class="position-relative">
                                     <label for="aliciIl">Alıcı İl:</label>
@@ -496,20 +514,18 @@
                                            class="form-control form-control-sm">
                                 </div>
                             </div>
-                        </div>
-
+                        </div> --}}
                         <div class="form-row">
                             <div class="col-md-12">
                                 <div class="position-relative">
-                                    <label for="aliciAdresNotu">Adres Notu:</label>
+                                    <label for="aliciAdres">Alıcı Adres:</label>
                                 </div>
                                 <div class="input-group mb-1">
-                                    <textarea name="" id="aliciAdresNotu" cols="30" rows="3"
-                                              class="form-control"></textarea>
+                                    <textarea readonly="" name="" id="aliciAdres" cols="30" rows="3"
+                                              class="form-control form-control-sm"></textarea>
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-row">
                             <div class="col-md-12">
                                 <div class="position-relative">
@@ -519,6 +535,49 @@
                                     <input type="text" id="musteriKodu"
                                            type="text"
                                            class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-row">
+                            <label for="selectCollectionType" class="col-sm-5 col-form-label">Tahsilat Türü:</label>
+                            <div id="divCargoType" class="col-sm-7 pt-2 pb-2">
+                                <select name="selectCollectionType" id="selectCollectionType"
+                                        class="form-control form-control-sm">
+                                    <option value="NAKİT">NAKİT</option>
+                                    {{--                                    <option value="POS">POS</option>--}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="position-relative ">
+                                    <label for="tahsilatOnayKodu">Onay Kodu:</label>
+                                </div>
+                                <div class="input-group mb-1">
+                                    <input type="text" id="tahsilatOnayKodu" disabled
+                                           class="form-control form-control-sm">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="position-relative ">
+                                    <label for="KartSahibi">Kart Sahibi Ad Soyad:</label>
+                                </div>
+                                <div class="input-group mb-1">
+                                    <input type="text" id="tahsilatKartSahibi" disabled
+                                           class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="position-relative">
+                                    <label for="TahsilatNotu">Tahsilat Açıklaması:</label>
+                                </div>
+                                <div class="input-group mb-1">
+                                    <textarea name="" id="tahsilatAciklama" cols="30" rows="3"
+                                              class="form-control form-control-sm">Kargo nakit tahsilat:</textarea>
                                 </div>
                             </div>
                         </div>
@@ -752,7 +811,8 @@
                                 <div class="form-row">
                                     <div class="col-md-12">
                                         <div class="position-relative ">
-                                            <label for="currentYearOfBirth">Doğum Yılı:</label><b class="text-danger">*</b>
+                                            <label for="currentYearOfBirth">Doğum Yılı:</label><b
+                                                class="text-danger">*</b>
                                         </div>
                                         <div class="input-group mb-1">
                                             <input type="text" id="currentYearOfBirth"
@@ -846,7 +906,8 @@
 
                                     <div class="col-md-4">
                                         <div class="position-relative ">
-                                            <label for="currentDistrict">Mahalle/Köy:</label><b class="text-danger">*</b>
+                                            <label for="currentDistrict">Mahalle/Köy:</label><b
+                                                class="text-danger">*</b>
                                         </div>
                                         <div class="input-group mb-1">
                                             <select name="" id="currentNeighborhood"

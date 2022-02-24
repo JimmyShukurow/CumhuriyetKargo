@@ -48,7 +48,7 @@
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
                         class="header-icon pe-7s-ticket mr-3 text-muted opacity-6"> </i>Tüm Destek Talepleri
-                    <div class="badge mr-2 ml-2 badge-alternate">{{$data['count']}}</div>
+                    <div class="badge mr-2 ml-2 badge-alternate">{{count($data['tickets'])}}</div>
                 </div>
             </div>
             <div style="min-height: 70vh;overflow-x: auto;" class="card-body">
@@ -59,6 +59,7 @@
                     <tr>
                         <th>Durum</th>
                         <th>Departman</th>
+                        <th>Oluşturan</th>
                         <th>Başlık</th>
                         <th>Öncelik</th>
                         <th>Oluşt. Tarihi</th>
@@ -83,6 +84,7 @@
                                 @endif
                             </td>
                             <td width="130">{{$ticket->department_name}}</td>
+                            <td width="130">{{$ticket->name_surname}}</td>
                             <td>
                                 <a class="text-primary font-weight-bold"
                                    href="{{route('systemSupport.TicketDetails', ['TicketID' => $ticket->id])}}">

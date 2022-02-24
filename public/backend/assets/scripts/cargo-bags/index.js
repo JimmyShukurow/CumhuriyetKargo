@@ -64,9 +64,10 @@ $(document).ready(function () {
         ajax: {
             url: '/CargoBags/Agency/GetCargoBags',
             data: function (d) {
-                d.startDate = $('#startDate').val();
-                d.endDate = $('#endDate').val();
-                d.creatorUser = $('#creatorUser').val();
+                d.startDate = $('#startDate').val()
+                d.endDate = $('#endDate').val()
+                d.creatorUser = $('#creatorUser').val()
+                d.dateFilterStatus = $('#filter-by-time').prop('checked')
             },
             error: function (xhr, error, code) {
                 if (code == "Too Many Requests") {
@@ -80,12 +81,20 @@ $(document).ready(function () {
             {data: 'included_cargo_count', name: 'included_cargo_count'},
             {data: 'status', name: 'status'},
             {data: 'name_surname', name: 'name_surname'},
+            {data: 'last_opener', name: 'last_opener'},
+            {data: 'last_opening_date', name: 'last_opening_date'},
+            {data: 'is_opened', name: 'is_opened'},
             {data: 'created_at', name: 'created_at'},
             {data: 'edit', name: 'edit'},
         ],
         scrollY: "400px",
     });
+
+ 
+
 });
+
+
 
 $('#search-form').on('submit', function (e) {
     oTable.draw();
@@ -206,6 +215,7 @@ function getBagDetails(bag_id) {
         if (response.status == 0)
             ToastMessage('error', response.message, 'Hata!');
         else if (response.status == 1) {
+
 
             let bag = response.bag;
             let bag_details = response.bag_details;

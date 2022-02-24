@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UnLoadCargoToCargoBagAction
 {
@@ -57,13 +58,21 @@ class UnLoadCargoToCargoBagAction
                         'message' => 'Kargo ' . $bag->type . ' içerinde bulunamadı!'
                     ];
                 } else {
+                    $bag->update(
+                        [
+                            'last_opener' => Auth::id(),
+                            'last_opening_date' => now(),
+                        ]
+                    );
 
                     $update = CargoBagDetails::where('cargo_id', $cargo->id) //->first();
                         ->where('part_no', $ctn[1])
                         ->update(['is_inside' => '0', 'unloader_user_id' => Auth::user()->id, 'unloaded_time' => now()]);
 
-                    if ($update)
+                    if ($update){
+                        RegisterMovementAction::run($ctn[0],$bag, $cargo->id, Auth::id(),1, Str::random(10), 'unload_cargo_bag', 2);
                         return ['status' => 1];
+                    }
                     else
                         return [
                             'status' =>  0,

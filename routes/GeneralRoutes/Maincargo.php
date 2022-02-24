@@ -13,7 +13,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
         Route::get('', [MainCargoController::class, 'index'])->name('index');
         Route::get('GetCargoes', [MainCargoController::class, 'getMainCargoes'])->name('getCargoes')
-            ->middleware('throttle:20,1');
+            ->middleware('throttle:30,1');
         Route::post('AjaxTransactions/{transaction}', [MainCargoController::class, 'ajaxTransacrtions']);
         Route::get('StatementOfResponsibility/{ctn}', [MainCargoController::class, 'statementOfResponsibility']);
 
@@ -31,5 +31,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('SearchCargoGM', [MainCargoController::class, 'searchCargoGM'])->name('SearchCargoGM');
         Route::get('SearchGlobalCargoGM', [MainCargoController::class, 'getGlobalCargoesGM'])
             ->middleware('throttle:30,1');
+
+        Route::get('CalculateServiceFee', [MainCargoController::class, 'calculateServiceFee'])->name('calculateServiceFee');
     });
 });

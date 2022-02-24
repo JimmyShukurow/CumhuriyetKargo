@@ -233,7 +233,7 @@
                                 <div class="card-body">
                                     <div class="card-body">
                                         <table id="TableRolePermissions"
-                                               style="white-space: nowrap; "
+                                               style="white-space: nowrap; width: 100% !important;"
                                                class="table table-hover table-striped  table-bordered TableNoPadding NikolasDataTable IdleDistricts table-hover">
                                             <thead>
                                             <tr>
@@ -260,7 +260,7 @@
                                 <div class="card-body">
                                     <div class="card-body">
                                         <table id="TableRolePermissions"
-                                               style="white-space: nowrap; "
+                                               style="white-space: nowrap; width: 100% !important;"
                                                class="table table-hover table-striped  table-bordered TableNoPadding NikolasDataTable IdleAgenciesRegion table-hover">
                                             <thead>
                                             <tr>
@@ -292,7 +292,7 @@
                                     <div class="card-body">
                                         <div class="card-body">
                                             <table id="TableRolePermissions"
-                                                   style="white-space: nowrap; "
+                                                   style="white-space: nowrap; width: 100%;"
                                                    class="table table-hover table-striped  table-bordered TableNoPadding NikolasDataTable IdleAgenciesTC"
                                                    role="grid">
                                                 <thead>

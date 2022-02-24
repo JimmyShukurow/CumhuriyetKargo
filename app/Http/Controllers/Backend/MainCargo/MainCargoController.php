@@ -55,9 +55,6 @@ class MainCargoController extends Controller
 
     public function index()
     {
-        $val = createNgiShipmentWithAddress();
-//        return $val['outFlag'];
-
         $data['agencies'] = Agencies::all();
         $data['gm_users'] = DB::table('users')
             ->where('agency_code', 1)
@@ -97,7 +94,7 @@ class MainCargoController extends Controller
         $daily['file_count'] = DB::table('cargoes')
             ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
             ->whereRaw('deleted_at is null')
-            ->where('cargo_type', 'Dosya-Mi')
+            ->whereIn('cargo_type', ['Dosya', 'Mi'])
             ->where('departure_agency_code', $agency->id)
             ->count();
 
@@ -199,87 +196,87 @@ class MainCargoController extends Controller
         switch ($transaction) {
 
             case 'SaveCurrent':
-                    return SaveCurrentAction::run($request);
+                return SaveCurrentAction::run($request);
                 break;
 
             case 'SaveReceiver':
-                    return SaveReceiverAction::run($request);
+                return SaveReceiverAction::run($request);
                 break;
 
             case 'ConfirmTC':
-                    return ConfirmTCAction::run($request);
+                return ConfirmTCAction::run($request);
                 break;
 
             case 'GetCustomer':
-                    return GetCustomerAction::run($request);
+                return GetCustomerAction::run($request);
                 break;
 
             case 'GetCustomers':
-                    return GetCustomersAction::run($request);
+                return GetCustomersAction::run($request);
                 break;
 
             case 'GetCurrents':
-                    return GetCurrentsAction::run($request);
+                return GetCurrentsAction::run($request);
                 break;
 
             case 'GetReceivers':
-                    return GetReceiversAction::run($request);
+                return GetReceiversAction::run($request);
                 break;
 
             case 'GetDistance':
-                    return GetDistanceAction::run($request);
+                return GetDistanceAction::run($request);
                 break;
 
             case 'CalcDesiPrice':
-                    return CalcDesiPriceAction::run($request);
+                return CalcDesiPriceAction::run($request);
                 break;
 
             case 'GetFilePrice':
-                    return GetFilePriceAction::run($request);
+                return GetFilePriceAction::run($request);
                 break;
 
             case 'GetPriceForCustomers':
-                    return GetPriceForCustomersAction::run($request);
+                return GetPriceForCustomersAction::run($request);
                 break;
 
             case 'CreateCargo':
-                    return CreateCargoAction::run($request);
+                return CreateCargoAction::run($request);
                 break;
 
             case 'CalcCollectionPercent':
-                    return CalcCollectionPercentAction::run($request);
+                return CalcCollectionPercentAction::run($request);
                 break;
 
             case 'DistributionControl':
-                    return DistributionControlAction::run($request);
+                return DistributionControlAction::run($request);
                 break;
 
             # INDEX TRANSACTION START
             case 'GetCargoInfo':
-                    return GetCargoInfoAction::run($request);
+                return GetCargoInfoAction::run($request);
                 break;
 
             case 'GetMultipleCargoInfo':
-                    return GetMultipleCargoInfoAction::run($request);
+                return GetMultipleCargoInfoAction::run($request);
                 break;
 
             case 'GetCargoMovementDetails':
-                    return GetCargoMovementDetailsAction::run($request);
+                return GetCargoMovementDetailsAction::run($request);
 
             case 'GetMainDailySummery':
-                    return GetMainDailySummeryAction::run($request);
+                return GetMainDailySummeryAction::run($request);
                 break;
 
             case 'MakeCargoCancellationApplication':
-                    return MakeCargoCancellationApplicationAction::run($request);
+                return MakeCargoCancellationApplicationAction::run($request);
                 break;
             # INDEX TRANSACTION END
             case 'GetAllCargoInfo':
-                    return GetAllCargoInfoAction::run($request);
+                return GetAllCargoInfoAction::run($request);
                 break;
 
             case 'GetCancelledCargoInfo':
-                    return GetCancelledCargoInfoAction::run($request);
+                return GetCancelledCargoInfoAction::run($request);
                 break;
 
             default:
@@ -297,7 +294,7 @@ class MainCargoController extends Controller
 
     public function getGlobalCargoes(Request $request)
     {
-       return GetGlobalCargoesAction::run($request);
+        return GetGlobalCargoesAction::run($request);
     }
 
     public function statementOfResponsibility($ctn)
@@ -345,7 +342,8 @@ class MainCargoController extends Controller
         return GetCancelledCargoesAction::run($request);
     }
 
-    public function searchCargoGM(){
+    public function searchCargoGM()
+    {
         $data['cities'] = Cities::all();
 
         $data['agencies'] = DB::table('agencies')
@@ -364,5 +362,68 @@ class MainCargoController extends Controller
     public function getGlobalCargoesGM(Request $request)
     {
         return GetGlobalCargoesGmAction::run($request);
+    }
+
+    public function calculateServiceFee()
+    {
+        $data['additional_service'] = AdditionalServices::all();
+        $data['cities'] = Cities::all();
+
+        ## get agency district
+        $agency = Agencies::where('id', Auth::user()->agency_code)->first();
+
+        $tc = TransshipmentCenterDistricts::where('city', $agency->city)
+            ->where('district', $agency->district)
+            ->first();
+
+        $tc = TransshipmentCenters::find($tc->tc_id);
+
+        $data['districts'] = DB::table('view_city_districts')
+            ->where('city_name', $agency->city)
+            ->get();
+        $data['neighborhoods'] = DB::table('view_city_district_neighborhoods')
+            ->where('city_name', $agency->city)
+            ->where('district_name', $agency->district)
+            ->get();
+        $data['user_neighborhood'] = $agency->neighborhood;
+        $data['user_district'] = $agency->district;
+        $data['user_city'] = $agency->city;
+
+
+        $fee['first_add_service'] = DB::table('additional_services')
+            ->where('default', '=', '1')
+            ->sum('price');
+
+        $fee['first_total'] = DB::table('additional_services')
+            ->where('default', '=', '1')
+            ->sum('price');
+
+        $filePrice = FilePrice::first();
+        $fee['first_file_price'] = 0;
+
+        # evrensel posta hizmetleri ücreti
+        $postServicePercent = DB::table('settings')
+            ->where('key', 'post_services_percent')
+            ->first();
+        $postServicePercent = $postServicePercent->value;
+
+        $fee['postal_services_fee'] = ($fee['first_file_price'] * $postServicePercent) / 100;
+
+        $totalFirst = 0;
+        $totalFirstNoKDV = 0;
+        $totalFirst += $fee['first_total'] + $fee['first_file_price'] + $fee['postal_services_fee'];
+        $totalFirstNoKDV = $fee['first_total'] + $fee['first_file_price'] + $fee['postal_services_fee'];
+
+        $fee['first_total'] = round($totalFirst + ((18 * $totalFirst) / 100), 2);
+        $fee['first_total_no_kdv'] = $totalFirstNoKDV;
+
+        $data['collectible_cargo'] = Settings::where('key', 'collectible_cargo')->first();
+
+        GeneralLog('Ücret Hesapla sayfası görüntülendi.');
+
+        return view('backend.main_cargo.main.calculate_service_fee', compact(['data', 'fee', 'agency', 'tc']));
+
+
+
     }
 }

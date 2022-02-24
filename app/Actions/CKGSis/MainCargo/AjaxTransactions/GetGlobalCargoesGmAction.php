@@ -71,7 +71,7 @@ class GetGlobalCargoesGmAction
             ->whereRaw($currentDistrict ? "sender_district='" . $currentDistrict . "'" : '1 > 0')
             ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
 
-            ->whereRaw($departureAgency ? 'view_agency_region.agency_code=' . $departureAgency : '1 > 0')
+            ->whereRaw($departureAgency ? 'cargoes.departure_agency_code=' . $departureAgency : '1 > 0')
             ->whereRaw($departureAgencyCode ? 'view_agency_region.agency_code=' . $departureAgencyCode : '1 > 0')
             ->whereRaw($departureRegion ? 'departure_tc_code=' . $departureRegion : '1 > 0')
             ->whereRaw($arrivalAgency ? 'arrival_agency_code=' . $arrivalAgency : '1 > 0')
@@ -91,7 +91,7 @@ class GetGlobalCargoesGmAction
             ->whereRaw($receiverName ? "receiver_name like '%" . $receiverName . "%'" : '1 > 0')
             ->whereRaw($filterByDAte == "true" ? "cargoes.created_at between '" . $startDate . "'  and '" . $finishDate . "'" : '1 > 0')
             ->whereRaw('cargoes.deleted_at is null')
-            ->limit(10000)
+            ->limit(350)
             ->orderByDesc('created_at')
             ->get();
 

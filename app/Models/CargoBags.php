@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use PhpParser\Builder\Class_;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class CargoBags extends Model
 {
     use HasFactory, LogsActivity;
 
-    protected $fillable = ['type', 'tracking_no', 'creator_user_id', 'status', 'last_opener', 'last_closer'];
+    protected $fillable = ['type', 'tracking_no', 'creator_user_id', 'status', 'last_opener', 'last_closer', 'last_opening_date'];
     protected static $logAttributes = ['type', 'tracking_no', 'creator_user_id', 'status', 'last_opener', 'last_closer'];
 
     public function getDescriptionForEvent(string $eventName): string
@@ -31,5 +32,11 @@ class CargoBags extends Model
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:m:s',
         'updated_at' => 'datetime:Y-m-d H:m:s',
+        'last_opening_date' => 'datetime:Y-m-d H:m:s',
     ];
+
+    public function bagLastOpener()
+    {
+        return $this->hasOne(User::class, 'id', 'last_opener');
+    }
 }

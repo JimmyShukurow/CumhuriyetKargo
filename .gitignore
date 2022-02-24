@@ -24,3 +24,4 @@ database/migrations/2018_08_08_100000_create_telescope_entries_table.php
 app/Providers/TelescopeServiceProvider.php
 public/vendor/telescope
 storage/debugbar
+app/Providers/AppServiceProvider.php

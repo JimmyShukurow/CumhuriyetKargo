@@ -67,8 +67,8 @@ class PersonelController extends Controller
             ->where('district', $person->branch_district)
             ->first();
 
-        $region_info = RegioanalDirectorates::where('id', $region->region_id)
-            ->first();
+        $region_info = RegioanalDirectorates::find($region->region_id);
+
         $rd_director = User::where('id', $region_info->director_id)->first();
         $rd_assistant_director = User::where('id', $region_info->assistant_director_id)->first();
 
@@ -79,18 +79,24 @@ class PersonelController extends Controller
             ->where('role_id', 20)
             ->first();
 
-        $tc = DB::table('transshipment_center_districts')
-            ->join('transshipment_centers', function ($join) {
-                $join->on('transshipment_center_districts.tc_id', '=', 'transshipment_centers.id');
-            })
-            ->where('transshipment_center_districts.city', $agency->city)
-            ->where('transshipment_center_districts.district', $agency->district)
-            ->select('transshipment_centers.*')
-            ->first();
+        $tc = "";
+        $tc_director = "";
+        $tc_assistant_director = "";
 
-//        $tc = TransshipmentCenters::where('id', $agency->transshipment_center_code)->first();
-        $tc_director = User::where('id', $tc->tc_director_id)->first();
-        $tc_assistant_director = User::where('id', $tc->tc_assistant_director_id)->first();
+        if (Auth::user()->user_type == 'Acente') {
+
+            $tc = DB::table('transshipment_center_districts')
+                ->join('transshipment_centers', function ($join) {
+                    $join->on('transshipment_center_districts.tc_id', '=', 'transshipment_centers.id');
+                })
+                ->where('transshipment_center_districts.city', $agency->city)
+                ->where('transshipment_center_districts.district', $agency->district)
+                ->select('transshipment_centers.*')
+                ->first();
+            //        $tc = TransshipmentCenters::where('id', $agency->transshipment_center_code)->first();
+            $tc_director = User::where('id', $tc->tc_director_id)->first();
+            $tc_assistant_director = User::where('id', $tc->tc_assistant_director_id)->first();
+        }
 
 
         return view('backend.personel.account_settings', compact([

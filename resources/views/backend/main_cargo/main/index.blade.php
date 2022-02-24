@@ -162,9 +162,9 @@
                                 <div class="p-2 col-lg-2 col-sm-4 col-xs-6">
                                     <a style="text-decoration: none;" href="{{route('mainCargo.newCargo')}}">
                                         <button id="btnNewCargo"
-                                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-info">
-                                            <i class="lnr-plus-circle text-info opacity-7 btn-icon-wrapper mb-2"> </i>
-                                            YENİ KARGO
+                                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-primary">
+                                            <i class="lnr-plus-circle text-primary opacity-7 btn-icon-wrapper mb-2"> </i>
+                                            YENİ FATURA
                                         </button>
                                     </a>
                                 </div>
@@ -188,8 +188,8 @@
                                     <button
                                         aria-haspopup="true" aria-expanded="false"
                                         data-toggle="dropdown"
-                                        class="dropdown-toggle  btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-primary">
-                                        <i class="pe-7s-note2 text-primary opacity-7 btn-icon-wrapper mb-2"> </i>
+                                        class="dropdown-toggle  btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-info">
+                                        <i class="pe-7s-note2 text-info opacity-7 btn-icon-wrapper mb-2"> </i>
                                         TUTANAK
                                     </button>
 

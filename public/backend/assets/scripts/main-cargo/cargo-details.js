@@ -151,6 +151,7 @@ function cargoInfo(user) {
             let sms = response.sms;
             let add_services = response.add_services;
             let movements = response.movements;
+            let movementsSecondary = response.movementsSecondary;
             let cancellations = response.cancellation_applications;
             let part_details = response.part_details;
             let official_reports = response.official_reports;
@@ -188,7 +189,7 @@ function cargoInfo(user) {
             $('#receiverTcknVkn').text(receiver.tckn);
 
             $('#receiverCurrentCode').text(receiver.current_code);
-            $('#receiverCurrentCode').prop('id', sender.id);
+            $('#receiverCurrentCode').prop('id', receiver.id);
 
             $('#receiverCustomerType').text(receiver.category);
             $('#receiverNameSurname').text(cargo.receiver_name);
@@ -243,6 +244,12 @@ function cargoInfo(user) {
 
             $('#PrintStatementOfResposibility').attr('href', '/MainCargo/StatementOfResponsibility/' + cargo.tracking_no);
 
+            if (response.bag_tracking_no == null)
+                $('#inBag').html('<b class="text-danger">HAYIR</b>')
+            else
+                $('#inBag').html('<b class="text-success">EVET</b> / <b style="color:#000;">REFERANS NO: ' + response.bag_tracking_no + '</b>')
+
+
             var addServiceTotalPrice = 0;
             $('#tbodyCargoAddServices').html('');
 
@@ -272,6 +279,7 @@ function cargoInfo(user) {
             }
 
             $('#tbodyCargoMovements').html('');
+            $('#tbodyCargoMovementsSecondary').html('');
 
             if (movements.length == 0)
                 $('#tbodyCargoMovements').html('<tr><td colspan="5" class="text-center">Burda hiç veri yok.</td></tr>');
@@ -283,7 +291,27 @@ function cargoInfo(user) {
                     $('#tbodyCargoMovements').append(
                         '<tr>' +
                         '<td>' + val['status'] + '</td>' +
-                        '<td>' + val['info'] + '</td>' +
+                        '<td style="white-space: initial;">' + val['info'] + '</td>' +
+                        '<td class="' + result + ' font-weight-bold">' + val['number_of_pieces'] + '/' + val['current_pieces'] + '</td>' +
+                        '<td>' + val['created_at'] + '</td>' +
+                        '<td><button group_id="' + val['group_id'] + '" class="btn btn-primary btn-xs btnMovementDetail">Detay</button></td>' +
+                        +'</tr>'
+                    );
+
+                });
+
+            }
+            if (movementsSecondary.length == 0)
+                $('#tbodyCargoMovementsSecondary').html('<tr><td colspan="5" class="text-center">Burda hiç veri yok.</td></tr>');
+            else {
+                $.each(movementsSecondary, function (key, val) {
+
+                    let result = val['number_of_pieces'] == val['current_pieces'] ? 'text-success' : 'text-danger';
+
+                    $('#tbodyCargoMovementsSecondary').append(
+                        '<tr>' +
+                        '<td>' + val['status'] + '</td>' +
+                        '<td style="white-space: initial;">' + val['info'] + '</td>' +
                         '<td class="' + result + ' font-weight-bold">' + val['number_of_pieces'] + '/' + val['current_pieces'] + '</td>' +
                         '<td>' + val['created_at'] + '</td>' +
                         '<td><button group_id="' + val['group_id'] + '" class="btn btn-primary btn-xs btnMovementDetail">Detay</button></td>' +

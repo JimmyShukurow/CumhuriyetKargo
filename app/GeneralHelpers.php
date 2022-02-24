@@ -13,6 +13,7 @@ use App\Models\Debits;
 use App\Models\Agencies;
 use App\Models\TransshipmentCenters;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 function tr_strtoupper($text)
 {
@@ -686,38 +687,47 @@ function FileUrlGenerator($file)
 
 }
 
-function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $group_id)
+function InsertCargoMovement($ctn, $cargoID, $userID, $partNo, $info, $status, $group_id, $importance = 1)
 {
-    $insert = CargoMovements::create([
-        'ctn' => $ctn,
-        'cargo_id' => $cargoID,
-        'user_id' => $userID,
-        'part_no' => $partNo,
-        'info' => $info,
-        'status' => $status,
-        'group_id' => $group_id,
-    ]);
+    try {
+        $insert = CargoMovements::create([
+            'ctn' => $ctn,
+            'cargo_id' => $cargoID,
+            'user_id' => $userID,
+            'part_no' => $partNo,
+            'info' => $info,
+            'status' => $status,
+            'group_id' => $group_id,
+            'importance' => $importance
+        ]);
 
-    if ($insert)
         return $insert;
-    else
+
+    } catch (Exception $e) {
         return false;
+    }
+
 }
 
 function InsertDebits($ctn, $cargoID, $partNo, $userID, $movementID)
 {
-    $agency = Agencies::find(Auth::user()->agency_code);
+    try {
+        $agency = Agencies::find(Auth::user()->agency_code);
 
-    $insert = Debits::create([
-        'cargo_id' => $cargoID,
-        'ctn' => $ctn,
-        'part_no' => $partNo,
-        'user_id' => $userID,
-        'agency_code' => $agency->id,
-        'movement_id' => $movementID,
-    ]);
+        Debits::create([
+            'cargo_id' => $cargoID,
+            'ctn' => $ctn,
+            'part_no' => $partNo,
+            'user_id' => $userID,
+            'agency_code' => $agency->id,
+            'movement_id' => $movementID,
+        ]);
 
-    return $insert == true ? true : false;
+        return true;
+    } catch (Exception $e) {
+        return false;
+    }
+
 }
 
 function crypteTrackingNo($number)
@@ -1008,7 +1018,10 @@ function getDesiPrice($desi)
     return $desiPrice;
 }
 
-
+function getJustFileName($name)
+{
+    return $name = substr($name, 0, strpos($name, '.'));
+}
 
 
 
