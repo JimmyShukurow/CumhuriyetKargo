@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgencyTransferCarsController;
 use App\Http\Controllers\Backend\DefaultController;
 use App\Http\Controllers\Backend\RegionalDirectorate\RDController;
 use App\Http\Controllers\TransferCarsController;
@@ -85,7 +86,6 @@ Route::get('CloseTheVirtualLogin/{id}', [DefaultController::class, 'closeTheVirt
     ->name('closeTheVirtualLogin');
 
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
-
 
     Route::group(['prefix' => '/Theme', 'middleware' => ['ThemeMid']], function () {
         Route::get('/', [ThemeController::class, 'index'])->name('theme.Index');
