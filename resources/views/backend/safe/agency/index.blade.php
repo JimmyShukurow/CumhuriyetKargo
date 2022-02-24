@@ -51,11 +51,17 @@
                            class="mr-1 ml-1 btn-pill btn-wide border-0 btn-transition btn btn-outline-danger">Bekleyen
                             Tahsilatlar</a>
 
+                        <a id="tabCardCollections" data-toggle="tab" href="#cardCollections"
+                           class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Pos Çekimleri</a>
+
                         <a id="tabSafe" data-toggle="tab" href="#safe"
                            class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Kasa</a>
 
                         <a id="tabPaymentApps" data-toggle="tab" href="#paymentApps"
                            class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Ödeme Bildirgesi</a>
+
+                        <a id="tabMyPayments" data-toggle="tab" href="#myPayments"
+                           class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Ödemelerim</a>
 
                     </div>
                 </div>
@@ -68,20 +74,23 @@
                     <div class="tab-pane" id="pendingCollections" role="tabpanel">
                         @include('backend.safe.agency.tabs.pending_collections')
                     </div>
+                    <div class="tab-pane" id="cardCollections" role="tabpanel">
+                        @include('backend.safe.agency.tabs.card_collections')
+                    </div>
                     <div class="tab-pane" id="safe" role="tabpanel">
                         @include('backend.safe.agency.tabs.safe')
                     </div>
                     <div class="tab-pane" id="paymentApps" role="tabpanel">
                         @include('backend.safe.agency.tabs.payment_apps')
                     </div>
+                    <div class="tab-pane" id="myPayments" role="tabpanel">
+                        @include('backend.safe.agency.tabs.my_payments')
+                    </div>
                 </div>
             </div>
 
         </div>
 
-        {{--Statistics--}}
-        <div>
-        </div>
     </div>
 @endsection
 
@@ -94,8 +103,6 @@
 
 
 @section('modals')
-
     @php $data = ['type' => 'incoming_cargo']; @endphp
     @include('backend.main_cargo.main.modal_cargo_details')
-
 @endsection

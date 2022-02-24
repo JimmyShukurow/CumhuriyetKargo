@@ -16,6 +16,7 @@ use App\Models\Settings;
 use App\Models\SmsContent;
 use App\Models\TransshipmentCenterDistricts;
 use App\Models\TransshipmentCenters;
+use FontLib\TrueType\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -71,6 +72,11 @@ class CreateCargoAction
         if ($request->odemeTipi == 'Alıcı Ödemeli' && $request->tahsilatliKargo == 'true')
             return response()
                 ->json(['status' => -1, 'message' => 'Alıcı ödemeli tahsilatlı kargo çıkaramazsınız, Sadece gönderici ödemeli tahsilatlı kargo çıkarılabilir!'], 200);
+
+
+        if (!collect(['NAKİT'])->contains($request->collectionDetails['collectionType']))
+            return response()
+                ->json(['status' => -1, 'message' => 'Lütfen geçerli bir tahsilat ödeme tipi girin!'], 200);
 
 
         $currentCode = str_replace(' ', '', $request->gondericiCariKodu);
@@ -725,10 +731,7 @@ class CreateCargoAction
                 if ($request->odemeTipi == 'Gönderici Ödemeli') {
                     $collectionPaymentType = $request->collectionDetails['collectionType'];
                     $collectionEntered = 'EVET';
-                    if ($collectionPaymentType == 'NAKİT')
-                        $enteredUserId = Auth::id();
-                    else
-                        $enteredUserId = null;
+                    $enteredUserId = Auth::id();
                 } else {
                     $collectionPaymentType = null;
                     $collectionEntered = 'HAYIR';

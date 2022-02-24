@@ -14,7 +14,7 @@
                     </div>
                     <div>Ödeme Bildirisi Oluştur
                         <div class="page-title-subheading">Bu modül üzerinden Genel Müdürlük Muhasebe departmanına ödeme
-                            bildirinide bulunabilirsiniz. Ödemeniz muhasebe departmanı tarafından onaylandıktan sonra
+                            bildirimide bulunabilirsiniz. Ödemeniz muhasebe departmanı tarafından onaylandıktan sonra
                             kasanızdan eksilecektir.
                         </div>
                     </div>

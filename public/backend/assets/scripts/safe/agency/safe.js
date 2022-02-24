@@ -54,7 +54,7 @@ $('#tabSafe').click(function () {
                         dt.ajax.reload();
                     },
                     attr: {
-                        id: 'datatableRefreshBtn'
+                        id: 'safeDataTableRefreshBtn'
                     }
                 },
             ],
@@ -106,7 +106,6 @@ $('#tabSafe').click(function () {
             scrollX: true,
         });
 
-        $('#selectedExcelBtn').hide();
 
         // Local Storage Transaction START
         let cargoSuccees = localStorage.getItem('cargo-success');
@@ -117,3 +116,40 @@ $('#tabSafe').click(function () {
         // Local Storage Transaction END
     }
 });
+
+$(document).on('click', '#safeDataTableRefreshBtn', function () {
+
+    $('#SafeDailySummeryRow').block({
+        message: $('<div class="loader mx-auto">\n' +
+            '                            <div class="ball-grid-pulse">\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                            </div>\n' +
+            '                        </div>')
+    });
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+    $.ajax('/Safe/Agency/AjaxTransactions/GetDailySafeReport', {method: 'GET'})
+        .done(function (response) {
+            if (response.status == 1) {
+                $('#spanDevredenKasa').html(response.data.devreden_kasa);
+                $('#spanGunIci').html(response.data.gun_ici);
+                $('#spanTotal').html(response.data.total);
+            }
+
+        }).error(function (jqXHR, response) {
+        ajaxError(jqXHR.status);
+    }).always(function () {
+        $('#SafeDailySummeryRow').unblock();
+    });
+
+});
+

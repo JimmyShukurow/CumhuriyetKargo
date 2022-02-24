@@ -33,7 +33,7 @@
     </thead>
 </table>
 
-<div class="row">
+<div id="SafeDailySummeryRow" class="row">
     <div class="col-md-4">
         <div class="card mb-3 widget-chart widget-chart2 bg-plum-plate text-left">
             <div class="widget-chat-wrapper-outer">
@@ -43,7 +43,7 @@
                     <div class="widget-chart-flex">
                         <div class="widget-numbers">
                             <small>₺</small>
-                            {{$data['devreden_kasa']}}
+                            <span id="spanDevredenKasa">{{$data['devreden_kasa']}}</span>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                     <div class="widget-chart-flex">
                         <div class="widget-numbers">
                             <small>₺</small>
-                            {{$data['gun_ici']}}
+                            <span id="spanGunIci">{{$data['gun_ici']}}</span>
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                     <div class="widget-chart-flex">
                         <div class="widget-numbers">
                             <small>₺</small>
-                            {{$data['total']}}
+                            <span id="spanTotal">{{$data['total']}}</span>
                         </div>
                     </div>
                 </div>

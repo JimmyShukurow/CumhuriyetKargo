@@ -546,7 +546,7 @@
                                 <select name="selectCollectionType" id="selectCollectionType"
                                         class="form-control form-control-sm">
                                     <option value="NAKİT">NAKİT</option>
-                                    <option value="POS">POS</option>
+                                    {{--                                    <option value="POS">POS</option>--}}
                                 </select>
                             </div>
                         </div>

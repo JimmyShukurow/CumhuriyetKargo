@@ -4,13 +4,13 @@ $('#tabPaymentApps').click(function () {
     if (paymentAppsInit == false) {
 
         paymentAppsInit = true
-        oTable = $('#tablePaymentApps').DataTable({
+        tablePaymentApp = $('#tablePaymentApps').DataTable({
             pageLength: 50,
             lengthMenu: [
                 [10, 25, 50, 100, 250, 500, -1],
                 ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
             ],
-            order: [9, 'desc'],
+            order: [12, 'desc'],
             language: {
                 "sDecimal": ",",
                 "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
@@ -90,18 +90,20 @@ $('#tabPaymentApps').click(function () {
                 }
             },
             columns: [
+                {data: 'id', name: 'id'},
                 {data: 'agency_name', name: 'agency_name'},
                 {data: 'name_surname', name: 'name_surname'},
                 {data: 'paid', name: 'paid'},
                 {data: 'confirm_paid', name: 'confirm_paid'},
                 {data: 'payment_channel', name: 'payment_channel'},
-                {data: 'file1', name: 'file1'},
+                {data: 'add_files', name: 'add_files'},
                 {data: 'description', name: 'description'},
                 {data: 'currency', name: 'currency'},
-                {data: 'paid', name: 'paid'},
-                {data: 'paid', name: 'paid'},
+                {data: 'confirm', name: 'confirm'},
+                {data: 'confirming_user_name_surname', name: 'confirming_user_name_surname'},
                 {data: 'confirming_date', name: 'confirming_date'},
                 {data: 'created_at', name: 'created_at'},
+                {data: 'delete', name: 'delete'},
             ],
             scrollY: '500px',
             scrollX: true,
@@ -109,12 +111,39 @@ $('#tabPaymentApps').click(function () {
 
         $('#selectedExcelBtn').hide();
 
-        // Local Storage Transaction START
-        let cargoSuccees = localStorage.getItem('cargo-success');
-        if (cargoSuccees) {
-            swal('İşlem Başarılı!', 'Kargo Oluşturuldu!', 'success');
-            localStorage.clear();
-        }
-        // Local Storage Transaction END
+
     }
+});
+
+$(document).on('click', '.delete-app', function () {
+    swal({
+        title: "Silme İşlemini Onaylayın!",
+        text: "Emin misiniz? Ödeme başvurusu silme işlemine devam etmek istiyor musunuz?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+
+                $.ajax({
+                    type: "GET",
+                    url: '/Safe/Agency/AjaxTransactions/DeletePaymentApp',
+                    data: {destroy_id: $(this).prop('id')},
+                    success: function (response) {
+                        if (response.status == 1) {
+                            ToastMessage('success', response.message, 'İşlem Başarılı!');
+                            tablePaymentApp.ajax.reload();
+                        } else
+                            ToastMessage('error', response.message, 'İşlem Başarısız!');
+                    },
+                    error: function (jqXHR, exception) {
+                        ajaxError(jqXHR.status)
+                    }
+                });
+
+            } else {
+                ToastMessage('info', 'Silme işlemi iptal edilidi.', 'Bilgi');
+            }
+        });
 });

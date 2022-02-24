@@ -14,20 +14,23 @@
 
 </div>
 
-<table style="width: 100%; white-space: nowrap;" id="tableCollections" class="table Table20Padding table-bordered table-hover">
+<table style="width: 100%; white-space: nowrap;" id="tableCollections"
+       class="table Table20Padding table-bordered table-hover">
     <thead>
     <tr>
         <th>Fatura Tarihi</th>
         <th>Fatura No</th>
         <th>Toplam Tutar</th>
-        <th>Ödeme Tipi</th>
+        <th>Tahs. Ödeme Tipi</th>
         <th>Çıkış BR.</th>
         <th>Varış İl</th>
         <th>Gönd. Cari Ünvanı</th>
         <th>Gönd. Cari Kodu</th>
         <th>Alıcı Cari Ünvanı</th>
         <th>Tahsilat Tarihi</th>
+        <th>Tahsilatı Giren</th>
         <th>Açıklama</th>
+        <th>İşlem</th>
     </tr>
     </thead>
 </table>
