@@ -87,7 +87,6 @@ Route::get('CloseTheVirtualLogin/{id}', [DefaultController::class, 'closeTheVirt
 
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
-
     Route::group(['prefix' => '/Theme', 'middleware' => ['ThemeMid']], function () {
         Route::get('/', [ThemeController::class, 'index'])->name('theme.Index');
     });
