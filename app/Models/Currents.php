@@ -106,4 +106,14 @@ class Currents extends Model
         return User::find($this->created_by_user_id)->name_surname;
     }
 
+    public function cargoesAsReciever()
+    {
+        return $this->hasMany(Cargoes::class, 'receiver_id', 'id');
+    }
+
+    public function cargoesAsSender()
+    {
+     return $this->hasMany(Cargoes::class, 'sender_id', 'id');
+    }
+
 }

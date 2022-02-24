@@ -715,10 +715,14 @@ class SenderCurrentController extends Controller
         $current = Currents::find($id);
         $creatorUser = User::find($current->created_by_user_id);
 
-        if (Auth::user()->agency_code != $creatorUser->agency_code)
-            return response()
-                ->json(['status' => 0, 'message' => 'Şubenize ait bir müşteri olmadığından bu müşteriyi silemezsiniz!'],403);
-        elseif( Carbon::parse($current->created_at)->diffInSeconds(Carbon::now()) < 86400 ){
+        $cargoesAsReciever = $current->cargoesAsReciever->count();
+        $cargoesAsSender = $current->cargoesAsSender->count();
+
+        if (Auth::user()->agency_code != $creatorUser->agency_code) return response()->json(['status' => 0, 'message' => 'Şubenize ait bir müşteri olmadığından bu müşteriyi silemezsiniz!'],403);
+
+        elseif($cargoesAsReciever != 0 || $cargoesAsSender != 0 ) return response()->json(['status' => 0, 'message' => 'Bu müşteriye daha önce fatura kesildiği için silme işlemini yapamazsınız!'],403);
+
+        elseif( Carbon::parse($current->created_at)->diffInSeconds(Carbon::now()) < 86400 && $cargoesAsReciever == 0 && $cargoesAsSender == 0 ){
 
             $current->delete();
 
