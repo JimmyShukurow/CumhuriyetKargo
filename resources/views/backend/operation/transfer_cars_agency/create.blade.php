@@ -42,7 +42,7 @@
                 <form id="agency_tc_car_form" method="POST" action="{{ route('AgencyTransferCars.store') }}">
                     @csrf
                     <div class="row">
-                        <div class="col-md-6" id="container-general-info">
+                        <div class="col-md-12" id="container-general-info">
                             <h6 class="text-dark text-center font-weight-bold">Araç Bilgileri</h6>
                             <div class="divider"></div>
                             <div class="form-row">
@@ -121,7 +121,7 @@
 
                         </div>
 
-                        <div class="col-md-6" id="container-communication-info">
+                        <div class="col-md-12" id="container-communication-info">
                             <h6 class="text-dark text-center  font-weight-bold">Şöför İletişim Bilgileri</h6>
                             <div class="divider"></div>
                             <div class="form-row">
