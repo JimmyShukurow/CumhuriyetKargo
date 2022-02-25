@@ -90,11 +90,7 @@
                         d.marka = $('#filter_marka').val();
                         d.model = $('#filter_model').val();
                         d.plaka = $('#filter_plaka').val();
-                        d.hat = $('#filter_hat').val();
-                        d.aracKapasitesi = $('#filter_arac_kapasitesi').val();
-                        d.cikisAktarma = $('#filter_cikisAktarma').val();
-                        d.varisAktarma = $('#filter_varisAktarma').val();
-                        d.soforIletisim = $('#filter_soforIletisim').val();
+                        d.soforAd = $('#filter_soforAd').val();
                     },
                     error: function (xhr, error, code) {
 

@@ -92,56 +92,12 @@
                             <input type="text" id="filter_plaka"
                                    class="form-control niko-filter form-control-sm niko-select-filter">
                         </div>
-
-                        <div class="col-md-3">
-                            <label for="filter_hat">Hat:</label>
-                            <select name="" id="filter_hat" class="form-control niko-select-filter form-control-sm">
-                                <option value="">Seçiniz</option>
-                                <option value="Anahat">Anahat</option>
-                                <option value="Arahat">Arahat</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="filter_arac_kapasitesi">Araç Kapasitesi:</label>
-                            <select name="filter_arac_kapasitesi" required="" id="filter_arac_kapasitesi"
-                                    class="form-control niko-select-filter form-control-sm">
-                                <option value=""> Seçiniz</option>
-                                <option value="Panelvan">Panelvan</option>
-                                <option value="Kamyonet">Kamyonet</option>
-                                <option value="6 Teker Kamyonet">6 Teker Kamyonet</option>
-                                <option value="10 Teker Kamyon">10 Teker Kamyon</option>
-                                <option value="40 Ayak Kamyon">40 Ayak Kamyon</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="filter_cikisAktarma">Çıkış Aktarma:</label>
-                            <select id="filter_cikisAktarma"
-                                    class="form-control form-control-sm niko-select-filter">
-                                <option value="">Seçiniz</option>
-                                @foreach($data['transshipment_centers'] as $key)
-                                    <option value="{{$key->id}}">{{$key->tc_name . ' ('.$key->type.') T.M.'}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="filter_varisAktarma">Varış Aktarma:</label>
-                            <select id="filter_varisAktarma"
-                                    class="form-control form-control-sm niko-select-filter">
-                                <option value="">Seçiniz</option>
-                                @foreach($data['transshipment_centers'] as $key)
-                                    <option value="{{$key->id}}">{{$key->tc_name . ' ('.$key->type.') T.M.'}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                       
 
                         <div class="col-md-3">
                             <label for="filter_soforIletisim">Şoför İletişim:</label>
-                            <input type="text" data-inputmask="'mask': '(999) 999 99 99'"
-                                   placeholder="___ ___ __ __" type="text" id="filter_soforIletisim"
-                                   class="form-control input-mask-trigger form-control-sm niko-filter">
+                            <input type="text"  type="text" id="filter_soforAd"
+                                   class="form-control niko-filter form-control-sm niko-select-filter">
                         </div>
 
                     </div>
