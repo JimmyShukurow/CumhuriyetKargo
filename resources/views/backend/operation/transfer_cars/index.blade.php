@@ -149,7 +149,7 @@
             </div>
 
             <div class="card-body">
-                <table id="AgenciesTable"
+                <table style="width:100%" id="AgenciesTable"
                        class="align-middle mb-0 table Table30Padding table-borderless table-striped NikolasDataTable">
                     <thead>
                     <tr>
@@ -160,17 +160,6 @@
                         <th>Kapasite (KG)</th>
                         <th>Çıkış Akt.</th>
                         <th>Varış Akt.</th>
-                        <th>Muayene Kalan Gün</th>
-                        <th>Sigorta Kalan Gün</th>
-                        <th>Aylık Kira Bedeli (KDV Dahil)</th>
-                        <th>KDV Hariç Hakediş</th>
-                        <th>1 Sefer Kira Maliyeti</th>
-                        <th>Yakıt Oranı</th>
-                        <th>Tur KM</th>
-                        <th>Sefer KM</th>
-                        <th>1 Sefer Yakıt Maliyeti</th>
-                        <th>Sefer Maliyeti (Yakıt+Kira)</th>
-                        <th>Aylık Yakıt Maliyeti</th>
                         <th>Şoför Adı</th>
                         <th>Şoför İletişim</th>
                         <th>Oluşturan</th>
@@ -192,17 +181,6 @@
                         <th>Kapasite (KG)</th>
                         <th>Çıkış Akt.</th>
                         <th>Varış Akt.</th>
-                        <th>Muayene Kalan Gün</th>
-                        <th>Sigorta Kalan Gün</th>
-                        <th>Aylık Kira Bedeli (KDV Dahil)</th>
-                        <th>KDV Hariç Hakediş</th>
-                        <th>1 Sefer Kira Maliyeti</th>
-                        <th>Yakıt Oranı</th>
-                        <th>Tur KM</th>
-                        <th>Sefer KM</th>
-                        <th>1 Sefer Yakıt Maliyeti</th>
-                        <th>Sefer Maliyeti (Yakıt+Kira)</th>
-                        <th>Aylık Yakıt Maliyeti</th>
                         <th>Şoför Adı</th>
                         <th>Şoför İletişim</th>
                         <th>Oluşturan</th>
@@ -252,7 +230,7 @@
                     ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
                 ],
                 order: [
-                    [20, 'desc']
+                    [0, 'desc']
                 ],
                 language: {
                     "sDecimal": ",",
@@ -336,19 +314,6 @@
                     {data: 'arac_kapasitesi', name: 'arac_kapasitesi'},
                     {data: 'cikis_aktarma', name: 'cikis_aktarma'},
                     {data: 'varis_aktarma', name: 'varis_aktarma'},
-
-                    {data: 'muayene_kalan_sure', name: 'muayene_kalan_sure'},
-                    {data: 'sigorta_kalan_sure', name: 'sigorta_kalan_sure'},
-
-                    {data: 'aylik_kira_bedeli', name: 'aylik_kira_bedeli'},
-                    {data: 'kdv_haric_hakedis', name: 'kdv_haric_hakedis'},
-                    {data: 'bir_sefer_kira_maliyeti', name: 'bir_sefer_kira_maliyeti'},
-                    {data: 'yakit_orani', name: 'yakit_orani'},
-                    {data: 'tur_km', name: 'tur_km'},
-                    {data: 'sefer_km', name: 'sefer_km'},
-                    {data: 'bir_sefer_yakit_maliyeti', name: 'bir_sefer_yakit_maliyeti'},
-                    {data: 'hakedis_arti_mazot', name: 'hakedis_arti_mazot'},
-                    {data: 'aylik_yakit', name: 'aylik_yakit'},
                     {data: 'sofor_ad', name: 'sofor_ad'},
                     {data: 'sofor_telefon', name: 'sofor_telefon'},
                     {data: 'name_surname', name: 'name_surname'},

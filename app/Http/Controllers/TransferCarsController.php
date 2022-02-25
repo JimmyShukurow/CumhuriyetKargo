@@ -72,65 +72,19 @@ class TransferCarsController extends Controller
             ->setRowId(function ($cars) {
                 return 'car-item-' . $cars->id;
             })
-            ->editColumn('aylik_kira_bedeli', function ($cars) {
-                return '<b class="text-primary">₺' . getDotter($cars->aylik_kira_bedeli) . '</b>';
-            })
-            ->editColumn('kdv_haric_hakedis', function ($cars) {
-                return '<b class="text-primary">₺' . getDotter($cars->kdv_haric_hakedis) . '</b>';
-            })
-            ->editColumn('bir_sefer_kira_maliyeti', function ($cars) {
-                return '<b class="text-primary">₺' . getDotter($cars->bir_sefer_kira_maliyeti) . '</b>';
-            })
-            ->editColumn('yakit_orani', function ($cars) {
-                return '<b class="text-alternate">%' . getDotter($cars->yakit_orani) . '</b>';
-            })
-            ->editColumn('tur_km', function ($cars) {
-                return '<b class="text-dark">' . getDotter($cars->tur_km) . '</b>';
-            })
-            ->editColumn('sefer_km', function ($cars) {
-                return '<b class="text-dark">' . getDotter($cars->sefer_km) . '</b>';
-            })
-            ->editColumn('bir_sefer_yakit_maliyeti', function ($cars) {
-                return '<b class="text-primary">₺' . getDotter($cars->bir_sefer_yakit_maliyeti) . '</b>';
-            })
-            ->editColumn('aylik_yakit', function ($cars) {
-                return '<b class="text-primary">₺' . getDotter($cars->aylik_yakit) . '</b>';
-            })
-            ->editColumn('bir_sefer_yakit_maliyeti', function ($cars) {
-                return '<b class="text-primary">₺' . getDotter($cars->bir_sefer_yakit_maliyeti) . '</b>';
-            })
-            ->editColumn('hakedis_arti_mazot', function ($cars) {
-                return '<b class="text-primary">₺' . getDotter($cars->hakedis_arti_mazot) . '</b>';
-            })
             ->editColumn('cikis_aktarma', function ($cars) {
                 return '<b class="text-danger">' . $cars->cikis_akt . '</b>';
             })
             ->editColumn('varis_aktarma', function ($cars) {
                 return '<b class="text-success">' . $cars->varis_akt . '</b>';
             })
-            ->editColumn('muayene_kalan_sure', function ($cars) {
-                if ($cars->muayene_kalan_sure > 0)
-                    return '<b class="text-success">' . $cars->muayene_kalan_sure . '</b>';
-                else
-                    return '<b class="text-danger">' . $cars->muayene_kalan_sure . '</b>';
-            })
-            ->editColumn('sigorta_kalan_sure', function ($cars) {
-                if ($cars->sigorta_kalan_sure > 0)
-                    return '<b class="text-success">' . $cars->sigorta_kalan_sure . '</b>';
-                else
-                    return '<b class="text-danger">' . $cars->sigorta_kalan_sure . '</b>';
-            })
+           
             ->addColumn('edit', 'backend.operation.transfer_cars.column')
-            ->rawColumns(['edit', 'aylik_kira_bedeli', 'sigorta_kalan_sure', 'muayene_kalan_sure', 'varis_aktarma', 'cikis_aktarma', 'kdv_haric_hakedis', 'yakit_orani', 'bir_sefer_kira_maliyeti', 'hakedis_arti_mazot', 'aylik_yakit', 'sefer_km', 'tur_km', 'bir_sefer_yakit_maliyeti'])
+            ->rawColumns(['edit', 'varis_aktarma', 'cikis_aktarma'])
             ->make(true);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
+ 
     public function store(Request $request)
     {
         $request->validate([
