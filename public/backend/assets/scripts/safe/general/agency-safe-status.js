@@ -1,7 +1,9 @@
+let agencySafeStatusDetailsID = null
+
 $(document).ready(function () {
 
     tableAgencySafeStatus = $('#tableAgencySafeStatus').DataTable({
-        pageLength: 50,
+        pageLength: 250,
         lengthMenu: [
             [10, 25, 50, 100, 250, 500, -1],
             ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
@@ -50,8 +52,14 @@ $(document).ready(function () {
                     dt.ajax.reload();
                 },
                 attr: {
-                    id: 'datatableRefreshBtn'
+                    id: 'datatableRefreshBtn',
+                    class: 'btn btn-primary',
                 }
+            },
+            {
+                extend: 'excelHtml5',
+                attr: {class: 'btn btn-success'},
+                title: "CKG-Sis Acente Kasa Durumu"
             },
         ],
         responsive: false,
@@ -78,10 +86,10 @@ $(document).ready(function () {
                 }
             },
             complete: function () {
-                SnackMessage('Tamamlandı!', 'info', 'bl');
+                SnackMessage('Tamamlandı!', 'info', 'bl')
 
                 if ($('#datatableRefreshBtn').prop('disabled') == true)
-                    $('#datatableRefreshBtn').prop('disabled', false);
+                    $('#datatableRefreshBtn').prop('disabled', false)
 
             }
         },
@@ -94,21 +102,67 @@ $(document).ready(function () {
             {data: 'cash_amount', name: 'cash_amount'},
             {data: 'pos_amount', name: 'pos_amount'},
             {data: 'amount_deposited', name: 'amount_deposited'},
+            {data: 'intraday', name: 'intraday'},
             {data: 'debt', name: 'debt'},
-            {data: 'agency_name', name: 'agency_name'},
+            {data: 'safe_status', name: 'safe_status'},
+            {data: 'detail', name: 'detail'},
         ],
         scrollY: '500px',
         scrollX: true,
+    })
+})
+
+$(document).on('click', '.safe-detail', function () {
+    agencySafeStatusDetailsID = $(this).prop('id')
+    getAgencySafeStatus()
+})
+
+
+function getAgencySafeStatus() {
+    $('#ModalAgencySafeStatusDetails').modal();
+
+    $('#ModalBodyAgencySafeStatusDetails').block({
+        message: $('<div class="loader mx-auto">\n' +
+            '                            <div class="ball-grid-pulse">\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                            </div>\n' +
+            '                        </div>')
+    })
+    $('.blockUI.blockMsg.blockElement').css('width', '100%');
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+    $.ajax('/Safe/General/AjaxTransactions/GetAgencySafeStatusDetails', {
+        method: 'POST',
+        data: {
+            _token: token,
+            id: agencySafeStatusDetailsID
+        }
+    }).done(function (response) {
+
+        if (response.status == 1) {
+
+            let agency = response.data.agency;
+            console.log(agency);
+
+            $('h5#agencyName').text("#" + agency.agency_code + "-" + agency.agency_name + " ŞUBE");
+            $('h6#agencyRegionName').text(agency.tc_name + " B.M.");
+
+
+        } else if (response.status == -1)
+            ToastMessage('error', response.message, 'Hata!')
+
+    }).error(function (jqXHR, response) {
+        ajaxError(jqXHR.status);
+    }).always(function () {
+        $('#ModalBodyAgencySafeStatusDetails').unblock();
     });
-
-    $('#selectedExcelBtn').hide();
-
-    // Local Storage Transaction START
-    let cargoSuccees = localStorage.getItem('cargo-success');
-    if (cargoSuccees) {
-        swal('İşlem Başarılı!', 'Kargo Oluşturuldu!', 'success');
-        localStorage.clear();
-    }
-    // Local Storage Transaction END
-
-});
+}

@@ -7,6 +7,8 @@ use App\Actions\CKGSis\Safe\GeneralSafe\DeleteAgencyPayment;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyPaymentAppAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyPaymentAppDetails;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyPaymentsAction;
+use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencySafeStatusAction;
+use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencySafeStatusDetailsAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyStatusAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\PaymentAppSetConfirmRejectAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\PaymentAppSetConfirmSuccessAction;
@@ -74,6 +76,10 @@ class GeneralSafeController extends Controller
 
             case 'DeleteAgencyPayment':
                 return DeleteAgencyPayment::run($request);
+                break;
+
+            case 'GetAgencySafeStatusDetails':
+                return GetAgencySafeStatusDetailsAction::run($request);
                 break;
 
             default:

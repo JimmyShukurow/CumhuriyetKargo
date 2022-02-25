@@ -11,26 +11,7 @@ class Agencies extends Model
 {
     use HasFactory, LogsActivity, SoftDeletes;
 
-    protected $fillable = [
-        'name_surname',
-        'city',
-        'district',
-        'neighborhood',
-        'agency_name',
-        'adress',
-        'phone',
-        'phone2',
-        'phone3',
-        'transshipment_center_code',
-        'agency_development_officer',
-        'maps_link',
-        'status',
-        'ip_address',
-        'permission_of_create_cargo',
-        'status_description',
-        'agency_code',
-        'maps_link'
-    ];
+    protected $guarded = [];
 
     protected static $logAttributes = [
         'name_surname',
@@ -47,6 +28,8 @@ class Agencies extends Model
         'maps_link',
         'ip_address',
         'permission_of_create_cargo',
+        'safe_status',
+        'safe_status_description',
         'status',
         'status_description',
         'agency_code',
@@ -60,4 +43,6 @@ class Agencies extends Model
     }
 
     protected $table = 'agencies';
+
+
 }
