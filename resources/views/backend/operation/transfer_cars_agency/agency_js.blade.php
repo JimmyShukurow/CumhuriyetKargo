@@ -81,7 +81,7 @@
                         text: 'Sütun Görünüm'
                     },
                 ],
-                responsive: false,
+                responsive: true,
                 processing: true,
                 serverSide: true,
                 ajax: {
