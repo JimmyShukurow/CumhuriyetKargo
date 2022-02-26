@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 @endpush
 
-@section('title', 'Genel Kasa Ekranı')
+@section('title', 'Aktarma Araçları')
 @section('content')
 
     <div class="app-main__inner">
@@ -29,7 +29,7 @@
                         <i class="pe-7s-safe icon-gradient bg-ck">
                         </i>
                     </div>
-                    <div>Genel Kasa Modülü
+                    <div>Aktarma Araçlar
                         <div class="page-title-subheading">Bu modül üzerinden Türkiye geneli Cumhuriyet Kargo A.Ş.
                             acentelerinin kasasını takip edebilir, işlem yapabilirsiniz.
                         </div>
@@ -46,12 +46,11 @@
 
         <div class="main-card mb-3 card">
             <div class="card-header">
-                <i class="header-icon pe-7s-safe icon-gradient bg-ck"> </i>Genel Kasa
+                <i class="header-icon pe-7s-safe icon-gradient bg-ck"> </i>Aktarma Araçlar Modülü
                 <div class="btn-actions-pane-right">
                     <div class="nav">
-                        <a id="tabAgencySafeStatus" data-toggle="tab" href="#agencySafeStatus"
-                           class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger active">Acente Kasa
-                            Durumu</a>
+                        <a id="tabTransferCars" data-toggle="tab" href="#transferCars"
+                           class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger active">Aktarma Araçları</a>
 
                         <a id="tabAgencyPaymentApps" data-toggle="tab" href="#agencyPaymentApps"
                            class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Acente Ödeme
@@ -65,16 +64,16 @@
 
             <div class="card-body">
                 <div class="tab-content">
-                    <div class="tab-pane active" id="agencySafeStatus" role="tabpanel">
-                        @include('backend.safe.general.tabs.agency_safe_status')
+                    <div class="tab-pane active" id="transferCars" role="tabpanel">
+                        @include('backend.operation.tc_cars.tabs.transfer_cars')
                     </div>
 
                     <div class="tab-pane" id="agencyPaymentApps" role="tabpanel">
-                        @include('backend.safe.general.tabs.agency_payment_apps')
+                        @include('backend.operation.tc_cars.tabs.agency_cars_of_branch')
                     </div>
 
                     <div class="tab-pane" id="agencyPayments" role="tabpanel">
-                        @include('backend.safe.general.tabs.agency_payments')
+                        @include('backend.operation.tc_cars.tabs.agency_cars_waiting_confirmation')
                     </div>
                 </div>
             </div>
@@ -200,6 +199,8 @@
                                                     <td class="static">Ret Nedeni</td>
                                                     <td id="appRejectReason"></td>
                                                 </tr>
+
+
                                                 </tbody>
                                             </table>
                                         </div>
