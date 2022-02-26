@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\Safe;
 
 use App\Actions\CKGSis\Safe\AgencySafe\GetPaymentAppAction;
+use App\Actions\CKGSis\Safe\GeneralSafe\ChangeAgencySafeStatusAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\DeleteAgencyPayment;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyPaymentAppAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyPaymentAppDetails;
@@ -80,6 +81,10 @@ class GeneralSafeController extends Controller
 
             case 'GetAgencySafeStatusDetails':
                 return GetAgencySafeStatusDetailsAction::run($request);
+                break;
+
+            case 'ChangeAgencySafeStatus':
+                return ChangeAgencySafeStatusAction::run($request);
                 break;
 
             default:

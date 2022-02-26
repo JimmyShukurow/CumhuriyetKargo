@@ -31,6 +31,14 @@ class GetAgencySafeStatusDetailsAction
             ->first();
 
 
+        $data['agency']->endorsement = getDotter($data['agency']->endorsement);
+        $data['agency']->cash_amount = getDotter($data['agency']->cash_amount);
+        $data['agency']->pos_amount = getDotter($data['agency']->pos_amount);
+        $data['agency']->intraday = getDotter($data['agency']->intraday);
+        $data['agency']->amount_deposited = getDotter($data['agency']->amount_deposited);
+        $data['agency']->debt = getDotter($data['agency']->debt);
+
+
         return response()
             ->json(['status' => 1, 'data' => $data], 200);
 

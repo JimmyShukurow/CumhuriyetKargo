@@ -156,6 +156,22 @@ function getAgencySafeStatus() {
             $('h5#agencyName').text("#" + agency.agency_code + "-" + agency.agency_name + " ŞUBE");
             $('h6#agencyRegionName').text(agency.tc_name + " B.M.");
 
+            $('td#agencyName').html("#" + agency.agency_code + "-" + agency.agency_name + " ŞUBE");
+            $('td#agencyRegion').html(agency.tc_name + " BÖLGE MÜDÜRLÜĞÜ");
+            $('td#appAgencyOfficer').html(agency.agency_officer);
+
+            $('td#agencyPhones').html(agency.phone2 + " / " + agency.phone3);
+            $('td#agencyTotalBillCount').html(agency.total_bill_count);
+            $('td#agencyTotalEndorsement').html(agency.endorsement + "₺");
+            $('td#agencyTotalCashAmount').html(agency.cash_amount + "₺");
+            $('td#agencyTotalPosAmount').html(agency.pos_amount + "₺");
+            $('td#agencyAmountDeposited').html(agency.amount_deposited + "₺");
+            $('td#agencyIntraday').html(agency.intraday + "₺");
+            $('td#agencyTotalDebt').html(agency.debt + "₺");
+            $('td#agencySafeStatus').html(agency.safe_status == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>');
+            $('td#agencySafeStatusDescription').html(agency.safe_status_description);
+            $('textarea#agencySafeStatusDescription').html(agency.safe_status_description);
+
 
         } else if (response.status == -1)
             ToastMessage('error', response.message, 'Hata!')
@@ -166,3 +182,60 @@ function getAgencySafeStatus() {
         $('#ModalBodyAgencySafeStatusDetails').unblock();
     });
 }
+
+function changeSafeStatus(status) {
+
+    $('.change-safe-status').prop('disabled', true)
+    $('#ModalBodyAgencySafeStatusDetails').block({
+        message: $('<div class="loader mx-auto">\n' +
+            '                            <div class="ball-grid-pulse">\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                            </div>\n' +
+            '                        </div>')
+    });
+    $('.blockUI.blockMsg.blockElement').css('width', '100%');
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+    $.ajax('/Safe/General/AjaxTransactions/ChangeAgencySafeStatus', {
+        method: 'POST',
+        data: {
+            _token: token,
+            id: agencySafeStatusDetailsID,
+            status: status,
+            description: $('textarea#agencySafeStatusDescription').val()
+        }
+    }).done(function (response) {
+
+        if (response.status == 1) {
+            ToastMessage('success', response.message, 'İşlem Başarılı!')
+            getAgencySafeStatus()
+            tableAgencySafeStatus.draw()
+
+        } else if (response.status == 0) {
+            $.each(response.errors, function (index, value) {
+                ToastMessage('error', value, 'Hata!')
+            });
+        } else if (response.status == -1)
+            ToastMessage('error', response.message, 'Hata!')
+
+    }).error(function (jqXHR, response) {
+        ajaxError(jqXHR.status);
+    }).always(function () {
+        $('#ModalBodyAgencySafeStatusDetails').unblock();
+        $('.change-safe-status').prop('disabled', false)
+    });
+}
+
+$(document).on('click', '.change-safe-status', delay(function () {
+    changeSafeStatus($(this).attr('status'))
+}, 500))
+

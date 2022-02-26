@@ -60,7 +60,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="static">Acente Müdürü</td>
-                                                <td id="appAgencyName"></td>
+                                                <td id="appAgencyOfficer"></td>
                                             </tr>
                                             <tr>
                                                 <td class="static">Acente İletişim</td>
@@ -75,12 +75,20 @@
                                                 <td id="agencyTotalEndorsement"></td>
                                             </tr>
                                             <tr>
+                                                <td class="static">Nakit Tutar</td>
+                                                <td class="font-weight-bold" id="agencyTotalCashAmount"></td>
+                                            </tr>
+                                            <tr>
                                                 <td class="static">Pos Tutar</td>
                                                 <td class="font-weight-bold" id="agencyTotalPosAmount"></td>
                                             </tr>
                                             <tr>
                                                 <td class="static">Yatırdığı Tutar</td>
                                                 <td id="agencyAmountDeposited"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="static">Gün İçi</td>
+                                                <td id="agencyIntraday"></td>
                                             </tr>
                                             <tr>
                                                 <td class="static">Borç</td>
@@ -107,24 +115,11 @@
                             <li class="p-1 list-group-item">
 
                                 <div class="row pl-2 pr-2 justify-content-end">
-                                    <div class="col-md-4">
-                                        <label for="">Onaylanacak Tutar:</label>
-                                        <input class="form-control form-control-sm input-mask-trigger"
-                                               id="appConfirmPaidAmount"
-                                               placeholder="₺ 0.00" type="text"
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
-                                               im-insert="true" style="text-align: right;">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <a style="text-decoration: underline; display: block; margin-top: 30px;"
-                                           class="text-alternate" href="javascript:void(0)" id="appSameAmountLink">Ödenen
-                                            Tutar ile Aynı</a>
-                                    </div>
                                     <div class="col-md-12">
-                                        <label for="">Ret Nedeni:</label>
-                                        <textarea name="" class="form-control form-control-sm" id="appRejectReason"
+                                        <label for="">Kasa Kapatma Nedeni:</label>
+                                        <textarea name="" class="form-control form-control-sm" id="agencySafeStatusDescription"
                                                   cols="30" rows="3"
-                                                  placeholder="Lütfen ret nedeni belirtin (Opsiyonel)"></textarea>
+                                                  placeholder="Lütfen kasa kapatma nedenini belirtin (Default: Acente kasanız muhasebe birimi tarafından kapatılmıştır.)"></textarea>
                                     </div>
                                 </div>
 
@@ -134,36 +129,24 @@
                             <li class="p-0 list-group-item">
                                 <div class="grid-menu grid-menu-2col">
                                     <div class="no-gutters row">
-
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             <div class="p-1">
-                                                <button id="btnAppConfirmWait"
-                                                        class="btn-app-transaction btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-primary">
-                                                    <i class="lnr-clock text-primary opacity-7 btn-icon-wrapper mb-2">
-                                                    </i>
-                                                    Başvuruyu Beklet
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                            <div class="p-1">
-                                                <button id="btnAppConfirmSuccess"
-                                                        class="btn-app-transaction btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success">
+                                                <button id="btnEnabledAgencySafeStatus" status="1"
+                                                        class="btn-app-transaction change-safe-status btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success">
                                                     <i class="lnr-checkmark-circle text-success opacity-7 btn-icon-wrapper mb-2">
                                                     </i>
-                                                    Başvuruyu Onayla
+                                                    Kasayı Aç
                                                 </button>
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             <div class="p-1">
-                                                <button id="btnAppConfirmReject"
-                                                        class="btn-app-transaction btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
+                                                <button id="btnDisabledAgencySafeStatus" status="0"
+                                                        class="btn-app-transaction change-safe-status btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
                                                     <i class="lnr-cross-circle text-danger opacity-7 btn-icon-wrapper mb-2">
                                                     </i>
-                                                    Başvuruyu Reddet
+                                                    Kasayı Kapat
                                                 </button>
                                             </div>
                                         </div>

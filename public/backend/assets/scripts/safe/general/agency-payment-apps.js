@@ -67,7 +67,7 @@ $('#tabAgencyPaymentApps').click(function () {
             ajax: {
                 url: '/Safe/General/AjaxTransactions/GetAgencyPaymentApps',
                 data: function (d) {
-                    d.firstDate = $('#agencyPaymentAppsLastDate').val()
+                    d.firstDate = $('#agencyPaymentAppsFirstDate').val()
                     d.lastDate = $('#agencyPaymentAppsLastDate').val()
 
                     d.appNo = $('#agencyPaymentAppsAppNo').val()
