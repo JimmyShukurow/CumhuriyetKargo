@@ -153,7 +153,7 @@ class AgencySafeController extends Controller
             'file1' => $file1,
             'file2' => $file2,
             'file3' => $file3,
-            'payment_channel' => 'EFT/HAVELE',
+            'payment_channel' => 'EFT/HAVALE',
             'description' => $request->description,
             'currency' => 'TL',
         ]);

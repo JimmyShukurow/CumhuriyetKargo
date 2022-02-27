@@ -12,11 +12,11 @@
 
     <div class="col-md-6">
 
-        <a href="{{route('safe.agency.createPaymentApp')}}"
-           target="popup"
-           onclick="window.open('{{route('safe.agency.createPaymentApp')}}','popup','width=700,height=700'); return false;">
-            <button class="btn btn-outline-primary float-right">Ödeme Bildir</button>
-        </a>
+{{--        <a href="{{route('safe.agency.createPaymentApp')}}"--}}
+        {{--           target="popup"--}}
+        {{--           onclick="window.open('{{route('safe.agency.createPaymentApp')}}','popup','width=700,height=700'); return false;">--}}
+        {{--            <button class="btn btn-outline-primary float-right">Ödeme Bildir</button>--}}
+        {{--        </a>--}}
 
     </div>
 </div>

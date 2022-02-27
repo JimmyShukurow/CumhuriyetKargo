@@ -270,13 +270,11 @@
         <div class="card mb-3">
             <div class="card-body">
 
-                <table style="white-space: nowrap;" id="AgenciesTable"
+                <table style="width: 100%; white-space: nowrap;" id="AgenciesTable"
                        class="align-middle mb-0 table Table20Padding table-bordered table-striped table-hover NikolasDataTable">
                     <thead>
                     <tr>
-                        <th></th>
                         <th>Fatura No</th>
-                        <th>KTNO</th>
                         <th>Çıkış Şube</th>
                         <th>Ç.Ş. Kodu</th>
                         <th>Gönderici Adı</th>
@@ -287,13 +285,7 @@
                         <th>Kargo Tipi</th>
                         <th>Ödeme Tipi</th>
                         <th>Ücret</th>
-                        <th>Tahsilat Tipi</th>
-                        <th>Tahsilatlı</th>
-                        <th>Fatura Tutarı</th>
                         <th>Statü</th>
-                        <th>Durum</th>
-                        <th>Taşıyan</th>
-                        <th>Sistem</th>
                         <th>Kayıt Tarihi</th>
                     </tr>
                     </thead>
@@ -302,9 +294,7 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <th></th>
                         <th>Fatura No</th>
-                        <th>KTNO</th>
                         <th>Çıkış Şube</th>
                         <th>Ç.Ş. Kodu</th>
                         <th>Gönderici Adı</th>
@@ -315,13 +305,7 @@
                         <th>Kargo Tipi</th>
                         <th>Ödeme Tipi</th>
                         <th>Ücret</th>
-                        <th>Tahsilat Tipi</th>
-                        <th>Tahsilatlı</th>
-                        <th>Fatura Tutarı</th>
                         <th>Statü</th>
-                        <th>Durum</th>
-                        <th>Taşıyan</th>
-                        <th>Sistem</th>
                         <th>Kayıt Tarihi</th>
                     </tr>
                     </tfoot>

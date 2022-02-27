@@ -81,11 +81,11 @@ $('#tabAgencyPayments').click(function () {
             ajax: {
                 url: '/Safe/General/AjaxTransactions/GetAgencyPayments',
                 data: function (d) {
-                    d.firstDate = $('#agencyPaymentsLastDate').val()
+                    d.firstDate = $('#agencyPaymentsFirstDate').val()
                     d.lastDate = $('#agencyPaymentsLastDate').val()
                     d.appNo = $('#agencyPaymentsAppNo').val()
                     d.agency = $('#agencyPaymentsAgency').val()
-                    d.confirm = $('#agencyPaymentsConfirm').val()
+                    d.paymentNo = $('#agencyPaymentsPaymentNo').val()
                     d.paymentChannel = $('#agencyPaymentsPaymentChannel').val()
                 },
                 error: function (xhr, error, code) {

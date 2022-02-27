@@ -61,6 +61,13 @@ $(document).ready(function () {
                 attr: {class: 'btn btn-success'},
                 title: "CKG-Sis Acente Kasa Durumu"
             },
+            {
+                text: 'Filtreyi Temizle',
+                attr: {class: 'btn btn-info'},
+                action: function (e, dt, node, config) {
+                    clearFilter();
+                },
+            },
         ],
         responsive: false,
         processing: true,
@@ -68,8 +75,10 @@ $(document).ready(function () {
         ajax: {
             url: '/Safe/General/AjaxTransactions/GetAgencySafeStatus',
             data: function (d) {
-                d.firstDate = $('#agencySafeStatusFirstDate').val()
-                d.lastDate = $('#agencySafeStatusLastDate').val()
+                d.agency = $('#agencySafeStatusAgencies').val()
+                d.agencyCode = $('#agencySafeStatusAgencyCode').val()
+                d.safeStatus = $('#agencySafeStatusSafeStatus').val()
+                d.region = $('#agencySafeStatusRegion').val()
             },
             error: function (xhr, error, code) {
 
@@ -117,6 +126,13 @@ $(document).on('click', '.safe-detail', function () {
     getAgencySafeStatus()
 })
 
+function clearFilter() {
+    $('#agencySafeStatusAgencies').val('')
+    $('#agencySafeStatusAgencyCode').val('')
+    $('#agencySafeStatusSafeStatus').val('')
+    $('#agencySafeStatusRegion').val('')
+    tableAgencySafeStatus.draw()
+}
 
 function getAgencySafeStatus() {
     $('#ModalAgencySafeStatusDetails').modal();
@@ -239,3 +255,7 @@ $(document).on('click', '.change-safe-status', delay(function () {
     changeSafeStatus($(this).attr('status'))
 }, 500))
 
+
+$(document).ready(function () {
+    $('#agencySafeStatusAgencies').select2()
+})

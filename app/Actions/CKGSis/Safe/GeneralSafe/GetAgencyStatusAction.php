@@ -15,7 +15,6 @@ class GetAgencyStatusAction
     {
         $firstDate = Carbon::createFromDate($request->firstDate);
         $lastDate = Carbon::createFromDate($request->lastDate);
-        #$dateFilter = $request->dateFilter;
         $dateFilter = 'true';
 
         if ($dateFilter == "true") {
@@ -29,8 +28,16 @@ class GetAgencyStatusAction
         $firstDate = substr($firstDate, 0, 10);
         $lastDate = substr($lastDate, 0, 10);
 
+        $agency = $request->agency;
+        $agencyCode = $request->agencyCode;
+        $safeStatus = $request->safeStatus;
+        $region = $request->region;
 
-        $rows = DB::table('view_agency_safe_status');
+        $rows = DB::table('view_agency_safe_status')
+            ->whereRaw($agency ? 'id = ' . $agency : ' 1 > 0')
+            ->whereRaw($agencyCode ? 'agency_code = ' . $agencyCode : ' 1 > 0')
+            ->whereRaw($safeStatus != null ? "safe_status ='" . $safeStatus . "'" : ' 1 > 0')
+            ->whereRaw($region ? 'tc_id = ' . $region : ' 1 > 0');
 
 
         return datatables()->of($rows)
@@ -51,6 +58,9 @@ class GetAgencyStatusAction
             })
             ->addColumn('detail', function ($key) {
                 return '<b style="text-decoration: underline;" class="cursor-pointer ml-3 text-primary safe-detail" id="' . $key->id . '">Detay</b>';
+            })
+            ->editColumn('amount_deposited', function ($key) {
+                return round($key->amount_deposited, 2);
             })
             ->rawColumns(['safe_status', 'detail'])
             ->make(true);

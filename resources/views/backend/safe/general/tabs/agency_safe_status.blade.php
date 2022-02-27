@@ -4,31 +4,9 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="form-group position-relative">
-                    <label for="agencySafeStatusFirstDate">İlk Tarih:</label>
-                    <input type="date" id="agencySafeStatusFirstDate" value="{{ date('Y-m-d') }}"
-                           class="form-control form-control-sm  niko-select-filter">
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group position-relative">
-                    <label for="agencySafeStatusLastDate">Son Tarih:</label>
-                    <input type="date" id="agencySafeStatusLastDate" value="{{ date('Y-m-d') }}"
-                           class="form-control form-control-sm  niko-select-filter">
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="form-group position-relative">
-                    <label for="agencyPaymentsAppNo">Başvuru No:</label>
-                    <input type="text" id="agencyPaymentsAppNo" class="form-control form-control-sm">
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="form-group position-relative">
-                    <label for="agencyPaymentsAgency">Şube:</label>
+                    <label for="agencySafeStatusAgencies">Şube:</label>
                     <select style="width: 100%;" class="form-control-sm form-control" name=""
-                            id="agencyPaymentsAgency">
+                            id="agencySafeStatusAgencies">
                         <option value="">Seçiniz</option>
                         @foreach($data['agencies'] as $key)
                             <option value="{{$key->id}}">{{$key->agency_name}}</option>
@@ -39,12 +17,18 @@
 
             <div class="col-md-2">
                 <div class="form-group position-relative">
-                    <label for="agencyPaymentsConfirm">Onay:</label>
-                    <select class="form-control-sm form-control" name="" id="agencyPaymentsConfirm">
-                        <option value="">Seçiniz</option>
-                        <option value="0">Onay Bekliyor</option>
-                        <option value="1">Onaylandı</option>
-                        <option value="-1">Reddedildi</option>
+                    <label for="agencySafeStatusAgencyCode">Şube Kodu:</label>
+                    <input type="text" id="agencySafeStatusAgencyCode" class="form-control form-control-sm">
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group position-relative">
+                    <label for="agencySafeStatusSafeStatus">Kasa Statü:</label>
+                    <select class="form-control-sm form-control" name="" id="agencySafeStatusSafeStatus">
+                        <option value="">Tümü</option>
+                        <option value="0">Pasif</option>
+                        <option value="1">Aktif</option>
                     </select>
                 </div>
             </div>
@@ -52,11 +36,11 @@
 
             <div class="col-md-2">
                 <div class="form-group position-relative">
-                    <label for="agencyPaymentsPaymentChannel">Ödeme Kanalı:</label>
-                    <select class="form-control-sm form-control" name="" id="agencyPaymentsPaymentChannel">
+                    <label for="agencySafeStatusRegion">Bağlı Bölge:</label>
+                    <select class="form-control-sm form-control" name="" id="agencySafeStatusRegion">
                         <option value="">Seçiniz</option>
-                        @foreach($data['payment_channels'] as $key)
-                            <option value="{{$key->payment_channel}}">{{$key->payment_channel}}</option>
+                        @foreach($data['regions'] as $key)
+                            <option value="{{$key->id}}">{{$key->tc_name}}</option>
                         @endforeach
                     </select>
                 </div>

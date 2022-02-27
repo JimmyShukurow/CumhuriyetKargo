@@ -18,6 +18,7 @@ use App\Actions\CKGSis\Safe\GeneralSafe\SaveAgencyPaymentAction;
 use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\Cargoes;
+use App\Models\TransshipmentCenters;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +34,15 @@ class GeneralSafeController extends Controller
             ->groupBy('payment_channel')
             ->get();
 
+        $data['agency_payments_payment_channels'] = DB::table('agency_payments')
+            ->groupBy('payment_channel')
+            ->get();
+
+
         $data['agencies'] = Agencies::orderBy('agency_name')->get();
+
+        $data['regions'] = TransshipmentCenters::orderBy('tc_name')
+            ->get();
 
 
         return view('backend.safe.general.index', compact('data'));
