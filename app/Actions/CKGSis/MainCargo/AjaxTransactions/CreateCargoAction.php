@@ -35,6 +35,11 @@ class CreateCargoAction
         if ($agency->permission_of_create_cargo == '0')
             return response()
                 ->json(['status' => -1, 'message' => 'Kargo kesiminize izin yok!'], 200);
+
+        if ($agency->safe_status == '0')
+            return response()
+                ->json(['status' => -1, 'message' => 'Kasanız Kapalı! Açıklama: [' . $agency->safe_status_description . ']'], 200);
+
         # END Control Permission Of Create Cargo END
 
         $rules = [
