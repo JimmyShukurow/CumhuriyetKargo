@@ -58,7 +58,7 @@ class GetAgencyPaymentsAction
                 return $key->app_id != null ? '<b style="color: #000; text-decoration: underline;" class="details-app cursor-pointer" id="' . $key->app_id . '">#' . $key->app_id . '</b>' : '';
             })
             ->editColumn('edit', function ($key) {
-                return '<b style="text-decoration: underline;" class="text-primary cursor-pointer">DÜZENLE</b>';
+                return '<b style="text-decoration: underline;" id="' . $key->id . '" class="text-primary payment-details cursor-pointer">DÜZENLE</b>';
             })
             ->editColumn('delete', function ($key) {
                 return '<b style="text-decoration: underline;" id="' . $key->id . '" class="text-danger delete-payment cursor-pointer">Ödemeyi Sil</b>';

@@ -49,7 +49,6 @@ class ChangeAgencySafeStatusAction
                 'safe_status_description' => $message,
             ]);
 
-
         if ($update) {
 
             $statusString = $request->status == '1' ? 'Aktif' : 'Pasif';

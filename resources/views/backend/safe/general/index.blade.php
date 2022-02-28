@@ -90,6 +90,8 @@
 
     @include('backend.safe.general.modals.modal_add_agency_payment')
 
+    @include('backend.safe.general.modals.modal_edit_agency_payment')
+
     @include('backend.safe.general.modals.modal_agency_safe_status_details')
 
 @endsection

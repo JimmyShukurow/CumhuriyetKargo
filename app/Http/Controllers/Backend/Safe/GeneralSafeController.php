@@ -11,10 +11,12 @@ use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyPaymentsAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencySafeStatusAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencySafeStatusDetailsAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyStatusAction;
+use App\Actions\CKGSis\Safe\GeneralSafe\GetPaymentInfoAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\PaymentAppSetConfirmRejectAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\PaymentAppSetConfirmSuccessAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\PaymentAppSetConfirmWaitingAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\SaveAgencyPaymentAction;
+use App\Actions\CKGSis\Safe\GeneralSafe\UpdateAgencyPaymentAction;
 use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\Cargoes;
@@ -94,6 +96,14 @@ class GeneralSafeController extends Controller
 
             case 'ChangeAgencySafeStatus':
                 return ChangeAgencySafeStatusAction::run($request);
+                break;
+
+            case 'GetPaymentInfo':
+                return GetPaymentInfoAction::run($request);
+                break;
+
+            case 'UpdateAgencyPayment':
+                return UpdateAgencyPaymentAction::run($request);
                 break;
 
             default:
