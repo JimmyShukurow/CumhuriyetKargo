@@ -51,7 +51,7 @@
                                     <div class="position-relative form-group">
                                         <label for="plaka" class="font-weight-bold">Plaka:</label>
                                         <input name="plaka" required id="plaka"
-                                               placeholder="Aracın markasını giriniz."
+                                               placeholder="Aracın plakasını giriniz."
                                                type="text"
                                                value="{{ old('plaka') }}" class="form-control form-control-sm">
                                     </div>
@@ -71,7 +71,7 @@
                                     <div class="position-relative form-group">
                                         <label for="model" class="font-weight-bold">Araç Model</label>
                                         <input name="model" required id="model"
-                                               placeholder="Aracın markasını giriniz."
+                                               placeholder="Aracın nodelini giriniz."
                                                type="text"
                                                value="{{ old('model') }}" class="form-control form-control-sm">
                                     </div>
@@ -81,7 +81,7 @@
                                     <div class="position-relative form-group">
                                         <label for="model_yili" class="font-weight-bold">Araç Model Yılı</label>
                                         <input name="model_yili" required id="model_yili"
-                                               placeholder="Aracın markasını giriniz."
+                                               placeholder="Aracın model yılını giriniz."
                                                type="text"
                                                value="{{ old('model_yili') }}"
                                                class="form-control form-control form-control-sm">
@@ -90,7 +90,17 @@
 
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
-                                        <label for="model_yili" class="font-weight-bold">Bağlı olduğu birim</label>
+                                        <label for="doors_to_be_sealed" class="font-weight-bold">Mühür Vurulacak Kapı Sayısı</label>
+                                        <input name="doors_to_be_sealed" required id="doors_to_be_sealed"
+                                               placeholder="Kapı sayısını giriniz."
+                                               type="text"
+                                               class="form-control form-control form-control-sm">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="branch_code" class="font-weight-bold">Bağlı olduğu birim</label>
                                         <input name="branch_code" required id="branch_code"
                                                type="text"
                                                value= "{{ $branch ?? ''}}"
@@ -99,7 +109,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
-                                        <label for="model_yili" class="font-weight-bold">Ekleyen</label>
+                                        <label for="creator" class="font-weight-bold">Ekleyen</label>
                                         <input name="creator" required id="creator"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"
@@ -109,7 +119,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
-                                        <label for="model_yili" class="font-weight-bold">Araç tipi</label>
+                                        <label for="car_type" class="font-weight-bold">Araç tipi</label>
                                         <input name="car_type" required id="car_type"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"

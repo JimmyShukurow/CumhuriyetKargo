@@ -70,29 +70,57 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '/AjaxTCCars/GetTransferCars',
+            url: 'AjaxTCCars/GetTransferCars',
+            data: function (d) {
+                d.marka = $('#markaFilter').val();
+                d.model = $('#modelFilter').val();
+                d.plaka = $('#plakaFilter').val();
+                d.soforAd = $('#soforAdiFilter').val();
+                d.creator = $('#creatorFilter').val();
+            },
             
             error: function (xhr, error, code) {
 
                 console.log('error');
             },
             complete: function () {
-                console.log('tamam');
                 // if ($('#datatableRefreshBtn').prop('disabled') == true)
                 //     $('#datatableRefreshBtn').prop('disabled', false);
 
             }
         },
+        // ajax: {
+        //             url: '{!! route('agency.transfer.car.all') !!}',
+        //             data: function (d) {
+        //                 d.marka = $('#filter_marka').val();
+        //                 d.model = $('#filter_model').val();
+        //                 d.plaka = $('#filter_plaka').val();
+        //                 d.soforAd = $('#filter_soforAd').val();
+        //             },
+        //             error: function (xhr, error, code) {
+
+        //                 if (xhr.status == 429) {
+        //                     ToastMessage('error', 'Aşırı istekte bulundunuz, Lütfen bir süre sonra tekrar deneyin!', 'Hata');
+        //                 } else if (xhr.status == 509) {
+        //                     ToastMessage('error', 'Tarih aralığı en fazla 60 gün olabilir!', 'Hata');
+        //                 }
+        //             },
+        //             complete: function () {
+        //                 ToastMessage('info', 'Tamamlandı!', 'Bilgi');
+        //             }
+        //         },
         columns: [
             {data: 'marka', name: 'marka'},
             {data: 'model', name: 'model'},
             {data: 'plaka', name: 'plaka'},
-            {data: 'branch', name: 'branch'},
+            {data: 'hat', name: 'hat'},
+            {data: 'arac_kapasitesi', name: 'arac_kapasitesi'},
+            {data: 'cikis_aktarma', name: 'cikis_aktarma'},
+            {data: 'varis_aktarma', name: 'varis_aktarma'},
             {data: 'sofor_ad', name: 'sofor_ad'},
+            {data: 'sofor_telefon', name: 'sofor_telefon'},
             {data: 'creator', name: 'creator'},
-            {data: 'car_type', name: 'car_type'},
             {data: 'created_at', name: 'created_at'},
-            {data: 'confirmation_status', name: 'confirmation_status'},
             {data: 'details', name: 'details'},
         ],
         scrollY: '500px',
@@ -104,257 +132,60 @@ $(document).ready(function () {
         $('#agencyPaymentAppsAgency').select2();
     })
 
+    $(document).on('click', '.btn_car_details', function () {
+        detailsID = $(this).prop('id');
+        carInfo($(this).prop('id'));
+     });
 
-    // function getPaymentDetails(id) {
-    //     $('#ModalAgencyPaymentAppDetails').modal();
+    function carInfo(id) {
 
-    //     $('#ModalBodyAgencyPaymentAppDetails').block({
-    //         message: $('<div class="loader mx-auto">\n' +
-    //             '                            <div class="ball-grid-pulse">\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                            </div>\n' +
-    //             '                        </div>')
-    //     });
-    //     $('.blockUI.blockMsg.blockElement').css('width', '100%');
-    //     $('.blockUI.blockMsg.blockElement').css('border', '0px');
-    //     $('.blockUI.blockMsg.blockElement').css('background-color', '');
+        $('#ModalCarDetails').modal();
 
-    //     $.ajax('/Safe/General/AjaxTransactions/GetAgencyPaymentAppDetails', {
-    //         method: 'GET',
-    //         data: {
-    //             id: id,
-    //         }
-    //     }).done(function (response) {
+        $('#ModalBodyUserDetail.modal-body').block({
+            message: $('<div class="loader mx-auto">\n' +
+                '                            <div class="ball-grid-pulse">\n' +
+                '                                <div class="bg-white"></div>\n' +
+                '                                <div class="bg-white"></div>\n' +
+                '                                <div class="bg-white"></div>\n' +
+                '                                <div class="bg-white"></div>\n' +
+                '                                <div class="bg-white"></div>\n' +
+                '                                <div class="bg-white"></div>\n' +
+                '                                <div class="bg-white"></div>\n' +
+                '                                <div class="bg-white"></div>\n' +
+                '                                <div class="bg-white"></div>\n' +
+                '                            </div>\n' +
+                '                        </div>')
+        });
+        $('.blockUI.blockMsg.blockElement').css('width', '100%');
+        $('.blockUI.blockMsg.blockElement').css('border', '0px');
+        $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
-    //         if (response.status == 1) {
+        $.ajax('{{route('getAgencyTransferCar')}}', {
+            method: 'POST',
+            data: {
+                _token: token,
+                carID: id
+            },
+            cache: false
+        }).done(function (response) {
 
-    //             let data = response.data;
-    //             $('#agencyName').html(data.agency_name + " ŞUBE")
-    //             $('#appUserNameSurname').html(data.name_surname + " (" + data.display_name + ")")
+            let cars = response.cars;
 
+            $('#tdPlaka').html(cars.plaka);
+            $('#branch').html(cars.branch ? cars.branch.agency_name : '');
+            $('#creator').html(cars.creator ? cars.creator.name_surname : '');
+            $('#car_type').html(cars.car_type);
+            $('#created_at').html(cars.created_at);
+            $('#confirmer').html(cars.confirmed_user);
+            $('#soforAdi').html(cars.sofor_ad);
+            $('#soforIletisim').html(cars.sofor_telefon);
+            $('#soforAders').html(cars.sofor_adres);
+            $('.modal-body').unblock();
+            return false;
+        });
 
-    //             $('td#appRegDate').html(data.created_at)
-    //             $('td#appNo').html(data.id)
-    //             $('td#appAgencyName').html(data.agency_name + " ŞUBE")
-    //             $('td#appUserNameSurname').html(data.name_surname + " (" + data.display_name + ")")
-    //             $('td#appPayment').html(data.paid + "₺")
-    //             $('td#appConfirmingPayment').html(data.confirm_paid)
-    //             $('td#appPaymentChannel').html(data.payment_channel)
-
-    //             let addLink = "";
-
-    //             if (data.file1 != null)
-    //                 addLink += '<a target="_blank" href="/files/app_files/' + data.file1 + '">Ek1</a>'
-    //             if (data.file2 != null)
-    //                 addLink += ' <a target="_blank" href="/files/app_files/' + data.file2 + '">Ek2</a>'
-    //             if (data.file3 != null)
-    //                 addLink += ' <a target="_blank" href="/files/app_files/' + data.file3 + '">Ek3</a>'
-
-    //             $('td#appAdd').html(addLink)
-    //             $('td#appDescription').html(data.description)
-
-    //             let confirm = "";
-    //             if (data.confirm == '0')
-    //                 confirm = '<b class="text-primary">Onay Bekliyor</b>'
-    //             else if (data.confirm == '1')
-    //                 confirm = '<b class="text-success">Onaylandı</b>'
-    //             else if (data.confirm == '-1')
-    //                 confirm = '<b class="text-danger">Reddedildi</b>'
-
-
-    //             $('#appConfirmPaidAmount').val(data.confirm_paid != null ? data.confirm_paid + "₺" : "");
-    //             $('td#appConfirm').html(confirm)
-    //             $('td#appConfirmingUser').html(data.confirming_user_name_surname != null ? data.confirming_user_name_surname + " (" + data.confirming_user_display_name + ")" : "")
-    //             $('td#appConfirmDate').html(data.confirming_date)
-    //             $('td#appRejectReason').html(data.reject_reason)
-
-    //             $('#appConfirmPaidAmount').val(data.confirm_paid)
-    //             $('textarea#appRejectReason').val(data.reject_reason)
-
-
-    //         } else if (response.status == 0) {
-    //             ToastMessage('error', response.message, 'Hata!')
-    //         }
-
-    //     }).error(function (jqXHR, response) {
-    //         ajaxError(jqXHR.status);
-    //     }).always(function () {
-    //         $('#ModalBodyAgencyPaymentAppDetails').unblock();
-    //     });
-
-    // }
-
-    // $(document).on('click', '.details-app', function () {
-    //     detailsID = $(this).prop('id');
-    //     getPaymentDetails(detailsID)
-    // });
-
-    // $(document).on('click', '#appSameAmountLink', function () {
-    //     $('#appConfirmPaidAmount').val($('#appPayment').html())
-    // })
-
-
-    // $(document).on('click', '#btnAppConfirmWait', delay(function () {
-
-    //     $('#ModalBodyAgencyPaymentAppDetails').block({
-    //         message: $('<div class="loader mx-auto">\n' +
-    //             '                            <div class="ball-grid-pulse">\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                            </div>\n' +
-    //             '                        </div>')
-    //     });
-    //     $('.blockUI.blockMsg.blockElement').css('width', '100%');
-    //     $('.blockUI.blockMsg.blockElement').css('border', '0px');
-    //     $('.blockUI.blockMsg.blockElement').css('background-color', '');
-
-    //     $('.btn-app-transaction').prop('disabled', true);
-
-    //     $.ajax('/Safe/General/AjaxTransactions/PaymentAppSetConfirmWaiting', {
-    //         method: 'POST',
-    //         data: {
-    //             _token: token,
-    //             id: detailsID,
-    //         }
-    //     }).done(function (response) {
-
-    //         if (response.status == 1) {
-    //             ToastMessage('success', response.message, 'Hata!')
-    //             tableAgencyPaymentApps.draw()
-    //             getPaymentDetails(detailsID)
-    //         } else if (response.status == 0) {
-    //             ToastMessage('error', response.message, 'Hata!')
-    //             return false;
-    //         }
-
-
-    //     }).error(function (jqXHR, response) {
-    //         ajaxError(jqXHR.status);
-    //     }).always(function () {
-    //         $('#ModalBodyAgencyPaymentAppDetails').unblock();
-    //         $('.btn-app-transaction').prop('disabled', false)
-    //     });
-
-    // }, 900))
-
-
-    // $(document).on('click', '#btnAppConfirmSuccess', delay(function () {
-
-    //     $('#ModalBodyAgencyPaymentAppDetails').block({
-    //         message: $('<div class="loader mx-auto">\n' +
-    //             '                            <div class="ball-grid-pulse">\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                            </div>\n' +
-    //             '                        </div>')
-    //     });
-    //     $('.blockUI.blockMsg.blockElement').css('width', '100%');
-    //     $('.blockUI.blockMsg.blockElement').css('border', '0px');
-    //     $('.blockUI.blockMsg.blockElement').css('background-color', '');
-
-    //     $('.btn-app-transaction').prop('disabled', true);
-
-
-    //     $.ajax('/Safe/General/AjaxTransactions/PaymentAppSetConfirmSuccess', {
-    //         method: 'POST',
-    //         data: {
-    //             _token: token,
-    //             id: detailsID,
-    //             paid: $('#appConfirmPaidAmount').val(),
-    //         }
-    //     }).done(function (response) {
-
-    //         if (response.status == 1) {
-    //             ToastMessage('success', response.message, 'Hata!')
-    //             tableAgencyPaymentApps.draw()
-    //             getPaymentDetails(detailsID)
-    //         } else if (response.status == 0) {
-    //             ToastMessage('error', response.message, 'Hata!')
-    //             return false;
-    //         }
-
-
-    //     }).error(function (jqXHR, response) {
-    //         ajaxError(jqXHR.status);
-    //     }).always(function () {
-    //         $('#ModalBodyAgencyPaymentAppDetails').unblock();
-    //         $('.btn-app-transaction').prop('disabled', false)
-    //     });
-
-    // }, 900))
-
-    // $(document).on('click', '#btnAppConfirmReject', delay(function () {
-
-    //     $('#ModalBodyAgencyPaymentAppDetails').block({
-    //         message: $('<div class="loader mx-auto">\n' +
-    //             '                            <div class="ball-grid-pulse">\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                                <div class="bg-white"></div>\n' +
-    //             '                            </div>\n' +
-    //             '                        </div>')
-    //     });
-    //     $('.blockUI.blockMsg.blockElement').css('width', '100%');
-    //     $('.blockUI.blockMsg.blockElement').css('border', '0px');
-    //     $('.blockUI.blockMsg.blockElement').css('background-color', '');
-
-    //     $('.btn-app-transaction').prop('disabled', true);
-
-
-    //     $.ajax('/Safe/General/AjaxTransactions/PaymentAppSetConfirmReject', {
-    //         method: 'POST',
-    //         data: {
-    //             _token: token,
-    //             id: detailsID,
-    //             reject_reason: $('textarea#appRejectReason').val(),
-    //         }
-    //     }).done(function (response) {
-
-    //         if (response.status == 1) {
-    //             ToastMessage('success', response.message, 'Hata!')
-    //             tableAgencyPaymentApps.draw()
-    //             getPaymentDetails(detailsID)
-    //         } else if (response.status == 0) {
-    //             ToastMessage('error', response.message, 'Hata!')
-    //             return false;
-    //         }
-
-
-    //     }).error(function (jqXHR, response) {
-    //         ajaxError(jqXHR.status);
-    //     }).always(function () {
-    //         $('#ModalBodyAgencyPaymentAppDetails').unblock();
-    //         $('.btn-app-transaction').prop('disabled', false)
-    //     });
-
-    // }, 900))
+        $('#ModalAgencyDetail').modal();
+    }
+    
 
 </script>

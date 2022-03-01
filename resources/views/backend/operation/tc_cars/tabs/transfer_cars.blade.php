@@ -4,61 +4,37 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="form-group position-relative">
-                    <label for="agencyPaymentAppsFirstDate">İlk Tarih:</label>
-                    <input type="date" id="agencyPaymentAppsFirstDate" value="{{ date('Y-m-d') }}"
+                    <label for="agencyPaymentAppsFirstDate">Marka:</label>
+                    <input type="text" id="markaFilter" 
                            class="form-control form-control-sm  niko-select-filter">
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="form-group position-relative">
-                    <label for="agencyPaymentAppsLastDate">Son Tarih:</label>
-                    <input type="date" id="agencyPaymentAppsLastDate" value="{{ date('Y-m-d') }}"
+                    <label for="agencyPaymentAppsLastDate">Model:</label>
+                    <input type="text" id="modelFilter" 
                            class="form-control form-control-sm  niko-select-filter">
                 </div>
             </div>
 
             <div class="col-md-2">
                 <div class="form-group position-relative">
-                    <label for="agencyPaymentAppsAppNo">Başvuru No:</label>
-                    <input type="text" id="agencyPaymentAppsAppNo" class="form-control form-control-sm">
+                    <label for="agencyPaymentAppsAppNo">Plaka:</label>
+                    <input type="text" id="plakaFilter" class="form-control form-control-sm">
                 </div>
             </div>
 
             <div class="col-md-2">
                 <div class="form-group position-relative">
-                    <label for="agencyPaymentAppsAgency">Şube:</label>
-                    <select style="width: 100%;" class="form-control-sm form-control" name=""
-                            id="agencyPaymentAppsAgency">
-                        <option value="">Seçiniz</option>
-                        @foreach($data['agencies'] as $key)
-                            <option value="{{$key->id}}">{{$key->agency_name}}</option>
-                        @endforeach
-                    </select>
+                    <label for="agencyPaymentAppsAppNo">Şöför Adı:</label>
+                    <input type="text" id="soforAdiFilter" class="form-control form-control-sm">
                 </div>
             </div>
 
             <div class="col-md-2">
                 <div class="form-group position-relative">
-                    <label for="agencyPaymentAppsConfirm">Onay:</label>
-                    <select class="form-control-sm form-control" name="" id="agencyPaymentAppsConfirm">
-                        <option value="">Seçiniz</option>
-                        <option value="0">Onay Bekliyor</option>
-                        <option value="1">Onaylandı</option>
-                        <option value="-1">Reddedildi</option>
-                    </select>
-                </div>
-            </div>
-
-
-            <div class="col-md-2">
-                <div class="form-group position-relative">
-                    <label for="agencyPaymentAppsPaymentChannel">Ödeme Kanalı:</label>
-                    <select class="form-control-sm form-control" name="" id="agencyPaymentAppsPaymentChannel">
-                        <option value="">Seçiniz</option>
-                        @foreach($data['payment_channels'] as $key)
-                            <option value="{{$key->payment_channel}}">{{$key->payment_channel}}</option>
-                        @endforeach
-                    </select>
+                    <label for="agencyPaymentAppsConfirm">Oluşturan:</label>
+                    <input type="text" id="creatorFilter" class="form-control form-control-sm">
                 </div>
             </div>
 
@@ -81,8 +57,8 @@
         <th>ŞOFÖR ADI</th>
         <th>ŞOFÖR İLETİŞİM</th>
         <th>OLUŞTURAN</th>
-        {{-- <th>KAYIT TARİHİ</th> --}}
-        {{-- <th>İŞLEMLER</th> --}}
+        <th>KAYIT TARİHİ</th>
+        <th>İŞLEMLER</th>
     </tr>
     </thead>
 </table>

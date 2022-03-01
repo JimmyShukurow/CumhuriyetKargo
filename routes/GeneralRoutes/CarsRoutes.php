@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Operation\VariousController;
 use App\Http\Controllers\AgencyTransferCarsController;
+use App\Http\Controllers\TCCarsController;
 use App\Http\Controllers\TransferCarsController;
+
 
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
@@ -22,4 +24,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::resource('AgencyTransferCars', AgencyTransferCarsController::class);
     Route::get('AllAgencyTransferCars', [AgencyTransferCarsController::class, 'allData'])->name('agency.transfer.car.all');
     Route::post('GetAgencyTransferCar', [AgencyTransferCarsController::class, 'getAgencyTransferCar'])->name('getAgencyTransferCar');
+
+    Route::resource('TCCars', TCCarsController::class);
+    Route::get('AjaxTCCars/{val?}', [TCCarsController::class, 'ajaxTcCars']);
 });
