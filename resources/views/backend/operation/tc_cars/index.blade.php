@@ -53,11 +53,7 @@
                            class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger active">Aktarma Araçları</a>
 
                         <a id="tabAgencyPaymentApps" data-toggle="tab" href="#agencyPaymentApps"
-                           class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Acente Ödeme
-                            Bildirgeleri</a>
-
-                        <a id="tabAgencyPayments" data-toggle="tab" href="#agencyPayments"
-                           class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Acente Ödemeleri</a>
+                           class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Bölgeye Bağlı Acente Araçları</a> 
                     </div>
                 </div>
             </div>
@@ -70,10 +66,6 @@
 
                     <div class="tab-pane" id="agencyPaymentApps" role="tabpanel">
                         @include('backend.operation.tc_cars.tabs.agency_cars_of_branch')
-                    </div>
-
-                    <div class="tab-pane" id="agencyPayments" role="tabpanel">
-                        @include('backend.operation.tc_cars.tabs.agency_cars_waiting_confirmation')
                     </div>
                 </div>
             </div>

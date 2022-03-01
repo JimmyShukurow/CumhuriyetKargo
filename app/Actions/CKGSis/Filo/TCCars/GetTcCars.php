@@ -32,6 +32,7 @@ class GetTcCars
             ->when($creator, function($q) use($creator){ 
                 return $q->whereHas('creator', function($query) use ($creator){$query->where('name_surname', 'like', '%'.$creator.'%');});
             })
+            ->orderBy('created_at', 'DESC')
             ->get();
 
         $cars->each(function($key){ 

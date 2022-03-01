@@ -6,6 +6,7 @@ use App\Actions\CKGSis\Filo\TCCars\GetTcCars;
 use App\Http\Requests\TcCarsRequest;
 use App\Models\Agencies;
 use App\Models\TcCars as ModelsTcCars;
+use App\Models\TransshipmentCenters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -75,8 +76,16 @@ class TCCarsController extends Controller
     public function create()
     {
         $user = Auth::user();
+        $transshipment_centers = TransshipmentCenters::select('id', 'tc_name')->get();
         GeneralLog('Aktarma aracı oluştur sayfası görüntülendi.');
-        return view('backend.operation.tc_cars.create', ['branch'=> $user->transshipment->tc_name, 'user' => $user->name_surname]);
+        return view(
+            'backend.operation.tc_cars.create',
+            [
+                'branch'=> $user->transshipment->tc_name,
+                'user' => $user->name_surname,
+                'transshipment_centers' => $transshipment_centers,
+            ]
+        );
     }
    
 }

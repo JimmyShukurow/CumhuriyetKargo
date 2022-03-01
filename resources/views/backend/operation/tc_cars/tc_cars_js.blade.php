@@ -89,26 +89,6 @@ $(document).ready(function () {
 
             }
         },
-        // ajax: {
-        //             url: '{!! route('agency.transfer.car.all') !!}',
-        //             data: function (d) {
-        //                 d.marka = $('#filter_marka').val();
-        //                 d.model = $('#filter_model').val();
-        //                 d.plaka = $('#filter_plaka').val();
-        //                 d.soforAd = $('#filter_soforAd').val();
-        //             },
-        //             error: function (xhr, error, code) {
-
-        //                 if (xhr.status == 429) {
-        //                     ToastMessage('error', 'Aşırı istekte bulundunuz, Lütfen bir süre sonra tekrar deneyin!', 'Hata');
-        //                 } else if (xhr.status == 509) {
-        //                     ToastMessage('error', 'Tarih aralığı en fazla 60 gün olabilir!', 'Hata');
-        //                 }
-        //             },
-        //             complete: function () {
-        //                 ToastMessage('info', 'Tamamlandı!', 'Bilgi');
-        //             }
-        //         },
         columns: [
             {data: 'marka', name: 'marka'},
             {data: 'model', name: 'model'},

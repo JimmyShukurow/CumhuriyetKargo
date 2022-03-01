@@ -97,6 +97,79 @@
                                                class="form-control form-control form-control-sm">
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="hat" class="font-weight-bold">Hat</label>
+                                        <select name="hat" required id="hat" placeholder="Hattı giriniz." type="text" class="form-control form-control form-control-sm">
+                                            <option value=""> Seçiniz</option>
+                                            <option {{old('hat') == 'Anahat' ? 'selected' : ''}} value="Anahat">
+                                                Anahat
+                                            </option>
+                                            <option {{old('hat') == 'Arahat' ? 'selected' : ''}} value="Arahat">
+                                                Arahat
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="arac_kapasitesi" class="font-weight-bold">Kapasite</label>
+                                        <select name="arac_kapasitesi" required id="arac_kapasitesi" placeholder="Araç kapasitesini giriniz." type="text"class="form-control form-control form-control-sm">
+                                            <option value=""> Seçiniz</option>
+                                            <option
+                                                {{old('arac_kapasitesi') == 'Panelvan' ? 'selected' : ''}} value="Panelvan">
+                                                Panelvan
+                                            </option>
+                                            <option
+                                                {{old('arac_kapasitesi') == 'Kamyonet' ? 'selected' : ''}} value="Kamyonet">
+                                                Kamyonet
+                                            </option>
+                                            <option
+                                                {{old('arac_kapasitesi') == '6 Teker Kamyonet' ? 'selected' : ''}} value="6 Teker Kamyonet">
+                                                6 Teker Kamyonet
+                                            </option>
+                                            <option
+                                                {{old('arac_kapasitesi') == '10 Teker Kamyonet' ? 'selected' : ''}} value="10 Teker Kamyon">
+                                                10 Teker Kamyon
+                                            </option>
+                                            <option
+                                                {{old('arac_kapasitesi') == '40 Ayak Kamyon' ? 'selected' : ''}} value="40 Ayak Kamyon">
+                                                40 Ayak Kamyon
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="cikis_aktarma" class="font-weight-bold">Çıkış Aktarma</label>
+                                        <select name="cikis_aktarma" required id="cikis_aktarma"
+                                               placeholder="Kapı sayısını giriniz."
+                                               class="form-control form-control form-control-sm">
+                                               <option value=""> Seçiniz</option>
+                                                @foreach($transshipment_centers as $trasferCars)
+                                                    <option
+                                                        {{old('cikis_aktarma') == $trasferCars->id ? 'selected' : ''}}
+                                                        value="{{$trasferCars->id}}">{{$trasferCars->tc_name.' T.M.'}} </option>
+                                                @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="varis_aktarma" class="font-weight-bold">Varış Aktarma</label>
+                                        <select name="varis_aktarma" required id="varis_aktarma"
+                                               placeholder="Kapı sayısını giriniz."
+                                               type="text"
+                                               class="form-control form-control form-control-sm">
+                                               <option value=""> Seçiniz</option>
+                                                @foreach($transshipment_centers as $trasferCars)
+                                                    <option
+                                                        {{old('cikis_aktarma') == $trasferCars->id ? 'selected' : ''}}
+                                                        value="{{$trasferCars->id}}">{{$trasferCars->tc_name.' T.M.'}} </option>
+                                                @endforeach
+                                        </select>
+                                    </div>
+                                </div>
 
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
