@@ -270,7 +270,7 @@ class TCController extends Controller
 
         foreach ($request->district_array as $key) {
 
-            $district = Districts::where('id', $key)->first()->district_name;
+            $district = Districts::where('id', $key)->first();
 
             $is_there = TransshipmentCenterDistricts::where('tc_id', $request->tc_id)
                 ->where('city', $city)
@@ -281,7 +281,8 @@ class TCController extends Controller
                 $insert = TransshipmentCenterDistricts::create([
                     'tc_id' => $request->tc_id,
                     'city' => $city,
-                    'district' => $district
+                    'district' => $district->district_name,
+                    'district_id' => $district->id,
                 ]);
             }
         }

@@ -39,7 +39,6 @@ class GetAgencyStatusAction
             ->whereRaw($safeStatus != null ? "safe_status ='" . $safeStatus . "'" : ' 1 > 0')
             ->whereRaw($region ? 'tc_id = ' . $region : ' 1 > 0');
 
-
         return datatables()->of($rows)
             ->editColumn('endorsement', function ($key) {
                 return round($key->endorsement, 2);
@@ -52,6 +51,9 @@ class GetAgencyStatusAction
             })
             ->editColumn('debt', function ($key) {
                 return round($key->debt, 2);
+            })
+            ->editColumn('intraday', function ($key) {
+                return round($key->intraday, 2);
             })
             ->editColumn('safe_status', function ($key) {
                 return $key->safe_status == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>';
