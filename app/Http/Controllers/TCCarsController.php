@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CKGSis\Filo\AgencyCars\GetAgencyCarsOfBranch;
 use App\Actions\CKGSis\Filo\TCCars\GetTcCars;
 use App\Http\Requests\TcCarsRequest;
 use App\Models\Agencies;
@@ -70,6 +71,8 @@ class TCCarsController extends Controller
         switch ($val) {
             case 'GetTransferCars':
                 return GetTcCars::run($request);
+            case 'GetAgencyCarsOfBranch':
+                return GetAgencyCarsOfBranch::run($request);
         } 
     }
 
