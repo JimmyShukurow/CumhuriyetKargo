@@ -31,4 +31,5 @@ class TransshipmentCenterDistricts extends Model
     }
 
     protected $table = "transshipment_center_districts";
+
 }

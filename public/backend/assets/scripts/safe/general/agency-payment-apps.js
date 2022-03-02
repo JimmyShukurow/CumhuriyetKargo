@@ -91,10 +91,7 @@ $('#tabAgencyPaymentApps').click(function () {
                 },
                 complete: function () {
                     SnackMessage('Tamamlandı!', 'info', 'bl');
-
-                    if ($('#datatableRefreshBtn').prop('disabled') == true)
-                        $('#datatableRefreshBtn').prop('disabled', false);
-
+                    getAppSummery()
                 }
             },
             columns: [
@@ -376,6 +373,52 @@ $(document).on('click', '#btnAppConfirmReject', delay(function () {
     });
 
 }, 900))
+
+function getAppSummery() {
+    $('#AgencyPaymentAppRow').block({
+        message: $('<div class="loader mx-auto">\n' +
+            '                            <div class="ball-grid-pulse">\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                            </div>\n' +
+            '                        </div>')
+    });
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+
+    $.ajax('/Safe/General/AjaxTransactions/GetAgencyPaymentAppsSummery', {
+        method: 'POST',
+        data: {
+            _token: token,
+        }
+    }).done(function (response) {
+
+        if (response.status == 1) {
+            response = response.data
+            $('span#WaitingApp').html(response.waiting)
+            $('span#SuccessApp').html(response.success)
+            $('span#RejectApp').html(response.reject)
+            $('span#AllApp').html(response.all)
+
+        } else if (response.status == 0) {
+            ToastMessage('error', response.message, 'Hata!')
+            return false;
+        }
+
+    }).error(function (jqXHR, response) {
+        ajaxError(jqXHR.status);
+    }).always(function () {
+        $('#AgencyPaymentAppRow').unblock();
+    });
+}
 
 
 

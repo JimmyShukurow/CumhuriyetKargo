@@ -7,6 +7,7 @@ use App\Actions\CKGSis\Safe\GeneralSafe\ChangeAgencySafeStatusAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\DeleteAgencyPayment;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyPaymentAppAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyPaymentAppDetails;
+use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyPaymentAppsSummeryAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencyPaymentsAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencySafeStatusAction;
 use App\Actions\CKGSis\Safe\GeneralSafe\GetAgencySafeStatusDetailsAction;
@@ -39,7 +40,6 @@ class GeneralSafeController extends Controller
         $data['agency_payments_payment_channels'] = DB::table('agency_payments')
             ->groupBy('payment_channel')
             ->get();
-
 
         $data['agencies'] = Agencies::orderBy('agency_name')->get();
 
@@ -104,6 +104,10 @@ class GeneralSafeController extends Controller
 
             case 'UpdateAgencyPayment':
                 return UpdateAgencyPaymentAction::run($request);
+                break;
+
+            case 'GetAgencyPaymentAppsSummery':
+                return GetAgencyPaymentAppsSummeryAction::run($request);
                 break;
 
             default:
