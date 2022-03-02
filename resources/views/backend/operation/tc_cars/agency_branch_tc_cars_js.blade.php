@@ -83,7 +83,7 @@ $('#tabPandingConfirmCars').click(function () {
                 d.creator = $('#creatorFilter').val();
                 d.confirmation = $('#confirmationFilter').val();
             },
-            
+
             error: function (xhr, error, code) {
 
                 console.log('error');
@@ -115,10 +115,10 @@ $('#tabPandingConfirmCars').click(function () {
     });
     }
 
-    let buttonCancel = "<button id='cancel' class='btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger col-6'> Reddet </button>";
-    let buttonConfirm = "<button id='confirm' class='btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success col-6'> Onayla </button>";
+    let buttonCancel = "<div class='col-sm-6'> <div class='p-1'> <button id='btnAppConfirmSuccess' class='btn-app-transaction btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success'> <i class='lnr-checkmark-circle text-success opacity-7 btn-icon-wrapper mb-2'> </i> Aracı Onayla </button> </div> </div>";
+    let buttonConfirm = "<div class='col-sm-6'>    <div class= 'p-1'> <button id='btnAppConfirmReject' class='btn-app-transaction btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger'> <i class='lnr-cross-circle text-danger opacity-7 btn-icon-wrapper mb-2'> </i> Aracı Reddet </button> </div> </div>";
 
-    $('#confirmation').html(buttonCancel + buttonConfirm);
+    $('#confirmation').html("<div class='grid-menu grid-menu-2col'> <div class='no-gutters row'>"+ buttonCancel + buttonConfirm + "</div> </div>");
 });
 
 </script>

@@ -18,7 +18,7 @@ class GetAgencyCarsOfBranch
         $ids= collect();
 
         $districts = $tc->districts()->with('agencies')->whereHas('agencies')->get();
-        $districts = $districts->map( function($q) use ($ids){
+        $districts->map( function($q) use ($ids){
             $agencies = $q->agencies;
             return  $agencies->map(function($query) use ($ids){ $ids->push($query->id); return $query->id;});
         });
@@ -37,18 +37,18 @@ class GetAgencyCarsOfBranch
             ->when($plaka, function($q) use($plaka){ return $q->where('plaka', 'like', '%'.$plaka.'%');})
             ->when($soforAd, function($q) use($soforAd){ return $q->where('sofor_ad', 'like', '%'.$soforAd.'%');})
             ->when($confirm, function($q) use($confirm){ return $q->where('confirm', $confirm);})
-            ->when($creator, function($q) use($creator){ 
+            ->when($creator, function($q) use($creator){
                 return $q->whereHas('creator', function($query) use ($creator){$query->where('name_surname', 'like', '%'.$creator.'%');});
             })
             ->orderBy('created_at', 'DESC')
             ->whereIn('branch_code', $ids)
             ->get();
 
-        $cars->each(function($key){ 
-            $key['branch'] = $key->branch->agency_name ?? null; 
-            $key['creator'] = $key->creator->name_surname ?? null; 
-            $key['cikis_aktarma'] = $key->cikishAktarma->tc_name ?? null; 
-            $key['varis_aktarma'] = $key->varishAktarma->tc_name ?? null; 
+        $cars->each(function($key){
+            $key['branch'] = $key->branch->agency_name ?? null;
+            $key['creator'] = $key->creator->name_surname ?? null;
+            $key['cikis_aktarma'] = $key->cikishAktarma->tc_name ?? null;
+            $key['varis_aktarma'] = $key->varishAktarma->tc_name ?? null;
         });
 
         // This part is Yajra Datatables, you can google it to research ...
@@ -70,7 +70,7 @@ class GetAgencyCarsOfBranch
 
                 else if($cars->confirm == -1) return '<b class="text-danger"> Onaylanmadi </b>';
             })
-          
+
             ->addColumn('details', 'backend.operation.tc_cars.column')
             ->rawColumns(['details', 'branch', 'creator', 'confirmation_status'])
             ->make(true);
