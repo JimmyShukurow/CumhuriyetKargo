@@ -52,7 +52,7 @@
                         <a id="tabTransferCars" data-toggle="tab" href="#transferCars"
                            class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger active">Aktarma Araçları</a>
 
-                        <a id="tabAgencyPaymentApps" data-toggle="tab" href="#agencyPaymentApps"
+                        <a id="tabPandingConfirmCars" data-toggle="tab" href="#agencyPaymentApps"
                            class="border-0 btn-pill btn-wide btn-transition btn btn-outline-danger">Bölgeye Bağlı Acente Araçları</a> 
                     </div>
                 </div>

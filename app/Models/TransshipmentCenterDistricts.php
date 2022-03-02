@@ -29,4 +29,8 @@ class TransshipmentCenterDistricts extends Model
     }
 
     protected $table = "transshipment_center_districts";
+
+    public function agencies(){
+        return $this->hasMany(Agencies::class, 'district_id', 'district_id');
+    }
 }

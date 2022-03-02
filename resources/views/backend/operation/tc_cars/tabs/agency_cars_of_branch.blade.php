@@ -1,4 +1,4 @@
-{{-- <div class="form-group row">
+<div class="form-group row">
 
     <div style="padding-top: 0; padding-bottom: 0;" class="card-body">
         <div class="row">
@@ -38,12 +38,24 @@
                 </div>
             </div>
 
+            <div class="col-md-2">
+                <div class="form-group position-relative">
+                    <label for="agencyPaymentAppsConfirm">Onaylanma Durumu:</label>
+                    <select type="text" id="confirmationFilter" class="form-control form-control-sm">
+                        <option value="">Seçiniz</option>
+                        <option value="-1"> Onaylanmadi </option>
+                        <option value="0"> Onay Bekliyor </option>
+                        <option value="1"> Onaylandi </option>
+                    </select>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 
 
-<table style="width: 100%; white-space: nowrap;" id="transferCarsTable"
+<table style="width: 100%; white-space: nowrap;" id="agencyBranchTransferCarsTable"
        class="table Table20Padding table-bordered table-hover">
     <thead>
     <tr>
@@ -58,11 +70,12 @@
         <th>ŞOFÖR İLETİŞİM</th>
         <th>OLUŞTURAN</th>
         <th>KAYIT TARİHİ</th>
+        <th>ONAY DURUMU</th>    
         <th>İŞLEMLER</th>
     </tr>
     </thead>
 </table>
 
 
-@include('backend.operation.tc_cars.tc_cars_js')
- --}}
+@include('backend.operation.tc_cars.agency_branch_tc_cars_js')
+

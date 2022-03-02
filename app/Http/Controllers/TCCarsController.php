@@ -71,7 +71,7 @@ class TCCarsController extends Controller
         switch ($val) {
             case 'GetTransferCars':
                 return GetTcCars::run($request);
-            case 'GetAgencyCarsOfBranch':
+            case 'AgenBranchGetTransferCars':
                 return GetAgencyCarsOfBranch::run($request);
         } 
     }

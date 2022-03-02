@@ -1,8 +1,12 @@
 <script>
-$(document).ready(function () {
 
+let tablePangdingConfirm = false;
 
-    tableAgencyPaymentApps = $('#transferCarsTable').DataTable({
+$('#tabPandingConfirmCars').click(function () {
+
+    if(tablePangdingConfirm == false){
+        tablePangdingConfirm = true;
+        tableAgencyPaymentApps = $('#agencyBranchTransferCarsTable').DataTable({
         pageLength: 50,
         lengthMenu: [
             [10, 25, 50, 100, 250, 500, -1],
@@ -70,13 +74,14 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: 'AjaxTCCars/GetTransferCars',
+            url: 'AjaxTCCars/AgenBranchGetTransferCars',
             data: function (d) {
                 d.marka = $('#markaFilter').val();
                 d.model = $('#modelFilter').val();
                 d.plaka = $('#plakaFilter').val();
                 d.soforAd = $('#soforAdiFilter').val();
                 d.creator = $('#creatorFilter').val();
+                d.confirmation = $('#confirmationFilter').val();
             },
             
             error: function (xhr, error, code) {
@@ -101,79 +106,19 @@ $(document).ready(function () {
             {data: 'sofor_telefon', name: 'sofor_telefon'},
             {data: 'creator', name: 'creator'},
             {data: 'created_at', name: 'created_at'},
+            {data: 'confirmation_status', name: 'confirmation_status'},
             {data: 'details', name: 'details'},
+
         ],
         scrollY: '500px',
         scrollX: true,
     });
-});
-
-
-    
-
-    $(document).ready(function () {
-        $('#agencyPaymentAppsAgency').select2();
-
-        $('#tabTransferCars').on('click', function(){
-            $('#confirmation').html("");
-            }
-        );
-    })
-
-    $(document).on('click', '.btn_car_details', function () {
-        detailsID = $(this).prop('id');
-        carInfo($(this).prop('id'));
-     });
-
-    function carInfo(id) {
-
-        $('#ModalCarDetails').modal();
-
-        $('#ModalBodyUserDetail.modal-body').block({
-            message: $('<div class="loader mx-auto">\n' +
-                '                            <div class="ball-grid-pulse">\n' +
-                '                                <div class="bg-white"></div>\n' +
-                '                                <div class="bg-white"></div>\n' +
-                '                                <div class="bg-white"></div>\n' +
-                '                                <div class="bg-white"></div>\n' +
-                '                                <div class="bg-white"></div>\n' +
-                '                                <div class="bg-white"></div>\n' +
-                '                                <div class="bg-white"></div>\n' +
-                '                                <div class="bg-white"></div>\n' +
-                '                                <div class="bg-white"></div>\n' +
-                '                            </div>\n' +
-                '                        </div>')
-        });
-        $('.blockUI.blockMsg.blockElement').css('width', '100%');
-        $('.blockUI.blockMsg.blockElement').css('border', '0px');
-        $('.blockUI.blockMsg.blockElement').css('background-color', '');
-
-        $.ajax('{{route('getAgencyTransferCar')}}', {
-            method: 'POST',
-            data: {
-                _token: token,
-                carID: id
-            },
-            cache: false
-        }).done(function (response) {
-
-            let cars = response.cars;
-
-            $('#tdPlaka').html(cars.plaka);
-            $('#branch').html(cars.branch ? cars.branch.agency_name : '');
-            $('#creator').html(cars.creator ? cars.creator.name_surname : '');
-            $('#car_type').html(cars.car_type);
-            $('#created_at').html(cars.created_at);
-            $('#confirmer').html(cars.confirmed_user);
-            $('#soforAdi').html(cars.sofor_ad);
-            $('#soforIletisim').html(cars.sofor_telefon);
-            $('#soforAders').html(cars.sofor_adres);
-            $('.modal-body').unblock();
-            return false;
-        });
-
-        $('#ModalAgencyDetail').modal();
     }
-    
+
+    let buttonCancel = "<button id='cancel' class='btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger col-6'> Reddet </button>";
+    let buttonConfirm = "<button id='confirm' class='btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success col-6'> Onayla </button>";
+
+    $('#confirmation').html(buttonCancel + buttonConfirm);
+});
 
 </script>
