@@ -16,6 +16,11 @@ class GetAgencyPaymentAppsSummeryAction
         $data['waiting'] = AgencyPaymentApp::all()->where('confirm', '0')->count();
         $data['reject'] = AgencyPaymentApp::all()->where('confirm', '-1')->count();
 
+        $data['all'] = getDotter($data['all']);
+        $data['success'] = getDotter($data['success']);
+        $data['waiting'] = getDotter($data['waiting']);
+        $data['reject'] = getDotter($data['reject']);
+
         return response()
             ->json(['status' => 1, 'data' => $data], 200);
 
