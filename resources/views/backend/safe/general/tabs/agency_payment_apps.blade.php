@@ -89,7 +89,7 @@
     </thead>
 </table>
 
-<div id="AgencyPaymentAppRow" class="row">
+<div id="AgencyPaymentAppRow" class="mt-4 row">
     <div class="col-md-6 col-lg-3">
         <div class="card-shadow-primary mb-3 widget-chart widget-chart2 text-left card">
             <div class="widget-chat-wrapper-outer">
