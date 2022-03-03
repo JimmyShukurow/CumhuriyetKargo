@@ -159,7 +159,12 @@ $(document).ready(function () {
 
             let cars = response.cars;
 
+            $('#plaka').html(cars.plaka);
             $('#tdPlaka').html(cars.plaka);
+            $('#arac_kapasitesi').html(cars.arac_kapasitesi);
+            $('#hat').html(cars.hat);
+            $('#cikis_aktarma').html(cars.cikis_aktarma);
+            $('#varis_aktarma').html(cars.varis_aktarma);
             $('#branch').html(cars.branch ? cars.branch.agency_name : '');
             $('#creator').html(cars.creator ? cars.creator.name_surname : '');
             $('#car_type').html(cars.car_type);

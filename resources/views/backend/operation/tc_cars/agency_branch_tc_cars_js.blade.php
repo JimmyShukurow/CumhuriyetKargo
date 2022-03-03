@@ -7,7 +7,7 @@ $('#tabPandingConfirmCars').click(function () {
 
     if(tablePangdingConfirm == false){
         tablePangdingConfirm = true;
-        tableAgencyPaymentApps = $('#agencyBranchTransferCarsTable').DataTable({
+       tableAgencyPaymentApps = $('#agencyBranchTransferCarsTable').DataTable({
         pageLength: 50,
         lengthMenu: [
             [10, 25, 50, 100, 250, 500, -1],
@@ -104,9 +104,6 @@ $('#tabPandingConfirmCars').click(function () {
         scrollX: true,
     });
     }
-    $(document).on('click', '.btn_car_details', function () {
-        detailsID = $(this).prop('id');
-    });
 
     $('#confirmation').show();
 
@@ -117,6 +114,8 @@ $('#tabPandingConfirmCars').click(function () {
                 id:detailsID,
             }
         }).done(function (response){
+            tableAgencyPaymentApps.draw();
+            ToastMessage('success', response.message, 'İşlem Başarılı!');
 
         })
     })
@@ -127,6 +126,8 @@ $('#tabPandingConfirmCars').click(function () {
                 id:detailsID,
             }
         }).done(function (response){
+            tableAgencyPaymentApps.draw();
+            ToastMessage('success', response.message, 'İşlem Başarılı!');
 
         })
     })

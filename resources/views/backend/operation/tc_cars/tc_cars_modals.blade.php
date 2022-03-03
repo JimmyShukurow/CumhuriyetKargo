@@ -60,6 +60,18 @@
                                                     <td class="static">Onaylayan</td>
                                                     <td class="modal-data" id="confirmer"></td>
                                                 </tr>
+                                                <tr>
+                                                    <td class="static">Araç Kapasite</td>
+                                                    <td class="modal-data" id="arac_kapasitesi"></td>
+                                                    <td class="static">Hat</td>
+                                                    <td class="modal-data" id="hat"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="static">Çıkış Aktarma</td>
+                                                    <td class="modal-data" id="cikis_aktarma"></td>
+                                                    <td class="static">Varış Aktarma</td>
+                                                    <td class="modal-data" id="varis_aktarma"></td>
+                                                </tr>
                                                 </tbody>
                                             </table>
 
@@ -144,3 +156,4 @@
             </div>
         </div>
     </div>
+

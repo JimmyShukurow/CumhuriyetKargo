@@ -46,9 +46,9 @@ class AgencyTransferCarsController extends Controller
             ->when($soforAd, function($q) use($soforAd){ return $q->where('sofor_ad', 'like', '%'.$soforAd.'%');})
             ->get();
 
-        $cars->each(function($key){ 
-            $key['branch'] = $key->branch->agency_name ?? null; 
-            $key['creator'] = $key->creator->name_surname ?? null; 
+        $cars->each(function ($key) {
+            $key['branch'] = $key->branch->agency_name ?? null;
+            $key['creator'] = $key->creator->name_surname ?? null;
         });
 
         // This part is Yajra Datatables, you can google it to research ...
@@ -67,7 +67,7 @@ class AgencyTransferCarsController extends Controller
                 else if($cars->confirm == 1) return '<b class="text-success"> Onaylandı </b>';
                 else if($cars->confirm == -1) return '<b class="text-danger"> Onaylandı </b>';
             })
-          
+
             ->addColumn('details', 'backend.operation.transfer_cars_agency.column')
             ->rawColumns(['details', 'branch', 'creator', 'confirmation_status'])
             ->make(true);
@@ -93,7 +93,7 @@ class AgencyTransferCarsController extends Controller
 
     public function getAgencyTransferCar(Request $request)
     {
-        $car = TcCars::with('branch', 'creator')->where('id', $request->carID)
+        $car = TcCars::with('branch', 'creator', 'cikishAktarma.tc_name', 'varishAktarma.tc_name')->where('id', $request->carID)
             ->first();
 
         return response()
