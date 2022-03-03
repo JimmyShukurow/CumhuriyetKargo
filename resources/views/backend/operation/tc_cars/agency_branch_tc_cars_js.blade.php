@@ -1,6 +1,7 @@
 <script>
 
 let tablePangdingConfirm = false;
+let detailsID = null;
 
 $('#tabPandingConfirmCars').click(function () {
 
@@ -59,16 +60,6 @@ $('#tabPandingConfirmCars').click(function () {
                     id: 'datatableRefreshBtn'
                 }
             },
-            {
-                text: 'Araç Ekle',
-                action:function(){
-                    window.location.replace('TCCars/Create')
-                },
-                attr: {
-                    class: 'btn btn-primary',
-                    id: 'btnAddTcCar'
-                }
-            }
         ],
         responsive: false,
         processing: true,
@@ -114,11 +105,24 @@ $('#tabPandingConfirmCars').click(function () {
         scrollX: true,
     });
     }
+    $(document).on('click', '.btn_car_details', function () {
+        detailsID = $(this).prop('id');
+    });
 
-    let buttonCancel = "<div class='col-sm-6'> <div class='p-1'> <button id='btnAppConfirmSuccess' class='btn-app-transaction btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success'> <i class='lnr-checkmark-circle text-success opacity-7 btn-icon-wrapper mb-2'> </i> Aracı Onayla </button> </div> </div>";
-    let buttonConfirm = "<div class='col-sm-6'>    <div class= 'p-1'> <button id='btnAppConfirmReject' class='btn-app-transaction btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger'> <i class='lnr-cross-circle text-danger opacity-7 btn-icon-wrapper mb-2'> </i> Aracı Reddet </button> </div> </div>";
-
-    $('#confirmation').html("<div class='grid-menu grid-menu-2col'> <div class='no-gutters row'>"+ buttonCancel + buttonConfirm + "</div> </div>");
+    $('#confirmation').show();
 });
+
+$('#carConfirmSuccess').on('click', function (){
+    $.ajax({
+        url:"AjaxTCCars/CarConfirmSuccess",
+        data:{
+            id:detailsID,
+        }
+    }).done(function (response){
+
+    })
+})
+
+
 
 </script>

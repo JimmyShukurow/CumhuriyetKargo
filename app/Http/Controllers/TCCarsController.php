@@ -26,7 +26,7 @@ class TCCarsController extends Controller
 
 
         return view('backend.operation.tc_cars.index', compact('data'));
-    
+
     }
 
     public function store(TcCarsRequest $request)
@@ -47,7 +47,7 @@ class TCCarsController extends Controller
                 ->with('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!');
     }
 
-   
+
     public function show($id)
     {
         //
@@ -59,7 +59,7 @@ class TCCarsController extends Controller
         //
     }
 
-   
+
     public function destroy($id)
     {
         //
@@ -73,7 +73,9 @@ class TCCarsController extends Controller
                 return GetTcCars::run($request);
             case 'AgenBranchGetTransferCars':
                 return GetAgencyCarsOfBranch::run($request);
-        } 
+            case 'CarConfirmSuccess':
+                return CarConfirmSuccessAction::run($request);
+        }
     }
 
     public function create()
@@ -90,5 +92,5 @@ class TCCarsController extends Controller
             ]
         );
     }
-   
+
 }

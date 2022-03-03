@@ -117,7 +117,26 @@
                         </div>
                     </div>
                     {{-- CARD END --}}
-                    <div id="confirmation"></div>
+                    <div id="confirmation" style="display: none">
+                        <div class="grid-menu grid-menu-2col">
+                            <div class="no-gutters row">
+                                <div class="col-sm-6">
+                                    <div class="p-1">
+                                        <button id="carConfirmSuccess" class="btn-app-transaction btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success">
+                                            <i class="lnr-checkmark-circle text-success opacity-7 btn-icon-wrapper mb-2"> </i>
+                                            Aracı Onayla
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class= "p-1">
+                                        <button id="carAppConfirmReject" class="btn-app-transaction btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
+                                            <i class="lnr-cross-circle text-danger opacity-7 btn-icon-wrapper mb-2"> </i>
+                                            Aracı Reddet
+                                        </button>
+                                    </div>
+                                </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>

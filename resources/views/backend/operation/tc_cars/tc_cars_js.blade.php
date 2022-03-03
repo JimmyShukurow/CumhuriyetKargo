@@ -78,7 +78,7 @@ $(document).ready(function () {
                 d.soforAd = $('#soforAdiFilter').val();
                 d.creator = $('#creatorFilter').val();
             },
-            
+
             error: function (xhr, error, code) {
 
                 console.log('error');
@@ -109,13 +109,13 @@ $(document).ready(function () {
 });
 
 
-    
+
 
     $(document).ready(function () {
         $('#agencyPaymentAppsAgency').select2();
 
         $('#tabTransferCars').on('click', function(){
-            $('#confirmation').html("");
+            $('#confirmation').hide();
             }
         );
     })
@@ -174,6 +174,6 @@ $(document).ready(function () {
 
         $('#ModalAgencyDetail').modal();
     }
-    
+
 
 </script>
