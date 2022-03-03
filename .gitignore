@@ -25,3 +25,4 @@ app/Providers/TelescopeServiceProvider.php
 public/vendor/telescope
 storage/debugbar
 app/Providers/AppServiceProvider.php
+PHP_CodeSniffer

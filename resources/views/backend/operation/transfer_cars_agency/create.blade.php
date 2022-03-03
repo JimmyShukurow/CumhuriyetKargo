@@ -90,6 +90,17 @@
 
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
+                                        <label for="doors_to_be_sealed" class="font-weight-bold">Mühür Vurulacak Kapı Sayısı</label>
+                                        <input name="doors_to_be_sealed" required id="doors_to_be_sealed"
+                                               placeholder="Kapı sayısını giriniz."
+                                               type="text"
+                                               value="{{ old('doors_to_be_sealed') }}"
+                                               class="form-control form-control form-control-sm">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
                                         <label for="model_yili" class="font-weight-bold">Bağlı olduğu birim</label>
                                         <input name="branch_code" required id="branch_code"
                                                type="text"

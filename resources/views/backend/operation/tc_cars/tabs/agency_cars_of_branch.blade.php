@@ -5,14 +5,14 @@
             <div class="col-md-2">
                 <div class="form-group position-relative">
                     <label for="agencyPaymentAppsFirstDate">Marka:</label>
-                    <input type="text" id="markaFilter" 
+                    <input type="text" id="markaFilter"
                            class="form-control form-control-sm  niko-select-filter">
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="form-group position-relative">
                     <label for="agencyPaymentAppsLastDate">Model:</label>
-                    <input type="text" id="modelFilter" 
+                    <input type="text" id="modelFilter"
                            class="form-control form-control-sm  niko-select-filter">
                 </div>
             </div>
@@ -43,7 +43,7 @@
                     <label for="agencyPaymentAppsConfirm">Onaylanma Durumu:</label>
                     <select type="text" id="confirmationFilter" class="form-control form-control-sm">
                         <option value="">Seçiniz</option>
-                        <option value="-1"> Onaylanmadi </option>
+                        <option value="-1"> Reddedildi </option>
                         <option value="0"> Onay Bekliyor </option>
                         <option value="1"> Onaylandi </option>
                     </select>
@@ -62,15 +62,14 @@
         <th>MARKA</th>
         <th>MODEL</th>
         <th>PLAKA</th>
-        <th>HAT</th>
-        <th>KAPASİTE</th>
-        <th>ÇIKIŞ AKT</th>
-        <th>VARIŞ AKT</th>
+        <th>MÜHÜR SAYISI</th>
         <th>ŞOFÖR ADI</th>
         <th>ŞOFÖR İLETİŞİM</th>
         <th>OLUŞTURAN</th>
+        <th>ROL</th>
+        <th>ŞUBE</th>
         <th>KAYIT TARİHİ</th>
-        <th>ONAY DURUMU</th>    
+        <th>ONAY DURUMU</th>
         <th>İŞLEMLER</th>
     </tr>
     </thead>
