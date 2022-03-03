@@ -51,8 +51,8 @@
                                                 <tr>
                                                     <td class="static">Ekleyen</td>
                                                     <td class="modal-data" id="creator"></td>
-                                                    <td class="static">Araç Tipip</td>
-                                                    <td class="modal-data" id="car_type"></td>
+                                                    <td class="static">Ekleyen Şube</td>
+                                                    <td class="modal-data" id="agency"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Kayıt Tarihi</td>

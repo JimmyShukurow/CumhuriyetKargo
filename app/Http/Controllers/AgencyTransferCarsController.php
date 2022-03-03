@@ -93,7 +93,7 @@ class AgencyTransferCarsController extends Controller
 
     public function getAgencyTransferCar(Request $request)
     {
-        $car = TcCars::with('branch', 'creator', 'cikishAktarma.tc_name', 'varishAktarma.tc_name')->where('id', $request->carID)
+        $car = TcCars::with('branch', 'creator.getAgency', 'cikishAktarma', 'varishAktarma')->where('id', $request->carID)
             ->first();
 
         return response()

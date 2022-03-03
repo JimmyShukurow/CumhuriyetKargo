@@ -28,7 +28,6 @@ class TCCarsController extends Controller
 
 
         return view('backend.operation.tc_cars.index', compact('data'));
-
     }
 
     public function store(TcCarsRequest $request)
@@ -41,12 +40,13 @@ class TCCarsController extends Controller
 
         $create = ModelsTcCars::create($validated);
 
-        if ($create)
+        if ($create) {
             return back()
                 ->with('success', 'Aktarma aracı başarıyla kaydedildi!');
-        else
+        } else {
             return back()
                 ->with('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!');
+        }
     }
 
 
@@ -90,11 +90,10 @@ class TCCarsController extends Controller
         return view(
             'backend.operation.tc_cars.create',
             [
-                'branch'=> $user->transshipment->tc_name,
+                'branch' => $user->transshipment->tc_name,
                 'user' => $user->name_surname,
                 'transshipment_centers' => $transshipment_centers,
             ]
         );
     }
-
 }

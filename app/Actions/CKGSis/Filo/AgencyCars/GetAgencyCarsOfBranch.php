@@ -38,19 +38,31 @@ class GetAgencyCarsOfBranch
 
         $cars = TcCars::with('branch', 'creator')
             ->where('car_type', 'Acente')
-            ->when($marka, function($q) use($marka){ return $q->where('marka', 'like', '%'.$marka.'%');})
-            ->when($model, function($q) use($model){ return $q->where('model', 'like', '%'.$model.'%');})
-            ->when($plaka, function($q) use($plaka){ return $q->where('plaka', 'like', '%'.$plaka.'%');})
-            ->when($soforAd, function($q) use($soforAd){ return $q->where('sofor_ad', 'like', '%'.$soforAd.'%');})
-            ->when(($confirm != null), function($q) use($confirm){ return $q->where('confirm', $confirm);})
-            ->when($creator, function($q) use($creator){
-                return $q->whereHas('creator', function($query) use ($creator){$query->where('name_surname', 'like', '%'.$creator.'%');});
+            ->when($marka, function ($q) use ($marka) {
+                return $q->where('marka', 'like', '%' . $marka . '%');
+            })
+            ->when($model, function ($q) use ($model) {
+                return $q->where('model', 'like', '%' . $model . '%');
+            })
+            ->when($plaka, function ($q) use ($plaka) {
+                return $q->where('plaka', 'like', '%' . $plaka . '%');
+            })
+            ->when($soforAd, function ($q) use ($soforAd) {
+                return $q->where('sofor_ad', 'like', '%' . $soforAd . '%');
+            })
+            ->when(($confirm != null), function ($q) use ($confirm) {
+                return $q->where('confirm', $confirm);
+            })
+            ->when($creator, function ($q) use ($creator) {
+                return $q->whereHas('creator', function ($query) use ($creator) {
+                    $query->where('name_surname', 'like', '%' . $creator . '%');
+                });
             })
             ->whereIn('branch_code', $ids)
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        $cars->each(function($key){
+        $cars->each(function ($key) {
             $key['branch_name'] = $key->branch->agency_name ?? null;
             $key['creator_name'] = $key->creator->name_surname ?? null;
             $key['creator_role'] = $key->creator->userRole->display_name ?? null;
@@ -75,11 +87,13 @@ class GetAgencyCarsOfBranch
             })
             ->editColumn('confirmation_status', function ($cars) {
 
-                if($cars->confirm == 0) return '<b class="text-warning"> Onay Bekliyor </b>';
-
-                else if($cars->confirm == 1) return '<b class="text-success"> Onaylandı </b>';
-
-                else if($cars->confirm == -1) return '<b class="text-danger"> Reddedildi </b>';
+                if ($cars->confirm == 0) {
+                    return '<b class="text-warning"> Onay Bekliyor </b>';
+                } elseif ($cars->confirm == 1) {
+                    return '<b class="text-success"> Onaylandı </b>';
+                } elseif ($cars->confirm == -1) {
+                    return '<b class="text-danger"> Reddedildi </b>';
+                }
             })
 
             ->addColumn('details', 'backend.operation.tc_cars.column')

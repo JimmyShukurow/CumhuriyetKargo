@@ -167,6 +167,7 @@ $(document).ready(function () {
             $('#varis_aktarma').html(cars.varis_aktarma);
             $('#branch').html(cars.branch ? cars.branch.agency_name : '');
             $('#creator').html(cars.creator ? cars.creator.name_surname : '');
+            $('#agency').html(cars.creator.get_agency ? cars.creator.get_agency.agency_name : '');
             $('#car_type').html(cars.car_type);
             $('#created_at').html(cars.created_at);
             $('#confirmer').html(cars.confirmed_user);
