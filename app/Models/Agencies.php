@@ -44,5 +44,10 @@ class Agencies extends Model
 
     protected $table = 'agencies';
 
+    public function endorsement()
+    {
+        return $this->hasMany(Cargoes::class, 'departure_agency_code', 'id')
+            ->sum('total_price');
+    }
 
 }

@@ -52,7 +52,7 @@ function confirmBox(title, text, href, icon = 'warning') {
         });
 }
 
-function ajaxError(status) {
+function ajaxError(status, response = null) {
     var msg = '';
     if (status === 0)
         msg = 'Sunucu ile bağlantı kurulamadı!';
@@ -62,6 +62,9 @@ function ajaxError(status) {
         msg = 'Bilinmeyen bir hata oluştu! [' + status + ']';
 
     ToastMessage('error', msg, 'Hata!');
+    if (response != null)
+        ToastMessage('error', response.message, 'Hata!')
+
 }
 
 function delay(callback, ms) {

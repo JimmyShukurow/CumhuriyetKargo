@@ -7,9 +7,7 @@
 @section('title', 'GM Dashboard')
 
 @section('content')
-
     <div class="app-main__inner">
-
         <div class="app-inner-layout">
             <div class="app-inner-layout__header-boxed p-0">
                 <div class="app-inner-layout__header page-title-icon-rounded text-white bg-asteroid mb-4">
@@ -29,20 +27,28 @@
                             <div class="page-title-actions">
 
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <div class="form-group position-relative">
-                                            <label for="agencyPaymentAppsFirstDate">İlk Tarih:</label>
-                                            <input type="date" id="agencyPaymentAppsFirstDate" value="2022-03-03" class="form-control form-control-sm  niko-select-filter">
+                                            <label for="firstDate">İlk Tarih:</label>
+                                            <input type="date" id="firstDate" value="2022-03-03"
+                                                   class="form-control form-control-sm date-filter niko-select-filter">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <div class="form-group position-relative">
-                                            <label for="agencyPaymentAppsLastDate">Son Tarih:</label>
-                                            <input type="date" id="agencyPaymentAppsLastDate" value="2022-03-03" class="form-control form-control-sm  niko-select-filter">
+                                            <label for="lastDate">Son Tarih:</label>
+                                            <input type="date" id="lastDate" value="2022-03-03"
+                                                   class="form-control form-control-sm date-filter niko-select-filter">
                                         </div>
                                     </div>
 
-
+                                    <div class="col-md-2">
+                                        <div class="form-group position-relative">
+                                            <label for=""></label>
+                                            <button id="btnReloadDashboard" class="btn btn-primary bg-success">Yenile
+                                            </button>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
@@ -63,7 +69,80 @@
                                 <div class="widget-chart-flex">
                                     <div class="widget-numbers">
                                         <small>₺</small>
-                                        653
+                                        <span id="endorsementCurrentDate">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget-progress-wrapper">
+                                <div class="progress-bar-xs progress-bar-animated-alt progress">
+                                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="65"
+                                         aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mb-3 widget-chart widget-chart2 bg-asteroid text-left">
+                        <div class="widget-chat-wrapper-outer">
+                            <div class="widget-chart-content text-white">
+                                <div class="widget-chart-flex">
+                                    <div class="widget-title opacity-5">Toplam Kargo</div>
+                                    <div class="widget-subtitle opacity-5 text-white">Belirtilen Tarih</div>
+                                </div>
+                                <div class="widget-chart-flex">
+                                    <div class="widget-numbers">
+                                        <span id="totalCargosCurrentDate">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget-progress-wrapper">
+                                <div class="progress-bar-xs progress-bar-animated-alt progress">
+                                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="65"
+                                         aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mb-3 widget-chart widget-chart2 bg-asteroid text-left">
+                        <div class="widget-chat-wrapper-outer">
+                            <div class="widget-chart-content text-white">
+                                <div class="widget-chart-flex">
+                                    <div class="widget-title opacity-5">Koli/Dosya</div>
+                                    <div class="widget-subtitle opacity-5 text-white">Belirtilen Tarih</div>
+                                </div>
+                                <div class="widget-chart-flex">
+                                    <div class="widget-numbers">
+                                        <span id="cargoFileCurrentDate">0/0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget-progress-wrapper">
+                                <div class="progress-bar-xs progress-bar-animated-alt progress">
+                                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="65"
+                                         aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mb-3 widget-chart widget-chart2 bg-asteroid text-left">
+                        <div class="widget-chat-wrapper-outer">
+                            <div class="widget-chart-content text-white">
+                                <div class="widget-chart-flex">
+                                    <div class="widget-title opacity-5">Toplam Ds</div>
+                                    <div class="widget-subtitle opacity-5 text-white">Belirtilen Tarih</div>
+                                </div>
+                                <div class="widget-chart-flex">
+                                    <div class="widget-numbers">
+                                        <small>ds</small>
+                                        <span id="totalDesiCurrentDate">0</span>
                                     </div>
                                 </div>
                             </div>
@@ -78,62 +157,70 @@
                     </div>
                 </div>
 
-
+                <div class="col-md-6">
+                    <div class="card mb-3 widget-chart widget-chart2 bg-slick-carbon text-left">
+                        <div class="widget-chat-wrapper-outer">
+                            <div class="widget-chart-content text-white">
+                                <div class="widget-chart-flex">
+                                    <div class="widget-title opacity-5">Ciro</div>
+                                    <div class="widget-subtitle opacity-5 text-white">Tüm Zamanlar</div>
+                                </div>
+                                <div class="widget-chart-flex">
+                                    <div class="widget-numbers">
+                                        <small class="text-warning">₺</small>
+                                        <span id="endorsementAllTime" class="text-warning">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget-progress-wrapper">
+                                <div class="progress-bar-xs progress-bar-animated-alt progress">
+                                    <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="65"
+                                         aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-3 widget-chart widget-chart2 bg-night-sky text-left">
+                        <div class="widget-chat-wrapper-outer">
+                            <div class="widget-chart-content text-white">
+                                <div class="widget-chart-flex">
+                                    <div class="widget-title opacity-5">Kasaya Giren</div>
+                                    <div class="widget-subtitle opacity-5 text-white">Tüm Zamanlar</div>
+                                </div>
+                                <div class="widget-chart-flex">
+                                    <div class="widget-numbers">
+                                        <small>₺</small>
+                                        <span id="inSafeAllTime">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget-progress-wrapper">
+                                <div class="progress-bar-xs progress-bar-animated-alt progress">
+                                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="65"
+                                         aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
             <div class="row">
-                <div class="col-sm-12 col-md-7 col-lg-8">
+                <div class="col-sm-12 col-md-7 col-lg-12">
                     <div class="mb-3 card">
                         <div class="card-header-tab card-header">
-                            <div class="card-header-title font-size-lg text-capitalize font-weight-normal">En Çok
-                                Acenteye
-                                Sahip Olan Bölgeler
+                            <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+                                CKG-Sis Türkiye Geneli Bölgesel Ciro Analiz (Belirtilen Tarih)
                             </div>
                             <div class="btn-actions-pane-right text-capitalize">
                             </div>
                         </div>
                         <div class="pt-0 card-body">
                             <div id="chart-regions"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-5 col-lg-4">
-                    <div class="mb-3 card">
-                        <div class="card-header-tab card-header">
-                            <div class="card-header-title font-size-lg text-capitalize font-weight-normal">Verilen
-                                İlçeler
-                            </div>
-
-                        </div>
-                        <div class="p-0 card-body">
-                            <div id="chart-idle"></div>
-
-                            <div class="col-md-12">
-                                <div
-                                    class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-alternate border-alternate card">
-                                    <div class="widget-chat-wrapper-outer">
-                                        <div class="widget-chart-content">
-                                            <div class="widget-title opacity-5 ">Toplam İlçe/Verilen İlçe</div>
-                                            <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
-                                                <div class="widget-chart-flex align-items-center">
-                                                    <div>
-                                        <span class="opacity-10 text-alternate pr-2">
-                                                        <i class="fa fa-flag"></i>
-                                                    </span>
-                                                        {{$data['total_districts'] . '/' . $data['regional_districts'] }}
-                                                    </div>
-                                                    <div
-                                                        class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
-                                                        <div
-                                                            class="circle-progress circle-idle-districts d-inline-block">
-                                                            <small></small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -273,319 +360,13 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
+    </div>
+@endsection
 
-        @endsection
-
-
-        @section('js')
-            <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-            <script src="/backend/assets/scripts/circle-progress.min.js"></script>
-            <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
-            <script>
-
-                var options = {
-                    series: [{
-                        data: [4, 3, 10, 9, 29, 19, 22]
-                    }],
-                    chart: {
-                        type: "histogram",
-                        height: 380,
-                        foreColor: "#999",
-                        events: {
-                            dataPointSelection: function (e, chart, opts) {
-                                var arraySelected = []
-                                opts.selectedDataPoints.map(function (selectedIndex) {
-                                    return selectedIndex.map(function (s) {
-                                        return arraySelected.push(chart.w.globals.series[0][s])
-                                    })
-
-                                });
-                                arraySelected = arraySelected.reduce(function (acc, curr) {
-                                    return acc + curr;
-                                }, 0)
-
-                                document.querySelector("#selected-count").innerHTML = arraySelected
-                            }
-                        }
-                    },
-                    plotOptions: {
-                        bar: {
-                            dataLabels: {
-                                enabled: false
-                            }
-                        }
-                    },
-                    states: {
-                        active: {
-                            allowMultipleDataPointsSelection: true
-                        }
-                    },
-                    xaxis: {
-                        categories: [10, 20, 30, 40, 50, 60, 70],
-                        axisBorder: {
-                            show: false
-                        },
-                        axisTicks: {
-                            show: false
-                        }
-                    },
-                    yaxis: {
-                        tickAmount: 4,
-                        labels: {
-                            offsetX: -5,
-                            offsetY: -5
-                        },
-                    },
-                    tooltip: {
-                        x: {
-                            format: "dd MMM yyyy"
-                        },
-                    },
-                };
-
-                var options777 = {
-                        chart: {
-                            height: 397,
-                            type: 'line',
-                            toolbar: {
-                                show: true,
-                            }
-                        },
-                        series: [{
-                            name: 'Bağlı İlçe',
-                            type: 'column',
-                            data: [
-                                @foreach($data['regions'] as $key)
-                                    {{ $key->district_covered_quantity  }},
-                                @endforeach
-                            ]
-                        }, {
-                            name: 'Bağlı Acente',
-                            type: 'line',
-                            data: [
-                                @foreach($data['regions'] as $key)
-                                    {{ $key->agency_covered_quantity  }},
-                                @endforeach
-                            ]
-                        }],
-
-                        labels: [
-                            @foreach($data['regions'] as $key)
-                                '{{ $key->name  . ' B.M.'}}',
-                            @endforeach
-                        ],
-
-                        yaxis:
-                            [{
-                                title: {
-                                    text: 'Bölgeye Bağlı İlçe',
-                                },
-
-                            }, {
-                                opposite: true,
-                                title: {
-                                    text: 'Bölgeye Bağlı Acente'
-                                }
-                            }]
-
-                    }
-                ;
-
-                var chart = new ApexCharts(document.querySelector("#chart-regions"), options777);
-                chart.render();
-
-
-                chart.addEventListener("dataPointSelection", function (e, opts) {
-                    console.log(e, opts)
-                })
-
-            </script>
-
-            <script>
-                // Combined
-
-                var options777 = {
-                    chart: {
-                        height: 397,
-                        type: 'line',
-                        toolbar: {
-                            show: false,
-                        }
-                    },
-                    series: [{
-                        name: 'Website Blog',
-                        type: 'column',
-                        data: [440, 505, 414, 671, 227, 413, 201, 352, 752, 320, 257, 160]
-                    }, {
-                        name: 'Social Media',
-                        type: 'line',
-                        data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16]
-                    }],
-                    stroke: {
-                        width: [0, 4]
-                    },
-                    // labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                    labels: ['01 Jan 2001', '02 Jan 2001', '03 Jan 2001', '04 Jan 2001', '05 Jan 2001', '06 Jan 2001', '07 Jan 2001', '08 Jan 2001', '09 Jan 2001', '10 Jan 2001', '11 Jan 2001', '12 Jan 2001'],
-                    xaxis: {
-                        type: 'datetime'
-                    },
-                    yaxis: [{
-                        title: {
-                            text: 'Website Blog',
-                        },
-
-                    }, {
-                        opposite: true,
-                        title: {
-                            text: 'Social Mediaaaa'
-                        }
-                    }]
-
-                };
-
-                var optionsRadial = {
-                    series: [{{ round(($data['regional_districts'] / $data['total_districts']) * 100, 0) }}],
-                    chart: {
-                        height: 350,
-                        type: 'radialBar',
-                        toolbar: {
-                            show: true
-                        }
-                    },
-                    plotOptions: {
-                        radialBar: {
-                            startAngle: -135,
-                            endAngle: 225,
-                            hollow: {
-                                margin: 0,
-                                size: '70%',
-                                background: '#fff',
-                                image: undefined,
-                                imageOffsetX: 0,
-                                imageOffsetY: 0,
-                                position: 'front',
-                                dropShadow: {
-                                    enabled: true,
-                                    top: 3,
-                                    left: 0,
-                                    blur: 4,
-                                    opacity: 0.24
-                                }
-                            },
-                            track: {
-                                background: '#fff',
-                                strokeWidth: '67%',
-                                margin: 0, // margin is in pixels
-                                dropShadow: {
-                                    enabled: true,
-                                    top: -3,
-                                    left: 0,
-                                    blur: 4,
-                                    opacity: 0.35
-                                }
-                            },
-
-                            dataLabels: {
-                                show: true,
-                                name: {
-                                    offsetY: -10,
-                                    show: true,
-                                    color: '#888',
-                                    fontSize: '17px'
-                                },
-                                value: {
-                                    formatter: function (val) {
-                                        return parseInt(val);
-                                    },
-                                    color: '#111',
-                                    fontSize: '36px',
-                                    show: true,
-                                }
-                            }
-                        }
-                    },
-                    fill: {
-                        type: 'gradient',
-                        gradient: {
-                            shade: 'dark',
-                            type: 'horizontal',
-                            shadeIntensity: 0.5,
-                            gradientToColors: ['#ABE5A1'],
-                            inverseColors: true,
-                            opacityFrom: 1,
-                            opacityTo: 1,
-                            stops: [0, 100]
-                        }
-                    },
-                    stroke: {
-                        lineCap: 'round'
-                    },
-                    labels: ['%'],
-                };
-
-                var chart = new ApexCharts(document.querySelector("#chart-idle"), optionsRadial);
-                chart.render();
-
-                $(document).ready(function () {
-                    var chart777 = new ApexCharts(
-                        document.querySelector("#chart-regions"),
-                        options777
-                    );
-
-                    $('.circle-agency').circleProgress({
-                        value: 100,
-                        size: 46,
-                        lineCap: 'round',
-                        fill: {gradient: ['#007bff', '#16aaff']}
-
-                    }).on('circle-animation-progress', function (event, progress, stepValue) {
-                        $(this).find('small').html('<span>%' + stepValue.toFixed(0) + '<span>');
-                    });
-
-                    $('.circle-region').circleProgress({
-                        value: 100,
-                        size: 46,
-                        lineCap: 'round',
-                        fill: {color: '#d92550'}
-
-                    }).on('circle-animation-progress', function (event, progress, stepValue) {
-                        $(this).find('small').html('<span>%' + stepValue.toFixed(0) + '<span>');
-                    });
-
-                    $('.circle-tc').circleProgress({
-                        value: 100,
-                        size: 46,
-                        lineCap: 'round',
-                        fill: {color: '#fd7e14'}
-
-                    }).on('circle-animation-progress', function (event, progress, stepValue) {
-                        $(this).find('small').html('<span>%' + stepValue.toFixed(0) + '<span>');
-                    });
-
-                    $('.circle-idle-district').circleProgress({
-                        value: {{ '.'.round(($data['idle_districts_quantity'] / $data['total_districts']) * 100, 0) }},
-                        size: 46,
-                        lineCap: 'round',
-                        fill: {color: '#3ac47d'}
-
-                    }).on('circle-animation-progress', function (event, progress, stepValue) {
-                        $(this).find('small').html('<span>%' + stepValue.toFixed(2).substring(2) + '<span>');
-                    });
-
-                    $('.circle-idle-districts').circleProgress({
-                        value: {{ '.'.round(($data['regional_districts'] / $data['total_districts']) * 100, 0) }},
-                        size: 46,
-                        lineCap: 'round',
-                        fill: {color: '#794C8A'}
-
-                    }).on('circle-animation-progress', function (event, progress, stepValue) {
-                        $(this).find('small').html('<span>%' + stepValue.toFixed(2).substring(2) + '<span>');
-                    });
-
-                });
-            </script>
-
+@section('js')
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="/backend/assets/scripts/circle-progress.min.js"></script>
+    <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
+    <script src="/backend/assets/scripts/dashboard/gm/index.js"></script>
 @endsection

@@ -10,8 +10,8 @@ class RegionalDistricts extends Model
 {
     use HasFactory, LogsActivity;
 
-    protected $fillable = ['region_id', 'city', 'district'];
-    protected static $logAttribute = ['region_id', 'city', 'district'];
+    protected $fillable = ['region_id', 'city', 'district', 'district_id'];
+    protected static $logAttribute = ['region_id', 'city', 'district', 'district_id'];
     protected $table = 'regional_districts';
 
     public function getDescriptionForEvent(string $eventName): string
@@ -19,4 +19,10 @@ class RegionalDistricts extends Model
         $eventName = getLocalEventName($eventName);
         return "Bölge müdürlüğüne bağlı ilçe $eventName.";
     }
+
+    public function agencies()
+    {
+        return $this->hasMany(Agencies::class, 'district_id', 'district_id');
+    }
+
 }

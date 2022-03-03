@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Dashboard;
 
+use App\Actions\CKGSis\Dashboard\Gm\AjaxTransactions\GetSummeryAction;
 use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\Districts;
@@ -27,5 +28,18 @@ class DashboardController extends Controller
 
         GeneralLog('Bölgesel Rapor (Operasyonel) görüntülendi.');
         return view('backend.dashboard.gm.index', compact('data'));
+    }
+
+    public function gmAjaxTransactions(Request $request, $val)
+    {
+        switch ($val) {
+            case 'GetSummery':
+                return GetSummeryAction::run($request);
+                break;
+
+            default:
+                return response()->json(['status' => 0, 'message' => 'no-case'], 200);
+                break;
+        }
     }
 }
