@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="/backend/assets/css/app-main-block.css">
 @endpush()
 
-@section('title', 'Bölgesel Rapor')
+@section('title', 'GM Dashboard')
 
 @section('content')
 
@@ -12,18 +12,38 @@
 
         <div class="app-inner-layout">
             <div class="app-inner-layout__header-boxed p-0">
-                <div class="app-inner-layout__header page-title-icon-rounded text-white bg-premium-dark mb-4">
+                <div class="app-inner-layout__header page-title-icon-rounded text-white bg-asteroid mb-4">
                     <div class="app-page-title">
                         <div class="page-title-wrapper">
                             <div class="page-title-heading">
                                 <div class="page-title-icon">
-                                    <i class="fa fa-university icon-gradient bg-slick-carbon"> </i>
+                                    <i class="fa fa-university icon-gradient bg-asteroid"> </i>
                                 </div>
                                 <div>
-                                    Bölgesel Rapor (Operasyonel)
-                                    <div class="page-title-subheading">Cumhuriyet Kargo Türkiye Geneli Operasyonel
+                                    Dashboard (Genel Müdürlük)
+                                    <div class="page-title-subheading">Cumhuriyet Kargo Türkiye Geneli Ciro
                                         Raporu.
                                     </div>
+                                </div>
+                            </div>
+                            <div class="page-title-actions">
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group position-relative">
+                                            <label for="agencyPaymentAppsFirstDate">İlk Tarih:</label>
+                                            <input type="date" id="agencyPaymentAppsFirstDate" value="2022-03-03" class="form-control form-control-sm  niko-select-filter">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group position-relative">
+                                            <label for="agencyPaymentAppsLastDate">Son Tarih:</label>
+                                            <input type="date" id="agencyPaymentAppsLastDate" value="2022-03-03" class="form-control form-control-sm  niko-select-filter">
+                                        </div>
+                                    </div>
+
+
+
                                 </div>
                             </div>
                         </div>
@@ -32,106 +52,33 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6 col-lg-3">
-                    <div
-                        class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-primary border-primary card">
+                <div class="col-md-3">
+                    <div class="card mb-3 widget-chart widget-chart2 bg-asteroid text-left">
                         <div class="widget-chat-wrapper-outer">
-                            <div class="widget-chart-content">
-                                <div class="widget-title opacity-5 text-uppercase">Toplam Acente</div>
-                                <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
-                                    <div class="widget-chart-flex align-items-center">
-                                        <div>
-                                            <span class="opacity-10 text-primary pr-2"><i
-                                                    class="lnr-store"></i></span>
-                                            {{$data['agency_quantity']}}
-                                        </div>
-                                        <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
-                                            <div class="circle-progress circle-agency d-inline-block">
-                                                <small></small>
-                                            </div>
-                                        </div>
+                            <div class="widget-chart-content text-white">
+                                <div class="widget-chart-flex">
+                                    <div class="widget-title opacity-5">Ciro</div>
+                                    <div class="widget-subtitle opacity-5 text-white">Belirtilen Tarih</div>
+                                </div>
+                                <div class="widget-chart-flex">
+                                    <div class="widget-numbers">
+                                        <small>₺</small>
+                                        653
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget-progress-wrapper">
+                                <div class="progress-bar-xs progress-bar-animated-alt progress">
+                                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="65"
+                                         aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3">
-                    <div
-                        class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-danger border-danger card">
-                        <div class="widget-chat-wrapper-outer">
-                            <div class="widget-chart-content">
-                                <div class="widget-title opacity-5 text-uppercase">Toplam Bölge Müdürlüğü</div>
-                                <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
-                                    <div class="widget-chart-flex align-items-center">
-                                        <div>
-                                                    <span class="opacity-10 text-danger pr-2">
-                                                        <i class="fa fa-university"></i>
-                                                    </span>
-                                            {{$data['region_quantity']}}
-                                        </div>
-                                        <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
-                                            <div class="circle-progress circle-region d-inline-block">
-                                                <small></small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div
-                        class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-warning border-warning card">
-                        <div class="widget-chat-wrapper-outer">
-                            <div class="widget-chart-content">
-                                <div class="widget-title opacity-5 text-uppercase">Toplam Transfer Merkezi</div>
-                                <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
-                                    <div class="widget-chart-flex align-items-center">
-                                        <div>
-                                        <span class="opacity-10 text-warning pr-2">
-                                                        <i class="fa fa-truck"></i>
-                                                    </span>
-                                            {{$data['tc_quantity']}}
-                                        </div>
-                                        <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
-                                            <div class="circle-progress circle-tc d-inline-block">
-                                                <small></small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div
-                        class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-success border-success card">
-                        <div class="widget-chat-wrapper-outer">
-                            <div class="widget-chart-content">
-                                <div class="widget-title opacity-5 text-uppercase">Boşta Kalan İlçeler</div>
-                                <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
-                                    <div class="widget-chart-flex align-items-center">
-                                        <div>
-                                             <span class="opacity-10 text-success pr-2">
-                                                        <i class="fa fa-unlink"></i>
-                                                    </span>
-                                            {{ $data['idle_districts_quantity']}}
-                                            <small class="opacity-5 pl-1">adet</small>
-                                        </div>
-                                        <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
-                                            <div class="circle-progress circle-idle-district d-inline-block">
-                                                <small></small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+
             </div>
             <div class="row">
                 <div class="col-sm-12 col-md-7 col-lg-8">
@@ -641,226 +588,4 @@
                 });
             </script>
 
-            <script>
-                $('.NikolasDataTable.IdleDistricts').DataTable({
-                    pageLength: 10,
-                    lengthMenu: [
-                        [10, 25, 50, 100, 250, 500, -1],
-                        ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
-                    ],
-                    language: {
-                        "sDecimal": ",",
-                        "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
-                        "sInfo": "_TOTAL_ kayıttan _START_ - _END_ kayıtlar gösteriliyor",
-                        "sInfoEmpty": "Kayıt yok",
-                        "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
-                        "sInfoPostFix": "",
-                        "sInfoThousands": ".",
-                        "sLengthMenu": "_MENU_",
-                        "sLoadingRecords": "Yükleniyor...",
-                        "sProcessing": "<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>",
-                        "sSearch": "",
-                        "sZeroRecords": "Eşleşen kayıt bulunamadı",
-                        "oPaginate": {
-                            "sFirst": "İlk",
-                            "sLast": "Son",
-                            "sNext": "Sonraki",
-                            "sPrevious": "Önceki"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": artan sütun sıralamasını aktifleştir",
-                            "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
-                        },
-                        "select": {
-                            "rows": {
-                                "_": "%d kayıt seçildi",
-                                "0": "",
-                                "1": "1 kayıt seçildi"
-                            }
-                        }
-                    },
-                    dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col"f>>rtip',
-                    buttons: [
-                        'copy',
-                        'pdf',
-                        'csv',
-                        'print',
-                        {
-                            extend: 'excelHtml5',
-                            exportOptions: {
-                                columns: [0, 1, 2]
-                            },
-                            title: "CK-Bölgesi Olmayan İlçeler - {{date('d/m/Y H:i')}}"
-                        },
-                        {
-                            text: 'Yenile',
-                            action: function (e, dt, node, config) {
-                                dt.ajax.reload();
-                            }
-                        }
-                    ],
-                    responsive: false,
-                    processing: true,
-                    serverSide: true,
-                    ajax: '{!! route('rd.ListIdleDistricts') !!}',
-                    columnDefs: [
-                        {targets: [2], orderable: false}
-                    ],
-                    columns: [
-                        {data: 'city_name', name: 'city_name'},
-                        {data: 'district_name', name: 'district_name'},
-                        {data: 'delete', name: 'delete'}
-                    ],
-                    scrollY: false
-                });
-
-                $('.NikolasDataTable.IdleAgenciesRegion').DataTable({
-                    pageLength: 10,
-                    lengthMenu: [
-                        [10, 25, 50, 100, 250, 500, -1],
-                        ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
-                    ],
-                    language: {
-                        "sDecimal": ",",
-                        "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
-                        "sInfo": "_TOTAL_ kayıttan _START_ - _END_ kayıtlar gösteriliyor",
-                        "sInfoEmpty": "Kayıt yok",
-                        "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
-                        "sInfoPostFix": "",
-                        "sInfoThousands": ".",
-                        "sLengthMenu": "_MENU_",
-                        "sLoadingRecords": "Yükleniyor...",
-                        "sProcessing": "<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>",
-                        "sSearch": "",
-                        "sZeroRecords": "Eşleşen kayıt bulunamadı",
-                        "oPaginate": {
-                            "sFirst": "İlk",
-                            "sLast": "Son",
-                            "sNext": "Sonraki",
-                            "sPrevious": "Önceki"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": artan sütun sıralamasını aktifleştir",
-                            "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
-                        },
-                        "select": {
-                            "rows": {
-                                "_": "%d kayıt seçildi",
-                                "0": "",
-                                "1": "1 kayıt seçildi"
-                            }
-                        }
-                    },
-                    dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col"f>>rtip',
-                    buttons: [
-                        'copy',
-                        'pdf',
-                        'csv',
-                        'print',
-                        {
-                            extend: 'excelHtml5',
-                            exportOptions: {
-                                columns: [0, 1, 2, 3, 4]
-                            },
-                            title: "CK-Bölge Müdürlüğüne Bağlı Olmayan Acenteler - {{date('d/m/Y H:i')}}"
-                        },
-                        {
-                            text: 'Yenile',
-                            action: function (e, dt, node, config) {
-                                dt.ajax.reload();
-                            }
-                        }
-                    ],
-                    responsive: false,
-                    processing: true,
-                    serverSide: true,
-                    ajax: '{!! route('rd.ListIdleAgenciesRegion') !!}',
-                    columnDefs: [
-                        {targets: [4], orderable: false}
-                    ],
-                    columns: [
-                        {data: 'city', name: 'city'},
-                        {data: 'district', name: 'district'},
-                        {data: 'district', name: 'district'},
-                        {data: 'name_surname', name: 'name_surname'},
-                        {data: 'delete', name: 'delete'}
-                    ],
-                    scrollY: false
-                });
-
-                $('.NikolasDataTable.IdleAgenciesTC').DataTable({
-                    pageLength: 10,
-                    lengthMenu: [
-                        [10, 25, 50, 100, 250, 500, -1],
-                        ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
-                    ],
-                    language: {
-                        "sDecimal": ",",
-                        "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
-                        "sInfo": "_TOTAL_ kayıttan _START_ - _END_ kayıtlar gösteriliyor",
-                        "sInfoEmpty": "Kayıt yok",
-                        "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
-                        "sInfoPostFix": "",
-                        "sInfoThousands": ".",
-                        "sLengthMenu": "_MENU_",
-                        "sLoadingRecords": "Yükleniyor...",
-                        "sProcessing": "<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>",
-                        "sSearch": "",
-                        "sZeroRecords": "Eşleşen kayıt bulunamadı",
-                        "oPaginate": {
-                            "sFirst": "İlk",
-                            "sLast": "Son",
-                            "sNext": "Sonraki",
-                            "sPrevious": "Önceki"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": artan sütun sıralamasını aktifleştir",
-                            "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
-                        },
-                        "select": {
-                            "rows": {
-                                "_": "%d kayıt seçildi",
-                                "0": "",
-                                "1": "1 kayıt seçildi"
-                            }
-                        }
-                    },
-                    dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col"f>>rtip',
-                    buttons: [
-                        'copy',
-                        'pdf',
-                        'csv',
-                        'print',
-                        {
-                            extend: 'excelHtml5',
-                            exportOptions: {
-                                columns: [0, 1, 2, 3, 4]
-                            },
-                            title: "CK-Transfer Merkezine Bağlı Olmayan Acenteler - {{date('d/m/Y H:i')}}"
-                        },
-                        {
-                            text: 'Yenile',
-                            action: function (e, dt, node, config) {
-                                dt.ajax.reload();
-                            }
-                        }
-                    ],
-                    responsive: false,
-                    processing: true,
-                    serverSide: true,
-                    ajax: '{!! route('rd.ListIdleAgenciesTC') !!}',
-                    columnDefs: [
-                        {targets: [4], orderable: false}
-                    ],
-                    columns: [
-                        {data: 'city', name: 'city'},
-                        {data: 'district', name: 'district'},
-                        {data: 'district', name: 'district'},
-                        {data: 'name_surname', name: 'name_surname'},
-                        {data: 'delete', name: 'delete'}
-                    ],
-                    scrollY: false
-                });
-
-            </script>
 @endsection
