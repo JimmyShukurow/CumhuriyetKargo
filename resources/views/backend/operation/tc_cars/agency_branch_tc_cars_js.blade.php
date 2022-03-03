@@ -65,14 +65,14 @@ $('#tabPandingConfirmCars').click(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: 'AjaxTCCars/AgenBranchGetTransferCars',
+            url: 'AjaxTCCars/AgencyBranchGetTransferCars',
             data: function (d) {
-                d.marka = $('#markaFilter').val();
-                d.model = $('#modelFilter').val();
-                d.plaka = $('#plakaFilter').val();
-                d.soforAd = $('#soforAdiFilter').val();
-                d.creator = $('#creatorFilter').val();
-                d.confirmation = $('#confirmationFilter').val();
+                d.marka = $('#markaFilterAgency').val();
+                d.model = $('#modelFilterAgency').val();
+                d.plaka = $('#plakaFilterAgency').val();
+                d.soforAd = $('#soforAdiFilterAgency').val();
+                d.creator = $('#creatorFilterAgency').val();
+                d.confirmation = $('#confirmationFilterAgency').val();
             },
 
             error: function (xhr, error, code) {

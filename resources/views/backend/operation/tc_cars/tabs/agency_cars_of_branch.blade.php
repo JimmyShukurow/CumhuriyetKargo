@@ -5,14 +5,14 @@
             <div class="col-md-2">
                 <div class="form-group position-relative">
                     <label for="agencyPaymentAppsFirstDate">Marka:</label>
-                    <input type="text" id="markaFilter"
+                    <input type="text" id="markaFilterAgency"
                            class="form-control form-control-sm  niko-select-filter">
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="form-group position-relative">
                     <label for="agencyPaymentAppsLastDate">Model:</label>
-                    <input type="text" id="modelFilter"
+                    <input type="text" id="modelFilterAgency"
                            class="form-control form-control-sm  niko-select-filter">
                 </div>
             </div>
@@ -20,28 +20,28 @@
             <div class="col-md-2">
                 <div class="form-group position-relative">
                     <label for="agencyPaymentAppsAppNo">Plaka:</label>
-                    <input type="text" id="plakaFilter" class="form-control form-control-sm">
+                    <input type="text" id="plakaFilterAgency" class="form-control form-control-sm">
                 </div>
             </div>
 
             <div class="col-md-2">
                 <div class="form-group position-relative">
                     <label for="agencyPaymentAppsAppNo">Şöför Adı:</label>
-                    <input type="text" id="soforAdiFilter" class="form-control form-control-sm">
+                    <input type="text" id="soforAdiFilterAgency" class="form-control form-control-sm">
                 </div>
             </div>
 
             <div class="col-md-2">
                 <div class="form-group position-relative">
                     <label for="agencyPaymentAppsConfirm">Oluşturan:</label>
-                    <input type="text" id="creatorFilter" class="form-control form-control-sm">
+                    <input type="text" id="creatorFilterAgency" class="form-control form-control-sm">
                 </div>
             </div>
 
             <div class="col-md-2">
                 <div class="form-group position-relative">
                     <label for="agencyPaymentAppsConfirm">Onaylanma Durumu:</label>
-                    <select type="text" id="confirmationFilter" class="form-control form-control-sm">
+                    <select type="text" id="confirmationFilterAgency" class="form-control form-control-sm">
                         <option value="">Seçiniz</option>
                         <option value="-1"> Reddedildi </option>
                         <option value="0"> Onay Bekliyor </option>

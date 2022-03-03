@@ -15,13 +15,19 @@ class GetAgencyCarsOfBranch
     public function handle($request)
     {
         $tc = TransshipmentCenters::find(Auth::user()->tc_code);
-        $ids= collect();
+        $ids = collect();
 
         $districts = $tc->districts()->with('agencies')->whereHas('agencies')->get();
-        $districts->map( function($q) use ($ids){
-            $agencies = $q->agencies;
-            return  $agencies->map(function($query) use ($ids){ $ids->push($query->id); return $query->id;});
-        });
+        $districts->map(
+            function ($q) use ($ids) {
+                $agencies = $q->agencies;
+                $agencies->map(
+                    function ($query) use ($ids) {
+                        $ids->push($query->id);
+                    }
+                );
+            }
+        );
 
         $marka = $request->marka;
         $model = $request->model;
@@ -30,7 +36,8 @@ class GetAgencyCarsOfBranch
         $creator = $request->creator;
         $confirm = $request->confirmation;
 
-        $cars = TcCars::where('car_type', 'Acente')
+        $cars = TcCars::with('branch', 'creator')
+            ->where('car_type', 'Acente')
             ->when($marka, function($q) use($marka){ return $q->where('marka', 'like', '%'.$marka.'%');})
             ->when($model, function($q) use($model){ return $q->where('model', 'like', '%'.$model.'%');})
             ->when($plaka, function($q) use($plaka){ return $q->where('plaka', 'like', '%'.$plaka.'%');})
