@@ -130,7 +130,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class= "p-1">
-                                        <button id="carAppConfirmReject" class="btn-app-transaction btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
+                                        <button id="carRejectSuccess" class="btn-app-transaction btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
                                             <i class="lnr-cross-circle text-danger opacity-7 btn-icon-wrapper mb-2"> </i>
                                             Aracı Reddet
                                         </button>

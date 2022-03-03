@@ -110,18 +110,30 @@ $('#tabPandingConfirmCars').click(function () {
     });
 
     $('#confirmation').show();
+
+    $('#carConfirmSuccess').on('click', function (){
+        $.ajax({
+            url:"AjaxTCCars/CarConfirmSuccess",
+            data:{
+                id:detailsID,
+            }
+        }).done(function (response){
+
+        })
+    })
+    $('#carRejectSuccess').on('click', function (){
+        $.ajax({
+            url:"AjaxTCCars/CarRejectSuccess",
+            data:{
+                id:detailsID,
+            }
+        }).done(function (response){
+
+        })
+    })
 });
 
-$('#carConfirmSuccess').on('click', function (){
-    $.ajax({
-        url:"AjaxTCCars/CarConfirmSuccess",
-        data:{
-            id:detailsID,
-        }
-    }).done(function (response){
 
-    })
-})
 
 
 

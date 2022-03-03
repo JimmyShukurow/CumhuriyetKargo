@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CKGSis\Filo\AgencyCars\CarRejectSuccessAction;
+use App\Actions\CKGSis\Filo\AgencyCars\CarConfirmSuccessAction;
 use App\Actions\CKGSis\Filo\AgencyCars\GetAgencyCarsOfBranch;
 use App\Actions\CKGSis\Filo\TCCars\GetTcCars;
 use App\Http\Requests\TcCarsRequest;
@@ -75,6 +77,8 @@ class TCCarsController extends Controller
                 return GetAgencyCarsOfBranch::run($request);
             case 'CarConfirmSuccess':
                 return CarConfirmSuccessAction::run($request);
+            case 'CarRejectSuccess':
+                return CarRejectSuccessAction::run($request);
         }
     }
 
