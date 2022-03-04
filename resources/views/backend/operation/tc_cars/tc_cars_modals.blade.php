@@ -108,13 +108,22 @@
                                         <div class="grid-menu grid-menu-2col">
                                             <div class="no-gutters row">
 
-                                                <div class="col-sm-12">
+                                                <div class="col-sm-6">
                                                     <div class="p-1">
                                                         <button id="btnPrintModal"
                                                                 class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-primary">
                                                             <i class="lnr-printer text-primary opacity-7 btn-icon-wrapper mb-2">
                                                             </i>
                                                             Yazdır
+                                                        </button>
+                                                    </div>
+                                                </div><div class="col-sm-6">
+                                                    <div class="p-1">
+                                                        <button id="btnPrintModal"
+                                                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-info">
+                                                            <i class="lnr-pencil text-primary opacity-7 btn-icon-wrapper mb-2">
+                                                            </i>
+                                                            Düzenle
                                                         </button>
                                                     </div>
                                                 </div>
