@@ -30,14 +30,14 @@
                                     <div class="col-md-5">
                                         <div class="form-group position-relative">
                                             <label for="firstDate">İlk Tarih:</label>
-                                            <input type="date" id="firstDate" value="2022-03-03"
+                                            <input type="date" id="firstDate" value="{{date('Y-m-d')}}"
                                                    class="form-control form-control-sm date-filter niko-select-filter">
                                         </div>
                                     </div>
                                     <div class="col-md-5">
                                         <div class="form-group position-relative">
                                             <label for="lastDate">Son Tarih:</label>
-                                            <input type="date" id="lastDate" value="2022-03-03"
+                                            <input type="date" id="lastDate" value="{{date('Y-m-d')}}"
                                                    class="form-control form-control-sm date-filter niko-select-filter">
                                         </div>
                                     </div>
@@ -234,29 +234,12 @@
                                 <li class="nav-item">
 
                                     <a data-toggle="tab" href="#idle-districts" class="nav-link show active">
-                                        <div class="widget-number">Verilmeyen İlçeler</div>
+                                        <div class="widget-number">En Çok Ciro Yapan İlk 10 Şube</div>
                                         <div class="tab-subheading">
                                             <span class="pr-2 opactiy-6">
                                                 <i class="fa fa-comment-dots"></i>
-                                            </span>Bölge müdürlüğüne verilmeyen boşta kalan ilçeler.
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a data-toggle="tab" href="#idle-agiencies-region" class="nav-link show">
-                                        <div class="widget-number">Verilmeyen Acenteler</div>
-                                        <div class="tab-subheading">Herhangi bir bölge müdürlüğüne bağlı olmayan
-                                            acenteler
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a data-toggle="tab" href="#idle-agencies-tc" class="nav-link show">
-                                        <div class="widget-number text-danger">Aktarması Olmayan Acenteler</div>
-                                        <div class="tab-subheading">
-                                        <span class="pr-2 opactiy-6">
-                                        <i class="fa fa-bullhorn"></i>
-                                         </span>Herhangi bir transfer merkezine bağlı olmayan acenteler.
+                                            </span>
+                                            En çok ciro yapan şubeler.
                                         </div>
                                     </a>
                                 </li>
@@ -271,9 +254,14 @@
                                                class="table table-hover table-striped  table-bordered TableNoPadding NikolasDataTable IdleDistricts table-hover">
                                             <thead>
                                             <tr>
-                                                <th>İl</th>
-                                                <th>İlçe</th>
+                                                <th>#</th>
+                                                <th>Acente</th>
                                                 <th>Bölge</th>
+                                                <th>Personel Sayısı</th>
+                                                <th>Kargo Sayısı</th>
+                                                <th>Ciro</th>
+                                                <th>Koli</th>
+                                                <th>Dosya</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -281,78 +269,17 @@
                                             </tbody>
                                             <tfoot>
                                             <tr>
-                                                <th>İl</th>
-                                                <th>İlçe</th>
+                                                <th>#</th>
+                                                <th>Acente</th>
                                                 <th>Bölge</th>
+                                                <th>Personel Sayısı</th>
+                                                <th>Kargo Sayısı</th>
+                                                <th>Ciro</th>
+                                                <th>Koli</th>
+                                                <th>Dosya</th>
                                             </tr>
                                             </tfoot>
                                         </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane show" id="idle-agiencies-region" role="tabpanel">
-                                <div class="card-body">
-                                    <div class="card-body">
-                                        <table id="TableRolePermissions"
-                                               style="white-space: nowrap; width: 100% !important;"
-                                               class="table table-hover table-striped  table-bordered TableNoPadding NikolasDataTable IdleAgenciesRegion table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>İl</th>
-                                                <th>İlçe</th>
-                                                <th>Acente İsmi</th>
-                                                <th>Acente Sahibi</th>
-                                                <th>Bölge</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                            <tfoot>
-                                            <tr>
-                                                <th>İl</th>
-                                                <th>İlçe</th>
-                                                <th>Acente İsmi</th>
-                                                <th>Acente Sahibi</th>
-                                                <th>Bölge</th>
-                                            </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane show" id="idle-agencies-tc" role="tabpanel">
-                                <div class="card-body">
-                                    <div class="card-body">
-                                        <div class="card-body">
-                                            <table id="TableRolePermissions"
-                                                   style="white-space: nowrap; width: 100%;"
-                                                   class="table table-hover table-striped  table-bordered TableNoPadding NikolasDataTable IdleAgenciesTC"
-                                                   role="grid">
-                                                <thead>
-
-                                                <tr>
-                                                    <th>İl</th>
-                                                    <th>İlçe</th>
-                                                    <th>Acente İsmi</th>
-                                                    <th>Acente Sahibi</th>
-                                                    <th>Bağlı Old. Aktarma</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                </tbody>
-                                                <tfoot>
-                                                <tr>
-                                                    <th>İl</th>
-                                                    <th>İlçe</th>
-                                                    <th>Acente İsmi</th>
-                                                    <th>Acente Sahibi</th>
-                                                    <th>Bağlı Old. Aktarma</th>
-                                                </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

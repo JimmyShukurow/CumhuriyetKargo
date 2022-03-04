@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use phpseclib3\Math\PrimeField\Integer;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Agencies extends Model
@@ -44,10 +45,18 @@ class Agencies extends Model
 
     protected $table = 'agencies';
 
-    public function endorsement()
+    public function endorsementWithDate($firstDate, $lastDate)
     {
         return $this->hasMany(Cargoes::class, 'departure_agency_code', 'id')
+            ->whereBetween('created_at', [$firstDate, $lastDate])
             ->sum('total_price');
+    }
+
+    public function cargoCountWithDate($firstDate, $lastDate)
+    {
+        return $this->hasMany(Cargoes::class, 'departure_agency_code', 'id')
+            ->whereBetween('created_at', [$firstDate, $lastDate])
+            ->count();
     }
 
 }

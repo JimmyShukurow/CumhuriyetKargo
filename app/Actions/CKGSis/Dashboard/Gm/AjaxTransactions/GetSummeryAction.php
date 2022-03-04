@@ -7,6 +7,7 @@ use App\Models\Cargoes;
 use App\Models\RegioanalDirectorates;
 use Carbon\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
+use phpDocumentor\Reflection\Types\Collection;
 
 class GetSummeryAction
 {
@@ -18,7 +19,7 @@ class GetSummeryAction
         $lastDate = Carbon::createFromDate($request->lastDate);
 
         $diff = $firstDate->diffInDays($lastDate);
-        if ($diff >= 120)
+        if ($diff > 120)
             return response()->json(['status' => 0, 'message' => 'Tarih aralığı max. 120 gün olabilir!'], 509);
 
         $firstDate = substr($firstDate, 0, 10) . ' 00:00:00';
@@ -60,32 +61,57 @@ class GetSummeryAction
         $rds = RegioanalDirectorates::all();
         $data['regions'] = $rds->pluck('name');
 
+        $regionCargoCount = collect();
+        $tmpCollectionCargoCount = collect();
+
         $regionEndorsements = collect();
         $tmpCollection = collect();
         $tmpSum = 0;
-        $agencies = $rds->map(function ($q) use ($regionEndorsements, $tmpCollection) {
+        $agencies = $rds->map(function ($q) use ($regionEndorsements, $tmpCollection, $firstDate, $lastDate, $tmpCollectionCargoCount) {
             $districts = $q->districts()->with('agencies')->whereHas('agencies')->get();
             $regionEndorsements = collect();
-            $districts = $districts->map(function ($query) use ($regionEndorsements, $tmpCollection) {
+            $regionCargoCount = collect();
+            $districts = $districts->map(function ($query) use ($regionEndorsements, $firstDate, $lastDate, $regionCargoCount) {
                 $agency = $query->agencies;
-                $agency->map(function ($keyAgency) use ($regionEndorsements) {
-                    $regionEndorsements->push($keyAgency->endorsement());
+                $agency = $agency->map(function ($keyAgency) use ($regionEndorsements, $firstDate, $lastDate, $regionCargoCount) {
+                    $regionEndorsements->push($keyAgency->endorsementWithDate($firstDate, $lastDate));
+                    $regionCargoCount->push($keyAgency->cargoCountWithDate($firstDate, $lastDate));
                     return $keyAgency->with('endorsement');
                 });
                 return count($agency);
             });
-            $tmpCollection->push($regionEndorsements->sum());
-
+            $tmpCollection->push(round($regionEndorsements->sum(), 2));
+            $tmpCollectionCargoCount->push($regionCargoCount->sum());
             $tmpSum = 0;
             return $districts->sum();
         });
         $data['agencyCount'] = $agencies;
         $data['regionEndorsements'] = $tmpCollection;
+        $data['regionCargoCount'] = $tmpCollectionCargoCount;
+
+        $tmpArray = [];
+
+        for ($i = 0, $iMax = count($data['regions']); $i < $iMax; $i++) {
+            $tmpArray[] = [
+                'region' => $data['regions'][$i],
+                'agencyCount' => $data['agencyCount'][$i],
+                'cargoCount' => $data['regionCargoCount'][$i],
+                'regionEndorsements' => $data['regionEndorsements'][$i]
+            ];
+        }
+        $tmpArray = collect($tmpArray);
+        $tmpArray = $tmpArray->sortBy('regionEndorsements');
+
+        $data['regions'] = $tmpArray->pluck('region');
+        $data['regionCargoCount'] = $tmpArray->pluck('cargoCount');
+        $data['regionEndorsements'] = $tmpArray->pluck('regionEndorsements');
+        $data['agencyCount'] = $tmpArray->pluck('agencyCount');
+
+
 
 
         return response()
             ->json(['status' => 1, 'data' => $data], 200);
-
 
     }
 }
