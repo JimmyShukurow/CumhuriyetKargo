@@ -9,7 +9,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div style="overflow-y: auto; max-height: 75vh;" id="ModalBodyUserDetail" class="modal-body">
+                <div style="overflow-y: auto; overflow-x: hidden; max-height: 75vh;" id="ModalBodyUserDetail" class="modal-body">
 
                     {{-- CARD START --}}
                     <div class="col-md-12">
@@ -45,8 +45,8 @@
                                                 <tr>
                                                     <td class="static">Plaka:</td>
                                                     <td class="modal-data" id="tdPlaka"></td>
-                                                    <td class="static">Baglı Birim:</td>
-                                                    <td class="modal-data" id="branch"></td>
+                                                    <td class="static">Mühür Vurulacak Kapı Sayısı:</td>
+                                                    <td class="modal-data" id="doors_to_be_sealed"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Ekleyen</td>

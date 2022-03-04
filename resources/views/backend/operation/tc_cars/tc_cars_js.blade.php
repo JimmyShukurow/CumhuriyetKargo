@@ -144,7 +144,7 @@ $(document).ready(function () {
                 '                            </div>\n' +
                 '                        </div>')
         });
-        $('.blockUI.blockMsg.blockElement').css('width', '100%');
+        // $('.blockUI.blockMsg.blockElement').css('width', '100%');
         $('.blockUI.blockMsg.blockElement').css('border', '0px');
         $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
@@ -165,12 +165,12 @@ $(document).ready(function () {
             $('#hat').html(cars.hat);
             $('#cikis_aktarma').html(cars.cikish_aktarma ? cars.cikish_aktarma.tc_name : '' );
             $('#varis_aktarma').html(cars.varish_aktarma ? cars.varish_aktarma.tc_name : '');
-            $('#branch').html(cars.branch ? cars.branch.agency_name : '');
+            $('#doors_to_be_sealed').html(cars.doors_to_be_sealed);
             $('#creator').html(cars.creator ? cars.creator.name_surname : '');
             $('#agency').html(cars.creator.get_agency ? cars.creator.get_agency.agency_name : '');
             $('#car_type').html(cars.car_type);
             $('#created_at').html(cars.created_at);
-            $('#confirmer').html(cars.confirmed_user);
+            $('#confirmer').html(cars.confirmer ? cars.confirmer.name_surname : '');
             $('#soforAdi').html(cars.sofor_ad);
             $('#soforIletisim').html(cars.sofor_telefon);
             $('#soforAders').html(cars.sofor_adres);

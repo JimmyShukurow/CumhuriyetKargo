@@ -13,7 +13,7 @@ $('#tabPandingConfirmCars').click(function () {
             [10, 25, 50, 100, 250, 500, -1],
             ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
         ],
-        order: [0, 'desc'],
+        order: [9, 'desc'],
         language: {
             "sDecimal": ",",
             "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
@@ -93,7 +93,6 @@ $('#tabPandingConfirmCars').click(function () {
             {data: 'sofor_ad', name: 'sofor_ad'},
             {data: 'sofor_telefon', name: 'sofor_telefon'},
             {data: 'creator', name: 'creator'},
-            {data: 'creator_role', name: 'creator_role'},
             {data: 'creator_agency', name: 'creator_agency'},
             {data: 'created_at', name: 'created_at'},
             {data: 'confirmation_status', name: 'confirmation_status'},
@@ -116,6 +115,7 @@ $('#tabPandingConfirmCars').click(function () {
         }).done(function (response){
             tableAgencyPaymentApps.draw();
             ToastMessage('success', response.message, 'İşlem Başarılı!');
+            carInfo(detailsID);
 
         })
     })
@@ -128,6 +128,7 @@ $('#tabPandingConfirmCars').click(function () {
         }).done(function (response){
             tableAgencyPaymentApps.draw();
             ToastMessage('success', response.message, 'İşlem Başarılı!');
+            carInfo(detailsID);
 
         })
     })

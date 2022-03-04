@@ -64,8 +64,9 @@ class GetAgencyCarsOfBranch
 
         $cars->each(function ($key) {
             $key['branch_name'] = $key->branch->agency_name ?? null;
-            $key['creator_name'] = $key->creator->name_surname ?? null;
-            $key['creator_role'] = $key->creator->userRole->display_name ?? null;
+            $creatorName = $key->creator->name_surname ?? null;
+            $creatorRole = $key->creator->userRole->display_name ?? null;
+            $key['creator_name'] = $creatorName.' ('.$creatorRole.')';
             $key['creator_agency'] = $key->creator->getAgency->agency_name ?? null;
         });
         // This part is Yajra Datatables, you can google it to research ...
@@ -77,18 +78,15 @@ class GetAgencyCarsOfBranch
                 return '<b class="text-success">' . $cars->branch_name . '</b>';
             })
             ->editColumn('creator', function ($cars) {
-                return '<b class="text-success">' . $cars->creator_name . '</b>';
-            })
-            ->editColumn('creator_role', function ($cars) {
-                return '<b class="text-success">' . $cars->creator_role . '</b>';
+                return  $cars->creator_name ;
             })
             ->editColumn('creator_agency', function ($cars) {
-                return '<b class="text-success">' . $cars->creator_agency . '</b>';
+                return  $cars->creator_agency ;
             })
             ->editColumn('confirmation_status', function ($cars) {
 
                 if ($cars->confirm == 0) {
-                    return '<b class="text-warning"> Onay Bekliyor </b>';
+                    return '<b class="text-primary"> Onay Bekliyor </b>';
                 } elseif ($cars->confirm == 1) {
                     return '<b class="text-success"> Onaylandı </b>';
                 } elseif ($cars->confirm == -1) {

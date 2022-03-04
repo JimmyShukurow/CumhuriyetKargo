@@ -66,7 +66,6 @@
         <th>ŞOFÖR ADI</th>
         <th>ŞOFÖR İLETİŞİM</th>
         <th>OLUŞTURAN</th>
-        <th>ROL</th>
         <th>ŞUBE</th>
         <th>KAYIT TARİHİ</th>
         <th>ONAY DURUMU</th>

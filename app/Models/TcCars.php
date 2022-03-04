@@ -102,4 +102,9 @@ class TcCars extends Model
     {
         return $this->hasOne(Agencies::class, 'id', 'branch_code');
     }
+
+    public function confirmer()
+    {
+        return $this->hasOne(User::class, 'id', 'confirmed_user');
+    }
 }

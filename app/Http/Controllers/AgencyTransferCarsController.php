@@ -64,8 +64,8 @@ class AgencyTransferCarsController extends Controller
             })
             ->editColumn('confirmation_status', function ($cars) {
                 if($cars->confirm == 0) return '<b class="text-warning"> Onay Bekliyor </b>';
-                else if($cars->confirm == 1) return '<b class="text-success"> Onaylandı </b>';
-                else if($cars->confirm == -1) return '<b class="text-danger"> Onaylandı </b>';
+                else if($cars->confirm == 1) return '<b class="text-primary"> Onaylandı </b>';
+                else if($cars->confirm == -1) return '<b class="text-danger"> Reddedildi </b>';
             })
 
             ->addColumn('details', 'backend.operation.transfer_cars_agency.column')
@@ -93,7 +93,7 @@ class AgencyTransferCarsController extends Controller
 
     public function getAgencyTransferCar(Request $request)
     {
-        $car = TcCars::with('branch', 'creator.getAgency', 'cikishAktarma', 'varishAktarma')->where('id', $request->carID)
+        $car = TcCars::with('branch', 'creator.getAgency', 'cikishAktarma', 'varishAktarma', 'confirmer')->where('id', $request->carID)
             ->first();
 
         return response()

@@ -182,7 +182,7 @@
                 $('#creator').html(cars.creator ? cars.creator.name_surname : '');
                 $('#car_type').html(cars.car_type);
                 $('#created_at').html(cars.created_at);
-                $('#confirmer').html(cars.confirmed_user);
+                $('#confirmer').html(cars.confirmer ? cars.confirmer.name_surname : '');
                 $('#soforAdi').html(cars.sofor_ad);
                 $('#soforIletisim').html(cars.sofor_telefon);
                 $('#soforAders').html(cars.sofor_adres);
