@@ -1,6 +1,8 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Agency\AgencyController;
+
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::group(['prefix' => '/Agencies', 'middleware' => ['AgenciesMid'], 'as' => 'agency.'], function () {
 
