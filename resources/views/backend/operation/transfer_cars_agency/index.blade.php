@@ -26,7 +26,7 @@
                         <i class="pe-7s-car icon-gradient bg-amy-crisp">
                         </i>
                     </div>
-                    <div> Aktarma Araçları
+                    <div> Acente Araçları
                         <div class="page-title-subheading">Bu modül üzerinden sistemdeki tüm aktarma araçları
                             listleyebilir, işlem yapablirsiniz.
                         </div>
@@ -92,7 +92,7 @@
                             <input type="text" id="filter_plaka"
                                    class="form-control niko-filter form-control-sm niko-select-filter">
                         </div>
-                       
+
 
                         <div class="col-md-3">
                             <label for="filter_soforIletisim">Şoför İletişim:</label>

@@ -17,11 +17,11 @@ class AgencyTransferCarsController extends Controller
 {
     public function index()
     {
-        $data['agencies'] = Various::all();
-        $data['cities'] = Cities::all();
-        $data['transshipment_centers'] = TransshipmentCenters::all();
-        GeneralLog('Aktarma araçları sayfası görüntülendi.');
-        return view('backend.operation.transfer_cars_agency.index', compact('data'));
+//        $data['agencies'] = Various::all();
+//        $data['cities'] = Cities::all();
+//        $data['transshipment_centers'] = TransshipmentCenters::all();
+        GeneralLog('Acente araçları sayfası görüntülendi.');
+        return view('backend.operation.transfer_cars_agency.index');
     }
 
     public function create()
@@ -38,7 +38,7 @@ class AgencyTransferCarsController extends Controller
         $plaka = $request->plaka;
         $soforAd = $request->soforAd;
 
-        $cars = TcCars::with('creator', 'cikishAktarma', 'varishAktarma')
+        $cars = TcCars::with('creator', 'branch')
             ->where('car_type', 'Acente')
             ->when($marka, function($q) use($marka){ return $q->where('marka', 'like', '%'.$marka.'%');})
             ->when($model, function($q) use($model){ return $q->where('model', 'like', '%'.$model.'%');})
@@ -85,7 +85,7 @@ class AgencyTransferCarsController extends Controller
 
         if ($create)
             return back()
-                ->with('success', 'Aktarma aracı başarıyla kaydedildi!');
+                ->with('success', 'Acente aracı başarıyla kaydedildi!');
         else
             return back()
                 ->with('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!');

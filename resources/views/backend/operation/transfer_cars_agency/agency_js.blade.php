@@ -32,7 +32,7 @@
                     ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
                 ],
                 order: [
-                    [0, 'desc']
+                    [7, 'desc']
                 ],
                 language: {
                     "sDecimal": ",",
@@ -62,11 +62,10 @@
                 dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
 
                 buttons: [
-                    'print',
                     {
                         extend: 'excelHtml5',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                         },
                         title: "CK - Aktarma Araçları"
                     },
@@ -75,10 +74,6 @@
                         action: function (e, dt, node, config) {
                             dt.ajax.reload();
                         }
-                    },
-                    {
-                        extend: 'colvis',
-                        text: 'Sütun Görünüm'
                     },
                 ],
                 responsive: true,

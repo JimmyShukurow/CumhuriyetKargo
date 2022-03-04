@@ -16,7 +16,7 @@
                         <i class="fa fa-truck icon-gradient bg-amy-crisp">
                         </i>
                     </div>
-                    <div>Yeni Aktarma Aracı Oluştur
+                    <div>Yeni Acente Aracı Oluştur
                         <div class="page-title-subheading">Bu sayfa üzerinden aktarma aracı oluşturabilirsiniz.
                         </div>
                     </div>

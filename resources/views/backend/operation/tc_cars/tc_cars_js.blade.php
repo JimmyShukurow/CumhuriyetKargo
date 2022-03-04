@@ -8,7 +8,7 @@ $(document).ready(function () {
             [10, 25, 50, 100, 250, 500, -1],
             ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
         ],
-        order: [0, 'desc'],
+        order: [10, 'desc'],
         language: {
             "sDecimal": ",",
             "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",

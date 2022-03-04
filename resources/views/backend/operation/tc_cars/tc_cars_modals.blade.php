@@ -76,7 +76,7 @@
                                             </table>
 
                                             {{-- ŞOFÖR İLETİŞİM --}}
-                                            <table style="white-space: nowrap" id="AgencyCard"
+                                            <table  id="AgencyCard"
                                                    class="TableNoPadding table mt-4 table-bordered table-striped">
                                                 <thead>
                                                 <tr>

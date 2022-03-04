@@ -18,11 +18,7 @@ use Yajra\DataTables\DataTables;
 
 class TransferCarsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $data['agencies'] = Various::all();
@@ -32,11 +28,7 @@ class TransferCarsController extends Controller
         return view('backend.operation.transfer_cars.index', compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
 
     public function create()
     {
@@ -78,13 +70,13 @@ class TransferCarsController extends Controller
             ->editColumn('varis_aktarma', function ($cars) {
                 return '<b class="text-success">' . $cars->varis_akt . '</b>';
             })
-           
+
             ->addColumn('edit', 'backend.operation.transfer_cars.column')
             ->rawColumns(['edit', 'varis_aktarma', 'cikis_aktarma'])
             ->make(true);
     }
 
- 
+
     public function store(Request $request)
     {
         $request->validate([
@@ -246,23 +238,13 @@ class TransferCarsController extends Controller
     }
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         $data['transshipment_centers'] = TransshipmentCenters::all();
@@ -272,13 +254,7 @@ class TransferCarsController extends Controller
         return view('backend.operation.transfer_cars.edit', compact(['data', 'car']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -409,12 +385,7 @@ class TransferCarsController extends Controller
                 ->with('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         $destroy = TcCars::find($id);

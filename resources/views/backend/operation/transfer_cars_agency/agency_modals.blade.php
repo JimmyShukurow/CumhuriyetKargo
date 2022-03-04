@@ -32,7 +32,7 @@
                                         <div style="overflow-x: auto" class="cont">
 
                                             {{-- ARAÇ DETAYLARI --}}
-                                            <table style="white-space: nowrap;" id="AgencyCard"
+                                            <table id="AgencyCard"
                                                    class="TableNoPadding table table-bordered table-striped">
                                                 <thead>
                                                 <tr>
@@ -65,7 +65,7 @@
                                             </table>
 
                                             {{-- ŞOFÖR İLETİŞİM --}}
-                                            <table style="white-space: nowrap" id="AgencyCard"
+                                            <table  id="AgencyCard"
                                                    class="TableNoPadding table mt-4 table-bordered table-striped">
                                                 <thead>
                                                 <tr>
