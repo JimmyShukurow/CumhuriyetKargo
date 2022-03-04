@@ -163,8 +163,8 @@ $(document).ready(function () {
             $('#tdPlaka').html(cars.plaka);
             $('#arac_kapasitesi').html(cars.arac_kapasitesi);
             $('#hat').html(cars.hat);
-            $('#cikis_aktarma').html(cars.cikis_aktarma);
-            $('#varis_aktarma').html(cars.varis_aktarma);
+            $('#cikis_aktarma').html(cars.cikish_aktarma ? cars.cikish_aktarma.tc_name : '' );
+            $('#varis_aktarma').html(cars.varish_aktarma ? cars.varish_aktarma.tc_name : '');
             $('#branch').html(cars.branch ? cars.branch.agency_name : '');
             $('#creator').html(cars.creator ? cars.creator.name_surname : '');
             $('#agency').html(cars.creator.get_agency ? cars.creator.get_agency.agency_name : '');
