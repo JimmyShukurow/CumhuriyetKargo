@@ -65,6 +65,7 @@ class GetSummeryAction
         $tmpSum = 0;
         $agencies = $rds->map(function ($q) use ($regionEndorsements, $tmpCollection) {
             $districts = $q->districts()->with('agencies')->whereHas('agencies')->get();
+            $regionEndorsements = collect();
             $districts = $districts->map(function ($query) use ($regionEndorsements, $tmpCollection) {
                 $agency = $query->agencies;
                 $agency->map(function ($keyAgency) use ($regionEndorsements) {
@@ -74,8 +75,6 @@ class GetSummeryAction
                 return count($agency);
             });
             $tmpCollection->push($regionEndorsements->sum());
-            $regionEndorsements = null;
-            $regionEndorsements = collect();
 
             $tmpSum = 0;
             return $districts->sum();
