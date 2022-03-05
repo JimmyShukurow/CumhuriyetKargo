@@ -19,9 +19,9 @@ class GetRegionAnalysisAction
 //        print_r($val);
 //        echo "</pre>";
 
-        $val = json_decode(GetSummeryAction::run($request));
+        $val = GetSummeryInfoAction::run($request);
 
-        return $val;
+        return $val['data_full'];
 
         return false;
 
