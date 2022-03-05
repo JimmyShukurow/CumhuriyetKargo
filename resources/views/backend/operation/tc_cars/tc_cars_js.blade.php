@@ -179,6 +179,14 @@ $(document).ready(function () {
         });
 
         $('#ModalAgencyDetail').modal();
+
+        $('#btnEditCar').on('click', function (){
+            $.ajax('/TCCars/'+ detailsID +'/Edit',{
+                method: 'GET',
+            }).done(function (response){
+                if (response.status = 200) window.location.replace('/TCCars/'+ detailsID +'/Edit');
+            })
+        })
     }
 
 

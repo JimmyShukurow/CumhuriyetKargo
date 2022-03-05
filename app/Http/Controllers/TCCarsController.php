@@ -8,6 +8,7 @@ use App\Actions\CKGSis\Filo\AgencyCars\GetAgencyCarsOfBranch;
 use App\Actions\CKGSis\Filo\TCCars\GetTcCars;
 use App\Http\Requests\TcCarsRequest;
 use App\Models\Agencies;
+use App\Models\TcCars;
 use App\Models\TcCars as ModelsTcCars;
 use App\Models\TransshipmentCenters;
 use Illuminate\Http\Request;
@@ -52,7 +53,7 @@ class TCCarsController extends Controller
 
     public function show($id)
     {
-        //
+        return'show';
     }
 
 
@@ -67,6 +68,22 @@ class TCCarsController extends Controller
         //
     }
 
+    public function edit ($id) {
+        $car = TcCars::find($id);
+        $transshipment_centers = TransshipmentCenters::select('id', 'tc_name')->get();
+
+        return view(
+            'backend.operation.tc_cars.edit',
+            [
+                'car' => $car,
+                'transshipment_centers' => $transshipment_centers,
+                'branch' => $car->branch ?? null,
+
+
+            ]
+        );
+
+    }
 
     public function ajaxTcCars(Request $request, $val)
     {
