@@ -89,16 +89,18 @@ class GetSummeryAction
         $data['regionEndorsements'] = $tmpCollection;
         $data['regionCargoCount'] = $tmpCollectionCargoCount;
 
-        $tmpArray = [];
+        $tmpArray = collect();
 
         for ($i = 0, $iMax = count($data['regions']); $i < $iMax; $i++) {
-            $tmpArray[] = [
+            $tmpArray->push([
                 'region' => $data['regions'][$i],
                 'agencyCount' => $data['agencyCount'][$i],
                 'cargoCount' => $data['regionCargoCount'][$i],
                 'regionEndorsements' => $data['regionEndorsements'][$i]
-            ];
+            ]);
         }
+        $data['data_full'] = $tmpArray;
+
         $tmpArray = collect($tmpArray);
         $tmpArray = $tmpArray->sortBy('regionEndorsements');
 
@@ -106,7 +108,6 @@ class GetSummeryAction
         $data['regionCargoCount'] = $tmpArray->pluck('cargoCount');
         $data['regionEndorsements'] = $tmpArray->pluck('regionEndorsements');
         $data['agencyCount'] = $tmpArray->pluck('agencyCount');
-
 
 
 

@@ -88,11 +88,8 @@ $(document).ready(function () {
             {data: 'edit', name: 'edit'},
         ],
         scrollY: "400px",
-    });
-
- 
-
-});
+    })
+})
 
 
 

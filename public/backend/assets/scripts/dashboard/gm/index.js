@@ -1,3 +1,5 @@
+let countCargo, categories, endorsement, agencyCount;
+
 $(document).ready(function () {
     reloadDashboard()
 })
@@ -41,10 +43,11 @@ function reloadDashboard() {
 
             countCargo = data.regionCargoCount;
             categories = data.regions;
-            endersement = data.regionEndorsements;
+            endorsement = data.regionEndorsements;
             agencyCount = data.agencyCount;
 
-            makeChart(categories, countCargo, endersement, agencyCount)
+            $('#chart-regions').html('')
+            makeChart()
 
         } else if (response.status == 0) {
             ToastMessage('error', response.message, 'Hata!')
@@ -60,26 +63,28 @@ $('#btnReloadDashboard').click(function () {
     reloadDashboard()
 })
 
-function makeChart(categories, countCargo, endorsement, agencyCount) {
 
+function makeChart() {
     var options = {
-        series: [{
-            name: 'Kargo Adeti',
-            type: 'column',
-            data: countCargo
-        }, {
-            name: 'Ciro',
-            type: 'column',
-            data: endorsement
-        }, {
-            name: 'Acente Sayısı',
-            type: 'line',
-            data: agencyCount
-        }],
+        series: [
+            {
+                name: 'Acente Sayısı',
+                type: 'line',
+                data: agencyCount
+            },
+            {
+                name: 'Kargo Adeti',
+                type: 'area',
+                data: countCargo,
+            }, {
+                name: 'Ciro',
+                type: 'column',
+                data: endorsement
+            }],
         chart: {
             height: 500,
             type: 'line',
-            stacked: false
+            stacked: true
         },
         dataLabels: {
             enabled: true
@@ -95,75 +100,50 @@ function makeChart(categories, countCargo, endorsement, agencyCount) {
         xaxis: {
             categories: categories,
         },
-        yaxis: [
-            {
-                axisTicks: {
-                    show: true,
-                },
-                axisBorder: {
-                    show: true,
-                    color: '#008FFB'
-                },
-                labels: {
-                    style: {
-                        colors: '#008FFB',
-                    }
-                },
-                title: {
-                    text: "Kargo Adeti",
-                    style: {
-                        color: '#008FFB',
-                    }
-                },
-                tooltip: {
-                    enabled: true
+        yaxis: [{
+            axisTicks: {
+                show: true,
+            },
+            axisBorder: {
+                show: true,
+                color: '#008FFB'
+            },
+            labels: {
+                style: {
+                    colors: '#008FFB',
                 }
             },
-            {
-                seriesName: 'Kargo Adeti',
-                opposite: true,
-                axisTicks: {
-                    show: true,
-                },
-                axisBorder: {
-                    show: true,
-                    color: '#00E396'
-                },
-                labels: {
-                    style: {
-                        colors: '#00E396',
-                    }
-                },
-                title: {
-                    text: "CİRO",
-                    style: {
-                        color: '#00E396',
-                    }
-                },
-            },
-            {
-                seriesName: 'Revenue',
-                opposite: true,
-                axisTicks: {
-                    show: true,
-                },
-                axisBorder: {
-                    show: true,
-                    color: '#FEB019'
-                },
-                labels: {
-                    style: {
-                        colors: '#FEB019',
-                    },
-                },
-                title: {
-                    text: "Acente Sayısı",
-                    style: {
-                        color: '#FEB019',
-                    }
+            title: {
+                text: "Kargo Adeti",
+                style: {
+                    color: '#008FFB',
                 }
             },
-        ],
+            tooltip: {
+                enabled: true
+            }
+        }, {
+            seriesName: 'Kargo Adeti',
+            opposite: true,
+            axisTicks: {
+                show: true,
+            },
+            axisBorder: {
+                show: true,
+                color: '#00E396'
+            },
+            labels: {
+                style: {
+                    colors: '#00E396',
+                }
+            },
+            title: {
+                text: "CİRO",
+                style: {
+                    color: '#00E396',
+                }
+            },
+        }],
         tooltip: {
             fixed: {
                 enabled: true,
@@ -180,6 +160,88 @@ function makeChart(categories, countCargo, endorsement, agencyCount) {
 
     var chart = new ApexCharts(document.querySelector("#chart-regions"), options);
     chart.render();
-
-
 }
+
+let tabTableInit = false
+$('#tabTable').click(function () {
+
+    if (tabTableInit == false) {
+        tabTableInit = true
+        oTable = $('#graphTable').DataTable({
+            pageLength: 25,
+            lengthMenu: [
+                [10, 25, 50, 100, 250, 500, -1],
+                ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
+            ],
+            order: [
+                3, 'desc'
+            ],
+            language: {
+                "sDecimal": ",",
+                "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
+                "sInfo": "_TOTAL_ kayıttan _START_ - _END_ kayıtlar gösteriliyor",
+                "sInfoEmpty": "Kayıt yok",
+                "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "_MENU_",
+                "sLoadingRecords": "Yükleniyor...",
+                "sProcessing": "<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>",
+                "sSearch": "",
+                "sZeroRecords": "Eşleşen kayıt bulunamadı",
+                "oPaginate": {
+                    "sFirst": "İlk",
+                    "sLast": "Son",
+                    "sNext": "Sonraki",
+                    "sPrevious": "Önceki"
+                },
+                "oAria": {
+                    "sSortAscending": ": artan sütun sıralamasını aktifleştir",
+                    "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
+                },
+                "select": {
+                    "rows": {
+                        "_": "%d kayıt seçildi",
+                        "0": "",
+                        "1": "1 kayıt seçildi"
+                    }
+                }
+            },
+            dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    attr: {
+                        class: 'btn btn-success'
+                    }
+                },
+            ],
+            responsive: true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '/Dashboard/GM/AjaxTransactions/GetRegionAnalysis',
+                data:{
+                    firstDate: $('#firstDate').val(),
+                    lastDate: $('#lastDate').val(),
+                },
+                error: function (xhr, error, code) {
+                    if (code == "Too Many Requests") {
+                        ToastMessage('info', 'Aşırı istekte bulundunuz, Lütfen bir süre sonra tekrar deneyin!', 'Hata');
+                    }
+                }
+            },
+            columns: [
+                {data: 'region', name: 'region'},
+                {data: 'region', name: 'region'},
+                {data: 'region', name: 'region'},
+                {data: 'region', name: 'region'},
+            ],
+            scrollY: "400px",
+        });
+    }
+
+});
+
+
+

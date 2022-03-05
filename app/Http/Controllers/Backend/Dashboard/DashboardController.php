@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Dashboard;
 
+use App\Actions\CKGSis\Dashboard\Gm\AjaxTransactions\GetRegionAnalysisAction;
 use App\Actions\CKGSis\Dashboard\Gm\AjaxTransactions\GetSummeryAction;
 use App\Http\Controllers\Controller;
 use App\Models\Agencies;
@@ -35,6 +36,10 @@ class DashboardController extends Controller
         switch ($val) {
             case 'GetSummery':
                 return GetSummeryAction::run($request);
+                break;
+
+            case 'GetRegionAnalysis':
+                return GetRegionAnalysisAction::run($request);
                 break;
 
             default:
