@@ -1,4 +1,5 @@
-let countCargo, categories, endorsement, agencyCount;
+let countCargo, categories, endorsement, agencyCount, oTable;
+let tabTableInit = false, dataSet = null;
 
 $(document).ready(function () {
     reloadDashboard()
@@ -48,6 +49,8 @@ function reloadDashboard() {
 
             $('#chart-regions').html('')
             makeChart()
+            dataSet = data.data_full
+            initGraphTable()
 
         } else if (response.status == 0) {
             ToastMessage('error', response.message, 'Hata!')
@@ -162,86 +165,54 @@ function makeChart() {
     chart.render();
 }
 
-let tabTableInit = false
-$('#tabTable').click(function () {
 
+function initGraphTable() {
     if (tabTableInit == false) {
-        tabTableInit = true
+        tabTableInit = true;
         oTable = $('#graphTable').DataTable({
             pageLength: 25,
-            lengthMenu: [
-                [10, 25, 50, 100, 250, 500, -1],
-                ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
-            ],
-            order: [
-                3, 'desc'
-            ],
-            language: {
-                "sDecimal": ",",
-                "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
-                "sInfo": "_TOTAL_ kayıttan _START_ - _END_ kayıtlar gösteriliyor",
-                "sInfoEmpty": "Kayıt yok",
-                "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
-                "sInfoPostFix": "",
-                "sInfoThousands": ".",
-                "sLengthMenu": "_MENU_",
-                "sLoadingRecords": "Yükleniyor...",
-                "sProcessing": "<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>",
-                "sSearch": "",
-                "sZeroRecords": "Eşleşen kayıt bulunamadı",
-                "oPaginate": {
-                    "sFirst": "İlk",
-                    "sLast": "Son",
-                    "sNext": "Sonraki",
-                    "sPrevious": "Önceki"
-                },
-                "oAria": {
-                    "sSortAscending": ": artan sütun sıralamasını aktifleştir",
-                    "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
-                },
-                "select": {
-                    "rows": {
-                        "_": "%d kayıt seçildi",
-                        "0": "",
-                        "1": "1 kayıt seçildi"
-                    }
-                }
-            },
-            dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
+            lengthMenu: dtLengthMenu,
+            order: [3, 'desc'],
+            language: dtLanguage,
+            dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>frtip',
             buttons: [
                 {
                     extend: 'excelHtml5',
+                    title: 'CKG-SİS TÜRKİYE GENELİ BÖLGESEL CİRO ANALİZ (' + $('#firstDate').val() + '-' + $('#lastDate').val() + ')',
                     attr: {
                         class: 'btn btn-success'
                     }
                 },
             ],
-            responsive: true,
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: '/Dashboard/GM/AjaxTransactions/GetRegionAnalysis',
-                data:{
-                    firstDate: $('#firstDate').val(),
-                    lastDate: $('#lastDate').val(),
-                },
-                error: function (xhr, error, code) {
-                    if (code == "Too Many Requests") {
-                        ToastMessage('info', 'Aşırı istekte bulundunuz, Lütfen bir süre sonra tekrar deneyin!', 'Hata');
-                    }
-                }
-            },
+            data: dataSet,
             columns: [
-                {data: 'region', name: 'region'},
-                {data: 'region', name: 'region'},
-                {data: 'region', name: 'region'},
-                {data: 'region', name: 'region'},
+                {data: 'region'},
+                {data: 'agencyCount'},
+                {data: 'cargoCount'},
+                {data: 'regionEndorsements'},
             ],
             scrollY: "400px",
         });
+    } else {
+        oTable.destroy()
+        tabTableInit = false
+        initGraphTable(dataSet)
     }
+}
 
+$('#tabTable').click(function () {
+    initGraphTable()
+    setTimeout(function () {
+        initGraphTable()
+    }, 50)
+})
+
+$(document).on('keyup', '#graphTable_filter input', function () {
+    $(this).val($(this).val().toLocaleUpperCase())
 });
+
+
+
 
 
 

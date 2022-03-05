@@ -70,7 +70,7 @@
                             </div>
                             <ul class="nav">
                                 <li class="nav-item">
-                                    <a data-toggle="tab" href="#graph" class="nav-link active">Grafik</a>
+                                    <a id="tabChart" data-toggle="tab" href="#graph" class="nav-link active">Grafik</a>
                                 </li>
 
                                 <li class="nav-item">

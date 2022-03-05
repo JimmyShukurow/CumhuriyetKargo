@@ -59,4 +59,5 @@ class Agencies extends Model
             ->count();
     }
 
+
 }

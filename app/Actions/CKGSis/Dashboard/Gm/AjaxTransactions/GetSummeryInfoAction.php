@@ -2,6 +2,7 @@
 
 namespace App\Actions\CKGSis\Dashboard\Gm\AjaxTransactions;
 
+use App\Models\Agencies;
 use App\Models\AgencyPayment;
 use App\Models\Cargoes;
 use App\Models\RegioanalDirectorates;
@@ -14,6 +15,8 @@ class GetSummeryInfoAction
 
     public function handle($request)
     {
+
+
         $firstDate = Carbon::createFromDate($request->firstDate);
         $lastDate = Carbon::createFromDate($request->lastDate);
 
@@ -92,7 +95,7 @@ class GetSummeryInfoAction
 
         for ($i = 0, $iMax = count($data['regions']); $i < $iMax; $i++) {
             $tmpArray->push([
-                'region' => $data['regions'][$i],
+                'region' => $data['regions'][$i] . ' B.M.',
                 'agencyCount' => $data['agencyCount'][$i],
                 'cargoCount' => $data['regionCargoCount'][$i],
                 'regionEndorsements' => $data['regionEndorsements'][$i]
@@ -108,6 +111,6 @@ class GetSummeryInfoAction
         $data['regionEndorsements'] = $tmpArray->pluck('regionEndorsements');
         $data['agencyCount'] = $tmpArray->pluck('agencyCount');
 
-        return  $data;
+        return $data;
     }
 }

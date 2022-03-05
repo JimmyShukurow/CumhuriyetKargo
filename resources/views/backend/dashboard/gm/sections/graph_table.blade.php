@@ -1,4 +1,4 @@
-<table id="graphTable" class="table table-bordered table-hover">
+<table id="graphTable"  width="100%" class="table display table-bordered table-hover">
     <thead>
     <tr>
         <th>Bölge</th>
