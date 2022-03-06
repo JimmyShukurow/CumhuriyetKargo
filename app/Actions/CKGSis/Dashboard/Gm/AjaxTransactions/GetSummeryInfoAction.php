@@ -95,7 +95,7 @@ class GetSummeryInfoAction
 
         for ($i = 0, $iMax = count($data['regions']); $i < $iMax; $i++) {
             $tmpArray->push([
-                'region' => $data['regions'][$i] . ' B.M.',
+                'region' => $data['regions'][$i],
                 'agencyCount' => $data['agencyCount'][$i],
                 'cargoCount' => $data['regionCargoCount'][$i],
                 'regionEndorsements' => $data['regionEndorsements'][$i]
@@ -110,6 +110,20 @@ class GetSummeryInfoAction
         $data['regionCargoCount'] = $tmpArray->pluck('cargoCount');
         $data['regionEndorsements'] = $tmpArray->pluck('regionEndorsements');
         $data['agencyCount'] = $tmpArray->pluck('agencyCount');
+
+
+        $agencies = Agencies::all();
+        $agencies->map(function ($q) use ($firstDate, $lastDate) {
+            $q->endorsement = $q->endorsementWithDate($firstDate, $lastDate);
+            $q->cargo_count = $q->cargoCountWithDate($firstDate, $lastDate);
+            $q->cargo_cargo_count = $q->cargoCargoCountWithDate($firstDate, $lastDate);
+            $q->cargo_desi_amount = $q->cargoDsAmountWithDate($firstDate, $lastDate);
+            $q->cargo_file_count = $q->cargoFileCountWithDate($firstDate, $lastDate);
+            $q->personel_count = $q->personelCount();
+            $q->region = $q->region()->first()->name;
+        });
+        $data['agencies'] = $agencies->sortByDesc('endorsement')->values();
+
 
         return $data;
     }

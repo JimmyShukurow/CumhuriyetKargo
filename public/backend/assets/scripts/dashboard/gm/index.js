@@ -1,5 +1,5 @@
-let countCargo, categories, endorsement, agencyCount, oTable;
-let tabTableInit = false, dataSet = null;
+let countCargo, categories, endorsement, agencyCount, oTable, oAgenciesTable;
+let tabTableInit = false, agenciesTableInit = false, dataSet = null, dataSetAgencies = null;
 
 $(document).ready(function () {
     reloadDashboard()
@@ -52,6 +52,9 @@ function reloadDashboard() {
             dataSet = data.data_full
             initGraphTable()
 
+            dataSetAgencies = data.agencies
+            initAgenciesTable()
+
         } else if (response.status == 0) {
             ToastMessage('error', response.message, 'Hata!')
         }
@@ -71,19 +74,21 @@ function makeChart() {
     var options = {
         series: [
             {
+                name: 'Kargo Adeti',
+                type: 'area',
+                data: countCargo,
+            },
+            {
                 name: 'Acente Sayısı',
                 type: 'line',
                 data: agencyCount
             },
             {
-                name: 'Kargo Adeti',
-                type: 'area',
-                data: countCargo,
-            }, {
                 name: 'Ciro',
                 type: 'column',
                 data: endorsement
-            }],
+            }
+        ],
         chart: {
             height: 500,
             type: 'line',
@@ -185,6 +190,7 @@ function initGraphTable() {
                 },
             ],
             data: dataSet,
+            search: {"regex": true},
             columns: [
                 {data: 'region'},
                 {data: 'agencyCount'},
@@ -200,6 +206,45 @@ function initGraphTable() {
     }
 }
 
+function initAgenciesTable() {
+    if (agenciesTableInit == false) {
+        agenciesTableInit = true;
+        oAgenciesTable = $('#tableAgencies').DataTable({
+            pageLength: 10,
+            lengthMenu: dtLengthMenu,
+            order: [7, 'desc'],
+            language: dtLanguage,
+            dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>frtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'CKG-SİS TÜRKİYE GENELİ BÖLGESEL CİRO ANALİZ (' + $('#firstDate').val() + '-' + $('#lastDate').val() + ')',
+                    attr: {
+                        class: 'btn btn-success'
+                    }
+                },
+            ],
+            search: {"regex": true},
+            data: dataSetAgencies,
+            columns: [
+                {data: 'agency_name'},
+                {data: 'region'},
+                {data: 'personel_count'},
+                {data: 'cargo_count'},
+                {data: 'cargo_cargo_count'},
+                {data: 'cargo_desi_amount'},
+                {data: 'cargo_file_count'},
+                {data: 'endorsement'},
+            ],
+            scrollY: "400px",
+        });
+    } else {
+        oAgenciesTable.destroy()
+        agenciesTableInit = false
+        initGraphTable(dataSet)
+    }
+}
+
 $('#tabTable').click(function () {
     initGraphTable()
     setTimeout(function () {
@@ -207,9 +252,6 @@ $('#tabTable').click(function () {
     }, 50)
 })
 
-$(document).on('keyup', '#graphTable_filter input', function () {
-    $(this).val($(this).val().toLocaleUpperCase())
-});
 
 
 

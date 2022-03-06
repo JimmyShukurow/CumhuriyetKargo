@@ -25,4 +25,7 @@ class RegionalDistricts extends Model
         return $this->hasMany(Agencies::class, 'district_id', 'district_id');
     }
 
+
+
+
 }

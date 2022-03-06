@@ -2,6 +2,7 @@
 
 namespace App\Actions\CKGSis\Dashboard\Gm\AjaxTransactions;
 
+use App\Models\Agencies;
 use App\Models\AgencyPayment;
 use App\Models\Cargoes;
 use App\Models\RegioanalDirectorates;
@@ -15,6 +16,9 @@ class GetSummeryAction
 
     public function handle($request)
     {
+
+
+
 
         $data = GetSummeryInfoAction::run($request);
 

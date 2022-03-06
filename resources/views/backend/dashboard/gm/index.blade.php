@@ -107,7 +107,7 @@
                                             <span class="pr-2 opactiy-6">
                                                 <i class="fa fa-comment-dots"></i>
                                             </span>
-                                            En çok ciro yapan şubeler.
+                                            En çok ciro yapan şubeler. (Belirtilen Tarih)
                                         </div>
                                     </a>
                                 </li>
@@ -117,19 +117,19 @@
                             <div class="tab-pane show active" id="idle-districts" role="tabpanel">
                                 <div class="card-body">
                                     <div class="card-body">
-                                        <table id="TableRolePermissions"
+                                        <table id="tableAgencies"
                                                style="white-space: nowrap; width: 100% !important;"
-                                               class="table table-hover table-striped  table-bordered TableNoPadding NikolasDataTable IdleDistricts table-hover">
+                                               class="table table-hover table-striped  table-bordered NikolasDataTable IdleDistricts table-hover">
                                             <thead>
                                             <tr>
-                                                <th>#</th>
                                                 <th>Acente</th>
                                                 <th>Bölge</th>
                                                 <th>Personel Sayısı</th>
                                                 <th>Kargo Sayısı</th>
-                                                <th>Ciro</th>
                                                 <th>Koli</th>
+                                                <th>Ds</th>
                                                 <th>Dosya</th>
+                                                <th>Ciro</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -137,14 +137,14 @@
                                             </tbody>
                                             <tfoot>
                                             <tr>
-                                                <th>#</th>
                                                 <th>Acente</th>
                                                 <th>Bölge</th>
                                                 <th>Personel Sayısı</th>
                                                 <th>Kargo Sayısı</th>
-                                                <th>Ciro</th>
                                                 <th>Koli</th>
+                                                <th>Ds</th>
                                                 <th>Dosya</th>
+                                                <th>Ciro</th>
                                             </tr>
                                             </tfoot>
                                         </table>
