@@ -59,7 +59,6 @@
 
             @include('backend.dashboard.gm.sections.boxes')
 
-
             <div class="row">
                 <div class="col-sm-12 col-md-7 col-lg-12">
                     <div class="mb-3 card">
@@ -115,41 +114,7 @@
                         </div>
                         <div class="tab-content">
                             <div class="tab-pane show active" id="idle-districts" role="tabpanel">
-                                <div class="card-body">
-                                    <div class="card-body">
-                                        <table id="tableAgencies"
-                                               style="white-space: nowrap; width: 100% !important;"
-                                               class="table table-hover table-striped  table-bordered NikolasDataTable IdleDistricts table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>Acente</th>
-                                                <th>Bölge</th>
-                                                <th>Personel Sayısı</th>
-                                                <th>Kargo Sayısı</th>
-                                                <th>Koli</th>
-                                                <th>Ds</th>
-                                                <th>Dosya</th>
-                                                <th>Ciro</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                            <tfoot>
-                                            <tr>
-                                                <th>Acente</th>
-                                                <th>Bölge</th>
-                                                <th>Personel Sayısı</th>
-                                                <th>Kargo Sayısı</th>
-                                                <th>Koli</th>
-                                                <th>Ds</th>
-                                                <th>Dosya</th>
-                                                <th>Ciro</th>
-                                            </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                </div>
+                                @include('backend.dashboard.gm.sections.table_agencies')
                             </div>
                         </div>
                     </div>

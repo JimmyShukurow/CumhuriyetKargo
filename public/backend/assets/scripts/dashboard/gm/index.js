@@ -202,7 +202,7 @@ function initGraphTable() {
     } else {
         oTable.destroy()
         tabTableInit = false
-        initGraphTable(dataSet)
+        initGraphTable()
     }
 }
 
@@ -241,7 +241,7 @@ function initAgenciesTable() {
     } else {
         oAgenciesTable.destroy()
         agenciesTableInit = false
-        initGraphTable(dataSet)
+        initAgenciesTable()
     }
 }
 

@@ -17,18 +17,8 @@ class DashboardController extends Controller
 {
     public function gmDashboard()
     {
-        $data['agency_quantity'] = Agencies::count();
-        $data['region_quantity'] = RegioanalDirectorates::count();
-        $data['tc_quantity'] = TransshipmentCenters::count();
-        $data['total_districts'] = $districts = Districts::count();
-        $data['regional_districts'] = $regional_districts = RegionalDistricts::count();
-        $data['idle_districts_quantity'] = $districts - $regional_districts;
-        $data['regions'] = DB::table('view_regional_directorates_detail')
-            ->orderBy('district_covered_quantity', 'desc')
-            ->get();
-
-        GeneralLog('Bölgesel Rapor (Operasyonel) görüntülendi.');
-        return view('backend.dashboard.gm.index', compact('data'));
+        GeneralLog('Dashboard (GM) görüntülendi.');
+        return view('backend.dashboard.gm.index');
     }
 
     public function gmAjaxTransactions(Request $request, $val)
