@@ -114,10 +114,10 @@ class GetSummeryInfoAction
 
         $agencies = Agencies::all();
         $agencies->map(function ($q) use ($firstDate, $lastDate) {
-            $q->endorsement = $q->endorsementWithDate($firstDate, $lastDate);
+            $q->endorsement = round($q->endorsementWithDate($firstDate, $lastDate), 2);
             $q->cargo_count = $q->cargoCountWithDate($firstDate, $lastDate);
             $q->cargo_cargo_count = $q->cargoCargoCountWithDate($firstDate, $lastDate);
-            $q->cargo_desi_amount = $q->cargoDsAmountWithDate($firstDate, $lastDate);
+            $q->cargo_desi_amount = round($q->cargoDsAmountWithDate($firstDate, $lastDate), 2);
             $q->cargo_file_count = $q->cargoFileCountWithDate($firstDate, $lastDate);
             $q->personel_count = $q->personelCount();
             $q->region = $q->region()->first()->name;
