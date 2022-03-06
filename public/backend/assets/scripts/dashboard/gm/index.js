@@ -1,3 +1,6 @@
+let countCargo, categories, endorsement, agencyCount, oTable, oAgenciesTable;
+let tabTableInit = false, agenciesTableInit = false, dataSet = null, dataSetAgencies = null;
+
 $(document).ready(function () {
     reloadDashboard()
 })
@@ -41,10 +44,16 @@ function reloadDashboard() {
 
             countCargo = data.regionCargoCount;
             categories = data.regions;
-            endersement = data.regionEndorsements;
+            endorsement = data.regionEndorsements;
             agencyCount = data.agencyCount;
 
-            makeChart(categories, countCargo, endersement, agencyCount)
+            $('#chart-regions').html('')
+            makeChart()
+            dataSet = data.data_full
+            initGraphTable()
+
+            dataSetAgencies = data.agencies
+            initAgenciesTable()
 
         } else if (response.status == 0) {
             ToastMessage('error', response.message, 'Hata!')
@@ -60,26 +69,30 @@ $('#btnReloadDashboard').click(function () {
     reloadDashboard()
 })
 
-function makeChart(categories, countCargo, endorsement, agencyCount) {
 
+function makeChart() {
     var options = {
-        series: [{
-            name: 'Kargo Adeti',
-            type: 'column',
-            data: countCargo
-        }, {
-            name: 'Ciro',
-            type: 'column',
-            data: endorsement
-        }, {
-            name: 'Acente Sayısı',
-            type: 'line',
-            data: agencyCount
-        }],
+        series: [
+            {
+                name: 'Kargo Adeti',
+                type: 'area',
+                data: countCargo,
+            },
+            {
+                name: 'Acente Sayısı',
+                type: 'line',
+                data: agencyCount
+            },
+            {
+                name: 'Ciro',
+                type: 'column',
+                data: endorsement
+            }
+        ],
         chart: {
             height: 500,
             type: 'line',
-            stacked: false
+            stacked: true
         },
         dataLabels: {
             enabled: true
@@ -95,75 +108,50 @@ function makeChart(categories, countCargo, endorsement, agencyCount) {
         xaxis: {
             categories: categories,
         },
-        yaxis: [
-            {
-                axisTicks: {
-                    show: true,
-                },
-                axisBorder: {
-                    show: true,
-                    color: '#008FFB'
-                },
-                labels: {
-                    style: {
-                        colors: '#008FFB',
-                    }
-                },
-                title: {
-                    text: "Kargo Adeti",
-                    style: {
-                        color: '#008FFB',
-                    }
-                },
-                tooltip: {
-                    enabled: true
+        yaxis: [{
+            axisTicks: {
+                show: true,
+            },
+            axisBorder: {
+                show: true,
+                color: '#008FFB'
+            },
+            labels: {
+                style: {
+                    colors: '#008FFB',
                 }
             },
-            {
-                seriesName: 'Kargo Adeti',
-                opposite: true,
-                axisTicks: {
-                    show: true,
-                },
-                axisBorder: {
-                    show: true,
-                    color: '#00E396'
-                },
-                labels: {
-                    style: {
-                        colors: '#00E396',
-                    }
-                },
-                title: {
-                    text: "CİRO",
-                    style: {
-                        color: '#00E396',
-                    }
-                },
-            },
-            {
-                seriesName: 'Revenue',
-                opposite: true,
-                axisTicks: {
-                    show: true,
-                },
-                axisBorder: {
-                    show: true,
-                    color: '#FEB019'
-                },
-                labels: {
-                    style: {
-                        colors: '#FEB019',
-                    },
-                },
-                title: {
-                    text: "Acente Sayısı",
-                    style: {
-                        color: '#FEB019',
-                    }
+            title: {
+                text: "Kargo Adeti",
+                style: {
+                    color: '#008FFB',
                 }
             },
-        ],
+            tooltip: {
+                enabled: true
+            }
+        }, {
+            seriesName: 'Kargo Adeti',
+            opposite: true,
+            axisTicks: {
+                show: true,
+            },
+            axisBorder: {
+                show: true,
+                color: '#00E396'
+            },
+            labels: {
+                style: {
+                    colors: '#00E396',
+                }
+            },
+            title: {
+                text: "CİRO",
+                style: {
+                    color: '#00E396',
+                }
+            },
+        }],
         tooltip: {
             fixed: {
                 enabled: true,
@@ -180,6 +168,93 @@ function makeChart(categories, countCargo, endorsement, agencyCount) {
 
     var chart = new ApexCharts(document.querySelector("#chart-regions"), options);
     chart.render();
-
-
 }
+
+
+function initGraphTable() {
+    if (tabTableInit == false) {
+        tabTableInit = true;
+        oTable = $('#graphTable').DataTable({
+            pageLength: 25,
+            lengthMenu: dtLengthMenu,
+            order: [3, 'desc'],
+            language: dtLanguage,
+            dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>frtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'CKG-SİS TÜRKİYE GENELİ BÖLGESEL CİRO ANALİZ (' + $('#firstDate').val() + '-' + $('#lastDate').val() + ')',
+                    attr: {
+                        class: 'btn btn-success'
+                    }
+                },
+            ],
+            data: dataSet,
+            search: {"regex": true},
+            columns: [
+                {data: 'region'},
+                {data: 'agencyCount'},
+                {data: 'cargoCount'},
+                {data: 'regionEndorsements'},
+            ],
+            scrollY: "400px",
+        });
+    } else {
+        oTable.destroy()
+        tabTableInit = false
+        initGraphTable(dataSet)
+    }
+}
+
+function initAgenciesTable() {
+    if (agenciesTableInit == false) {
+        agenciesTableInit = true;
+        oAgenciesTable = $('#tableAgencies').DataTable({
+            pageLength: 10,
+            lengthMenu: dtLengthMenu,
+            order: [7, 'desc'],
+            language: dtLanguage,
+            dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>frtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'CKG-SİS TÜRKİYE GENELİ BÖLGESEL CİRO ANALİZ (' + $('#firstDate').val() + '-' + $('#lastDate').val() + ')',
+                    attr: {
+                        class: 'btn btn-success'
+                    }
+                },
+            ],
+            search: {"regex": true},
+            data: dataSetAgencies,
+            columns: [
+                {data: 'agency_name'},
+                {data: 'region'},
+                {data: 'personel_count'},
+                {data: 'cargo_count'},
+                {data: 'cargo_cargo_count'},
+                {data: 'cargo_desi_amount'},
+                {data: 'cargo_file_count'},
+                {data: 'endorsement'},
+            ],
+            scrollY: "400px",
+        });
+    } else {
+        oAgenciesTable.destroy()
+        agenciesTableInit = false
+        initGraphTable(dataSet)
+    }
+}
+
+$('#tabTable').click(function () {
+    initGraphTable()
+    setTimeout(function () {
+        initGraphTable()
+    }, 50)
+})
+
+
+
+
+
+
+

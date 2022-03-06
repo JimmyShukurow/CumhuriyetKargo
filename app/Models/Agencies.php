@@ -59,4 +59,40 @@ class Agencies extends Model
             ->count();
     }
 
+    public function cargoCargoCountWithDate($firstDate, $lastDate)
+    {
+        return $this->hasMany(Cargoes::class, 'departure_agency_code', 'id')
+            ->whereBetween('created_at', [$firstDate, $lastDate])
+            ->whereNotIn('cargo_type', ['Dosya', 'Mi'])
+            ->count();
+    }
+
+    public function cargoDsAmountWithDate($firstDate, $lastDate)
+    {
+        return $this->hasMany(Cargoes::class, 'departure_agency_code', 'id')
+            ->whereBetween('created_at', [$firstDate, $lastDate])
+            ->sum('desi');
+    }
+
+    public function cargoFileCountWithDate($firstDate, $lastDate)
+    {
+        return $this->hasMany(Cargoes::class, 'departure_agency_code', 'id')
+            ->whereBetween('created_at', [$firstDate, $lastDate])
+            ->whereIn('cargo_type', ['Dosya', 'Mi'])
+            ->count();
+    }
+
+    public function personelCount()
+    {
+        return $this->hasOne(User::class, 'agency_code', 'id')
+            ->count();
+    }
+
+    public function region()
+    {
+        return $this->hasOne(RegionalDistricts::class, 'district_id', 'district_id')
+            ->join('regional_directorates', 'region_id', '=', 'regional_directorates.id');
+    }
+
+
 }

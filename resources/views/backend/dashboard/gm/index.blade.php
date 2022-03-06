@@ -57,170 +57,39 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="card mb-3 widget-chart widget-chart2 bg-asteroid text-left">
-                        <div class="widget-chat-wrapper-outer">
-                            <div class="widget-chart-content text-white">
-                                <div class="widget-chart-flex">
-                                    <div class="widget-title opacity-5">Ciro</div>
-                                    <div class="widget-subtitle opacity-5 text-white">Belirtilen Tarih</div>
-                                </div>
-                                <div class="widget-chart-flex">
-                                    <div class="widget-numbers">
-                                        <small>₺</small>
-                                        <span id="endorsementCurrentDate">0</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="widget-progress-wrapper">
-                                <div class="progress-bar-xs progress-bar-animated-alt progress">
-                                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="65"
-                                         aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card mb-3 widget-chart widget-chart2 bg-asteroid text-left">
-                        <div class="widget-chat-wrapper-outer">
-                            <div class="widget-chart-content text-white">
-                                <div class="widget-chart-flex">
-                                    <div class="widget-title opacity-5">Toplam Kargo</div>
-                                    <div class="widget-subtitle opacity-5 text-white">Belirtilen Tarih</div>
-                                </div>
-                                <div class="widget-chart-flex">
-                                    <div class="widget-numbers">
-                                        <span id="totalCargosCurrentDate">0</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="widget-progress-wrapper">
-                                <div class="progress-bar-xs progress-bar-animated-alt progress">
-                                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="65"
-                                         aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card mb-3 widget-chart widget-chart2 bg-asteroid text-left">
-                        <div class="widget-chat-wrapper-outer">
-                            <div class="widget-chart-content text-white">
-                                <div class="widget-chart-flex">
-                                    <div class="widget-title opacity-5">Koli/Dosya</div>
-                                    <div class="widget-subtitle opacity-5 text-white">Belirtilen Tarih</div>
-                                </div>
-                                <div class="widget-chart-flex">
-                                    <div class="widget-numbers">
-                                        <span id="cargoFileCurrentDate">0/0</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="widget-progress-wrapper">
-                                <div class="progress-bar-xs progress-bar-animated-alt progress">
-                                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="65"
-                                         aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card mb-3 widget-chart widget-chart2 bg-asteroid text-left">
-                        <div class="widget-chat-wrapper-outer">
-                            <div class="widget-chart-content text-white">
-                                <div class="widget-chart-flex">
-                                    <div class="widget-title opacity-5">Toplam Ds</div>
-                                    <div class="widget-subtitle opacity-5 text-white">Belirtilen Tarih</div>
-                                </div>
-                                <div class="widget-chart-flex">
-                                    <div class="widget-numbers">
-                                        <small>ds</small>
-                                        <span id="totalDesiCurrentDate">0</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="widget-progress-wrapper">
-                                <div class="progress-bar-xs progress-bar-animated-alt progress">
-                                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="65"
-                                         aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            @include('backend.dashboard.gm.sections.boxes')
 
-                <div class="col-md-6">
-                    <div class="card mb-3 widget-chart widget-chart2 bg-slick-carbon text-left">
-                        <div class="widget-chat-wrapper-outer">
-                            <div class="widget-chart-content text-white">
-                                <div class="widget-chart-flex">
-                                    <div class="widget-title opacity-5">Ciro</div>
-                                    <div class="widget-subtitle opacity-5 text-white">Tüm Zamanlar</div>
-                                </div>
-                                <div class="widget-chart-flex">
-                                    <div class="widget-numbers">
-                                        <small class="text-warning">₺</small>
-                                        <span id="endorsementAllTime" class="text-warning">0</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="widget-progress-wrapper">
-                                <div class="progress-bar-xs progress-bar-animated-alt progress">
-                                    <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="65"
-                                         aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card mb-3 widget-chart widget-chart2 bg-night-sky text-left">
-                        <div class="widget-chat-wrapper-outer">
-                            <div class="widget-chart-content text-white">
-                                <div class="widget-chart-flex">
-                                    <div class="widget-title opacity-5">Kasaya Giren</div>
-                                    <div class="widget-subtitle opacity-5 text-white">Tüm Zamanlar</div>
-                                </div>
-                                <div class="widget-chart-flex">
-                                    <div class="widget-numbers">
-                                        <small>₺</small>
-                                        <span id="inSafeAllTime">0</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="widget-progress-wrapper">
-                                <div class="progress-bar-xs progress-bar-animated-alt progress">
-                                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="65"
-                                         aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="row">
                 <div class="col-sm-12 col-md-7 col-lg-12">
                     <div class="mb-3 card">
                         <div class="card-header-tab card-header">
-                            <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+                            <div class="card-header-title">
+                                <i class="header-icon lnr-map-marker icon-gradient bg-love-kiss"> </i>
                                 CKG-Sis Türkiye Geneli Bölgesel Ciro Analiz (Belirtilen Tarih)
                             </div>
-                            <div class="btn-actions-pane-right text-capitalize">
-                            </div>
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a id="tabChart" data-toggle="tab" href="#graph" class="nav-link active">Grafik</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a id="tabTable" data-toggle="tab" href="#table" class="nav-link">Tablo</a>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="pt-0 card-body">
-                            <div id="chart-regions"></div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="graph" role="tabpanel">
+                                    <div class="pt-0 card-body">
+                                        <div id="chart-regions"></div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="table" role="tabpanel">
+                                    @include('backend.dashboard.gm.sections.graph_table')
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -232,14 +101,13 @@
                         <div class="tabs-lg-alternate card-header">
                             <ul class="nav nav-justified">
                                 <li class="nav-item">
-
                                     <a data-toggle="tab" href="#idle-districts" class="nav-link show active">
                                         <div class="widget-number">En Çok Ciro Yapan İlk 10 Şube</div>
                                         <div class="tab-subheading">
                                             <span class="pr-2 opactiy-6">
                                                 <i class="fa fa-comment-dots"></i>
                                             </span>
-                                            En çok ciro yapan şubeler.
+                                            En çok ciro yapan şubeler. (Belirtilen Tarih)
                                         </div>
                                     </a>
                                 </li>
@@ -249,19 +117,19 @@
                             <div class="tab-pane show active" id="idle-districts" role="tabpanel">
                                 <div class="card-body">
                                     <div class="card-body">
-                                        <table id="TableRolePermissions"
+                                        <table id="tableAgencies"
                                                style="white-space: nowrap; width: 100% !important;"
-                                               class="table table-hover table-striped  table-bordered TableNoPadding NikolasDataTable IdleDistricts table-hover">
+                                               class="table table-hover table-striped  table-bordered NikolasDataTable IdleDistricts table-hover">
                                             <thead>
                                             <tr>
-                                                <th>#</th>
                                                 <th>Acente</th>
                                                 <th>Bölge</th>
                                                 <th>Personel Sayısı</th>
                                                 <th>Kargo Sayısı</th>
-                                                <th>Ciro</th>
                                                 <th>Koli</th>
+                                                <th>Ds</th>
                                                 <th>Dosya</th>
+                                                <th>Ciro</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -269,14 +137,14 @@
                                             </tbody>
                                             <tfoot>
                                             <tr>
-                                                <th>#</th>
                                                 <th>Acente</th>
                                                 <th>Bölge</th>
                                                 <th>Personel Sayısı</th>
                                                 <th>Kargo Sayısı</th>
-                                                <th>Ciro</th>
                                                 <th>Koli</th>
+                                                <th>Ds</th>
                                                 <th>Dosya</th>
+                                                <th>Ciro</th>
                                             </tr>
                                             </tfoot>
                                         </table>

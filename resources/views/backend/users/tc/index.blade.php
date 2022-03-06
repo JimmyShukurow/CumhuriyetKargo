@@ -137,10 +137,7 @@
         $(document).ready(function () {
             $('.NikolasDataTable').DataTable({
                 pageLength: 10,
-                lengthMenu: [
-                    [10, 25, 50, 100, 250, 500, -1],
-                    ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
-                ],
+                lengthMenu: dtLengthMenu,
                 language: {
                     "sDecimal": ",",
                     "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
