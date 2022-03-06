@@ -9,6 +9,7 @@ use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckLogin;
 use App\Http\Middleware\MidsOfCont\AgenciesMid;
 use App\Http\Middleware\MidsOfCont\AgencySafeMid;
+use App\Http\Middleware\MidsOfCont\DashboardGmMid;
 use App\Http\Middleware\MidsOfCont\DepartmentsMid;
 use App\Http\Middleware\MidsOfCont\GeneralSafeMid;
 use App\Http\Middleware\MidsOfCont\GeneralServicesFeeMid;
@@ -121,6 +122,7 @@ class Kernel extends HttpKernel
         'ManageReportMid' => ManageReportMid::class,
         'GeneralSafeMid' => GeneralSafeMid::class,
         'AgencySafeMid' => AgencySafeMid::class,
+        'DashboardGmMid' => DashboardGmMid::class,
 
     ];
 }
