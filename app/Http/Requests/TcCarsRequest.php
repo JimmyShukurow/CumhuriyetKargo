@@ -3,10 +3,19 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Waavi\Sanitizer\Laravel\SanitizesInput;
 
 class TcCarsRequest extends FormRequest
 {
-
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'plaka' => tr_strtoupper($this->plaka),
+            'marka' => tr_strtoupper($this->marka),
+            'model' => tr_strtoupper($this->model),
+            'sofor_ad' => tr_strtoupper($this->sofor_ad),
+        ]);
+    }
     public function rules()
     {
         return [
@@ -35,5 +44,6 @@ class TcCarsRequest extends FormRequest
             'doors_to_be_sealed.min' => 'Kapı Sayısı Sıfırdan Büyük Olucak',
         ];
     }
+
 
 }
