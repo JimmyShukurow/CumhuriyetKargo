@@ -53,7 +53,7 @@ class TCCarsController extends Controller
 
     public function show($id)
     {
-        return'show';
+        //
     }
 
 
