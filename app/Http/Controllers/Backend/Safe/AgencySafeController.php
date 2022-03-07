@@ -114,7 +114,7 @@ class AgencySafeController extends Controller
 
     public function createPaymentApp()
     {
-        $data['name'] = Auth::user()->name_surname . ' (' . Auth::user()->userRole->display_name . ')';
+        $data['name'] = Auth::user()->name_surname . ' (' . Auth::user()->role->display_name . ')';
         $data['agency'] = '#' . Auth::user()->getAgency->agency_code . ' - ' . Auth::user()->getAgency->agency_name . ' ŞUBE';
 
         GeneralLog('Acente ödeme bildirgesi oluştur sayfası görüntülendi.');
@@ -153,7 +153,7 @@ class AgencySafeController extends Controller
             'file1' => $file1,
             'file2' => $file2,
             'file3' => $file3,
-            'payment_channel' => 'EFT/HAVELE',
+            'payment_channel' => 'EFT/HAVALE',
             'description' => $request->description,
             'currency' => 'TL',
         ]);

@@ -34,7 +34,7 @@ class User extends Authenticatable
         'deleting_user'
     ];
 
-   
+
     protected $fillable = [
         'id',
         'name_surname',
@@ -54,13 +54,13 @@ class User extends Authenticatable
         'deleting_user'
     ];
 
-    
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-   
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
@@ -78,7 +78,7 @@ class User extends Authenticatable
     }
 
 
-    public function userRole()
+    public function role()
     {
         return $this->hasOne(Roles::class, 'id', 'role_id');
     }

@@ -19,9 +19,9 @@ class GetAgencyPaymentsAction
         $dateFilter = 'true';
 
         $appNo = $request->appNo;
-        $confirm = $request->confirm;
-        $paymentChannel = $request->paymentChannel;
         $agency = $request->agency;
+        $paymentNo = $request->paymentNo;
+        $paymentChannel = $request->paymentChannel;
 
         if ($dateFilter == "true") {
             $diff = $firstDate->diffInDays($lastDate);
@@ -39,14 +39,13 @@ class GetAgencyPaymentsAction
             ->select(['agency_payments.*', 'users.name_surname', 'roles.display_name', 'agencies.agency_name'])
             ->join('users', 'users.id', '=', 'agency_payments.user_id')
             ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->join('agencies', 'agencies.id', '=', 'agency_payments.agency_id');
+            ->join('agencies', 'agencies.id', '=', 'agency_payments.agency_id')
+            ->whereRaw($dateFilter == 'true' ? "agency_payments.created_at between '" . $firstDate . " 00:00:00'  and '" . $lastDate . " 23:59:59'" : ' 1 > 0')
+            ->whereRaw($appNo ? 'app_id = ' . $appNo : ' 1 > 0')
+            ->whereRaw($agency ? 'agency_id = ' . $agency : ' 1 > 0')
+            ->whereRaw($paymentNo ? 'agency_payments.id = ' . $paymentNo : ' 1 > 0')
+            ->whereRaw($paymentChannel ? "payment_channel = '" . $paymentChannel . "'" : ' 1 > 0');
 
-
-        /*->whereRaw($dateFilter == 'true' ? "created_at between '" . $firstDate . " 00:00:00'  and '" . $lastDate . " 23:59:59'" : ' 1 > 0')
-        ->whereRaw($appNo != null ? 'id=' . $appNo : ' 1 > 0')
-        ->whereRaw($confirm != null ? "confirm='" . $confirm . "'" : ' 1 > 0')
-        ->whereRaw($paymentChannel != null ? "payment_channel='" . $paymentChannel . "'" : ' 1 > 0')
-        ->whereRaw($agency != null ? 'agency_id=' . $agency : ' 1 > 0');*/
 
         return datatables()->of($rows)
             ->editColumn('description', function ($key) {
@@ -59,7 +58,7 @@ class GetAgencyPaymentsAction
                 return $key->app_id != null ? '<b style="color: #000; text-decoration: underline;" class="details-app cursor-pointer" id="' . $key->app_id . '">#' . $key->app_id . '</b>' : '';
             })
             ->editColumn('edit', function ($key) {
-                return '<b style="text-decoration: underline;" class="text-primary cursor-pointer">DÜZENLE</b>';
+                return '<b style="text-decoration: underline;" id="' . $key->id . '" class="text-primary payment-details cursor-pointer">DÜZENLE</b>';
             })
             ->editColumn('delete', function ($key) {
                 return '<b style="text-decoration: underline;" id="' . $key->id . '" class="text-danger delete-payment cursor-pointer">Ödemeyi Sil</b>';

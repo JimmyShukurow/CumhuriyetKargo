@@ -52,7 +52,7 @@ function confirmBox(title, text, href, icon = 'warning') {
         });
 }
 
-function ajaxError(status) {
+function ajaxError(status, response = null) {
     var msg = '';
     if (status === 0)
         msg = 'Sunucu ile bağlantı kurulamadı!';
@@ -62,6 +62,9 @@ function ajaxError(status) {
         msg = 'Bilinmeyen bir hata oluştu! [' + status + ']';
 
     ToastMessage('error', msg, 'Hata!');
+    if (response != null)
+        ToastMessage('error', response.message, 'Hata!')
+
 }
 
 function delay(callback, ms) {
@@ -421,4 +424,46 @@ $(document).ready(function () {
     $('.alert-not-yet').click(function () {
         ToastMessage('warning', 'Bu modül çok yakında aktif hale gelecektir!', 'Uyarı!');
     });
+});
+
+dtLanguage = {
+    "sDecimal": ",",
+    "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
+    "sInfo": "_TOTAL_ kayıttan _START_ - _END_ kayıtlar gösteriliyor",
+    "sInfoEmpty": "Kayıt yok",
+    "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
+    "sInfoPostFix": "",
+    "sInfoThousands": ".",
+    "sLengthMenu": "_MENU_",
+    "sLoadingRecords": "Yükleniyor...",
+    "sProcessing": "<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>",
+    "sSearch": "",
+    "sZeroRecords": "Eşleşen kayıt bulunamadı",
+    "oPaginate": {
+        "sFirst": "İlk",
+        "sLast": "Son",
+        "sNext": "Sonraki",
+        "sPrevious": "Önceki"
+    },
+    "oAria": {
+        "sSortAscending": ": artan sütun sıralamasını aktifleştir",
+        "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
+    },
+    "select": {
+        "rows": {
+            "_": "%d kayıt seçildi",
+            "0": "",
+            "1": "1 kayıt seçildi"
+        }
+    }
+};
+
+dtLengthMenu = [
+    [10, 25, 50, 100, 250, 500, -1],
+    ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
+];
+
+$(document).on('keyup', '.dataTables_filter input', function () {
+    $(this).val($(this).val().toLocaleUpperCase())
+    $('.dataTable').DataTable().draw()
 });

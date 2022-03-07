@@ -13,13 +13,15 @@ class TransshipmentCenterDistricts extends Model
     protected $fillable = [
         'tc_id',
         'city',
-        'district'
+        'district',
+        'district_id',
     ];
 
     protected static $logAttributes = [
         'tc_id',
         'city',
-        'district'
+        'district',
+        'district_id',
     ];
 
     public function getDescriptionForEvent(string $eventName): string

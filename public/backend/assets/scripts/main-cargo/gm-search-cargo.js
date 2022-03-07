@@ -15,42 +15,9 @@ $(document).ready(function () {
 
     oTable = $('.NikolasDataTable').DataTable({
         pageLength: 10,
-        lengthMenu: [
-            [10, 25, 50, 100, 250, 500, -1],
-            ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
-        ],
-        order: [20, 'desc'],
-        language: {
-            "sDecimal": ",",
-            "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
-            "sInfo": "_TOTAL_ kayıttan _START_ - _END_ kayıtlar gösteriliyor",
-            "sInfoEmpty": "Kayıt yok",
-            "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
-            "sInfoPostFix": "",
-            "sInfoThousands": ".",
-            "sLengthMenu": "_MENU_",
-            "sLoadingRecords": "Yükleniyor...",
-            "sProcessing": "<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>",
-            "sSearch": "",
-            "sZeroRecords": "Eşleşen kayıt bulunamadı",
-            "oPaginate": {
-                "sFirst": "İlk",
-                "sLast": "Son",
-                "sNext": "Sonraki",
-                "sPrevious": "Önceki"
-            },
-            "oAria": {
-                "sSortAscending": ": artan sütun sıralamasını aktifleştir",
-                "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
-            },
-            "select": {
-                "rows": {
-                    "_": "%d kayıt seçildi",
-                    "0": "",
-                    "1": "1 kayıt seçildi"
-                }
-            }
-        },
+        lengthMenu: dtLengthMenu,
+        order: [12, 'desc'],
+        language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
 
         buttons: [
@@ -69,7 +36,7 @@ $(document).ready(function () {
                 text: 'Sütun Görünüm'
             },
         ],
-        responsive: true,
+        responsive: false,
         processing: true,
         serverSide: true,
         ajax: {
@@ -98,7 +65,6 @@ $(document).ready(function () {
                 d.arrivalAgency = $('#filterArrivalAgency').val();
                 d.arrivalAgencyCode = $('#filterArrivalAgencyCode').val();
                 d.arrivalRegion = $('#filterArrivalRegion').val();
-
             },
             error: function (xhr, error, code) {
 
@@ -113,9 +79,7 @@ $(document).ready(function () {
             }
         },
         columns: [
-            {data: 'free', name: 'free'},
             {data: 'invoice_number', name: 'invoice_number'},
-            {data: 'tracking_no', name: 'tracking_no'},
             {data: 'agency_name', name: 'agency_name'},
             {data: 'departure_real_agency_code', name: 'departure_real_agency_code'},
             {data: 'sender_name', name: 'sender_name'},
@@ -126,15 +90,10 @@ $(document).ready(function () {
             {data: 'cargo_type', name: 'cargo_type'},
             {data: 'payment_type', name: 'payment_type'},
             {data: 'total_price', name: 'total_price'},
-            {data: 'collectible', name: 'collectible'},
-            {data: 'collectible', name: 'collectible'},
-            {data: 'collection_fee', name: 'collection_fee'},
             {data: 'status', name: 'status'},
-            {data: 'status_for_human', name: 'status_for_human'},
-            {data: 'transporter', name: 'transporter'},
-            {data: 'system', name: 'system'},
             {data: 'created_at', name: 'created_at'},
         ],
+        scrollX: true,
 
     });
 });
