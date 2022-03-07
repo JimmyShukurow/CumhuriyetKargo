@@ -28,7 +28,7 @@ class AgencyTransferCarsController extends Controller
     {
         $user = Auth::user();
         GeneralLog('Aktarma aracı oluştur sayfası görüntülendi.');
-        return view('backend.operation.transfer_cars_agency.create', ['branch'=> $user->getAgency->agency_name, 'user' => $user->name_surname]);
+        return view('backend.operation.transfer_cars_agency.create', ['branch' => $user->getAgency->agency_name, 'user' => $user->name_surname]);
     }
 
     public function allData(Request $request)
@@ -40,10 +40,18 @@ class AgencyTransferCarsController extends Controller
 
         $cars = TcCars::with('creator', 'branch')
             ->where('car_type', 'Acente')
-            ->when($marka, function($q) use($marka){ return $q->where('marka', 'like', '%'.$marka.'%');})
-            ->when($model, function($q) use($model){ return $q->where('model', 'like', '%'.$model.'%');})
-            ->when($plaka, function($q) use($plaka){ return $q->where('plaka', 'like', '%'.$plaka.'%');})
-            ->when($soforAd, function($q) use($soforAd){ return $q->where('sofor_ad', 'like', '%'.$soforAd.'%');})
+            ->when($marka, function ($q) use ($marka) {
+                return $q->where('marka', 'like', '%' . $marka . '%');
+            })
+            ->when($model, function ($q) use ($model) {
+                return $q->where('model', 'like', '%' . $model . '%');
+            })
+            ->when($plaka, function ($q) use ($plaka) {
+                return $q->where('plaka', 'like', '%' . $plaka . '%');
+            })
+            ->when($soforAd, function ($q) use ($soforAd) {
+                return $q->where('sofor_ad', 'like', '%' . $soforAd . '%');
+            })
             ->get();
 
         $cars->each(function ($key) {
@@ -63,11 +71,10 @@ class AgencyTransferCarsController extends Controller
                 return '<b class="text-success">' . $cars->creator . '</b>';
             })
             ->editColumn('confirmation_status', function ($cars) {
-                if($cars->confirm == 0) return '<b class="text-warning"> Onay Bekliyor </b>';
-                else if($cars->confirm == 1) return '<b class="text-primary"> Onaylandı </b>';
-                else if($cars->confirm == -1) return '<b class="text-danger"> Reddedildi </b>';
+                if ($cars->confirm == 0) return '<b class="text-primary"> Onay Bekliyor </b>';
+                else if ($cars->confirm == 1) return '<b class="text-success"> Onaylandı </b>';
+                else if ($cars->confirm == -1) return '<b class="text-danger"> Reddedildi </b>';
             })
-
             ->addColumn('details', 'backend.operation.transfer_cars_agency.column')
             ->rawColumns(['details', 'branch', 'creator', 'confirmation_status'])
             ->make(true);
