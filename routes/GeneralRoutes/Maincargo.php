@@ -8,7 +8,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
 
         Route::get('NewCargo', [MainCargoController::class, 'newCargo'])->name('newCargo')
-        ->middleware('PermissionOfCreateCargo');
+            ->middleware('PermissionOfCreateCargo');
 
 
         Route::get('', [MainCargoController::class, 'index'])->name('index');
@@ -21,7 +21,6 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('SearchGlobalCargo', [MainCargoController::class, 'getGlobalCargoes'])
             ->middleware('throttle:30,1')
             ->name('getGlobalCargoes');
-
 
         Route::get('CancelledCargoes', [MainCargoController::class, 'cancelledCargoesIndex'])
             ->name('cancelledCargoes');

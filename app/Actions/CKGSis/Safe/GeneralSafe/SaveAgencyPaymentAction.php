@@ -28,16 +28,15 @@ class SaveAgencyPaymentAction
         if ($validator->fails())
             return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
 
-
         try {
-            $inert = AgencyPayment::create([
+            $insert = AgencyPayment::create([
                 'row_type' => 'ONAYLI',
                 'user_id' => Auth::id(),
-                'description' => $request->description == null ? 'ŞUBE KASA ÖDEMESİ' : $request->description,
+                'description' => $request->description == null ? 'ŞUBE KASA ÖDEMESİ' : tr_strtoupper($request->description),
                 'agency_id' => $request->agencyID,
                 'payment' => getDoubleValue($request->payment),
                 'payment_channel' => $request->paymentChannel,
-                'paying_name_surname' => $request->paymentNameSurname,
+                'paying_name_surname' => tr_strtoupper($request->payingNameSurname),
                 'payment_date' => $request->paymentDate
             ]);
         } catch (Exception $e) {
@@ -47,7 +46,6 @@ class SaveAgencyPaymentAction
 
         GeneralLog('Acente ödemesi girildi!');
         return response(['status' => 1, 'message' => 'Ödeme işlemi başarıyla kayıt edildi!'], 200);
-
 
     }
 }

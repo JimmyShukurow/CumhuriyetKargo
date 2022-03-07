@@ -29,7 +29,11 @@ class PermissionOfCreateCargo
         if ($agency->permission_of_create_cargo == '0')
             return redirect(route(getUserFirstPage()))
                 ->with('error', 'Kargo kesimininze izin yok!');
-        else
-            return $next($request);
+
+        if ($agency->safe_status == '0')
+            return redirect(route(getUserFirstPage()))
+                ->with('error', 'Kasanız Kapalı! Açıklama: [' . $agency->safe_status_description . ']');
+
+        return $next($request);
     }
 }

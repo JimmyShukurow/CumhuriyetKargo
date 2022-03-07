@@ -39,13 +39,8 @@
 
             <div class="col-md-2">
                 <div class="form-group position-relative">
-                    <label for="agencyPaymentsConfirm">Onay:</label>
-                    <select class="form-control-sm form-control" name="" id="agencyPaymentsConfirm">
-                        <option value="">Seçiniz</option>
-                        <option value="0">Onay Bekliyor</option>
-                        <option value="1">Onaylandı</option>
-                        <option value="-1">Reddedildi</option>
-                    </select>
+                    <label for="agencyPaymentsAppNo">Ödeme No:</label>
+                    <input type="text" id="agencyPaymentsPaymentNo" class="form-control form-control-sm">
                 </div>
             </div>
 
@@ -55,7 +50,7 @@
                     <label for="agencyPaymentsPaymentChannel">Ödeme Kanalı:</label>
                     <select class="form-control-sm form-control" name="" id="agencyPaymentsPaymentChannel">
                         <option value="">Seçiniz</option>
-                        @foreach($data['payment_channels'] as $key)
+                        @foreach($data['agency_payments_payment_channels'] as $key)
                             <option value="{{$key->payment_channel}}">{{$key->payment_channel}}</option>
                         @endforeach
                     </select>

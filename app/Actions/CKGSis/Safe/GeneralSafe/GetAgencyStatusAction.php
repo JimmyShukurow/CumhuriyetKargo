@@ -15,7 +15,6 @@ class GetAgencyStatusAction
     {
         $firstDate = Carbon::createFromDate($request->firstDate);
         $lastDate = Carbon::createFromDate($request->lastDate);
-        #$dateFilter = $request->dateFilter;
         $dateFilter = 'true';
 
         if ($dateFilter == "true") {
@@ -29,81 +28,16 @@ class GetAgencyStatusAction
         $firstDate = substr($firstDate, 0, 10);
         $lastDate = substr($lastDate, 0, 10);
 
+        $agency = $request->agency;
+        $agencyCode = $request->agencyCode;
+        $safeStatus = $request->safeStatus;
+        $region = $request->region;
 
-        $rows = DB::select('SELECT
-	*
-FROM
-	view_agency_region
-	INNER JOIN (
-	SELECT
-		departure_agency_code,
-		count(*) AS total_bill_count,
-		SUM( total_price ) AS endorsement,
-		IFNULL(
-			(
-			SELECT
-				cash_amount
-			FROM
-				(
-				SELECT
-					cargoes.departure_agency_code,
-					SUM( total_price ) AS cash_amount
-				FROM
-					cargoes
-					INNER JOIN cargo_collections ON cargo_collections.cargo_id = cargoes.id
-				WHERE
-					cargoes.deleted_at IS NULL
-					AND collection_type_entered = "NAKİT"
-				GROUP BY
-					cargoes.departure_agency_code
-				) AS begex
-			WHERE
-				begex.departure_agency_code = cargoes.departure_agency_code
-			),
-			0
-		) AS cash_amount,
-		IFNULL(
-			(
-			SELECT
-				pos_amount
-			FROM
-				(
-				SELECT
-					cargoes.departure_agency_code,
-					SUM( total_price ) AS pos_amount
-				FROM
-					cargoes
-					INNER JOIN cargo_collections ON cargo_collections.cargo_id = cargoes.id
-				WHERE
-					cargoes.deleted_at IS NULL
-					AND collection_type_entered = "POS"
-				GROUP BY
-					cargoes.departure_agency_code
-				) AS begex
-			WHERE
-				begex.departure_agency_code = cargoes.departure_agency_code
-			),
-			0
-		) AS pos_amount,
-		IFNULL(
-			(
-			SELECT
-				payment
-			FROM
-				( SELECT agency_id, SUM( payment ) AS payment FROM agency_payments GROUP BY agency_id ) AS begex
-			WHERE
-				begex.agency_id = cargoes.departure_agency_code
-			),
-			0
-		) AS amount_deposited
-	FROM
-		cargoes
-	WHERE
-		deleted_at IS NULL
-	GROUP BY
-	departure_agency_code
-	) AS s ON s.departure_agency_code = view_agency_region.id');
-
+        $rows = DB::table('view_agency_safe_status')
+            ->whereRaw($agency ? 'id = ' . $agency : ' 1 > 0')
+            ->whereRaw($agencyCode ? 'agency_code = ' . $agencyCode : ' 1 > 0')
+            ->whereRaw($safeStatus != null ? "safe_status ='" . $safeStatus . "'" : ' 1 > 0')
+            ->whereRaw($region ? 'tc_id = ' . $region : ' 1 > 0');
 
         return datatables()->of($rows)
             ->editColumn('endorsement', function ($key) {
@@ -116,8 +50,21 @@ FROM
                 return round($key->pos_amount, 2);
             })
             ->editColumn('debt', function ($key) {
-                return round($key->endorsement - $key->amount_deposited - $key->pos_amount, 2);
+                return round($key->debt, 2);
             })
+            ->editColumn('intraday', function ($key) {
+                return round($key->intraday, 2);
+            })
+            ->editColumn('safe_status', function ($key) {
+                return $key->safe_status == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>';
+            })
+            ->addColumn('detail', function ($key) {
+                return '<b style="text-decoration: underline;" class="cursor-pointer ml-3 text-primary safe-detail" id="' . $key->id . '">Detay</b>';
+            })
+            ->editColumn('amount_deposited', function ($key) {
+                return round($key->amount_deposited, 2);
+            })
+            ->rawColumns(['safe_status', 'detail'])
             ->make(true);
     }
 }

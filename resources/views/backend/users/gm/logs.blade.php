@@ -145,10 +145,7 @@
         $(document).ready(function () {
             oTable = $('.NikolasDataTable').DataTable({
                 pageLength: 25,
-                lengthMenu: [
-                    [10, 25, 50, 100, 250, 500, -1],
-                    ["10 Adet", "25 Adet", "50 Adet", "100 Adet", "250 Adet", "500 Adet", "Tümü"]
-                ],
+                lengthMenu: dtLengthMenu,
                 order: [
                     8, 'desc'
                 ],

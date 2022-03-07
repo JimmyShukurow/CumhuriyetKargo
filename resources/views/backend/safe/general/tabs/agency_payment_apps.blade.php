@@ -89,6 +89,106 @@
     </thead>
 </table>
 
+<div id="AgencyPaymentAppRow" class="mt-4 row">
+    <div class="col-md-6 col-lg-3">
+        <div class="card-shadow-primary mb-3 widget-chart widget-chart2 text-left card">
+            <div class="widget-chat-wrapper-outer">
+                <div class="widget-chart-content">
+                    <h6 class="widget-subheading">Tüm Zamanlar</h6>
+                    <div class="widget-chart-flex">
+                        <div class="widget-numbers mb-0 w-100">
+                            <div class="widget-chart-flex">
+                                <div class="fsize-4">
+                                    <small class="opacity-5"><i class="lnr-clock text-primary"></i></small>
+                                    <span id="WaitingApp">0</span>
+                                </div>
+                                <div class="ml-auto">
+                                    <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
+                                        <span class="text-primary font-weight-bold pl-2">Onay Bekleyenler</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card-shadow-primary mb-3 widget-chart widget-chart2 text-left card">
+            <div class="widget-chat-wrapper-outer">
+                <div class="widget-chart-content">
+                    <h6 class="widget-subheading">Tüm Zamanlar</h6>
+                    <div class="widget-chart-flex">
+                        <div class="widget-numbers mb-0 w-100">
+                            <div class="widget-chart-flex">
+                                <div class="fsize-4">
+                                    <small class="opacity-5"><i class="lnr-checkmark-circle text-success"></i></small>
+                                    <span id="SuccessApp">0</span>
+                                </div>
+                                <div class="ml-auto">
+                                    <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
+                                        <span class="text-success font-weight-bold pl-2">Onaylananlar</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card-shadow-primary mb-3 widget-chart widget-chart2 text-left card">
+            <div class="widget-chat-wrapper-outer">
+                <div class="widget-chart-content">
+                    <h6 class="widget-subheading">Tüm Zamanlar</h6>
+                    <div class="widget-chart-flex">
+                        <div class="widget-numbers mb-0 w-100">
+                            <div class="widget-chart-flex">
+                                <div class="fsize-4">
+                                    <small class="opacity-5"><i class="lnr-cross-circle text-danger"></i></small>
+                                    <span id="RejectApp">0</span>
+                                </div>
+                                <div class="ml-auto">
+                                    <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
+                                        <span class="text-danger font-weight-bold pl-2">Reddedilenler</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card-shadow-primary mb-3 widget-chart widget-chart2 text-left card">
+            <div class="widget-chat-wrapper-outer">
+                <div class="widget-chart-content">
+                    <h6 class="widget-subheading">Tüm Zamanlar</h6>
+                    <div class="widget-chart-flex">
+                        <div class="widget-numbers mb-0 w-100">
+                            <div class="widget-chart-flex">
+                                <div class="fsize-4">
+                                    <small class="opacity-5"><i class="lnr-cloud text-info"></i></small>
+                                    <span id="AllApp">0</span>
+                                </div>
+                                <div class="ml-auto">
+                                    <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
+                                        <span class="text-info font-weight-bold pl-2">Tümü</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="/backend/assets/scripts/safe/general/agency-payment-apps.js"></script>
 
 

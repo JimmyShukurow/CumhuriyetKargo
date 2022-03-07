@@ -182,7 +182,8 @@ class RDController extends Controller
                 $insert = RegionalDistricts::create([
                     'region_id' => $request->region_id,
                     'city' => $city,
-                    'district' => $district
+                    'district' => $district,
+                    'district_id' => $key,
                 ]);
             }
         }

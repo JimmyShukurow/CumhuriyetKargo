@@ -39,4 +39,9 @@ class RegioanalDirectorates extends Model
         $eventName = getLocalEventName($eventName);
         return "Bölge müdürlüğü $eventName.";
     }
+
+    public function districts()
+    {
+        return $this->hasMany(RegionalDistricts::class, 'region_id', 'id');
+    }
 }
