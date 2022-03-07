@@ -16,15 +16,8 @@ class GetSummeryAction
 
     public function handle($request)
     {
-
-
-
-
         $data = GetSummeryInfoAction::run($request);
-
-
         return response()
             ->json(['status' => 1, 'data' => $data], 200);
-
     }
 }
