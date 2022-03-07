@@ -15,10 +15,12 @@ class CreateExpeditionsTable extends Migration
     {
         Schema::create('expeditions', function (Blueprint $table) {
             $table->id();
+            $table->integer('expedition_serial_no');
             $table->integer('car_id');
             $table->integer('user_id');
             $table->string('description');
             $table->integer('branch_code');
+            $table->integer('done')->default(0)->comment('1 bitti, 0 bitmedi');
             $table->timestamps();
         });
     }
