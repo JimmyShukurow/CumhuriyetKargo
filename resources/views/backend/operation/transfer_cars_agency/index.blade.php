@@ -15,7 +15,7 @@
     </style>
 @endpush
 
-@section('title', 'Aktarma Araçları')
+@section('title', 'Acente Araçları')
 @section('content')
 
     <div class="app-main__inner">
@@ -52,7 +52,7 @@
         <div class="card mb-3">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                        class="header-icon pe-7s-car mr-3 text-muted opacity-6"> </i>Tüm Aktarma Araçları
+                        class="header-icon pe-7s-car mr-3 text-muted opacity-6"> </i>Tüm Acente Araçları
                 </div>
 
                 <div class="btn-actions-pane-right actions-icon-btn">
