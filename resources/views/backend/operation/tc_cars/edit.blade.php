@@ -188,7 +188,7 @@
                                         <input name="creator" required id="creator"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"
-{{--                                               value="{{$user ?? ''}}"--}}
+                                               value="{{$creator->name_surname ?? ''}}"
                                                class="form-control form-control form-control-sm" readonly>
                                     </div>
                                 </div>
@@ -198,7 +198,7 @@
                                         <input name="car_type" required id="car_type"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"
-                                               value="Aktarma"
+                                               value={{ $car->car_type }}
                                                class="form-control form-control form-control-sm" readonly>
                                     </div>
                                 </div>

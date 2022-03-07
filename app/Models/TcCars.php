@@ -107,4 +107,9 @@ class TcCars extends Model
     {
         return $this->hasOne(User::class, 'id', 'confirmed_user');
     }
+
+    public function transshipment()
+    {
+        return $this->hasOne(TransshipmentCenters::class, 'id', 'branch_code');
+    }
 }

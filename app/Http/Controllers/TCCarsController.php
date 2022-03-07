@@ -57,9 +57,19 @@ class TCCarsController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(TcCarsRequest $request, $id)
     {
-        //
+        $car = TcCars::find($id);
+        $validated = $request->except(['branch_code', 'creator']);
+        $update = $car->update($validated);
+
+        if ($update) {
+            return back()
+                ->with('success', 'Aktarma aracı başarıyla degiştirildi!');
+        } else {
+            return back()
+                ->with('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!');
+        }
     }
 
 
@@ -77,7 +87,8 @@ class TCCarsController extends Controller
             [
                 'car' => $car,
                 'transshipment_centers' => $transshipment_centers,
-                'branch' => $car->branch ?? null,
+                'branch' => $car->transshipment,
+                'creator' => $car->creator,
 
 
             ]
