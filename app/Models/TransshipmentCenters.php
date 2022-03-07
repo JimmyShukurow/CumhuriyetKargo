@@ -23,4 +23,8 @@ class TransshipmentCenters extends Model
         return "Transfer Merkezi $eventName.";
     }
 
+    public function districts(){
+        return $this->hasMany(TransshipmentCenterDistricts::class, 'tc_id', 'id');
+    }
+
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AgencyTransferCarRequest extends FormRequest
+class TcCarsRequest extends FormRequest
 {
 
     public function rules()
@@ -13,13 +13,17 @@ class AgencyTransferCarRequest extends FormRequest
             'plaka' => 'required',
             'marka' => 'required',
             'model' => 'required',
-            'model_yili' => 'required',
+            'model_yili' => 'required|Integer',
             'car_type' => 'required',
             'branch_code' => 'required',
-            'doors_to_be_sealed' => 'required|integer|min:1',
             'sofor_ad' => 'required',
             'sofor_telefon' => 'required',
             'sofor_adres' => 'required',
+            'doors_to_be_sealed' => 'required|integer|min:1',
+            'hat' => 'nullable',
+            'arac_kapasitesi' => 'nullable',
+            'cikis_aktarma' => 'nullable',
+            'varis_aktarma' => 'Nullable',
         ];
     }
     public function messages()
@@ -31,4 +35,5 @@ class AgencyTransferCarRequest extends FormRequest
             'doors_to_be_sealed.min' => 'Kapı Sayısı Sıfırdan Büyük Olucak',
         ];
     }
+
 }

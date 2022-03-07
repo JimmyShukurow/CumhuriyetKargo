@@ -16,14 +16,14 @@
                         <i class="fa fa-truck icon-gradient bg-amy-crisp">
                         </i>
                     </div>
-                    <div>Yeni Acente Aracı Oluştur
+                    <div>Yeni Aktarma Aracı Oluştur
                         <div class="page-title-subheading">Bu sayfa üzerinden aktarma aracı oluşturabilirsiniz.
                         </div>
                     </div>
                 </div>
                 <div class="page-title-actions">
                     <div class="d-inline-block dropdown">
-                        <a href="{{ route('AgencyTransferCars.index') }}">
+                        <a href="{{ route('TCCars.index') }}">
                             <button type="button" aria-haspopup="true" aria-expanded="false"
                                     class="btn-shadow btn btn-info">
                                 <span class="btn-icon-wrapper pr-2 opacity-7">
@@ -39,7 +39,7 @@
 
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <form id="agency_tc_car_form" method="POST" action="{{ route('AgencyTransferCars.store') }}">
+                <form id="tc_car_form" method="POST" action="{{ route('TCCars.store') }}">
                     @csrf
                     <div class="row">
                         <div class="col-md-12" id="container-general-info">
@@ -51,7 +51,7 @@
                                     <div class="position-relative form-group">
                                         <label for="plaka" class="font-weight-bold">Plaka:</label>
                                         <input name="plaka" required id="plaka"
-                                               placeholder="Aracın markasını giriniz."
+                                               placeholder="Aracın plakasını giriniz."
                                                type="text"
                                                value="{{ old('plaka') }}" class="form-control form-control-sm">
                                     </div>
@@ -71,7 +71,7 @@
                                     <div class="position-relative form-group">
                                         <label for="model" class="font-weight-bold">Araç Model</label>
                                         <input name="model" required id="model"
-                                               placeholder="Aracın markasını giriniz."
+                                               placeholder="Aracın nodelini giriniz."
                                                type="text"
                                                value="{{ old('model') }}" class="form-control form-control-sm">
                                     </div>
@@ -81,7 +81,7 @@
                                     <div class="position-relative form-group">
                                         <label for="model_yili" class="font-weight-bold">Araç Model Yılı</label>
                                         <input name="model_yili" required id="model_yili"
-                                               placeholder="Aracın markasını giriniz."
+                                               placeholder="Aracın model yılını giriniz."
                                                type="text"
                                                value="{{ old('model_yili') }}"
                                                class="form-control form-control form-control-sm">
@@ -94,14 +94,86 @@
                                         <input name="doors_to_be_sealed" required id="doors_to_be_sealed"
                                                placeholder="Kapı sayısını giriniz."
                                                type="text"
-                                               value="{{ old('doors_to_be_sealed') }}"
                                                class="form-control form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="hat" class="font-weight-bold">Hat</label>
+                                        <select name="hat" required id="hat" placeholder="Hattı giriniz." type="text" class="form-control form-control form-control-sm">
+                                            <option value=""> Seçiniz</option>
+                                            <option {{old('hat') == 'Anahat' ? 'selected' : ''}} value="Anahat">
+                                                Anahat
+                                            </option>
+                                            <option {{old('hat') == 'Arahat' ? 'selected' : ''}} value="Arahat">
+                                                Arahat
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="arac_kapasitesi" class="font-weight-bold">Kapasite</label>
+                                        <select name="arac_kapasitesi" required id="arac_kapasitesi" placeholder="Araç kapasitesini giriniz." type="text"class="form-control form-control form-control-sm">
+                                            <option value=""> Seçiniz</option>
+                                            <option
+                                                {{old('arac_kapasitesi') == 'Panelvan' ? 'selected' : ''}} value="Panelvan">
+                                                Panelvan
+                                            </option>
+                                            <option
+                                                {{old('arac_kapasitesi') == 'Kamyonet' ? 'selected' : ''}} value="Kamyonet">
+                                                Kamyonet
+                                            </option>
+                                            <option
+                                                {{old('arac_kapasitesi') == '6 Teker Kamyonet' ? 'selected' : ''}} value="6 Teker Kamyonet">
+                                                6 Teker Kamyonet
+                                            </option>
+                                            <option
+                                                {{old('arac_kapasitesi') == '10 Teker Kamyonet' ? 'selected' : ''}} value="10 Teker Kamyon">
+                                                10 Teker Kamyon
+                                            </option>
+                                            <option
+                                                {{old('arac_kapasitesi') == '40 Ayak Kamyon' ? 'selected' : ''}} value="40 Ayak Kamyon">
+                                                40 Ayak Kamyon
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="cikis_aktarma" class="font-weight-bold">Çıkış Aktarma</label>
+                                        <select name="cikis_aktarma" required id="cikis_aktarma"
+                                               placeholder="Kapı sayısını giriniz."
+                                               class="form-control form-control form-control-sm">
+                                               <option value=""> Seçiniz</option>
+                                                @foreach($transshipment_centers as $trasferCars)
+                                                    <option
+                                                        {{old('cikis_aktarma') == $trasferCars->id ? 'selected' : ''}}
+                                                        value="{{$trasferCars->id}}">{{$trasferCars->tc_name.' T.M.'}} </option>
+                                                @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="varis_aktarma" class="font-weight-bold">Varış Aktarma</label>
+                                        <select name="varis_aktarma" required id="varis_aktarma"
+                                               placeholder="Kapı sayısını giriniz."
+                                               type="text"
+                                               class="form-control form-control form-control-sm">
+                                               <option value=""> Seçiniz</option>
+                                                @foreach($transshipment_centers as $trasferCars)
+                                                    <option
+                                                        {{old('cikis_aktarma') == $trasferCars->id ? 'selected' : ''}}
+                                                        value="{{$trasferCars->id}}">{{$trasferCars->tc_name.' T.M.'}} </option>
+                                                @endforeach
+                                        </select>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
-                                        <label for="model_yili" class="font-weight-bold">Bağlı olduğu birim</label>
+                                        <label for="branch_code" class="font-weight-bold">Bağlı olduğu birim</label>
                                         <input name="branch_code" required id="branch_code"
                                                type="text"
                                                value= "{{ $branch ?? ''}}"
@@ -110,7 +182,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
-                                        <label for="model_yili" class="font-weight-bold">Ekleyen</label>
+                                        <label for="creator" class="font-weight-bold">Ekleyen</label>
                                         <input name="creator" required id="creator"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"
@@ -120,11 +192,11 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
-                                        <label for="model_yili" class="font-weight-bold">Araç tipi</label>
+                                        <label for="car_type" class="font-weight-bold">Araç tipi</label>
                                         <input name="car_type" required id="car_type"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"
-                                               value="Acente"
+                                               value="Aktarma"
                                                class="form-control form-control form-control-sm" readonly>
                                     </div>
                                 </div>

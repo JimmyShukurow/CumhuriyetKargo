@@ -17,18 +17,18 @@ class AgencyTransferCarsController extends Controller
 {
     public function index()
     {
-        $data['agencies'] = Various::all();
-        $data['cities'] = Cities::all();
-        $data['transshipment_centers'] = TransshipmentCenters::all();
-        GeneralLog('Aktarma araçları sayfası görüntülendi.');
-        return view('backend.operation.transfer_cars_agency.index', compact('data'));
+//        $data['agencies'] = Various::all();
+//        $data['cities'] = Cities::all();
+//        $data['transshipment_centers'] = TransshipmentCenters::all();
+        GeneralLog('Acente araçları sayfası görüntülendi.');
+        return view('backend.operation.transfer_cars_agency.index');
     }
 
     public function create()
     {
         $user = Auth::user();
         GeneralLog('Aktarma aracı oluştur sayfası görüntülendi.');
-        return view('backend.operation.transfer_cars_agency.create', ['branch'=> $user->getAgency->agency_name, 'user' => $user->name_surname]);
+        return view('backend.operation.transfer_cars_agency.create', ['branch'=> $user->getAgency->agency_name  ?? null, 'user' => $user->name_surname]);
     }
 
     public function allData(Request $request)
@@ -36,28 +36,27 @@ class AgencyTransferCarsController extends Controller
         $marka = $request->marka;
         $model = $request->model;
         $plaka = $request->plaka;
-        $hat = $request->hat;
-        $aracKapasitesi = $request->aracKapasitesi;
-        $cikisAktarma = $request->cikisAktarma;
-        $varisAktarma = $request->varisAktarma;
-        $soforIletisim = $request->soforIletisim;
+        $soforAd = $request->soforAd;
 
-        $cars = TcCars::with('creator', 'cikishAktarma', 'varishAktarma')
+        $cars = TcCars::with('creator', 'branch')
             ->where('car_type', 'Acente')
-            ->when($marka, function($q) use($marka){ return $q->where('marka', 'like', '%'.$marka.'%');})
-            ->when($model, function($q) use($model){ return $q->where('model', 'like', '%'.$model.'%');})
-            ->when($plaka, function($q) use($plaka){ return $q->where('plaka', 'like', '%'.$plaka.'%');})
-            ->when($hat, function($q) use($hat){ return $q->where('hat', 'like', '%'.$hat.'%');})
-            ->when($aracKapasitesi, function($q) use($aracKapasitesi){ return $q->where('arac_kapasitesi', 'like', '%'.$aracKapasitesi.'%');})
-            ->when($soforIletisim, function($q) use($soforIletisim){ return $q->where('sofor_telefon', 'like', '%'.$soforIletisim.'%');})
-            ->when($soforIletisim, function($q) use($soforIletisim){ return $q->where('arac_sahibi_yakini_telefon', 'like', '%'.$soforIletisim.'%');})
-            ->when($varisAktarma, function($q) use($varisAktarma){ return $q->where('varis_aktarma', 'like', $varisAktarma);})
-            ->when($cikisAktarma, function($q) use($cikisAktarma){ return $q->where('cikis_aktarma', 'like', $cikisAktarma);})
+            ->when($marka, function ($q) use ($marka) {
+                return $q->where('marka', 'like', '%' . $marka . '%');
+            })
+            ->when($model, function ($q) use ($model) {
+                return $q->where('model', 'like', '%' . $model . '%');
+            })
+            ->when($plaka, function ($q) use ($plaka) {
+                return $q->where('plaka', 'like', '%' . $plaka . '%');
+            })
+            ->when($soforAd, function ($q) use ($soforAd) {
+                return $q->where('sofor_ad', 'like', '%' . $soforAd . '%');
+            })
             ->get();
 
-        $cars->each(function($key){ 
-            $key['branch'] = $key->branch->agency_name ?? null; 
-            $key['creator'] = $key->creator->name_surname ?? null; 
+        $cars->each(function ($key) {
+            $key['branch'] = $key->branch->agency_name ?? null;
+            $key['creator'] = $key->creator->name_surname ?? null;
         });
 
         // This part is Yajra Datatables, you can google it to research ...
@@ -72,11 +71,10 @@ class AgencyTransferCarsController extends Controller
                 return '<b class="text-success">' . $cars->creator . '</b>';
             })
             ->editColumn('confirmation_status', function ($cars) {
-                if($cars->confirm == 0) return '<b class="text-warning"> Onay Bekliyor </b>';
-                else if($cars->confirm == 1) return '<b class="text-success"> Onaylandı </b>';
-                else if($cars->confirm == -1) return '<b class="text-danger"> Onaylandı </b>';
+                if ($cars->confirm == 0) return '<b class="text-primary"> Onay Bekliyor </b>';
+                else if ($cars->confirm == 1) return '<b class="text-success"> Onaylandı </b>';
+                else if ($cars->confirm == -1) return '<b class="text-danger"> Reddedildi </b>';
             })
-          
             ->addColumn('details', 'backend.operation.transfer_cars_agency.column')
             ->rawColumns(['details', 'branch', 'creator', 'confirmation_status'])
             ->make(true);
@@ -94,7 +92,7 @@ class AgencyTransferCarsController extends Controller
 
         if ($create)
             return back()
-                ->with('success', 'Aktarma aracı başarıyla kaydedildi!');
+                ->with('success', 'Acente aracı başarıyla kaydedildi!');
         else
             return back()
                 ->with('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!');
@@ -102,7 +100,7 @@ class AgencyTransferCarsController extends Controller
 
     public function getAgencyTransferCar(Request $request)
     {
-        $car = TcCars::with('branch', 'creator')->where('id', $request->carID)
+        $car = TcCars::with('branch', 'creator.getAgency', 'cikishAktarma', 'varishAktarma', 'confirmer')->where('id', $request->carID)
             ->first();
 
         return response()

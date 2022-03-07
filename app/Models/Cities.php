@@ -10,4 +10,9 @@ class Cities extends Model
     use HasFactory;
 
     protected $table = 'cities';
+
+    public function districts()
+    {
+        return $this->hasMany(Districts::class, 'city_id', 'id');
+    }
 }

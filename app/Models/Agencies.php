@@ -45,6 +45,11 @@ class Agencies extends Model
 
     protected $table = 'agencies';
 
+    public function address()
+    {
+        return $this->hasMany(Districts::class, 'id', 'district_id');
+    }
+  
     public function endorsementWithDate($firstDate, $lastDate)
     {
         return $this->hasMany(Cargoes::class, 'departure_agency_code', 'id')

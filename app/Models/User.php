@@ -88,4 +88,9 @@ class User extends Authenticatable
         return $this->hasOne(Agencies::class, 'id', 'agency_code');
     }
 
+    public function transshipment()
+    {
+        return $this->hasOne(TransshipmentCenters::class, 'id', 'tc_code');
+    }
+
 }

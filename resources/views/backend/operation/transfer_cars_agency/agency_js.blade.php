@@ -29,17 +29,16 @@
                 pageLength: 10,
                 lengthMenu: dtLengthMenu,
                 order: [
-                    [0, 'desc']
+                    [7, 'desc']
                 ],
                 language: dtLanguage,
                 dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
 
                 buttons: [
-                    'print',
                     {
                         extend: 'excelHtml5',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                         },
                         title: "CK - Aktarma Araçları"
                     },
@@ -49,12 +48,8 @@
                             dt.ajax.reload();
                         }
                     },
-                    {
-                        extend: 'colvis',
-                        text: 'Sütun Görünüm'
-                    },
                 ],
-                responsive: false,
+                responsive: true,
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -63,11 +58,7 @@
                         d.marka = $('#filter_marka').val();
                         d.model = $('#filter_model').val();
                         d.plaka = $('#filter_plaka').val();
-                        d.hat = $('#filter_hat').val();
-                        d.aracKapasitesi = $('#filter_arac_kapasitesi').val();
-                        d.cikisAktarma = $('#filter_cikisAktarma').val();
-                        d.varisAktarma = $('#filter_varisAktarma').val();
-                        d.soforIletisim = $('#filter_soforIletisim').val();
+                        d.soforAd = $('#filter_soforAd').val();
                     },
                     error: function (xhr, error, code) {
 
@@ -161,10 +152,10 @@
 
                 $('#tdPlaka').html(cars.plaka);
                 $('#branch').html(cars.branch ? cars.branch.agency_name : '');
-                $('#creator').html(cars.creator ? cars.creator.name_surname : '');
+                $('#creator-agency-name').html(cars.creator ? cars.creator.get_agency.agency_name : '');
                 $('#car_type').html(cars.car_type);
                 $('#created_at').html(cars.created_at);
-                $('#confirmer').html(cars.confirmed_user);
+                $('#confirmer').html(cars.confirmer ? cars.confirmer.name_surname : '');
                 $('#soforAdi').html(cars.sofor_ad);
                 $('#soforIletisim').html(cars.sofor_telefon);
                 $('#soforAders').html(cars.sofor_adres);

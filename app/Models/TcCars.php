@@ -16,7 +16,7 @@ class TcCars extends Model
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:m:s',
     ];
-    
+
     protected static $logAttributes = [
         'plaka',
         'marka',
@@ -95,11 +95,21 @@ class TcCars extends Model
 
     public function creator()
     {
-        return $this->hasOne(User::class,'id', 'creator_id');
+        return $this->hasOne(User::class, 'id', 'creator_id');
     }
 
     public function branch()
     {
         return $this->hasOne(Agencies::class, 'id', 'branch_code');
+    }
+
+    public function confirmer()
+    {
+        return $this->hasOne(User::class, 'id', 'confirmed_user');
+    }
+
+    public function transshipment()
+    {
+        return $this->hasOne(TransshipmentCenters::class, 'id', 'branch_code');
     }
 }
