@@ -216,7 +216,7 @@
                                         <input name="sofor_ad" required id="sofor_ad"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"
-                                               value="{{ old('sofor_ad') }}" class="form-control form-control-sm">
+                                               value="{{ $car->sofor_ad }}" class="form-control form-control-sm">
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -225,7 +225,7 @@
                                         <input name="sofor_telefon" id="sofor_telefon" required
                                                data-inputmask="'mask': '(999) 999 99 99'"
                                                placeholder="(_) _ _ _" type="text"
-                                               value="{{ old('sofor_telefon') }}"
+                                               value="{{ $car->sofor_telefon }}"
                                                class="form-control form-control-sm input-mask-trigger">
                                     </div>
                                 </div>
@@ -234,7 +234,7 @@
                                         <label for="sofor_adres" class="font-weight-bold">Şoför Adresi</label>
                                         <textarea name="sofor_adres" id="sofor_adres"
                                                   class="form-control form-control-sm" maxlength="500"
-                                                  required>{{ old('sofor_adres') }}</textarea>
+                                                  required>{{ $car->sofor_adres }}</textarea>
                                     </div>
                                 </div>
                             </div>

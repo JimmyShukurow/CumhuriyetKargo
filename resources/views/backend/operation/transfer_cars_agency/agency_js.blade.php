@@ -179,7 +179,7 @@
 
                 $('#tdPlaka').html(cars.plaka);
                 $('#branch').html(cars.branch ? cars.branch.agency_name : '');
-                $('#creator').html(cars.creator ? cars.creator.name_surname : '');
+                $('#creator-agency-name').html(cars.creator ? cars.creator.get_agency.agency_name : '');
                 $('#car_type').html(cars.car_type);
                 $('#created_at').html(cars.created_at);
                 $('#confirmer').html(cars.confirmer ? cars.confirmer.name_surname : '');

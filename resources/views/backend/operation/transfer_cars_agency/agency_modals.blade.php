@@ -50,8 +50,8 @@
                                                     <td class="modal-data" id="branch"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="static">Ekleyen</td>
-                                                    <td class="modal-data" id="creator"></td>
+                                                    <td class="static">Ekleyen Birim</td>
+                                                    <td class="modal-data" id="creator-agency-name"></td>
                                                     <td class="static">Araç Tipip</td>
                                                     <td class="modal-data" id="car_type"></td>
                                                 </tr>
