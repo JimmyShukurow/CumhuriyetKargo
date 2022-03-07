@@ -5,7 +5,6 @@ use App\Http\Controllers\Backend\Operation\VariousController;
 use App\Http\Controllers\AgencyTransferCarsController;
 use App\Http\Controllers\TCCarsController;
 use App\Http\Controllers\TransferCarsController;
-use App\Http\Controllers\AgencyTransferCarsController;
 
 
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
