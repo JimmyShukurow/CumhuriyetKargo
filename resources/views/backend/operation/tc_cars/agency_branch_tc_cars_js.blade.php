@@ -2,6 +2,7 @@
 
 let tablePangdingConfirm = false;
 let detailsID = null;
+    let car_type = null;
 
 $('#tabPandingConfirmCars').click(function () {
 

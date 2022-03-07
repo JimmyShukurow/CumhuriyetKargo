@@ -188,7 +188,7 @@
                                         <input name="creator" required id="creator"
                                                placeholder="Aracın markasını giriniz."
                                                type="text"
-                                               value="{{$creator->name_surname ?? ''}}"
+                                               value="{{ $creator->name_surname ?? ''}}"
                                                class="form-control form-control form-control-sm" readonly>
                                     </div>
                                 </div>

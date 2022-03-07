@@ -27,4 +27,5 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
     Route::resource('TCCars', TCCarsController::class);
     Route::get('AjaxTCCars/{val?}', [TCCarsController::class, 'ajaxTcCars']);
+    Route::get('/TCCars/{id}/Edit/Agency', [TCCarsController::class, 'editAgency']);
 });

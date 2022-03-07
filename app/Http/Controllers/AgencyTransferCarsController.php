@@ -28,7 +28,7 @@ class AgencyTransferCarsController extends Controller
     {
         $user = Auth::user();
         GeneralLog('Aktarma aracı oluştur sayfası görüntülendi.');
-        return view('backend.operation.transfer_cars_agency.create', ['branch'=> $user->getAgency->agency_name, 'user' => $user->name_surname]);
+        return view('backend.operation.transfer_cars_agency.create', ['branch'=> $user->getAgency->agency_name  ?? null, 'user' => $user->name_surname]);
     }
 
     public function allData(Request $request)

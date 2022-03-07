@@ -158,6 +158,7 @@ $(document).ready(function () {
         }).done(function (response) {
 
             let cars = response.cars;
+            car_type = cars.car_type;
 
             $('#plaka').html(cars.plaka);
             $('#tdPlaka').html(cars.plaka);
@@ -184,7 +185,8 @@ $(document).ready(function () {
             $.ajax('/TCCars/'+ detailsID +'/Edit',{
                 method: 'GET',
             }).done(function (response){
-                if (response.status = 200) window.location.replace('/TCCars/'+ detailsID +'/Edit');
+                if (response.status = 200 &&  car_type == 'Aktarma') window.location.replace('/TCCars/'+ detailsID +'/Edit');
+                if (response.status = 200 &&  car_type == 'Acente') window.location.replace('/TCCars/'+ detailsID +'/Edit/Agency');
             })
         })
     }

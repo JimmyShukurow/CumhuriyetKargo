@@ -95,6 +95,23 @@ class TCCarsController extends Controller
         );
 
     }
+ public function editAgency ($id) {
+        $car = TcCars::find($id);
+        $transshipment_centers = TransshipmentCenters::select('id', 'tc_name')->get();
+
+        return view(
+            'backend.operation.tc_cars.edit_agency',
+            [
+                'car' => $car,
+                'transshipment_centers' => $transshipment_centers,
+                'branch' => $car->branch,
+                'creator' => $car->creator,
+
+
+            ]
+        );
+
+    }
 
     public function ajaxTcCars(Request $request, $val)
     {

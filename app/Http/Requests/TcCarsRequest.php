@@ -20,10 +20,10 @@ class TcCarsRequest extends FormRequest
             'sofor_telefon' => 'required',
             'sofor_adres' => 'required',
             'doors_to_be_sealed' => 'required|integer|min:1',
-            'hat' => 'required',
-            'arac_kapasitesi' => 'required',
-            'cikis_aktarma' => 'required',
-            'varis_aktarma' => 'required',
+            'hat' => 'nullable',
+            'arac_kapasitesi' => 'nullable',
+            'cikis_aktarma' => 'nullable',
+            'varis_aktarma' => 'Nullable',
         ];
     }
     public function messages()
