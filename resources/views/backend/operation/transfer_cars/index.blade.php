@@ -26,9 +26,9 @@
                         <i class="pe-7s-car icon-gradient bg-amy-crisp">
                         </i>
                     </div>
-                    <div> Aktarma Araçları
-                        <div class="page-title-subheading">Bu modül üzerinden sistemdeki tüm aktarma araçları
-                            listleyebilir, işlem yapablirsiniz.
+                    <div> Cumhuriyet Kargo Geneli Tüm Araçlar
+                        <div class="page-title-subheading"><b>Cumhuriyet Kargo</b> geneli tüm araçları
+                            bu modül üzerinden görüntüleyebilir, işlem yapabilirsiniz.
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
         <div class="card mb-3">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                        class="header-icon pe-7s-car mr-3 text-muted opacity-6"> </i>Tüm Aktarma Araçları
+                        class="header-icon pe-7s-car mr-3 text-muted opacity-6"> </i>Tüm Araçları
                 </div>
 
                 <div class="btn-actions-pane-right actions-icon-btn">
@@ -156,10 +156,9 @@
                         <th>Marka</th>
                         <th>Model</th>
                         <th>Plaka</th>
+                        <th>Araç Tipi </th>
                         <th>Hat</th>
                         <th>Kapasite (KG)</th>
-                        <th>Çıkış Akt.</th>
-                        <th>Varış Akt.</th>
                         <th>Şoför Adı</th>
                         <th>Şoför İletişim</th>
                         <th>Oluşturan</th>
@@ -177,10 +176,9 @@
                         <th>Marka</th>
                         <th>Model</th>
                         <th>Plaka</th>
+                        <th>Araç Tipi </th>
                         <th>Hat</th>
                         <th>Kapasite (KG)</th>
-                        <th>Çıkış Akt.</th>
-                        <th>Varış Akt.</th>
                         <th>Şoför Adı</th>
                         <th>Şoför İletişim</th>
                         <th>Oluşturan</th>
@@ -283,10 +281,9 @@
                     {data: 'marka', name: 'marka'},
                     {data: 'model', name: 'model'},
                     {data: 'plaka', name: 'plaka'},
+                    {data: 'car_type', name: 'car_type'},
                     {data: 'hat', name: 'hat'},
                     {data: 'arac_kapasitesi', name: 'arac_kapasitesi'},
-                    {data: 'cikis_aktarma', name: 'cikis_aktarma'},
-                    {data: 'varis_aktarma', name: 'varis_aktarma'},
                     {data: 'sofor_ad', name: 'sofor_ad'},
                     {data: 'sofor_telefon', name: 'sofor_telefon'},
                     {data: 'name_surname', name: 'name_surname'},

@@ -45,30 +45,27 @@ class TransferCarsController extends Controller
         $varisAktarma = $request->varisAktarma;
         $soforIletisim = $request->soforIletisim;
 
-        $cars = DB::table('tc_cars_all_data')
-            ->whereRaw($marka ? "marka like '%" . $marka . "%'" : ' 1 > 0')
-            ->whereRaw($model ? "model like '%" . $model . "%'" : ' 1 > 0')
-            ->whereRaw($plaka ? "plaka like '%" . $plaka . "%'" : ' 1 > 0')
-            ->whereRaw($hat ? "hat='" . $hat . "'" : ' 1 > 0')
-            ->whereRaw($aracKapasitesi ? "arac_kapasitesi='" . $aracKapasitesi . "'" : ' 1 > 0')
-            ->whereRaw($soforIletisim ? "sofor_telefon='" . $soforIletisim . "'" : ' 1 > 0')
-            ->whereRaw($varisAktarma ? "varis_aktarma = $varisAktarma" : ' 1 > 0')
-            ->whereRaw($cikisAktarma ? "cikis_aktarma = $cikisAktarma" : ' 1 > 0');
+        $cars = TcCars::with(['creator' => function($query){ $query->withTrashed();}] )
+            ->when($marka, function ($q) use ($marka) { return $q->where('marka', 'like', '%'.$marka.'%');})
+            ->when($model , function ($q) use ($model) { return $q->where('model', 'like', '%'.$model.'%');})
+            ->when($plaka , function ($q) use ($plaka) { return $q->where('plaka', 'like', '%'.$plaka.'%');})
+            ->when($hat , function ($q) use ($hat) { return $q->where('hat', 'like', '%'.$hat.'%');})
+            ->when($aracKapasitesi , function ($q) use ($aracKapasitesi) { return $q->where('arac_kapasitesi', 'like', '%'.$aracKapasitesi.'%');})
+            ->when($soforIletisim , function ($q) use ($soforIletisim) { return $q->where('sofor_telefon', 'like', '%'.$soforIletisim.'%');})
+            ->when($varisAktarma , function ($q) use ($varisAktarma) { return $q->where('varis_aktarma', 'like', '%'.$varisAktarma.'%');})
+            ->when($cikisAktarma , function ($q) use ($cikisAktarma) { return $q->where('cikis_aktarma', 'like', '%'.$cikisAktarma.'%');})
+            ->get();
 
 
         return DataTables::of($cars)
             ->setRowId(function ($cars) {
                 return 'car-item-' . $cars->id;
             })
-            ->editColumn('cikis_aktarma', function ($cars) {
-                return '<b class="text-danger">' . $cars->cikis_akt . '</b>';
+            ->editColumn('name_surname', function ($car){
+                return $car->creator->name_surname ?? null;
             })
-            ->editColumn('varis_aktarma', function ($cars) {
-                return '<b class="text-success">' . $cars->varis_akt . '</b>';
-            })
-
             ->addColumn('edit', 'backend.operation.transfer_cars.column')
-            ->rawColumns(['edit', 'varis_aktarma', 'cikis_aktarma'])
+            ->rawColumns(['edit', 'name_surname'])
             ->make(true);
     }
 
