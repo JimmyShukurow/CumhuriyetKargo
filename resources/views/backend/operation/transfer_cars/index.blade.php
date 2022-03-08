@@ -358,6 +358,7 @@
                 let cars = response.cars;
 
                 $('#tdPlaka').html(cars.plaka);
+                $('#plaka').html(cars.plaka);
                 $('#marka').html(cars.marka);
                 $('#model').html(cars.model);
                 $('#modelYili').html(cars.model_yili);
@@ -373,17 +374,7 @@
                 $('#sigortaBaslangicBitisTarihi').html(cars.trafik_sigortasi_baslangic_tarihi + " - " + cars.trafik_sigortasi_bitis_tarihi);
                 $('#sigortaBitimiKalanGun').html(cars.sigorta_kalan_sure);
                 $('#kayitTarihi').html(cars.created_at);
-
-                $('#aylikKiraBedeli').html("₺" + getDotter(cars.aylik_kira_bedeli));
-                $('#yakitOrani').html("%" + cars.yakit_orani);
-                $('#turKm').html(getDotter(cars.tur_km));
-                $('#seferKM').html(cars.sefer_km);
-                $('#aylikYakit').html("₺" + getDotter(cars.aylik_yakit));
-                $('#kdvHaricHakedis').html("₺" + getDotter(cars.kdv_haric_hakedis));
-                $('#birSeferKiraMaliyeti').html("₺" + getDotter(cars.bir_sefer_kira_maliyeti));
-                $('#birSeferYakitMaliyeti').html("₺" + getDotter(cars.bir_sefer_yakit_maliyeti));
-                $('#hakedisArtiMazot').html("₺" + getDotter(cars.hakedis_arti_mazot));
-                $('#seferMaliyeti').html("₺" + getDotter(cars.sefer_maliyeti));
+                $('#car_type').html(cars.car_type);
 
                 $('#soforAdi').html(cars.sofor_ad);
                 $('#soforIletisim').html(cars.sofor_telefon);
@@ -394,29 +385,6 @@
                 $('#aracSahibiYakiniAdi').html(cars.arac_sahibi_yakini_ad);
                 $('#aracSahibiYakiniIletisim').html(cars.arac_sahibi_yakini_telefon);
                 $('#aracSahibiYakiniAders').html(cars.arac_sahibi_yakini_adres);
-
-                $('#stepne').html(cars.stepne);
-                $('#kriko').html(cars.kriko);
-                $('#Zincir').html(cars.zincir);
-                $('#bijonAnahtari').html(cars.bijon_anahtari);
-                $('#reflektor').html(cars.reflektor);
-                $('#yanginTupu').html(cars.yangin_tupu);
-                $('#ilkYardimCantasi').html(cars.ilk_yardim_cantasi);
-                $('#seyyarLamba').html(cars.seyyar_lamba);
-                $('#cekmeHalati').html(cars.cekme_halati);
-                $('#giydirme').html(cars.giydirme);
-                $('#korNoktaUyarisi').html(cars.kor_nokta_uyarisi);
-                $('#hataBildirimHatti').html(cars.hata_bildirim_hatti);
-
-                $('#muayeneEvragi').html(cars.sigorta_belgesi);
-                $('#sigortaBelgesi').html(cars.sigorta_belgesi);
-                $('#soforEhliyet').html(cars.sofor_ehliyet);
-                $('#srcBelgesi').html(cars.src_belgesi);
-                $('#ruhsatEkspertizRaporu').html(cars.ruhsat_ekspertiz_raporu);
-                $('#tasimaBelgesi').html(cars.tasima_belgesi);
-                $('#soforAdliSicilKaydi').html(cars.sofor_adli_sicil_kaydi);
-                $('#aracSahibiSicilKaydi').html(cars.arac_sahibi_sicil_kaydi);
-                $('#soforYakiniIkametgahBelgesi').html(cars.sofor_yakini_ikametgah_belgesi);
 
                 $('.modal-body').unblock();
                 return false;
@@ -484,7 +452,7 @@
                                          style="background-image: url('/backend/assets/images/dropdown-header/abstract10.jpg');">
                                     </div>
                                     <div class="menu-header-content">
-                                        <h5 id="plaka" class="menu-header-title text-center">34HV4186</h5>
+                                        <h5 id="plaka" class="menu-header-title text-center"></h5>
                                     </div>
                                 </div>
                             </div>
@@ -556,59 +524,9 @@
                                                 <tr>
                                                     <td class="static">Kayıt Tarihi</td>
                                                     <td class="modal-data" id="kayitTarihi"></td>
-                                                    <td class="static"></td>
-                                                    <td id=""></td>
+                                                    <td class="static">Araç Tipi</td>
+                                                    <td id="car_type"></td>
                                                 </tr>
-                                                </tbody>
-                                            </table>
-
-                                            {{-- HESAPLAMALAR --}}
-                                            <table id="AgencyCard"
-                                                   class="TableNoPadding table mt-4 table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th class="text-center" id="titleBranch" colspan="4">Hesaplamalar
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                <tr>
-                                                    <td class="static">Aylık Kira Bedeli</td>
-                                                    <td class="modal-data" id="aylikKiraBedeli"></td>
-                                                    <td class="static">Yakıt Oranı</td>
-                                                    <td class="modal-data" id="yakitOrani"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Tur KM</td>
-                                                    <td class="modal-data" id="turKm"></td>
-                                                    <td class="static">Sefer KM</td>
-                                                    <td class="modal-data" id="seferKM"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Aylık Yakıt</td>
-                                                    <td class="modal-data" id="aylikYakit"></td>
-                                                    <td class="static">KDV Hariç Hakediş</td>
-                                                    <td class="modal-data" id="kdvHaricHakedis"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">1 Sefer Kira Maliyeti</td>
-                                                    <td class="modal-data" id="birSeferKiraMaliyeti"></td>
-                                                    <td class="static">1 Sefer Yakıt Maliyeti</td>
-                                                    <td class="modal-data" id="birSeferYakitMaliyeti"></td>
-                                                </tr>
-
-
-                                                <tr>
-                                                    <td class="static">Sefer Maliyeti</td>
-                                                    <td class="modal-data" id="seferMaliyeti"></td>
-                                                    <td class="static">Hakediş + Mazot</td>
-                                                    <td class="modal-data" id="hakedisArtiMazot"></td>
-                                                </tr>
-
                                                 </tbody>
                                             </table>
 
@@ -660,94 +578,6 @@
                                                 </tbody>
                                             </table>
 
-                                            {{-- TRAFİK SETİ --}}
-                                            <table id="AgencyCard"
-                                                   class="TableNoPadding table mt-4 table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th class="text-center" id="titleBranch" colspan="6">Trafik Seti
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                <tr>
-                                                    <td class="static">Stepne</td>
-                                                    <td class="modal-data" id="stepne"></td>
-                                                    <td class="static">Kriko</td>
-                                                    <td class="modal-data" id="kriko"></td>
-                                                    <td class="static">Zincir</td>
-                                                    <td class="modal-data" id="Zincir"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Bijon Anahtarı</td>
-                                                    <td class="modal-data" id="bijonAnahtari"></td>
-                                                    <td class="static">Reflektör</td>
-                                                    <td class="modal-data" id="reflektor"></td>
-                                                    <td class="static">Yangın Tüpü</td>
-                                                    <td class="modal-data" id="yanginTupu"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">İlk Yardım Çantası</td>
-                                                    <td class="modal-data" id="ilkYardimCantasi"></td>
-                                                    <td class="static">Seyyar Lamba</td>
-                                                    <td class="modal-data" id="seyyarLamba"></td>
-                                                    <td class="static">Çekme Halatı</td>
-                                                    <td class="modal-data" id="cekmeHalati"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Giydirme</td>
-                                                    <td class="modal-data" id="giydirme"></td>
-                                                    <td class="static">Kör Nokta Uyarısı</td>
-                                                    <td class="modal-data" id="korNoktaUyarisi"></td>
-                                                    <td class="static">Hata Bildirim Hattı</td>
-                                                    <td class="modal-data" id="hataBildirimHatti"></td>
-                                                </tr>
-
-                                                </tbody>
-                                            </table>
-
-                                            {{-- EVRAKLAR --}}
-                                            <table id="AgencyCard"
-                                                   class="TableNoPadding table mt-4 table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th class="text-center" id="titleBranch" colspan="6">Evraklar</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                <tr>
-                                                    <td class="static">Muayene Evrağı</td>
-                                                    <td class="modal-data" id="muayeneEvragi"></td>
-                                                    <td class="static">Sigorta Belgesi</td>
-                                                    <td class="modal-data" id="sigortaBelgesi"></td>
-                                                    <td class="static">Şoför Ehliyet</td>
-                                                    <td class="modal-data" id="soforEhliyet"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Src Belgesi</td>
-                                                    <td class="modal-data" id="srcBelgesi"></td>
-                                                    <td class="static">Ruhsat Ekspertiz Raporu</td>
-                                                    <td class="modal-data" id="ruhsatEkspertizRaporu"></td>
-                                                    <td class="static">Taşıma Belgesi</td>
-                                                    <td class="modal-data" id="tasimaBelgesi"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Şoför Adli Sicil Kaydı</td>
-                                                    <td class="modal-data" id="soforAdliSicilKaydi"></td>
-                                                    <td class="static">Araç Sahibi Sicil Kaydi</td>
-                                                    <td class="modal-data" id="aracSahibiSicilKaydi"></td>
-                                                    <td class="static">Şoför Yakını İkametgah Belgesi</td>
-                                                    <td class="modal-data" id="soforYakiniIkametgahBelgesi"></td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
                                         </div>
                                     </div>
                                 </li>
