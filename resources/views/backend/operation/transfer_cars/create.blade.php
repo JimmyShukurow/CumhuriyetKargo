@@ -73,9 +73,9 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-check">
-                                        <input type="checkbox" name="status" id="status"  value="1" class=" form-check-input">
-                                        <label for="status" class="font-weight-bold">Aktif/Pasif:</label>
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" name="status" id="customSwitches"  value="1" class="custom-control-input">
+                                        <label for="customSwitches" class="custom-control-label">Aktif/Pasif:</label>
                                     </div>
                                 </div>
                             </div>
