@@ -116,8 +116,19 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label for="filter_cikisAktarma">Çıkış Aktarma:</label>
-                            <select id="filter_cikisAktarma"
+                            <label for="filter_agency">Acente:</label>
+                            <select id="filter_agency"
+                                    class="form-control form-control-sm niko-select-filter">
+                                <option value="">Seçiniz</option>
+                                @foreach($data['agencies'] as $key)
+                                    <option value="{{$key->id}}">{{$key->agency_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="filter_Aktarma">Aktarma:</label>
+                            <select id="filter_Aktarma"
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
                                 @foreach($data['transshipment_centers'] as $key)
@@ -127,21 +138,9 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label for="filter_varisAktarma">Varış Aktarma:</label>
-                            <select id="filter_varisAktarma"
-                                    class="form-control form-control-sm niko-select-filter">
-                                <option value="">Seçiniz</option>
-                                @foreach($data['transshipment_centers'] as $key)
-                                    <option value="{{$key->id}}">{{$key->tc_name . ' ('.$key->type.') T.M.'}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="filter_soforIletisim">Şoför İletişim:</label>
-                            <input type="text" data-inputmask="'mask': '(999) 999 99 99'"
-                                   placeholder="___ ___ __ __" type="text" id="filter_soforIletisim"
-                                   class="form-control input-mask-trigger form-control-sm niko-filter">
+                            <label for="filter_car_type">Araç Tipi:</label>
+                            <input type="text" id="filter_car_type"
+                                   class="form-control niko-filter form-control-sm niko-select-filter">
                         </div>
 
                     </div>
@@ -261,9 +260,9 @@
                         d.plaka = $('#filter_plaka').val();
                         d.hat = $('#filter_hat').val();
                         d.aracKapasitesi = $('#filter_arac_kapasitesi').val();
-                        d.cikisAktarma = $('#filter_cikisAktarma').val();
-                        d.varisAktarma = $('#filter_varisAktarma').val();
-                        d.soforIletisim = $('#filter_soforIletisim').val();
+                        d.agency = $('#filter_agency').val();
+                        d.aktarma = $('#filter_Aktarma').val();
+                        d.carType = $('#filter_car_type').val();
                     },
                     error: function (xhr, error, code) {
 

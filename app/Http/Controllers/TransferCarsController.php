@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TransferCarsRequest;
+use App\Models\Agencies;
 use App\Models\Cities;
 use App\Models\TcCars;
 use App\Models\TransshipmentCenters;
@@ -17,7 +18,7 @@ class TransferCarsController extends Controller
 
     public function index()
     {
-        $data['agencies'] = Various::all();
+        $data['agencies'] = Agencies::all();
         $data['cities'] = Cities::all();
         $data['transshipment_centers'] = TransshipmentCenters::all();
         GeneralLog('Aktarma araçları sayfası görüntülendi.');
@@ -41,9 +42,9 @@ class TransferCarsController extends Controller
         $plaka = $request->plaka;
         $hat = $request->hat;
         $aracKapasitesi = $request->aracKapasitesi;
-        $cikisAktarma = $request->cikisAktarma;
-        $varisAktarma = $request->varisAktarma;
-        $soforIletisim = $request->soforIletisim;
+        $agency = $request->agency;
+        $aktarma = $request->aktarma;
+        $carType = $request->carType;
 
         $cars = TcCars::with(['creator' => function($query){ $query->withTrashed();}] )
             ->when($marka, function ($q) use ($marka) { return $q->where('marka', 'like', '%'.$marka.'%');})
@@ -51,9 +52,9 @@ class TransferCarsController extends Controller
             ->when($plaka , function ($q) use ($plaka) { return $q->where('plaka', 'like', '%'.$plaka.'%');})
             ->when($hat , function ($q) use ($hat) { return $q->where('hat', 'like', '%'.$hat.'%');})
             ->when($aracKapasitesi , function ($q) use ($aracKapasitesi) { return $q->where('arac_kapasitesi', 'like', '%'.$aracKapasitesi.'%');})
-            ->when($soforIletisim , function ($q) use ($soforIletisim) { return $q->where('sofor_telefon', 'like', '%'.$soforIletisim.'%');})
-            ->when($varisAktarma , function ($q) use ($varisAktarma) { return $q->where('varis_aktarma', 'like', '%'.$varisAktarma.'%');})
-            ->when($cikisAktarma , function ($q) use ($cikisAktarma) { return $q->where('cikis_aktarma', 'like', '%'.$cikisAktarma.'%');})
+            ->when($aktarma , function ($q) use ($aktarma) { return $q->where('branch_code', 'like', '%'.$aktarma.'%')->where('car_type', 'Aktarma');})
+            ->when($agency , function ($q) use ($agency) { return $q->where('branch_code', 'like', '%'.$agency.'%')->where('car_type', 'Acente');})
+            ->when($carType , function ($q) use ($carType) { return $q->where('car_type', 'like', '%'.$carType.'%');})
             ->get();
 
 
