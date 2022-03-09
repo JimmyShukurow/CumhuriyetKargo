@@ -102,6 +102,12 @@
             </div>
         </div>
 
+        <div class="main-card mb-3 card bg-warning">
+            <div class="card-body">
+               Türkiye geneli dağıtım alanlarına <a href="/files/batch-files/CKG-Sis - Türkiye Geneli Mahalli Lokasyon.xlsx">buradan</a> ulaşabilirsiniz.
+            </div>
+        </div>
+
         {{--Statistics--}}
         <div>
         </div>
