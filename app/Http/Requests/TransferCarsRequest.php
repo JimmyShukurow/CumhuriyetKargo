@@ -42,6 +42,7 @@ use FieldsToUppercaseTrait;
             'arac_sahibi_yakini_ad' => 'required',
             'arac_sahibi_yakini_telefon' => 'required',
             'arac_sahibi_yakini_adres' => 'required',
+            'car_type' => 'nullable',
         ];
     }
 }

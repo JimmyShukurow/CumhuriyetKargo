@@ -127,7 +127,7 @@
                                                value="{{ old('tonaj') }}" class="form-control form-control-sm">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="desi_kapasitesi" class="font-weight-bold">Desi Kapasitesi</label>
                                         <input name="desi_kapasitesi" required id="desi_kapasitesi"
@@ -136,7 +136,7 @@
                                                class="form-control form-control-sm">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="arac_takip_sistemi" class="font-weight-bold">ATS (Araç Takip
                                             Sistemi):</label>
@@ -158,6 +158,23 @@
                                             <option
                                                 {{old('arac_takip_sistemi') == 'Gönderilmedi' ? 'selected' : ''}} value="Gönderilmedi">
                                                 Gönderilmedi
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="car_type" class="font-weight-bold">Araç Tipi:</label>
+                                        <select name="car_type"  id="car_type"
+                                                class="form-control form-control-sm">
+                                            <option value=""> Seçiniz</option>
+                                            <option
+                                                    {{old('car_type') == 'Aktarma' ? 'selected' : ''}} value="Aktarma">
+                                                Aktarma
+                                            </option>
+                                            <option
+                                                    {{old('car_type') == 'Acente' ? 'selected' : ''}} value="Acente">
+                                                Acente
                                             </option>
                                         </select>
                                     </div>
