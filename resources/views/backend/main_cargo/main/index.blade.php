@@ -272,9 +272,7 @@
                                          class="dropdown-menu-hover-link dropdown-menu">
                                         <h6 tabindex="-1" class="dropdown-header">Sefer İşlemleri</h6>
 
-                                        <a href="{{route('OfficialReport.createHTF')}}"
-                                           target="popup"
-                                           onclick="window.open('{{route('OfficialReport.createHTF')}}','popup','width=700,height=700'); return false;">
+                                        <a href="javscript:void(0)" class="alert-not-yet">
                                             <button type="button"
                                                     tabindex="0" class="dropdown-item">
                                                 <i class="dropdown-icon pe-7s-news-paper print-all-barcodes"></i>
@@ -282,23 +280,21 @@
                                             </button>
                                         </a>
 
-                                        <a href="{{route('OfficialReport.createUTF')}}"
-                                           target="popup"
-                                           onclick="window.open('{{route('OfficialReport.createUTF')}}','popup','width=700,height=700'); return false;">
+                                        <a href="javscript:void(0)" class="alert-not-yet">
                                             <button type="button" tabindex="0" class="dropdown-item">
                                                 <i class="dropdown-icon lnr-file-empty"></i>
                                                 <span>Giden Sefer</span>
                                             </button>
                                         </a>
 
-                                        <a href="{{route('OfficialReport.index')}}">
+                                        <a href="javscript:void(0)" class="alert-not-yet">
                                             <button type="button" tabindex="0" class="dropdown-item">
                                                 <i class="dropdown-icon pe-7s-search"></i>
-                                                <span>Tutanak Sorgula</span>
+                                                <span>Sefer Sorgula</span>
                                             </button>
                                         </a>
 
-                                        <a href="{{route('OfficialReport.index')}}">
+                                        <a href="javscript:void(0)" class="alert-not-yet">
                                             <button type="button" tabindex="0" class="dropdown-item">
                                                 <i class="dropdown-icon pe-7s-plus"></i>
                                                 <span>Sefer Oluştur</span>
