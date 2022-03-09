@@ -72,8 +72,17 @@ class TransferCarsController extends Controller
                     return $car->branch->agency_name ?? null;
                 }
             })
+            ->addColumn('confirmation_status', function ($car){
+                if ($car->confirm == 0) {
+                    return '<b class="text-primary"> Onay Bekliyor </b>';
+                } elseif ($car->confirm == 1) {
+                    return '<b class="text-success"> Onaylandı </b>';
+                } elseif ($car->confirm == -1) {
+                    return '<b class="text-danger"> Reddedildi </b>';
+                }
+            })
             ->addColumn('edit', 'backend.operation.transfer_cars.column')
-            ->rawColumns(['edit', 'name_surname', 'ait_oldugu_birim'])
+            ->rawColumns(['edit', 'name_surname', 'ait_oldugu_birim','confirmation_status'])
             ->make(true);
     }
 
