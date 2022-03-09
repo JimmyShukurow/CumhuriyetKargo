@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Agencies;
 use App\Models\Cities;
 use App\Models\Districts;
 use App\Models\Neighborhoods;
 use App\Models\TcCars;
+use App\Models\TransshipmentCenters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -65,4 +67,12 @@ class AjaxController extends Controller
         return response()
             ->json(['status' => 1, 'car' => $car]);
     }
+
+    public function getAllAgencies(){
+        return Agencies::orderBy('agency_name')->get();
+    }
+    public function getAllTransshipmentCenters(){
+        return TransshipmentCenters::orderBy('tc_name')->get();
+    }
+
 }
