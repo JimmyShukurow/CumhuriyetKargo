@@ -147,7 +147,6 @@ class TransferCarsController extends Controller
     {
         $data['transshipment_centers'] = TransshipmentCenters::all();
         $data['cities'] = Cities::all();
-//        $data['myTransferCar'] = TrasferCars::find($id);
         $car = TcCars::find($id);
         return view('backend.operation.transfer_cars.edit', compact(['data', 'car']));
     }

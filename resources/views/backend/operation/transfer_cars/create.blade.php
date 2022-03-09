@@ -73,9 +73,17 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" name="status" id="customSwitches"  value="1" class="custom-control-input">
-                                        <label for="customSwitches" class="custom-control-label">Aktif/Pasif:</label>
+                                    <div class="position-relative form-group">
+                                        <label for="status" class="font-weight-bold">Status:</label>
+                                        <select name="status"  id="status"
+                                                class="form-control form-control-sm">
+                                            <option value=""> Seçiniz</option>
+                                            <option {{old('status') == 'Aktif' ? 'selected' : ''}} value="1"> Aktif </option>
+                                            <option {{old('status') == 'Pasif' ? 'selected' : ''}} value="0"> Pasif </option>
+
+
+
+                                        </select>
                                     </div>
                                 </div>
                             </div>

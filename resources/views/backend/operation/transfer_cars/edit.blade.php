@@ -44,6 +44,50 @@
                     @method('PUT')
                     <div class="row">
                         <div class="col-md-6" id="container-general-info">
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="car_type" class="font-weight-bold">Araç Tipi:</label>
+                                        <select name="car_type"  id="car_type"
+                                                class="form-control form-control-sm">
+                                            <option value=""> Seçiniz</option>
+                                            <option
+                                                {{$car->car_type == 'Aktarma' ? 'selected' : ''}} value="Aktarma">
+                                                Aktarma
+                                            </option>
+                                            <option
+                                                {{$car->car_type == 'Acente' ? 'selected' : ''}} value="Acente">
+                                                Acente
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="branch" class="font-weight-bold">Bağlı olduğu şube:</label>
+                                        <select name="branch"  id="branch"
+                                                class="form-control form-control-sm" value="{{$car->branch_code}}">
+                                            <option value=""> Seçiniz</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="status" class="font-weight-bold">Status:</label>
+                                        <select name="status"  id="status"
+                                                class="form-control form-control-sm">
+                                            <option value=""> Seçiniz</option>
+                                            <option {{$car->status == 1 ? 'selected' : ''}} value="1"> Aktif </option>
+                                            <option {{$car->status == 0 ? 'selected' : ''}} value="0"> Pasif </option>
+
+
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                             <h6 class="text-dark text-center font-weight-bold">Araç Bilgileri</h6>
                             <div class="divider"></div>
                             <div class="form-row">
