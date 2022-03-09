@@ -43,6 +43,7 @@ use FieldsToUppercaseTrait;
             'arac_sahibi_yakini_telefon' => 'nullable',
             'arac_sahibi_yakini_adres' => 'nullable',
             'car_type' => 'nullable',
+            'status' => 'nullable',
         ];
     }
 }

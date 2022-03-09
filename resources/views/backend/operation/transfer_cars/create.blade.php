@@ -72,6 +72,12 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input type="checkbox" name="status" id="status"  value="1" class=" form-check-input">
+                                        <label for="status" class="font-weight-bold">Aktif/Pasif:</label>
+                                    </div>
+                                </div>
                             </div>
 
                             <h6 class="text-dark text-center font-weight-bold">Araç Bilgileri</h6>
