@@ -509,18 +509,6 @@
                                                     <td class="modal-data" colspan="3" id="ugradigiAktarmalar"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="static">Muayene Baş.-Bit. Tarhi</td>
-                                                    <td class="modal-data" id="muayeneBaslangicBitisTarihi"></td>
-                                                    <td class="static">Muayene Bitimi Kalan Gün</td>
-                                                    <td class="modal-data" id="muayeneBitimiKalanGun"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Sigorta Baş.-Bit. Tarhi</td>
-                                                    <td class="modal-data" id="sigortaBaslangicBitisTarihi"></td>
-                                                    <td class="static">Sigorta Bitimi Kalan Gün</td>
-                                                    <td class="modal-data" id="sigortaBitimiKalanGun"></td>
-                                                </tr>
-                                                <tr>
                                                     <td class="static">Kayıt Tarihi</td>
                                                     <td class="modal-data" id="kayitTarihi"></td>
                                                     <td class="static">Araç Tipi</td>
@@ -550,28 +538,6 @@
                                                 <tr>
                                                     <td class="static">Şoför Adres</td>
                                                     <td class="modal-data" colspan="3" id="soforAders"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Araç Sahibi Adı</td>
-                                                    <td class="modal-data" id="aracSahibiAdi"></td>
-                                                    <td class="static">Araç Sahibi İletişim</td>
-                                                    <td class="modal-data" id="aracSahibiIletisim"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Araç Sahibi Adres</td>
-                                                    <td class="modal-data" colspan="3" id="aracSahibiAders"></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="static">Araç Sahibi Yakını Adı</td>
-                                                    <td class="modal-data" id="aracSahibiYakiniAdi"></td>
-                                                    <td class="static">Araç Sahibi Yakını İletişim</td>
-                                                    <td class="modal-data" id="aracSahibiYakiniIletisim"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="static">Araç Sahibi Yakını Adres</td>
-                                                    <td class="modal-data" colspan="3" id="aracSahibiYakiniAders"></td>
                                                 </tr>
 
                                                 </tbody>

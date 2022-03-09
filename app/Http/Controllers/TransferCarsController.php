@@ -82,6 +82,7 @@ class TransferCarsController extends Controller
     {
         $validated = $request->validated();
         $validated['creator_id'] = Auth::id();
+        $validated['confirm'] = "1";
 
         $create = TcCars::create($validated);
 
