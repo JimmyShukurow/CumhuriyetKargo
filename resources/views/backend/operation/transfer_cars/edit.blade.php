@@ -275,48 +275,6 @@
                                                value="{{ $car->ugradigi_aktarmalar }}"
                                                id="ugradigi_aktarmalar_dizi">
 
-                                        <div class="col-md-6">
-                                            <div class="position-relative form-group">
-                                                <label for="muayene_baslangic_tarihi">Muayene Başlangıç Tarihi</label>
-                                                <input type="date" required class="form-control form-control-sm"
-                                                       name="muayene_baslangic_tarihi"
-                                                       value="{{ $car->muayene_baslangic_tarihi }}"
-                                                       id="muayene_baslangic_tarihi">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="position-relative form-group">
-                                                <label for="muayene_bitis_tarihi">Muayene Bitiş Tarihi</label>
-                                                <input type="date" required class="form-control form-control-sm"
-                                                       name="muayene_bitis_tarihi"
-                                                       value="{{ $car->muayene_bitis_tarihi }}"
-                                                       id="muayene_bitis_tarihi">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="position-relative form-group">
-                                                <label for="trafik_sigortasi_baslangic_tarihi">Trafik Sigortası
-                                                    Başlangıç Tarihi</label>
-                                                <input type="date" required class="form-control form-control-sm"
-                                                       name="trafik_sigortasi_baslangic_tarihi"
-                                                       value="{{ $car->trafik_sigortasi_baslangic_tarihi  }}"
-                                                       id="trafik_sigortasi_baslangic_tarihi">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="position-relative form-group">
-                                                <label for="trafik_sigortasi_bitis_tarihi">Trafik Sigortası Bitiş
-                                                    Tarihi</label>
-                                                <input type="date" required class="form-control form-control-sm"
-                                                       name="trafik_sigortasi_bitis_tarihi"
-                                                       value="{{ $car->trafik_sigortasi_bitis_tarihi }}"
-                                                       id="trafik_sigortasi_bitis_tarihi">
-                                            </div>
-                                        </div>
-
                                     </div>
 
 
@@ -461,6 +419,67 @@
                 }
 
             });
+
+            $('#car_type').on('change', function (){
+                if($('#car_type').val() == 'Acente' ){
+
+                    $('#arac_kapasitesi').attr('disabled',true);
+                    $('#tonaj').attr('disabled',true);
+                    $('#desi_kapasitesi').attr('disabled',true);
+                    $('#arac_takip_sistemi').attr('disabled',true);
+                    $('#hat').attr('disabled',true);
+                    $('#cikis_aktarma').attr('disabled',true);
+                    $('#varis_aktarma').attr('disabled',true);
+                    $('#ugradigi_aktarmalar').attr('disabled',true);
+                    $('#arac_sahibi_ad').attr('disabled',true);
+                    $('#arac_sahibi_telefon').attr('disabled',true);
+                    $('#arac_sahibi_adres').attr('disabled',true);
+                    $('#arac_sahibi_yakini_ad').attr('disabled',true);
+                    $('#arac_sahibi_yakini_telefon').attr('disabled',true);
+                    $('#arac_sahibi_yakini_adres').attr('disabled',true);
+
+                    $.ajax('/Ajax/AllAgencies', {
+                        method: 'GET',
+                    }).done(function (response) {
+                            let allAgencies = '';
+                            $.each(response, function (key, value){
+                                allAgencies += '<option value='+ value.id +'>'+value.agency_name +'</option>';
+                            })
+                            $('#branch').append(allAgencies);
+                        }
+                    )
+                }
+                if($('#car_type').val() == 'Aktarma' ){
+
+                    $('#arac_kapasitesi').attr('disabled',false);
+                    $('#tonaj').attr('disabled',false);
+                    $('#desi_kapasitesi').attr('disabled',false);
+                    $('#arac_takip_sistemi').attr('disabled',false);
+                    $('#hat').attr('disabled',false);
+                    $('#cikis_aktarma').attr('disabled',false);
+                    $('#varis_aktarma').attr('disabled',false);
+                    $('#ugradigi_aktarmalar').attr('disabled',false);
+                    $('#arac_sahibi_ad').attr('disabled',false);
+                    $('#arac_sahibi_telefon').attr('disabled',false);
+                    $('#arac_sahibi_adres').attr('disabled',false);
+                    $('#arac_sahibi_yakini_ad').attr('disabled',false);
+                    $('#arac_sahibi_yakini_telefon').attr('disabled',false);
+                    $('#arac_sahibi_yakini_adres').attr('disabled',false);
+
+
+                    $.ajax('/Ajax/AllTransshipmentCenters', {
+                        method: 'GET',
+                    }).done(function (response) {
+                            let allTC = '';
+                            $.each(response, function (key, value){
+                                allTC += '<option value='+ value.id +'>'+value.tc_name +'</option>';
+                            })
+                            $('#branch').append(allTC);
+
+                        }
+                    )
+                }
+            })
 
             @if($car->ugradigi_aktarmalar != '')
             $('#ugradigi_aktarmalar').val([{{$car->ugradigi_aktarmalar}}]).trigger('change');

@@ -138,7 +138,7 @@
                                     <div class="position-relative form-group">
                                         <label for="arac_kapasitesi" class="font-weight-bold">Araç Kapasitesi</label>
                                         <select name="arac_kapasitesi" required id="arac_kapasitesi"
-                                                class="form-control form-control-sm">
+                                                class="form-control form-control-sm" disabled>
                                             <option value=""> Seçiniz</option>
                                             <option
                                                 {{old('arac_kapasitesi') == 'Panelvan' ? 'selected' : ''}} value="Panelvan">
@@ -169,7 +169,7 @@
                                         <input name="tonaj" required id="tonaj"
                                                placeholder="Tonaj"
                                                type="text"
-                                               value="{{ old('tonaj') }}" class="form-control form-control-sm">
+                                               value="{{ old('tonaj') }}" class="form-control form-control-sm" disabled>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -178,7 +178,7 @@
                                         <input name="desi_kapasitesi" required id="desi_kapasitesi"
                                                placeholder="Desi Kapasitesi" type="text"
                                                value="{{ old('desi_kapasitesi') }}"
-                                               class="form-control form-control-sm">
+                                               class="form-control form-control-sm" disabled>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -186,7 +186,7 @@
                                         <label for="arac_takip_sistemi" class="font-weight-bold">ATS (Araç Takip
                                             Sistemi):</label>
                                         <select name="arac_takip_sistemi" required id="arac_takip_sistemi"
-                                                class="form-control form-control-sm">
+                                                class="form-control form-control-sm" disabled>
                                             <option value=""> Seçiniz</option>
                                             <option
                                                 {{old('arac_takip_sistemi') == 'Takılı' ? 'selected' : ''}} value="Takılı">
@@ -213,7 +213,7 @@
                                             <div class="position-relative form-group">
                                                 <label for="hat" class="font-weight-bold">Hat</label>
                                                 <select name="hat" required id="hat"
-                                                        class="form-control form-control-sm">
+                                                        class="form-control form-control-sm" disabled>
                                                     <option value=""> Seçiniz</option>
                                                     <option {{old('hat') == 'Anahat' ? 'selected' : ''}} value="Anahat">
                                                         Anahat
@@ -229,7 +229,7 @@
                                                 <label for="cikis_aktarma" class="font-weight-bold">Çıkış
                                                     Aktarma </label>
                                                 <select name="cikis_aktarma" required id="cikis_aktarma"
-                                                        class="form-control form-control-sm">
+                                                        class="form-control form-control-sm" disabled>
                                                     <option value=""> Seçiniz</option>
                                                     @foreach($data['transshipment_centers'] as $trasferCars)
                                                         <option
@@ -245,7 +245,7 @@
                                                 <label for="varis_aktarma" class="font-weight-bold">Varış
                                                     Aktarma</label>
                                                 <select name="varis_aktarma" required id="varis_aktarma"
-                                                        class="form-control form-control-sm">
+                                                        class="form-control form-control-sm" disabled>
                                                     <option value=""> Seçiniz</option>
                                                     @foreach($data['transshipment_centers'] as $trasferCars)
                                                         <option
@@ -262,7 +262,7 @@
                                                 <select style="display: none;width: 100%;" multiple="multiple" required
                                                         name="ugradigi_aktarmalarx"
                                                         id="ugradigi_aktarmalar"
-                                                        class="form-control">
+                                                        class="form-control" disabled>
                                                     @foreach($data['transshipment_centers'] as $trasferCars)
                                                         <option
                                                             value="{{$trasferCars->id}}">{{$trasferCars->tc_name. ' ('.$trasferCars->type.')' . ' T.M.' }} </option>
@@ -275,47 +275,7 @@
                                                value="{{old('ugradigi_aktarmalar')}}"
                                                id="ugradigi_aktarmalar_dizi">
 
-                                        <div class="col-md-6">
-                                            <div class="position-relative form-group">
-                                                <label for="muayene_baslangic_tarihi">Muayene Başlangıç Tarihi</label>
-                                                <input type="date" required class="form-control form-control-sm"
-                                                       name="muayene_baslangic_tarihi"
-                                                       value="{{old('muayene_baslangic_tarihi')}}"
-                                                       id="muayene_baslangic_tarihi">
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-6">
-                                            <div class="position-relative form-group">
-                                                <label for="muayene_bitis_tarihi">Muayene Bitiş Tarihi</label>
-                                                <input type="date" required class="form-control form-control-sm"
-                                                       name="muayene_bitis_tarihi"
-                                                       value="{{old('muayene_bitis_tarihi')}}"
-                                                       id="muayene_bitis_tarihi">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="position-relative form-group">
-                                                <label for="trafik_sigortasi_baslangic_tarihi">Trafik Sigortası
-                                                    Başlangıç Tarihi</label>
-                                                <input type="date" required class="form-control form-control-sm"
-                                                       name="trafik_sigortasi_baslangic_tarihi"
-                                                       value="{{old('trafik_sigortasi_baslangic_tarihi')}}"
-                                                       id="trafik_sigortasi_baslangic_tarihi">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="position-relative form-group">
-                                                <label for="trafik_sigortasi_bitis_tarihi">Trafik Sigortası Bitiş
-                                                    Tarihi</label>
-                                                <input type="date" required class="form-control form-control-sm"
-                                                       name="trafik_sigortasi_bitis_tarihi"
-                                                       value="{{old('trafik_sigortasi_bitis_tarihi')}}"
-                                                       id="trafik_sigortasi_bitis_tarihi">
-                                            </div>
-                                        </div>
 
                                     </div>
 
@@ -363,7 +323,7 @@
                                         <input name="arac_sahibi_ad" required id="arac_sahibi_ad"
                                                placeholder="Araç sahibi adı."
                                                type="text"
-                                               value="{{ old('arac_sahibi_ad') }}" class="form-control form-control-sm">
+                                               value="{{ old('arac_sahibi_ad') }}" class="form-control form-control-sm" disabled>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -374,7 +334,7 @@
                                                data-inputmask="'mask': '(999) 999 99 99'"
                                                placeholder="(_) _ _ _" type="text"
                                                value="{{ old('arac_sahibi_telefon') }}"
-                                               class="form-control arac_sahibi_telefon form-control-sm input-mask-trigger">
+                                               class="form-control arac_sahibi_telefon form-control-sm input-mask-trigger" disabled>
                                     </div>
                                 </div>
 
@@ -384,7 +344,7 @@
                                             Adres</label>
                                         <textarea name="arac_sahibi_adres" id="arac_sahibi_adres"
                                                   class="form-control form-control-sm" maxlength="500"
-                                                  required>{{ old('arac_sahibi_adres') }}</textarea>
+                                                  required disabled>{{ old('arac_sahibi_adres') }}</textarea>
                                     </div>
                                 </div>
 
@@ -397,7 +357,7 @@
                                                placeholder="Araç sahibi yakını ad soyad"
                                                type="text"
                                                value="{{ old('arac_sahibi_yakini_ad') }}"
-                                               class="form-control form-control-sm">
+                                               class="form-control form-control-sm" disabled>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -410,7 +370,7 @@
                                                data-inputmask="'mask': '(999) 999 99 99'"
                                                placeholder="(_) _ _ _" type="text"
                                                value="{{ old('arac_sahibi_yakini_telefon') }}"
-                                               class="form-control form-control-sm input-mask-trigger">
+                                               class="form-control form-control-sm input-mask-trigger" disabled>
                                     </div>
                                 </div>
 
@@ -421,7 +381,7 @@
                                             Adres</label>
                                         <textarea name="arac_sahibi_yakini_adres" id="arac_sahibi_yakini_adres"
                                                   class="form-control form-control-sm" maxlength="500"
-                                                  required>{{ old('arac_sahibi_yakini_adres') }}</textarea>
+                                                  required disabled>{{ old('arac_sahibi_yakini_adres') }}</textarea>
                                     </div>
                                 </div>
 
@@ -471,10 +431,6 @@
                     $('#cikis_aktarma').attr('disabled',true);
                     $('#varis_aktarma').attr('disabled',true);
                     $('#ugradigi_aktarmalar').attr('disabled',true);
-                    $('#muayene_baslangic_tarihi').attr('disabled',true);
-                    $('#muayene_bitis_tarihi').attr('disabled',true);
-                    $('#trafik_sigortasi_baslangic_tarihi').attr('disabled',true);
-                    $('#trafik_sigortasi_bitis_tarihi').attr('disabled',true);
                     $('#arac_sahibi_ad').attr('disabled',true);
                     $('#arac_sahibi_telefon').attr('disabled',true);
                     $('#arac_sahibi_adres').attr('disabled',true);
@@ -503,10 +459,6 @@
                     $('#cikis_aktarma').attr('disabled',false);
                     $('#varis_aktarma').attr('disabled',false);
                     $('#ugradigi_aktarmalar').attr('disabled',false);
-                    $('#muayene_baslangic_tarihi').attr('disabled',false);
-                    $('#muayene_bitis_tarihi').attr('disabled',false);
-                    $('#trafik_sigortasi_baslangic_tarihi').attr('disabled',false);
-                    $('#trafik_sigortasi_bitis_tarihi').attr('disabled',false);
                     $('#arac_sahibi_ad').attr('disabled',false);
                     $('#arac_sahibi_telefon').attr('disabled',false);
                     $('#arac_sahibi_adres').attr('disabled',false);
