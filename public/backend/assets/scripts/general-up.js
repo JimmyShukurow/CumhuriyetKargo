@@ -465,5 +465,4 @@ dtLengthMenu = [
 
 $(document).on('keyup', '.dataTables_filter input', function () {
     $(this).val($(this).val().toLocaleUpperCase())
-    $('.dataTable').DataTable().draw()
 });

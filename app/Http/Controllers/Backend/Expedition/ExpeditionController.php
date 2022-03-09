@@ -13,9 +13,6 @@ class ExpeditionController extends Controller
 {
     public function create()
     {
-        $damage_types = DB::table('htf_damage_types')->get();
-        $transactions = DB::table('htf_transactions_made')->get();
-
         $branch = [];
         ## Get Branch Info
         if (Auth::user()->user_type == 'Acente') {
@@ -40,6 +37,6 @@ class ExpeditionController extends Controller
         $tc = TransshipmentCenters::all();
 
         GeneralLog('Sefer oluştur modülü.');
-        return view('backend.expedition.create', compact(['damage_types', 'transactions', 'branch', 'agencies', 'tc']));
+        return view('backend.expedition.create.create', compact(['branch', 'agencies', 'tc']));
     }
 }
