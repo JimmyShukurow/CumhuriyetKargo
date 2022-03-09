@@ -172,6 +172,7 @@ $(document).ready(function () {
             $('#car_type').html(cars.car_type);
             $('#created_at').html(cars.created_at);
             $('#confirmer').html(cars.confirmer ? cars.confirmer.name_surname : '');
+            $('#status').html(cars.status == 1 ? 'Aktif' : 'Pasif');
             $('#soforAdi').html(cars.sofor_ad);
             $('#soforIletisim').html(cars.sofor_telefon);
             $('#soforAders').html(cars.sofor_adres);

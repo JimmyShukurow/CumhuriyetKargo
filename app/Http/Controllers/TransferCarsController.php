@@ -108,8 +108,9 @@ class TransferCarsController extends Controller
         $cars = DB::table('tc_cars_all_data')
             ->where('id', $request->carID)
             ->first();
-        $car_type = TcCars::find($request->carID);
-        $cars->car_type = $car_type->car_type;
+        $car = TcCars::find($request->carID);
+        $cars->car_type = $car->car_type;
+        $cars->status = $car->status;
         $value = $cars->ugradigi_aktarmalar;
         $value = substr($value, 0, strlen($value) - 1);
         $array = explode(',', $value);

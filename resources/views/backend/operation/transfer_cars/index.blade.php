@@ -365,7 +365,7 @@
                 $('#model').html(cars.model);
                 $('#modelYili').html(cars.model_yili);
                 $('#aracKapasitesi').html(cars.arac_kapasitesi);
-                $('#tonaj').html(cars.tonaj);
+                $('#status').html(cars.status == 1 ? 'Aktif' : 'Pasif');
                 $('#aracTakipSistemi').html(cars.arac_takip_sistemi);
                 $('#hat').html(cars.hat);
                 $('#cikisAktarma').html(cars.cikis_akt + " T.M.");
@@ -492,8 +492,8 @@
                                                 <tr>
                                                     <td class="static">Araç Kapasitesi</td>
                                                     <td class="modal-data" id="aracKapasitesi"></td>
-                                                    <td class="static">Tonaj</td>
-                                                    <td class="modal-data" id="tonaj"></td>
+                                                    <td class="static">Status</td>
+                                                    <td class="modal-data" id="status"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Araç Takip Sistemi</td>

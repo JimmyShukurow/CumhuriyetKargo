@@ -159,6 +159,7 @@
                 $('#soforAdi').html(cars.sofor_ad);
                 $('#soforIletisim').html(cars.sofor_telefon);
                 $('#soforAders').html(cars.sofor_adres);
+                $('#status').html(cars.status == 1 ? 'Aktif' : 'Pasif');
                 $('.modal-body').unblock();
                 return false;
             });

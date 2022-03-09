@@ -61,6 +61,12 @@
                                                     <td class="static">Onaylayan</td>
                                                     <td class="modal-data" id="confirmer"></td>
                                                 </tr>
+                                                <tr>
+                                                    <td class="static">Status</td>
+                                                    <td class="modal-data" id="status"></td>
+                                                    <td class="static"></td>
+                                                    <td class="modal-data" id=""></td>
+                                                </tr>
                                                 </tbody>
                                             </table>
 

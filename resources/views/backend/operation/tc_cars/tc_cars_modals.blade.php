@@ -72,6 +72,13 @@
                                                     <td class="static">Varış Aktarma</td>
                                                     <td class="modal-data" id="varis_aktarma"></td>
                                                 </tr>
+                                                <tr>
+                                                    <td class="static">Status</td>
+                                                    <td class="modal-data" id="status"></td>
+                                                    <td class="static"></td>
+                                                    <td class="modal-data" id=""></td>
+                                                </tr>
+
                                                 </tbody>
                                             </table>
 
@@ -166,4 +173,4 @@
             </div>
         </div>
     </div>
-
+     </div>
