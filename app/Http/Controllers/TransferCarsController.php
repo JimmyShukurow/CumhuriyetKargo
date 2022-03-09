@@ -46,7 +46,7 @@ class TransferCarsController extends Controller
         $aktarma = $request->aktarma;
         $carType = $request->carType;
 
-        $cars = TcCars::with(['creator' => function($query){ $query->withTrashed();}] )
+        $cars = TcCars::with(['creator' => function($query){ $query->withTrashed();}, 'transshipment', 'branch'])
             ->when($marka, function ($q) use ($marka) { return $q->where('marka', 'like', '%'.$marka.'%');})
             ->when($model , function ($q) use ($model) { return $q->where('model', 'like', '%'.$model.'%');})
             ->when($plaka , function ($q) use ($plaka) { return $q->where('plaka', 'like', '%'.$plaka.'%');})
@@ -65,8 +65,15 @@ class TransferCarsController extends Controller
             ->editColumn('name_surname', function ($car){
                 return $car->creator->name_surname ?? null;
             })
+            ->addColumn('ait_oldugu_birimi', function ($car){
+                if ($car->car_type == 'Aktarma') {
+                    return $car->transshipment->tc_name ?? null;
+                }else{
+                    return $car->branch->agency_name ?? null;
+                }
+            })
             ->addColumn('edit', 'backend.operation.transfer_cars.column')
-            ->rawColumns(['edit', 'name_surname'])
+            ->rawColumns(['edit', 'name_surname', 'ait_oldugu_birim'])
             ->make(true);
     }
 
