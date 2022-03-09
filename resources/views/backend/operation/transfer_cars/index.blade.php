@@ -156,6 +156,7 @@
                         <th>Model</th>
                         <th>Plaka</th>
                         <th>Araç Tipi </th>
+                        <th>Ait Oldugu Birimi </th>
                         <th>Hat</th>
                         <th>Kapasite (KG)</th>
                         <th>Şoför Adı</th>
@@ -176,6 +177,7 @@
                         <th>Model</th>
                         <th>Plaka</th>
                         <th>Araç Tipi </th>
+                        <th>Ait Oldugu Birimi </th>
                         <th>Hat</th>
                         <th>Kapasite (KG)</th>
                         <th>Şoför Adı</th>
@@ -281,6 +283,7 @@
                     {data: 'model', name: 'model'},
                     {data: 'plaka', name: 'plaka'},
                     {data: 'car_type', name: 'car_type'},
+                    {data: 'ait_oldugu_birimi', name: 'ait_oldugu_birimi'},
                     {data: 'hat', name: 'hat'},
                     {data: 'arac_kapasitesi', name: 'arac_kapasitesi'},
                     {data: 'sofor_ad', name: 'sofor_ad'},
