@@ -44,6 +44,7 @@ use FieldsToUppercaseTrait;
             'arac_sahibi_yakini_adres' => 'nullable',
             'car_type' => 'nullable',
             'status' => 'nullable',
+            'branch_code' =>'required',
         ];
     }
 }

@@ -68,8 +68,13 @@
                                         <label for="branch" class="font-weight-bold">Bağlı olduğu şube:</label>
                                         <select name="branch"  id="branch"
                                                 class="form-control form-control-sm" value="{{$car->branch_code}}">
-                                            <option value=""> Seçiniz</option>
-
+                                            @foreach($branchs as $branch)
+                                                @if($car->car_type == 'Aktarma')
+                                                    <option {{ $car->branch_code == $branch->id ? 'selected' : '' }} value="{{$branch->id}}"> {{$branch->tc_name}}</option>
+                                                @else
+                                                    <option {{ $car->branch_code == $branch->id ? 'selected' : '' }} value="{{$branch->id}}"> {{$branch->agency_name}}</option>
+                                                @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -445,7 +450,7 @@
                             $.each(response, function (key, value){
                                 allAgencies += '<option value='+ value.id +'>'+value.agency_name +'</option>';
                             })
-                            $('#branch').append(allAgencies);
+                            $('#branch').html('').append(allAgencies);
                         }
                     )
                 }
@@ -474,7 +479,7 @@
                             $.each(response, function (key, value){
                                 allTC += '<option value='+ value.id +'>'+value.tc_name +'</option>';
                             })
-                            $('#branch').append(allTC);
+                            $('#branch').html('').append(allTC);
 
                         }
                     )

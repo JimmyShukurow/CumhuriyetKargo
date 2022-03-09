@@ -159,7 +159,7 @@
                         <th>Ait Oldugu Birimi </th>
                         <th>Onay Durumu </th>
                         <th>Hat</th>
-                        <th>Kapasite (KG)</th>
+                        <th>Statü</th>
                         <th>Şoför Adı</th>
                         <th>Şoför İletişim</th>
                         <th>Oluşturan</th>
@@ -181,7 +181,7 @@
                         <th>Ait Oldugu Birimi </th>
                         <th>Onay Durumu </th>
                         <th>Hat</th>
-                        <th>Kapasite (KG)</th>
+                        <th>Statü</th>
                         <th>Şoför Adı</th>
                         <th>Şoför İletişim</th>
                         <th>Oluşturan</th>
@@ -285,10 +285,10 @@
                     {data: 'model', name: 'model'},
                     {data: 'plaka', name: 'plaka'},
                     {data: 'car_type', name: 'car_type'},
-                    {data: 'confirmation_status', name: 'confirmation_status'},
                     {data: 'ait_oldugu_birimi', name: 'ait_oldugu_birimi'},
+                    {data: 'confirmation_status', name: 'confirmation_status'},
                     {data: 'hat', name: 'hat'},
-                    {data: 'arac_kapasitesi', name: 'arac_kapasitesi'},
+                    {data: 'car_status', name: 'car_status'},
                     {data: 'sofor_ad', name: 'sofor_ad'},
                     {data: 'sofor_telefon', name: 'sofor_telefon'},
                     {data: 'name_surname', name: 'name_surname'},

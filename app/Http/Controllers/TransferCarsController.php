@@ -81,8 +81,16 @@ class TransferCarsController extends Controller
                     return '<b class="text-danger"> Reddedildi </b>';
                 }
             })
+            ->addColumn('car_status', function ($car){
+                if ($car->status == 0) {
+                    return '<b class="text-danger"> Pasif </b>';
+                } elseif ($car->status == 1) {
+                    return '<b class="text-success"> Aktif </b>';
+                }
+
+            })
             ->addColumn('edit', 'backend.operation.transfer_cars.column')
-            ->rawColumns(['edit', 'name_surname', 'ait_oldugu_birim','confirmation_status'])
+            ->rawColumns(['edit', 'name_surname', 'ait_oldugu_birim','confirmation_status', 'car_status'])
             ->make(true);
     }
 
@@ -149,7 +157,8 @@ class TransferCarsController extends Controller
         $data['transshipment_centers'] = TransshipmentCenters::all();
         $data['cities'] = Cities::all();
         $car = TcCars::find($id);
-        return view('backend.operation.transfer_cars.edit', compact(['data', 'car']));
+        $branchs = $car->car_type == 'Aktarma' ? TransshipmentCenters::all() : Agencies::all();
+        return view('backend.operation.transfer_cars.edit', compact(['data', 'car', 'branchs']));
     }
 
 

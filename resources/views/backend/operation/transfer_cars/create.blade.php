@@ -65,7 +65,7 @@
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="branch" class="font-weight-bold">Bağlı olduğu şube:</label>
-                                        <select name="branch"  id="branch"
+                                        <select name="branch_code"  id="branch"
                                                 class="form-control form-control-sm">
                                             <option value=""> Seçiniz</option>
 
@@ -441,11 +441,11 @@
                     $.ajax('/Ajax/AllAgencies', {
                         method: 'GET',
                     }).done(function (response) {
-                        let allAgencies = '';
+                        let allAgencies = '<option value=""> Seçiniz</option>';
                        $.each(response, function (key, value){
                            allAgencies += '<option value='+ value.id +'>'+value.agency_name +'</option>';
                        })
-                       $('#branch').append(allAgencies);
+                       $('#branch').html('').append(allAgencies);
                         }
                     )
                 }
@@ -470,11 +470,11 @@
                     $.ajax('/Ajax/AllTransshipmentCenters', {
                         method: 'GET',
                     }).done(function (response) {
-                        let allTC = '';
+                        let allTC =  '<option value=""> Seçiniz</option>';;
                         $.each(response, function (key, value){
                             allTC += '<option value='+ value.id +'>'+value.tc_name +'</option>';
                         })
-                        $('#branch').append(allTC);
+                        $('#branch').html('').append(allTC);
 
                         }
                     )
