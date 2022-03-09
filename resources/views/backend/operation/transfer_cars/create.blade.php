@@ -449,24 +449,24 @@
             $('#car_type').on('change', function (){
                 if($('#car_type').val() == 'Acente' ){
 
-                    $('#arac_kapasitesi').val('').attr('disabled',true);
-                    $('#tonaj').val('').attr('disabled',true);
-                    $('#desi_kapasitesi').val('').attr('disabled',true);
-                    $('#arac_takip_sistemi').val('').attr('disabled',true);
-                    $('#hat').val('').attr('disabled',true);
-                    $('#cikis_aktarma').val('').attr('disabled',true);
-                    $('#varis_aktarma').val('').attr('disabled',true);
-                    $('#ugradigi_aktarmalar').val('').attr('disabled',true);
-                    $('#muayene_baslangic_tarihi').val('').attr('disabled',true);
-                    $('#muayene_bitis_tarihi').val('').attr('disabled',true);
-                    $('#trafik_sigortasi_baslangic_tarihi').val('').attr('disabled',true);
-                    $('#trafik_sigortasi_bitis_tarihi').val('').attr('disabled',true);
-                    $('#arac_sahibi_ad').val('').attr('disabled',true);
-                    $('#arac_sahibi_telefon').val('').attr('disabled',true);
-                    $('#arac_sahibi_adres').val('').attr('disabled',true);
-                    $('#arac_sahibi_yakini_ad').val('').attr('disabled',true);
-                    $('#arac_sahibi_yakini_telefon').val('').attr('disabled',true);
-                    $('#arac_sahibi_yakini_adres').val('').attr('disabled',true);
+                    $('#arac_kapasitesi').attr('disabled',true);
+                    $('#tonaj').attr('disabled',true);
+                    $('#desi_kapasitesi').attr('disabled',true);
+                    $('#arac_takip_sistemi').attr('disabled',true);
+                    $('#hat').attr('disabled',true);
+                    $('#cikis_aktarma').attr('disabled',true);
+                    $('#varis_aktarma').attr('disabled',true);
+                    $('#ugradigi_aktarmalar').attr('disabled',true);
+                    $('#muayene_baslangic_tarihi').attr('disabled',true);
+                    $('#muayene_bitis_tarihi').attr('disabled',true);
+                    $('#trafik_sigortasi_baslangic_tarihi').attr('disabled',true);
+                    $('#trafik_sigortasi_bitis_tarihi').attr('disabled',true);
+                    $('#arac_sahibi_ad').attr('disabled',true);
+                    $('#arac_sahibi_telefon').attr('disabled',true);
+                    $('#arac_sahibi_adres').attr('disabled',true);
+                    $('#arac_sahibi_yakini_ad').attr('disabled',true);
+                    $('#arac_sahibi_yakini_telefon').attr('disabled',true);
+                    $('#arac_sahibi_yakini_adres').attr('disabled',true);
 
                     $.ajax('/Ajax/AllAgencies', {
                         method: 'GET',
