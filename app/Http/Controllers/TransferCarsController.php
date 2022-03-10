@@ -18,7 +18,7 @@ class TransferCarsController extends Controller
 
     public function index()
     {
-        $data['agencies'] = Agencies::all();
+        $data['agencies'] = Agencies::orderBy('agency_name')->get();
         $data['cities'] = Cities::all();
         $data['transshipment_centers'] = TransshipmentCenters::all();
         GeneralLog('Aktarma araçları sayfası görüntülendi.');

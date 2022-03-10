@@ -121,7 +121,7 @@
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
                                 @foreach($data['agencies'] as $key)
-                                    <option value="{{$key->id}}">{{$key->agency_name}}</option>
+                                    <option value="{{$key->id}}">{{$key->agency_name . ' ŞUBE'}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -132,7 +132,7 @@
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
                                 @foreach($data['transshipment_centers'] as $key)
-                                    <option value="{{$key->id}}">{{$key->tc_name . ' ('.$key->type.') T.M.'}}</option>
+                                    <option value="{{$key->id}}">{{$key->tc_name . ' TRM.'}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -140,10 +140,10 @@
                         <div class="col-md-3">
                             <label for="filter_car_type">Araç Tipi:</label>
                             <select type="text" id="filter_car_type"
-                                   class="form-control niko-filter form-control-sm niko-select-filter">
-                                <option value=""> seçiniz </option>
-                                <option value="Acente"> Acente </option>
-                                <option value="Aktarma"> Aktarma </option>
+                                    class="form-control niko-filter form-control-sm niko-select-filter">
+                                <option value=""> seçiniz</option>
+                                <option value="Acente"> Acente</option>
+                                <option value="Aktarma"> Aktarma</option>
                             </select>
                         </div>
 
@@ -159,9 +159,9 @@
                         <th>Marka</th>
                         <th>Model</th>
                         <th>Plaka</th>
-                        <th>Araç Tipi </th>
-                        <th>Ait Oldugu Birimi </th>
-                        <th>Onay Durumu </th>
+                        <th>Araç Tipi</th>
+                        <th>Ait Oldugu Birimi</th>
+                        <th>Onay Durumu</th>
                         <th>Hat</th>
                         <th>Statü</th>
                         <th>Şoför Adı</th>
@@ -181,9 +181,9 @@
                         <th>Marka</th>
                         <th>Model</th>
                         <th>Plaka</th>
-                        <th>Araç Tipi </th>
-                        <th>Ait Oldugu Birimi </th>
-                        <th>Onay Durumu </th>
+                        <th>Araç Tipi</th>
+                        <th>Ait Oldugu Birimi</th>
+                        <th>Onay Durumu</th>
                         <th>Hat</th>
                         <th>Statü</th>
                         <th>Şoför Adı</th>
@@ -371,8 +371,8 @@
                 $('#status').html(cars.status == 1 ? '<b class="text-success"> Aktif </b>' : '<b class="text-danger"> Pasif </b>');
                 $('#aracTakipSistemi').html(cars.arac_takip_sistemi);
                 $('#hat').html(cars.hat);
-                $('#cikisAktarma').html(cars.cikis_akt ? cars.cikis_akt  + " T.M." : '') ;
-                $('#varisAktarma').html(cars.varis_akt ? cars.varis_akt  + " T.M." : '');
+                $('#cikisAktarma').html(cars.cikis_akt ? cars.cikis_akt + " T.M." : '');
+                $('#varisAktarma').html(cars.varis_akt ? cars.varis_akt + " T.M." : '');
                 $('#ugradigiAktarmalar').html(response.aktarmalar);
                 $('#muayeneBaslangicBitisTarihi').html(cars.muayene_baslangic_tarihi + " - " + cars.muayene_bitis_tarihi);
                 $('#muayeneBitimiKalanGun').html(cars.muayene_kalan_sure);
