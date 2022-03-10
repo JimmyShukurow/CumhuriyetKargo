@@ -57,4 +57,11 @@ use FieldsToUppercaseTrait;
            return  array_merge($rules, ['plaka' => 'required']);
         }
     }
+
+    public function messages()
+    {
+        return [
+            'branch_code.required' => 'Bağlı Olduğuğ Şube Bilgisi Zorunludur.',
+        ];
+    }
 }
