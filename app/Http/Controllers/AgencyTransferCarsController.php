@@ -75,8 +75,18 @@ class AgencyTransferCarsController extends Controller
                 else if ($cars->confirm == 1) return '<b class="text-success"> Onaylandı </b>';
                 else if ($cars->confirm == -1) return '<b class="text-danger"> Reddedildi </b>';
             })
+            ->editColumn('created_at', function ($cars) {
+                return  $cars->created_at ;
+            })
+            ->addColumn('car_status', function ($car){
+                if ($car->status == 0) {
+                    return '<b class="text-danger"> Pasif </b>';
+                } elseif ($car->status == 1) {
+                    return '<b class="text-success"> Aktif </b>';
+                }
+            })
             ->addColumn('details', 'backend.operation.transfer_cars_agency.column')
-            ->rawColumns(['details', 'branch', 'creator', 'confirmation_status'])
+            ->rawColumns(['details', 'branch', 'creator', 'confirmation_status', 'car_status'])
             ->make(true);
     }
 

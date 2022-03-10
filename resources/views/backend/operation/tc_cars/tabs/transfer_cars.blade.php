@@ -52,6 +52,7 @@
         <th>PLAKA</th>
         <th>HAT</th>
         <th>KAPASİTE</th>
+        <th>STATÜ</th>
         <th>ÇIKIŞ AKT</th>
         <th>VARIŞ AKT</th>
         <th>ŞOFÖR ADI</th>

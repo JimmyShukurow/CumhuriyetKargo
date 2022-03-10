@@ -93,9 +93,15 @@ class GetAgencyCarsOfBranch
                     return '<b class="text-danger"> Reddedildi </b>';
                 }
             })
-
+            ->addColumn('car_status', function ($car){
+                if ($car->status == 0) {
+                    return '<b class="text-danger"> Pasif </b>';
+                } elseif ($car->status == 1) {
+                    return '<b class="text-success"> Aktif </b>';
+                }
+            })
             ->addColumn('details', 'backend.operation.tc_cars.column')
-            ->rawColumns(['details', 'branch', 'creator', 'confirmation_status', 'creator_role', 'creator_agency'])
+            ->rawColumns(['details', 'branch', 'creator', 'confirmation_status', 'creator_role', 'creator_agency', 'car_status'])
             ->make(true);
     }
 }
