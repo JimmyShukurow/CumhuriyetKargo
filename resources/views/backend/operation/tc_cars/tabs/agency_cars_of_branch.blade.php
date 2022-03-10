@@ -65,6 +65,7 @@
         <th>MÜHÜR SAYISI</th>
         <th>ŞOFÖR ADI</th>
         <th>ŞOFÖR İLETİŞİM</th>
+        <th>STATÜ</th>
         <th>OLUŞTURAN</th>
         <th>ŞUBE</th>
         <th>KAYIT TARİHİ</th>

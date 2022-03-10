@@ -2,15 +2,18 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\FieldsToUppercaseTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AgencyTransferCarRequest extends FormRequest
 {
 
+    use FieldsToUppercaseTrait;
+
     public function rules()
     {
-        return [
-            'plaka' => 'required',
+        $rules = [
+            'plaka' => 'required|unique:tc_cars',
             'marka' => 'required',
             'model' => 'required',
             'model_yili' => 'required',
@@ -21,7 +24,18 @@ class AgencyTransferCarRequest extends FormRequest
             'sofor_telefon' => 'required',
             'sofor_adres' => 'required',
         ];
+
+        $method = $this->method();
+
+        if ($method == 'POST'){
+            return array_merge($rules, ['plaka' => 'required|unique:tc_cars,plaka']);
+        }
+        if ($method == 'PUT'){
+            return  array_merge($rules, ['plaka' => 'required']);
+        }
     }
+
+
     public function messages()
     {
         return [
@@ -31,4 +45,5 @@ class AgencyTransferCarRequest extends FormRequest
             'doors_to_be_sealed.min' => 'Kapı Sayısı Sıfırdan Büyük Olucak',
         ];
     }
+
 }

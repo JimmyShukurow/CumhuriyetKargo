@@ -12,6 +12,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
             Route::get('/SystemUpdatesShow/{id}', [ModuleController::class, 'systemUpdateShow']);
             Route::post('GetAgency', [AjaxController::class, 'getAgency']);
             Route::post('/GetCarInfo', [AjaxController::class, 'getCarInfo']);
+            Route::get('AllAgencies', [AjaxController::class, 'getAllAgencies']);
+            Route::get('AllTransshipmentCenters', [AjaxController::class, 'getAllTransshipmentCenters']);
         });
     });
 });
