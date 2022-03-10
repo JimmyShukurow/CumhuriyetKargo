@@ -61,7 +61,7 @@ use FieldsToUppercaseTrait;
     public function messages()
     {
         return [
-            'branch_code.required' => 'Bağlı Olduğuğ Şube Bilgisi Zorunludur.',
+            'branch_code.required' => 'Bağlı Olduğu Şube Bilgisi Zorunludur.',
         ];
     }
 }
