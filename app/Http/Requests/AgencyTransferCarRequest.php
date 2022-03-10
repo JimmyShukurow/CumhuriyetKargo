@@ -12,8 +12,8 @@ class AgencyTransferCarRequest extends FormRequest
 
     public function rules()
     {
-        return [
-            'plaka' => 'required',
+        $rules = [
+            'plaka' => 'required|unique:tc_cars',
             'marka' => 'required',
             'model' => 'required',
             'model_yili' => 'required',
@@ -24,7 +24,18 @@ class AgencyTransferCarRequest extends FormRequest
             'sofor_telefon' => 'required',
             'sofor_adres' => 'required',
         ];
+
+        $method = $this->method();
+
+        if ($method == 'POST'){
+            return array_merge($rules, ['plaka' => 'required|unique:tc_cars,plaka']);
+        }
+        if ($method == 'PUT'){
+            return  array_merge($rules, ['plaka' => 'required']);
+        }
     }
+
+
     public function messages()
     {
         return [

@@ -87,7 +87,9 @@ class TransferCarsController extends Controller
                 } elseif ($car->status == 1) {
                     return '<b class="text-success"> Aktif </b>';
                 }
-
+            })
+            ->editColumn('created_at', function ($cars) {
+                return  $cars->created_at ;
             })
             ->addColumn('edit', 'backend.operation.transfer_cars.column')
             ->rawColumns(['edit', 'name_surname', 'ait_oldugu_birim','confirmation_status', 'car_status'])
@@ -100,6 +102,8 @@ class TransferCarsController extends Controller
         $validated = $request->validated();
         $validated['creator_id'] = Auth::id();
         $validated['confirm'] = "1";
+        $validated['confirmed_user'] = Auth::id();
+        $validated['confirmed_date'] = now();
 
         $create = TcCars::create($validated);
 

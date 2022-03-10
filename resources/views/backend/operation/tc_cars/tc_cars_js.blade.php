@@ -47,6 +47,13 @@ $(document).ready(function () {
         },
         buttons: [
             {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+                },
+                title: "CK - Aktarma Araçları"
+            },
+            {
                 text: 'Yenile',
                 action: function (e, dt, node, config) {
                     dt.ajax.reload();
@@ -95,6 +102,7 @@ $(document).ready(function () {
             {data: 'plaka', name: 'plaka'},
             {data: 'hat', name: 'hat'},
             {data: 'arac_kapasitesi', name: 'arac_kapasitesi'},
+            {data: 'car_status', name: 'car_status'},
             {data: 'cikis_aktarma', name: 'cikis_aktarma'},
             {data: 'varis_aktarma', name: 'varis_aktarma'},
             {data: 'sofor_ad', name: 'sofor_ad'},

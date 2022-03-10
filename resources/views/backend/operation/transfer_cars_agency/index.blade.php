@@ -116,6 +116,7 @@
                         <th>Şöför Adı</th>
                         <th>Ekleyen</th>
                         <th>Araç Tipi</th>
+                        <th>Statü</th>
                         <th>Kayıt Tarihi</th>
                         <th>Onay Durumu</th>
                         <th class="text-center">Detay</th>
@@ -135,6 +136,7 @@
                         <th>Şöför Adı</th>
                         <th>Ekleyen</th>
                         <th>Araç Tipi</th>
+                        <th>Statü</th>
                         <th>Kayıt Tarihi</th>
                         <th>Onay Durumu</th>
                         <th class="text-center">Detay</th>

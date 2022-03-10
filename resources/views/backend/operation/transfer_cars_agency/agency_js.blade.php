@@ -80,6 +80,7 @@
                     {data: 'sofor_ad', name: 'sofor_ad'},
                     {data: 'creator', name: 'creator'},
                     {data: 'car_type', name: 'car_type'},
+                    {data: 'car_status', name: 'car_status'},
                     {data: 'created_at', name: 'created_at'},
                     {data: 'confirmation_status', name: 'confirmation_status'},
                     {data: 'details', name: 'details'},
@@ -159,7 +160,7 @@
                 $('#soforAdi').html(cars.sofor_ad);
                 $('#soforIletisim').html(cars.sofor_telefon);
                 $('#soforAders').html(cars.sofor_adres);
-                $('#status').html(cars.status == 1 ? 'Aktif' : 'Pasif');
+                $('#status').html(cars.status == 1 ? '<b class="text-success"> Aktif </b>' : '<b class="text-danger"> Pasif </b>');
                 $('.modal-body').unblock();
                 return false;
             });

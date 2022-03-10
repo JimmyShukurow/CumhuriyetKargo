@@ -12,8 +12,7 @@ class TcCarsRequest extends FormRequest
 
     public function rules()
     {
-        return [
-            'plaka' => 'required',
+        $rules = [
             'marka' => 'required',
             'model' => 'required',
             'model_yili' => 'required|Integer',
@@ -28,6 +27,15 @@ class TcCarsRequest extends FormRequest
             'cikis_aktarma' => 'nullable',
             'varis_aktarma' => 'Nullable',
         ];
+
+        $method = $this->method();
+
+        if ($method == 'POST'){
+            return array_merge($rules, ['plaka' => 'required|unique:tc_cars,plaka']);
+        }
+        if ($method == 'PUT'){
+            return  array_merge($rules, ['plaka' => 'required']);
+        }
     }
     public function messages()
     {

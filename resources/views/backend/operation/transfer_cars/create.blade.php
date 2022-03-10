@@ -16,8 +16,8 @@
                         <i class="fa fa-truck icon-gradient bg-amy-crisp">
                         </i>
                     </div>
-                    <div>Yeni Aktarma Aracı Oluştur
-                        <div class="page-title-subheading">Bu sayfa üzerinden aktarma aracı oluşturabilirsiniz.
+                    <div>Yeni Araç Oluştur
+                        <div class="page-title-subheading">Bu sayfa üzerinden araç oluşturabilirsiniz.
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                                 <span class="btn-icon-wrapper pr-2 opacity-7">
                                     <i class="fa fa-step-backward fa-w-20"></i>
                                 </span>
-                                Tüm Aktarama Araçları Listele
+                                Tüm  Araçları Listele
                             </button>
                         </a>
                     </div>

@@ -16,8 +16,8 @@
                         <i class="fa fa-truck icon-gradient bg-amy-crisp">
                         </i>
                     </div>
-                    <div>Aktarma Aracı Düzenle
-                        <div class="page-title-subheading">Bu sayfa üzerinden aktarma aracını güncelleyebilirsiniz.
+                    <div>Aracı Düzenle
+                        <div class="page-title-subheading">Bu sayfa üzerinden aracı güncelleyebilirsiniz.
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                                 <span class="btn-icon-wrapper pr-2 opacity-7">
                                     <i class="fa fa-step-backward fa-w-20"></i>
                                 </span>
-                                Tüm Aktarama Araçları
+                                Tüm  Araçları Listele
                             </button>
                         </a>
                     </div>
@@ -66,7 +66,7 @@
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="branch" class="font-weight-bold">Bağlı olduğu şube:</label>
-                                        <select name="branch"  id="branch"
+                                        <select name="branch_code"  id="branch"
                                                 class="form-control form-control-sm" value="{{$car->branch_code}}">
                                             @foreach($branchs as $branch)
                                                 @if($car->car_type == 'Aktarma')
@@ -101,7 +101,7 @@
                                     <div class="position-relative form-group">
                                         <label for="plaka" class="font-weight-bold">Plaka:</label>
                                         <input name="plaka" required id="plaka"
-                                               placeholder="Aracın markasını giriniz."
+                                               placeholder="Aracın plakasını giriniz."
                                                type="text"
                                                value="{{ $car->plaka }}" class="form-control form-control-sm">
                                     </div>
@@ -142,7 +142,7 @@
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="arac_kapasitesi" class="font-weight-bold">Araç Kapasitesi</label>
-                                        <select name="arac_kapasitesi" required id="arac_kapasitesi"
+                                        <select name="arac_kapasitesi"  id="arac_kapasitesi"
                                                 class="form-control form-control-sm">
                                             <option value="">Seçiniz</option>
                                             <option
@@ -171,7 +171,7 @@
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="tonaj" class="font-weight-bold">Tonaj (Kg)</label>
-                                        <input name="tonaj" required id="tonaj"
+                                        <input name="tonaj"  id="tonaj"
                                                placeholder="Tonaj"
                                                type="text"
                                                value="{{ $car->tonaj }}" class="form-control form-control-sm">
@@ -180,7 +180,7 @@
                                 <div class="col-md-6">
                                     <div class="position-relative form-group">
                                         <label for="desi_kapasitesi" class="font-weight-bold">Desi Kapasitesi</label>
-                                        <input name="desi_kapasitesi" required id="desi_kapasitesi"
+                                        <input name="desi_kapasitesi"  id="desi_kapasitesi"
                                                placeholder="Desi Kapasitesi" type="text"
                                                value="{{ $car->desi_kapasitesi }}"
                                                class="form-control form-control-sm">
@@ -190,7 +190,7 @@
                                     <div class="position-relative form-group">
                                         <label for="arac_takip_sistemi" class="font-weight-bold">ATS (Araç Takip
                                             Sistemi):</label>
-                                        <select name="arac_takip_sistemi" required id="arac_takip_sistemi"
+                                        <select name="arac_takip_sistemi"  id="arac_takip_sistemi"
                                                 class="form-control form-control-sm">
                                             <option value=""> Seçiniz</option>
                                             <option
@@ -217,7 +217,7 @@
                                         <div class="col-md-4">
                                             <div class="position-relative form-group">
                                                 <label for="hat" class="font-weight-bold">Hat</label>
-                                                <select name="hat" required id="hat"
+                                                <select name="hat"  id="hat"
                                                         class="form-control form-control-sm">
                                                     <option value=""> Seçiniz</option>
                                                     <option {{ $car->hat == 'Anahat' ? 'selected' : ''}} value="Anahat">
@@ -233,7 +233,7 @@
                                             <div class="position-relative form-group">
                                                 <label for="cikis_aktarma" class="font-weight-bold">Çıkış
                                                     Aktarma </label>
-                                                <select name="cikis_aktarma" required id="cikis_aktarma"
+                                                <select name="cikis_aktarma"  id="cikis_aktarma"
                                                         class="form-control form-control-sm">
                                                     <option value=""> Seçiniz</option>
                                                     @foreach($data['transshipment_centers'] as $trasferCars)
@@ -249,7 +249,7 @@
                                             <div class="position-relative form-group">
                                                 <label for="varis_aktarma" class="font-weight-bold">Varış
                                                     Aktarma</label>
-                                                <select name="varis_aktarma" required id="varis_aktarma"
+                                                <select name="varis_aktarma"  id="varis_aktarma"
                                                         class="form-control form-control-sm">
                                                     <option value=""> Seçiniz</option>
                                                     @foreach($data['transshipment_centers'] as $trasferCars)
@@ -264,7 +264,7 @@
                                             <div class="position-relative form-group">
                                                 <label for="ugradigi_aktarmalar" class="font-weight-bold">Uğradığı
                                                     Aktarmalar</label>
-                                                <select style="display: none;width: 100%;" multiple="multiple" required
+                                                <select style="display: none;width: 100%;" multiple="multiple"
                                                         name="ugradigi_aktarmalarx"
                                                         id="ugradigi_aktarmalar"
                                                         class="form-control">
@@ -324,7 +324,7 @@
                                     <div class="position-relative form-group">
                                         <label for="arac_sahibi_ad" class="font-weight-bold">Araç Sahibi Ad
                                             Soyad</label>
-                                        <input name="arac_sahibi_ad" required id="arac_sahibi_ad"
+                                        <input name="arac_sahibi_ad"  id="arac_sahibi_ad"
                                                placeholder="Araç sahibi adı."
                                                type="text"
                                                value="{{ $car->arac_sahibi_ad }}" class="form-control form-control-sm">
@@ -334,7 +334,7 @@
                                     <div class="position-relative form-group">
                                         <label for="arac_sahibi_telefon" class="font-weight-bold">Araç Sahibi
                                             İletişim </label>
-                                        <input name="arac_sahibi_telefon" id="arac_sahibi_telefon" required
+                                        <input name="arac_sahibi_telefon" id="arac_sahibi_telefon"
                                                data-inputmask="'mask': '(999) 999 99 99'"
                                                placeholder="(_) _ _ _" type="text"
                                                value="{{ $car->arac_sahibi_telefon }}"
@@ -348,7 +348,7 @@
                                             Adres</label>
                                         <textarea name="arac_sahibi_adres" id="arac_sahibi_adres"
                                                   class="form-control form-control-sm" maxlength="500"
-                                                  required>{{ $car->arac_sahibi_adres }}</textarea>
+                                                  >{{ $car->arac_sahibi_adres }}</textarea>
                                     </div>
                                 </div>
 
@@ -357,7 +357,7 @@
                                     <div class="position-relative form-group">
                                         <label for="carOwnerRelative" class="font-weight-bold">Araç Sahibi Yakını Ad
                                             Soyad</label>
-                                        <input name="arac_sahibi_yakini_ad" required id="arac_sahibi_yakini_ad"
+                                        <input name="arac_sahibi_yakini_ad"  id="arac_sahibi_yakini_ad"
                                                placeholder="Araç sahibi yakını ad soyad"
                                                type="text"
                                                value="{{ $car->arac_sahibi_yakini_ad }}"
@@ -370,7 +370,7 @@
                                             Yakını
                                             İletişim </label>
                                         <input name="arac_sahibi_yakini_telefon" id="arac_sahibi_yakini_telefon"
-                                               required
+
                                                data-inputmask="'mask': '(999) 999 99 99'"
                                                placeholder="(_) _ _ _" type="text"
                                                value="{{ $car->arac_sahibi_yakini_telefon }}"
@@ -385,7 +385,7 @@
                                             Adres</label>
                                         <textarea name="arac_sahibi_yakini_adres" id="arac_sahibi_yakini_adres"
                                                   class="form-control form-control-sm" maxlength="500"
-                                                  required>{{ $car->arac_sahibi_yakini_adres }}</textarea>
+                                                  >{{ $car->arac_sahibi_yakini_adres }}</textarea>
                                     </div>
                                 </div>
 
@@ -415,6 +415,9 @@
 
 
         $(document).ready(() => {
+            var car_type = {!! json_encode($car->car_type) !!};
+            if(car_type == 'Acente') disableFields();
+
 
             $("#tc_car_form").submit(function (e) {
 
@@ -425,23 +428,12 @@
 
             });
 
+
+
             $('#car_type').on('change', function (){
                 if($('#car_type').val() == 'Acente' ){
 
-                    $('#arac_kapasitesi').attr('disabled',true);
-                    $('#tonaj').attr('disabled',true);
-                    $('#desi_kapasitesi').attr('disabled',true);
-                    $('#arac_takip_sistemi').attr('disabled',true);
-                    $('#hat').attr('disabled',true);
-                    $('#cikis_aktarma').attr('disabled',true);
-                    $('#varis_aktarma').attr('disabled',true);
-                    $('#ugradigi_aktarmalar').attr('disabled',true);
-                    $('#arac_sahibi_ad').attr('disabled',true);
-                    $('#arac_sahibi_telefon').attr('disabled',true);
-                    $('#arac_sahibi_adres').attr('disabled',true);
-                    $('#arac_sahibi_yakini_ad').attr('disabled',true);
-                    $('#arac_sahibi_yakini_telefon').attr('disabled',true);
-                    $('#arac_sahibi_yakini_adres').attr('disabled',true);
+                    disableFields();
 
                     $.ajax('/Ajax/AllAgencies', {
                         method: 'GET',
@@ -456,20 +448,7 @@
                 }
                 if($('#car_type').val() == 'Aktarma' ){
 
-                    $('#arac_kapasitesi').attr('disabled',false);
-                    $('#tonaj').attr('disabled',false);
-                    $('#desi_kapasitesi').attr('disabled',false);
-                    $('#arac_takip_sistemi').attr('disabled',false);
-                    $('#hat').attr('disabled',false);
-                    $('#cikis_aktarma').attr('disabled',false);
-                    $('#varis_aktarma').attr('disabled',false);
-                    $('#ugradigi_aktarmalar').attr('disabled',false);
-                    $('#arac_sahibi_ad').attr('disabled',false);
-                    $('#arac_sahibi_telefon').attr('disabled',false);
-                    $('#arac_sahibi_adres').attr('disabled',false);
-                    $('#arac_sahibi_yakini_ad').attr('disabled',false);
-                    $('#arac_sahibi_yakini_telefon').attr('disabled',false);
-                    $('#arac_sahibi_yakini_adres').attr('disabled',false);
+                        enableFields();
 
 
                     $.ajax('/Ajax/AllTransshipmentCenters', {
@@ -485,6 +464,40 @@
                     )
                 }
             })
+
+            function disableFields(){
+                $('#arac_kapasitesi').attr('disabled',true);
+                $('#tonaj').attr('disabled',true);
+                $('#desi_kapasitesi').attr('disabled',true);
+                $('#arac_takip_sistemi').attr('disabled',true);
+                $('#hat').attr('disabled',true);
+                $('#cikis_aktarma').attr('disabled',true);
+                $('#varis_aktarma').attr('disabled',true);
+                $('#ugradigi_aktarmalar').attr('disabled',true);
+                $('#arac_sahibi_ad').attr('disabled',true);
+                $('#arac_sahibi_telefon').attr('disabled',true);
+                $('#arac_sahibi_adres').attr('disabled',true);
+                $('#arac_sahibi_yakini_ad').attr('disabled',true);
+                $('#arac_sahibi_yakini_telefon').attr('disabled',true);
+                $('#arac_sahibi_yakini_adres').attr('disabled',true);
+            }
+
+            function enableFields(){
+                $('#arac_kapasitesi').attr('disabled',false);
+                $('#tonaj').attr('disabled',false);
+                $('#desi_kapasitesi').attr('disabled',false);
+                $('#arac_takip_sistemi').attr('disabled',false);
+                $('#hat').attr('disabled',false);
+                $('#cikis_aktarma').attr('disabled',false);
+                $('#varis_aktarma').attr('disabled',false);
+                $('#ugradigi_aktarmalar').attr('disabled',false);
+                $('#arac_sahibi_ad').attr('disabled',false);
+                $('#arac_sahibi_telefon').attr('disabled',false);
+                $('#arac_sahibi_adres').attr('disabled',false);
+                $('#arac_sahibi_yakini_ad').attr('disabled',false);
+                $('#arac_sahibi_yakini_telefon').attr('disabled',false);
+                $('#arac_sahibi_yakini_adres').attr('disabled',false);
+            }
 
             @if($car->ugradigi_aktarmalar != '')
             $('#ugradigi_aktarmalar').val([{{$car->ugradigi_aktarmalar}}]).trigger('change');

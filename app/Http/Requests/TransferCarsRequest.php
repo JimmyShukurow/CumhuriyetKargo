@@ -2,22 +2,24 @@
 
 namespace App\Http\Requests;
 
+use App\Models\TcCars;
 use App\Rules\StartDateFinishDate;
 use App\Rules\TcArrayControl;
 use App\Rules\TcControl;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Traits\FieldsToUppercaseTrait;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class TransferCarsRequest extends FormRequest
 {
 
 use FieldsToUppercaseTrait;
 
+
     public function rules()
     {
-        return [
-            'plaka' => 'required|unique:tc_cars',
+        $rules = [
             'marka' => 'required',
             'model' => 'required',
             'model_yili' => 'required',
@@ -46,5 +48,13 @@ use FieldsToUppercaseTrait;
             'status' => 'nullable',
             'branch_code' =>'required',
         ];
+        $method = $this->method();
+
+        if ($method == 'POST'){
+           return array_merge($rules, ['plaka' => 'required|unique:tc_cars,plaka']);
+        }
+        if ($method == 'PUT'){
+           return  array_merge($rules, ['plaka' => 'required']);
+        }
     }
 }

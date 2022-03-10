@@ -40,7 +40,7 @@
                                 <span class="btn-icon-wrapper pr-2 opacity-7">
                                     <i class="fa fa-plus fa-w-20"></i>
                                 </span>
-                                Yeni Aktarma Aracı Ekle
+                                Yeni Araç Ekle
                             </button>
                         </a>
                     </div>
@@ -139,8 +139,12 @@
 
                         <div class="col-md-3">
                             <label for="filter_car_type">Araç Tipi:</label>
-                            <input type="text" id="filter_car_type"
+                            <select type="text" id="filter_car_type"
                                    class="form-control niko-filter form-control-sm niko-select-filter">
+                                <option value=""> seçiniz </option>
+                                <option value="Acente"> Acente </option>
+                                <option value="Aktarma"> Aktarma </option>
+                            </select>
                         </div>
 
                     </div>
@@ -234,11 +238,10 @@
                 dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
 
                 buttons: [
-                    'print',
                     {
                         extend: 'excelHtml5',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
                         },
                         title: "CK - Aktarma Araçları"
                     },
@@ -365,11 +368,11 @@
                 $('#model').html(cars.model);
                 $('#modelYili').html(cars.model_yili);
                 $('#aracKapasitesi').html(cars.arac_kapasitesi);
-                $('#status').html(cars.status == 1 ? 'Aktif' : 'Pasif');
+                $('#status').html(cars.status == 1 ? '<b class="text-success"> Aktif </b>' : '<b class="text-danger"> Pasif </b>');
                 $('#aracTakipSistemi').html(cars.arac_takip_sistemi);
                 $('#hat').html(cars.hat);
-                $('#cikisAktarma').html(cars.cikis_akt + " T.M.");
-                $('#varisAktarma').html(cars.varis_akt + " T.M.");
+                $('#cikisAktarma').html(cars.cikis_akt ? cars.cikis_akt  + " T.M." : '') ;
+                $('#varisAktarma').html(cars.varis_akt ? cars.varis_akt  + " T.M." : '');
                 $('#ugradigiAktarmalar').html(response.aktarmalar);
                 $('#muayeneBaslangicBitisTarihi').html(cars.muayene_baslangic_tarihi + " - " + cars.muayene_bitis_tarihi);
                 $('#muayeneBitimiKalanGun').html(cars.muayene_kalan_sure);
