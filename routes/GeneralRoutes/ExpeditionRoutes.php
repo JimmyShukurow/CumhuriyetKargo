@@ -39,6 +39,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
         Route::get('Create', [ExpeditionController::class, 'create'])->name('create');
 
+
     });
 
 

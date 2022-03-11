@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Backend\Expedition;
 
+use App\Actions\CKGMobile\Expedition\LoadCargoToExpeditionAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Expedition\LoadCargoToExpeditionRequest;
 use App\Models\Agencies;
 use App\Models\TransshipmentCenters;
 use Illuminate\Http\Request;
@@ -38,5 +40,10 @@ class ExpeditionController extends Controller
 
         GeneralLog('Sefer oluştur modülü.');
         return view('backend.expedition.create.create', compact(['branch', 'agencies', 'tc']));
+    }
+
+    public function loadCargo(LoadCargoToExpeditionRequest $request){
+        $validated = $request->validated();
+        return LoadCargoToExpeditionAction::run($validated);
     }
 }
