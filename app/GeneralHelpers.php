@@ -43,23 +43,22 @@ function enCharacters($text)
 
 function getDotter($TotalCiro)
 {
+    $TotalCiro = round($TotalCiro, 2);
     $virgul = "";
     if (strpos($TotalCiro, '.')) {
         $Virgulsuz = substr($TotalCiro, 0, strpos($TotalCiro, '.'));
         $virgul = substr($TotalCiro, strpos($TotalCiro, '.'), strlen($TotalCiro));
         $reverse = strrev($Virgulsuz);
-    } else {
+    } else
         $reverse = strrev(substr($TotalCiro, 0, strlen($TotalCiro)));
-    }
-
 
     $newReverse = "";
     for ($i = 1; $i < strlen($reverse) + 1; $i++) {
         $newReverse .= $reverse[$i - 1];
         $i % 3 == 0 && $i != (strlen($reverse)) ? $newReverse .= ',' : '';
     }
-    $newReverse;
     $TotalCiro = strrev($newReverse) . $virgul;
+
     return $TotalCiro;
 }
 

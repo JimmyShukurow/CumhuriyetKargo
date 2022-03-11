@@ -217,6 +217,8 @@
                 <th>Şube Kodu</th>
                 <th>Statü</th>
                 <th>Kargo Kesim</th>
+                <th>Operasyon</th>
+                <th>Kasa</th>
                 <th>Maps</th>
                 <th>Pers. Sayısı</th>
                 <th>Kayıt Tarihi</th>
