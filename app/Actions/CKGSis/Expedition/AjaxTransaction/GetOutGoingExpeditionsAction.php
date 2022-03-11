@@ -43,7 +43,7 @@ class GetOutGoingExpeditionsAction
             ->editColumn('description', function ($key) {
                 return '<span title="' . $key->description . '">' . Str::words($key->description, 6, '...') . '</span>';
             })
-            ->rawColumns(['description', 'add_files', 'confirm', 'paid', 'confirm_paid', 'delete'])
+            ->rawColumns(['description', 'test', 'add_files', 'confirm', 'paid', 'confirm_paid', 'delete'])
             ->make(true);
     }
 }
