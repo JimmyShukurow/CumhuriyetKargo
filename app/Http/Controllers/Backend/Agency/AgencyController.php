@@ -113,6 +113,12 @@ class AgencyController extends Controller
             ->editColumn('permission_of_create_cargo', function ($key) {
                 return $key->permission_of_create_cargo == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>';
             })
+            ->editColumn('operation_status', function ($key) {
+                return $key->operation_status == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>';
+            })
+            ->editColumn('safe_status', function ($key) {
+                return $key->safe_status == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>';
+            })
             ->addColumn('regional_directorates', function ($agency) {
                 return $agency->regional_directorates != '' ? "$agency->regional_directorates  B.M." : "";
             })
@@ -130,7 +136,7 @@ class AgencyController extends Controller
                 return '<b class="text-primary">' . $agency->agency_code . '</b>';
             })
             ->addColumn('maps_link', 'backend.agencies.columns.maps_link')
-            ->rawColumns(['status', 'edit', 'agency_code', 'maps_link', 'permission_of_create_cargo'])
+            ->rawColumns(['status','operation_status','safe_status', 'edit', 'agency_code', 'maps_link', 'permission_of_create_cargo'])
             ->make(true);
     }
 

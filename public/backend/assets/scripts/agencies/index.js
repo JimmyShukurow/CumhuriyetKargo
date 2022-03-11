@@ -84,6 +84,8 @@ $(document).ready(function () {
             {data: 'agency_code', name: 'agency_code'},
             {data: 'status', name: 'status'},
             {data: 'permission_of_create_cargo', name: 'permission_of_create_cargo'},
+            {data: 'operation_status', name: 'operation_status'},
+            {data: 'safe_status', name: 'safe_status'},
             {data: 'maps_link', name: 'maps_link'},
             {data: 'employee_count', name: 'employee_count'},
             {data: 'created_at', name: 'created_at'},
