@@ -33,9 +33,16 @@ class Expedition extends Model
         return $this->hasOne(TcCars::class, 'id', 'car_id');
     }
 
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id')
+            ->join('roles', 'roles.id', '=', 'users.role_id')
+            ->select(['users.id', 'user.name_surname', 'display_name']);
+    }
+
     public function departureBranch()
     {
-        return $this->hasMany(ExpeditionRoute::class, 'id', 'expedition_id');
+        return $this->hasOne(ExpeditionRoute::class, 'id', 'expedition_id');
     }
 
 }

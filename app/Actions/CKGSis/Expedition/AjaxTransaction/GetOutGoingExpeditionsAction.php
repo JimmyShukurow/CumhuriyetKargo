@@ -36,13 +36,26 @@ class GetOutGoingExpeditionsAction
         $lastDate = substr($lastDate, 0, 10);
 
 
-        $rows = Expedition::with('car:id,plaka', 'departureBranch')->get();
+        $rows = Expedition::with('car:id,plaka', 'user:users.id,name_surname,display_name')->get();
+
 
         return datatables()->of($rows)
             ->editColumn('description', function ($key) {
                 return '<span title="' . $key->description . '">' . Str::words($key->description, 6, '...') . '</span>';
             })
-            ->rawColumns(['description', 'test', 'add_files', 'confirm', 'paid', 'confirm_paid', 'delete'])
+            ->editColumn('plaka', function ($key) {
+                return $key->car->plaka;
+            })
+            ->editColumn('name_surname', function ($key) {
+                return $key->user->name_surname . ' (' . $key->user->display_name . ')';
+            })
+            ->editColumn('created_at', function ($key) {
+                return $key->created_at;
+            })
+            ->editColumn('status', function ($key) {
+                return $key->status == '0' ? '<b class="text-success">Devam Ediyor</b>' : '<b class="text-danger">Sefer Bitti!</b>';
+            })
+            ->rawColumns(['description', 'status', 'add_files', 'confirm', 'paid', 'confirm_paid', 'delete'])
             ->make(true);
     }
 }
