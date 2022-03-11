@@ -31,7 +31,7 @@ class AgencyController extends Controller
         $data['transshipment_centers'] = TransshipmentCenters::all();
 
         GeneralLog('Acenteler sayfası görüntülendi.');
-        return view('backend.agencies.index', compact('data'));
+        return view('backend.agencies.index.index', compact('data'));
     }
 
     public function getAgencies(Request $request)
@@ -52,7 +52,9 @@ class AgencyController extends Controller
         $maps_link = $request->maps_link != null ? $request->maps_link : null;
         $ip_address = $request->ip_address != null ? $request->ip_address : null;
         $ip_address_info = $request->ip_address_info != null ? $request->ip_address_info : null;
-        $permission_of_create_cargo = $request->permission_of_create_cargo != null ? $request->permission_of_create_cargo : null;
+        $permission_of_create_cargo = $request->permission_of_create_cargo;
+        $operation_status = $request->operation_status;
+        $safe_status = $request->safe_status;
 
         if ($city)
             $realCity = Cities::find($city);
@@ -93,6 +95,9 @@ class AgencyController extends Controller
             ->whereRaw($address ? $addressQuery : ' 1 > 0')
             ->whereRaw($maps_link ? $maps_linkQuery : ' 1 > 0')
             ->whereRaw($ip_address_info ? $ip_address_infoQuery : ' 1 > 0')
+            ->whereRaw($permission_of_create_cargo != null ? "permission_of_create_cargo = '" . $permission_of_create_cargo . "'" : ' 1 > 0')
+            ->whereRaw($operation_status != null ? "operation_status = '" . $operation_status . "'" : ' 1 > 0')
+            ->whereRaw($safe_status != null ? "safe_status = '" . $safe_status . "'" : ' 1 > 0')
             ->whereRaw($transshipmentCenter ? 'tc_id = ' . $transshipmentCenter : ' 1 > 0');
 
         return DataTables::of($agencies)
@@ -207,28 +212,30 @@ class AgencyController extends Controller
         $rules = [
             'status' => 'required|in:0,1',
             'permission_of_create_cargo' => 'required|in:0,1',
-            'agency' => 'required|numeric'
+            'agency' => 'required|numeric',
+            'operation_status' => 'required|in:0,1',
         ];
         $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->fails()) {
+        if ($validator->fails())
             return response()->json([
                 'status' => '-1',
                 'errors' => $validator->getMessageBag()->toArray()
             ], 200);
-        }
 
         $update = Agencies::find($request->agency)
             ->update([
                 'status' => $request->status,
                 'permission_of_create_cargo' => $request->permission_of_create_cargo,
-                'status_description' => $request->status == 1 ? '' : $request->status_description
+                'status_description' => $request->status == 1 ? '' : $request->status_description,
+                'operation_status' => $request->operation_status,
             ]);
 
         if ($update) {
 
             $statu = $request->status == '1' ? 'aktif' : 'pasif';
             $permission_of_create_cargo = $request->permission_of_create_cargo == '1' ? 'aktif' : 'pasif';
+            $operation_status = $request->operation_status == '1' ? 'aktif' : 'pasif';
             $user = Agencies::find($request->agency);
             $properties = [
                 'Eylemi gerçekleştiren' => Auth::user()->name_surname,
@@ -236,7 +243,8 @@ class AgencyController extends Controller
                 'İşlem Yapılan Acente' => $user->agency_name,
                 'Statü' => $statu,
                 'Statü Açıklama' => $request->status == '1' ? '' : $request->status_description,
-                'Kargo Kesim İzni' => $permission_of_create_cargo
+                'Kargo Kesim İzni' => $permission_of_create_cargo,
+                'Operasyon Statü' =>$operation_status
             ];
 
             $log = $user->agency_name . " İsimli kullanıcı " . $statu . ' hale getirildi';
