@@ -36,9 +36,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     });
 
     Route::group(['prefix' => 'Expedition', 'as' => 'expedition.'], function () {
-
         Route::get('Create', [ExpeditionController::class, 'create'])->name('create');
-
     });
 
 

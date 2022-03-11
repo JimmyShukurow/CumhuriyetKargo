@@ -26,8 +26,8 @@ class GetAgencyPaymentsAction
         if ($dateFilter == "true") {
             $diff = $firstDate->diffInDays($lastDate);
             if ($dateFilter) {
-                if ($diff >= 30) {
-                    return response()->json(['status' => 0, 'message' => 'Tarih aralığı max. 30 gün olabilir!'], 509);
+                if ($diff >= 120) {
+                    return response()->json(['status' => 0, 'message' => 'Tarih aralığı max. 120 gün olabilir!'], 509);
                 }
             }
         }
