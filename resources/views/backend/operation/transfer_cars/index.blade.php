@@ -425,7 +425,32 @@
             });
 
         });
+        $(document).on('click','#carConfirmSuccess', function (){
+            $.ajax({
+                url:"AjaxTCCars/CarConfirmSuccess",
+                data:{
+                    id:detailsID,
+                }
+            }).done(function (response){
+                oTable.draw();
+                ToastMessage('success', response.message, 'İşlem Başarılı!');
+                carInfo(detailsID);
 
+            })
+        })
+        $(document).on('click', '#carRejectSuccess', function (){
+            $.ajax({
+                url:"AjaxTCCars/CarRejectSuccess",
+                data:{
+                    id:detailsID,
+                }
+            }).done(function (response){
+                oTable.draw();
+                ToastMessage('success', response.message, 'İşlem Başarılı!');
+                carInfo(detailsID);
+
+            })
+        })
 
         $(document).on('click', '#btnPrintModal', function () {
             printWindow('#ModalBodyUserDetail', "CKG-Sis - Aktarma Araçları");
@@ -446,7 +471,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div style="overflow-y: auto; max-height: 75vh;" id="ModalBodyUserDetail" class="modal-body">
+                <div style="overflow-y: auto; overflow-x:hidden; max-height: 75vh;" id="ModalBodyUserDetail" class="modal-body">
 
                     {{-- CARD START --}}
                     <div class="col-md-12">
@@ -578,6 +603,27 @@
 
                         </div>
                     </div>
+                    <div id="confirmation" >
+                        <div class="grid-menu grid-menu-2col">
+                            <div class="no-gutters row">
+                                <div class="col-sm-6">
+                                    <div class="p-1">
+                                        <button id="carConfirmSuccess" class="btn-app-transaction btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success">
+                                            <i class="lnr-checkmark-circle text-success opacity-7 btn-icon-wrapper mb-2"> </i>
+                                            Aracı Onayla
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class= "p-1">
+                                        <button id="carRejectSuccess" class="btn-app-transaction btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
+                                            <i class="lnr-cross-circle text-danger opacity-7 btn-icon-wrapper mb-2"> </i>
+                                            Aracı Reddet
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     {{-- CARD END --}}
                 </div>
                 <div class="modal-footer">
