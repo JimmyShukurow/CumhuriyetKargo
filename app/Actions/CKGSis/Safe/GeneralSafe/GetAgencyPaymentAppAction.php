@@ -13,8 +13,6 @@ class GetAgencyPaymentAppAction
 
     public function handle($request)
     {
-
-
         $firstDate = Carbon::createFromDate($request->firstDate);
         $lastDate = Carbon::createFromDate($request->lastDate);
         #$dateFilter = $request->dateFilter;

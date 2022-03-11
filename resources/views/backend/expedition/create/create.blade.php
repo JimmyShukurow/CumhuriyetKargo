@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div style="max-width: 1400px;" class="main-card mb-3 card">
+        <div style="max-width: 1200px;" class="main-card mb-3 card">
             <div class="card-body">
                 @csrf
                 <div class="row">
@@ -184,14 +184,17 @@
                                    class="form-control font-weight-bold text-primary form-control-sm">
                         </div>
                     </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group position-relative">
+                            <label for="detecting_person">Açıklama:</label>
+                            <textarea class="form-control form-control-sm" id="description" cols="30" rows="3"
+                                      placeholder="Açıklama giriniz. (Opsiyonel)"></textarea>
+                        </div>
+                    </div>
                 </div>
 
-                <button type="submit" id="btnSubmitForm" class="ladda-button mb-2 mr-2 btn btn-gradient-primary"
-                        data-style="slide-right">
-                    <span class="ladda-label">HTF Oluştur</span>
-                    <span class="ladda-spinner"></span>
-                    <div class="ladda-progress" style="width: 0px;"></div>
-                </button>
+                <button class="btn btn-primary" id="btnCreateExpedition">Sefer Oluştur</button>
 
             </div>
         </div>

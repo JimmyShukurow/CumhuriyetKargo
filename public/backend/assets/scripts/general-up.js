@@ -244,7 +244,11 @@ function NikoStylePostMethod() {
         }
     }).done(function (response) {
 
-        if (response.status == 0) {
+        if (response.status == 1) {
+
+        } else if (response.status == -1) {
+
+        } else if (response.status == 0) {
             $.each(response.errors, function (index, value) {
                 ToastMessage('error', value, 'Hata!')
             });

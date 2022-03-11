@@ -60,18 +60,22 @@ $(document).on('click', '#btnAddRoute', function () {
         return false
     }
 
-    if (branchType == 'Aktarma')
-        selectedBranch = $('#routeTc option[value="' + routeTc + '"]').text()
-    else if (branchType == 'Acente')
-        selectedBranch = $('#routeAgency option[value="' + routeAgency + '"]').text()
+    branchID = null
 
-    addRouteList(branchType, selectedBranch)
+    if (branchType == 'Aktarma') {
+        selectedBranch = $('#routeTc option[value="' + routeTc + '"]').text()
+        branchID = routeTc
+    } else if (branchType == 'Acente') {
+        selectedBranch = $('#routeAgency option[value="' + routeAgency + '"]').text()
+        branchID = routeAgency
+    }
+    addRouteList(branchType, selectedBranch, branchID)
 })
 
 let routeRowIndex = 0
 let arrRoutes = []
 
-function addRouteList(branchType, branch) {
+function addRouteList(branchType, branch, branchID) {
     if (arrRoutes.indexOf(branch) != -1) {
         ToastMessage('error', branch + "'yi daha önce eklediğiniz için tekrar ekleyemezsiniz!", 'Hata!')
         return false;
@@ -81,15 +85,15 @@ function addRouteList(branchType, branch) {
         $('#tbodyExpeditionRoutes').html('')
 
     routeRowIndex++
-    $('#tbodyExpeditionRoutes').append('<tr id="rowRoute-' + routeRowIndex + '" justIndex="' + routeRowIndex + '" class="row-of-routes">\n' +
+    $('#tbodyExpeditionRoutes').append('<tr id="rowRoute-' + routeRowIndex + '" justIndex="' + routeRowIndex + '" branch-type="' + branchType + '" branch-id="' + branchID + '" class="row-of-routes">\n' +
         '                                    <td width="120">' + routeRowIndex + '</td>\n' +
         '                                    <td>' + branch + '</td>\n' +
         '                                    <td width="150">\n' +
         '                                        <button class="btn btn-danger btn-sm btn-delete-route" id="' + routeRowIndex + '">Sil</button>\n' +
         '                                    </td>\n' +
         '                                </tr>')
-
     arrRoutes.push(branch)
+    ToastMessage('success', 'İşlem başarılı, güzergah eklendi!')
 }
 
 
@@ -147,8 +151,92 @@ $('#DeleteAllRoutes').click(function () {
         })
 })
 
+$('#btnCreateExpedition').click(function () {
+
+    if ($('#plaque').val() == '') {
+        ToastMessage('error', 'Plaka alanı zorunludur!', 'Hata!')
+        return false
+    }
+
+    if ($('#arrivalBranchType').val() == '') {
+        ToastMessage('error', 'Varış birim tipi alanı zorunludur!', 'Hata!')
+        return false
+    }
+
+    if (($('#arrivalBranchType').val() == 'Aktarma' && $('#arrivalTc').val() == '') || ($('#arrivalBranchType').val() == 'Acente' && $('#arrivalAgency').val() == '')) {
+        ToastMessage('error', 'Varış birimi alanı zorunludur!', 'Hata!')
+        return false
+    }
+
+    $('.app-main__inner').block({
+        message: $('<div class="loader mx-auto">\n' +
+            '                            <div class="ball-grid-pulse">\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                                <div class="bg-white"></div>\n' +
+            '                            </div>\n' +
+            '                        </div>')
+    });
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+    let branchCode = null
+    if ($('#arrivalBranchType').val() == 'Aktarma')
+        branchCode = $('#arrivalTc').val()
+    else if ($('#arrivalBranchType').val() == 'Acente')
+        branchCode = $('#arrivalAgency').val()
+
+    $.ajax('/Expedition/Store', {
+        method: 'POST',
+        data: {
+            _token: token,
+            arrivalBranchType: $('#arrivalBranchType').val(),
+            arrivalBranchCode: branchCode,
+            expeditionRoutes: getExpeditionRoutes(),
+            plaque: $('#plaque').val(),
+            description: $('#description').val(),
+        }
+    }).done(function (response) {
+
+        if (response.status == 1) {
+            ToastMessage('success', response.message, 'İşlem Başarılı!')
+
+            setTimeout(function () {
+                location.href = "/Expedition/OutGoing"
+            }, 250)
+        } else if (response.status == -1) {
+            ToastMessage('error', response.message, 'Hata!')
+            $('.app-main__inner').unblock();
+            return false
+        } else if (response.status == 0) {
+            $.each(response.errors, function (index, value) {
+                ToastMessage('error', value, 'Hata!')
+            });
+            $('.app-main__inner').unblock();
+        }
+    }).error(function (jqXHR, response) {
+        ajaxError(jqXHR.status);
+        $('.app-main__inner').unblock();
+    }).always(function () {
+    });
+
+})
 
 
+function getExpeditionRoutes() {
 
+    let arrayRealRoutes = []
+    $('.row-of-routes').each(function () {
+        arrayRealRoutes.push([$(this).attr('branch-type'), $(this).attr('branch-id')])
+    })
+
+    return arrayRealRoutes
+}
 
 
