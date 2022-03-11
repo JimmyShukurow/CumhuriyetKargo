@@ -9,7 +9,6 @@ use App\Models\Agencies;
 use App\Models\TransshipmentCenters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class ExpeditionController extends Controller
 {
