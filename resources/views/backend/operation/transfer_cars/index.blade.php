@@ -347,7 +347,6 @@
                     '                            </div>\n' +
                     '                        </div>')
             });
-            $('.blockUI.blockMsg.blockElement').css('width', '100%');
             $('.blockUI.blockMsg.blockElement').css('border', '0px');
             $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
