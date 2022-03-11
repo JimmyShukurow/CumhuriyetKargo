@@ -36,8 +36,7 @@ class GetOutGoingExpeditionsAction
         $lastDate = substr($lastDate, 0, 10);
 
 
-        $rows = Expedition::with(['car', 'departureBranch'])
-            ->get();
+        $rows = Expedition::with('car:id,plaka', 'departureBranch')->get();
 
         return datatables()->of($rows)
             ->editColumn('description', function ($key) {
