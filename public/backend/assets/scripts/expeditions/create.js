@@ -82,7 +82,7 @@ function addRouteList(branchType, branch) {
 
     routeRowIndex++
     $('#tbodyExpeditionRoutes').append('<tr id="rowRoute-' + routeRowIndex + '" justIndex="' + routeRowIndex + '" class="row-of-routes">\n' +
-        '                                    <td width="150">' + routeRowIndex + '</td>\n' +
+        '                                    <td width="120">' + routeRowIndex + '</td>\n' +
         '                                    <td>' + branch + '</td>\n' +
         '                                    <td width="150">\n' +
         '                                        <button class="btn btn-danger btn-sm btn-delete-route" id="' + routeRowIndex + '">Sil</button>\n' +
