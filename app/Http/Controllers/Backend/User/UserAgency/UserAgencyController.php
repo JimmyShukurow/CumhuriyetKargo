@@ -199,7 +199,7 @@ class UserAgencyController extends Controller
     public function destroy($id)
     {
         # Control
-        $user = User::where($id);
+        $user = User::find($id);
         if ($user === null || ($user->agency_code != Auth::user()->agency_code) || ($id == Auth::id()))
             return 0;
 

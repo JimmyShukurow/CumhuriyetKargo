@@ -36,7 +36,8 @@ class TCCarsController extends Controller
         $user = Auth::user();
         $validated = $request->validated();
         $validated['branch_code'] = $user->transshipment->id;
-        $validated['confirm'] = '0';
+        $validated['confirm'] = '1';
+        $validated['status'] = '1';
         $validated['creator_id'] = $user->id;
 
         $create = ModelsTcCars::create($validated);

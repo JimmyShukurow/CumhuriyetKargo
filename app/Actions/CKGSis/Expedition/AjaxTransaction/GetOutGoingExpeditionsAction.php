@@ -3,7 +3,9 @@
 namespace App\Actions\CKGSis\Expedition\AjaxTransaction;
 
 use App\Models\Expedition;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -21,10 +23,10 @@ class GetOutGoingExpeditionsAction
 
         $plaka = $request->plaka;
         $serialNo = $request->serialNo;
-        $departureBranch = $request->departureBranch;
-        $arrivalBranch = $request->arrivalBranch;
         $creator = $request->creator;
         $doneStatus = $request->doneStatus;
+        $departureBranch = $request->departureBranch;
+        $arrivalBranch = $request->arrivalBranch;
 
         if ($dateFilter == "true") {
             $diff = $firstDate->diffInDays($lastDate);
@@ -38,6 +40,12 @@ class GetOutGoingExpeditionsAction
         $lastDate = substr($lastDate, 0, 10) . ' 23:59:59';
 
 
+        if (Auth::user()->user_type == 'Acente') {
+            $ids = User::where('agency_code', Auth::user()->agency_code)->get()->pluck('id');
+        } else {
+            $ids = User::where('tc_code', Auth::user()->tc_code)->get()->pluck('id');
+        }
+
         $rows = Expedition::with(
             [
                 'car:id,plaka',
@@ -45,7 +53,7 @@ class GetOutGoingExpeditionsAction
                 'routes.branch',
                 'cargoes'
             ])
-            ->when($doneStatus, function ($q) use ($doneStatus) {
+            ->when($doneStatus != null, function ($q) use ($doneStatus) {
                 return $q->where('done', $doneStatus);
             })
             ->when($serialNo, function ($q) use ($serialNo) {
@@ -56,8 +64,15 @@ class GetOutGoingExpeditionsAction
                     $query->where('plaka', 'like', '%' . $plaka . '%');
                 });
             })
+            ->when($creator, function ($q) use ($creator) {
+                return $q->whereHas('user', function ($query) use ($creator) {
+                    $query->where('name_surname', 'like', '%' . $creator . '%');
+                });
+            })
+            ->whereIn('user_id', $ids)
             ->whereBetween('created_at', [$firstDate, $lastDate])
             ->get();
+
 
         $rows->each(function ($key) {
             $key['departure_branch'] = $key->routes->where('route_type', 1)->first();
