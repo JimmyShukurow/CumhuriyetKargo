@@ -23,10 +23,10 @@ class GetOutGoingExpeditionsAction
 
         $plaka = $request->plaka;
         $serialNo = $request->serialNo;
-        $departureBranch = $request->departureBranch;
-        $arrivalBranch = $request->arrivalBranch;
         $creator = $request->creator;
         $doneStatus = $request->doneStatus;
+        $departureBranch = $request->departureBranch;
+        $arrivalBranch = $request->arrivalBranch;
 
         if ($dateFilter == "true") {
             $diff = $firstDate->diffInDays($lastDate);
@@ -62,6 +62,11 @@ class GetOutGoingExpeditionsAction
             ->when($plaka, function ($q) use ($plaka) {
                 return $q->whereHas('car', function ($query) use ($plaka) {
                     $query->where('plaka', 'like', '%' . $plaka . '%');
+                });
+            })
+            ->when($creator, function ($q) use ($creator) {
+                return $q->whereHas('user', function ($query) use ($creator) {
+                    $query->where('name_surname', 'like', '%' . $creator . '%');
                 });
             })
             ->whereIn('user_id', $ids)
