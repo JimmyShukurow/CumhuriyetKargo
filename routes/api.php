@@ -59,10 +59,12 @@ Route::middleware('auth:api')->group(function () {
     Route::post('CargoTransaction/{val?}', [CargoController::class, 'cargoTransaction']);
 
 
-    Route::post('CaroBagTransactions/{val?}',[CargoController::class, 'caroBagTransactions']);
+    Route::post('CaroBagTransactions/{val?}', [CargoController::class, 'caroBagTransactions']);
 
-    Route::post('load-cargo', [ExpeditionLoadCargoController::class, 'loadCargo'])->name('load-cargo');
-    Route::get('read-expedition', [ExpeditionLoadCargoController::class, 'readExpedition'])->name('read-expedition');
+    Route::group(['prefix' => 'Expedition'], function () {
+        Route::post('LoadCargo', [ExpeditionLoadCargoController::class, 'loadCargo']);
+        Route::post('Read', [ExpeditionLoadCargoController::class, 'readExpedition']);
+    });
 
 
 });

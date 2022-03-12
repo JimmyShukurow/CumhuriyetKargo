@@ -59,45 +59,61 @@
             <div class="card-body">
                 <form method="POST" id="search-form">
                     <div class="row">
-
-
-                        <div class="col-md-2 ">
+                        <div class="col-md-3">
                             <label for="filterStartDate">İlk Tarih:</label>
-                            <input type="datetime-local" id="filterStartDate" value="{{ date('Y-m-d') }}T00:00"
+                            <input type="date" id="filterStartDate" value="{{ date('Y-m-d') }}"
                                    class="form-control form-control-sm  niko-select-filter">
                         </div>
 
-                        <div class="col-md-2  ">
+                        <div class="col-md-3">
                             <label for="filterFinishDate">Son Tarih:</label>
-                            <input type="datetime-local" id="filterFinishDate" value="{{ date('Y-m-d') }}T23:59"
+                            <input type="date" id="filterFinishDate" value="{{ date('Y-m-d') }}"
                                    class="form-control form-control-sm  niko-select-filter">
                         </div>
 
 
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label for="filterExpeditionSerialNo">Sefer No:</label>
                             <input type="text" data-inputmask="'mask': '999 999 999'"
-                                   placeholder="__ ______" type="text" id="filterExpeditionSerialNo"
+                                   placeholder="___ ___ ___" type="text" id="filterExpeditionSerialNo"
                                    class="form-control input-mask-trigger form-control-sm niko-filter">
                         </div>
 
+                        <div class="col-md-3">
+                            <div class="position-relative form-group">
+                                <label for="filterPlaque" class="">Plaka:</label>
+                                <input type="text" id="filterPlaque"
+                                       class="form-control niko-filter form-control-sm">
+                            </div>
+                        </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-3">
+                            <label for="filterDepartureBranch">Çıkış Birim:</label>
+                            <input type="text" id="filterDepartureBranch"
+                                   class="form-control niko-filter form-control-sm">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="filterArrivalBranch">Varış Birim:</label>
+                            <input type="text" id="filterArrivalBranch"
+                                   class="form-control niko-filter form-control-sm">
+                        </div>
+
+                        <div class="col-md-3">
                             <label for="filterCreatorUser">Oluşturan:</label>
                             <input type="text" id="filterCreatorUser"
                                    class="form-control niko-filter form-control-sm">
                         </div>
 
-                        <div class="col-md-2">
-                            <div class="position-relative form-group">
-                                <label for="filterPlaka" class="">Plaka:</label>
-                                <input type="text" id="filterPlaka"
-                                       class="form-control niko-filter form-control-sm">
-                            </div>
+                        <div class="col-md-3">
+                            <label for="filterDoneStatus">Statü:</label>
+                            <select id="filterDoneStatus" class="form-control-sm form-control">
+                                <option value="">Seçiniz</option>
+                                <option value="0">Devam Ediyor</option>
+                                <option value="1">Bitti</option>
+                            </select>
                         </div>
                     </div>
-
-
                 </form>
             </div>
         </div>
@@ -111,7 +127,9 @@
                     <tr>
                         <th>Sefer No</th>
                         <th>Araç Plaka</th>
-                        <th>Oluşturan</th>
+                        <th>Çıkış Birim</th>
+                        <th>Varış Birim</th>
+                        <th>Ara Durak</th>
                         <th>Statü</th>
                         <th>Oluşturan</th>
                         <th>Açıklama</th>
@@ -125,7 +143,9 @@
                     <tr>
                         <th>Sefer No</th>
                         <th>Araç Plaka</th>
-                        <th>Oluşturan</th>
+                        <th>Çıkış Birim</th>
+                        <th>Varış Birim</th>
+                        <th>Ara Durak</th>
                         <th>Statü</th>
                         <th>Oluşturan</th>
                         <th>Açıklama</th>

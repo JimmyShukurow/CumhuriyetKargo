@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ExpeditionLoadCargoController extends Controller
 {
-    public function loadCargo(LoadCargoToExpeditionRequest $request){
+    public function loadCargo(LoadCargoToExpeditionRequest $request)
+    {
         $validated = $request->validated();
 
         $ctn = decryptTrackingNo($validated['ctn']);
@@ -31,8 +32,15 @@ class ExpeditionLoadCargoController extends Controller
         }
 
         $cargo = Cargoes::where('tracking_no', $ctn[0])->first();
+        if ($cargo == null)
+            return response()->json([
+                'status' => 0,
+                'message' => 'Kargo bulunamadı!',
+            ]);
+
+
         $cargoes = ExpeditionCargo::where('cargo_id', $cargo->id)->where('unloading_at', null)->get()->pluck('part_no');
-        if ($cargoes->contains($ctn[1])){
+        if ($cargoes->contains($ctn[1])) {
             return response()->json([
                 'status' => 0,
                 'message' => 'Bu Kargo Zaten Araçta Var',
@@ -47,33 +55,43 @@ class ExpeditionLoadCargoController extends Controller
         return LoadCargoToExpeditionAction::run($fields);
     }
 
-    public function readExpedition(Request $request){
-        $plaka = $request->plaka;
+    public function readExpedition(Request $request)
+    {
+        $plaka = tr_strtoupper($request->plaka);
 
-        $expedition =  Expedition::with('car', 'cargoes')
-            ->whereHas('car', function ($query) use ($plaka) { $query->where('plaka', $plaka); })
-            ->where('done',0)
+        if ($plaka == null)
+            return response()->json([
+                'status' => 0,
+                'message' => 'Plaka alanı zorunludur!',
+            ]);
+
+        $expedition = Expedition::with('car', 'cargoes')
+            ->whereHas('car', function ($query) use ($plaka) {
+                $query->where('plaka', $plaka);
+            })
+            ->where('done', 0)
             ->first();
+
 
         if ($expedition == null) {
             return response()->json([
                 'status' => 0,
-                'message' => 'Bu Araca Sefer Oluşturulmamış',
+                'message' => 'Bu araca sefer oluşturulmamış!',
             ]);
         }
-        if ($expedition->car->status != 1){
+
+        if ($expedition->car->status != 1) {
             return response()->json([
                 'status' => 0,
-                'message' => 'Bu Araç Aktif Değil',
+                'message' => 'Araç aktif değil, işlem yapamazsınız!',
             ]);
         }
         if ($expedition->car->confirm != 1) {
             return response()->json([
                 'status' => 0,
-                'message' => 'Bu Araç Onaylı Değil',
+                'message' => 'Araç onaylı değil, işlem yapamazsınız!',
             ]);
         }
-
 
         return response()->json([
             'status' => 1,

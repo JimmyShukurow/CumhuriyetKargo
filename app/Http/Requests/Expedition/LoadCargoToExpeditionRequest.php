@@ -13,7 +13,6 @@ class LoadCargoToExpeditionRequest extends FormRequest
         return true;
     }
 
-
     public function rules()
     {
         $cargo_id = $this->request->get('cargo_id');

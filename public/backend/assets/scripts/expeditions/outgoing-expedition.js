@@ -2,7 +2,7 @@ $(document).ready(function () {
     tableOutGoingExpeditions = $('#OutGoingExpeditionsTable').DataTable({
         pageLength: 250,
         lengthMenu: dtLengthMenu,
-        order: [1, 'desc'],
+        order: [8, 'desc'],
         language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
         select: {
@@ -39,11 +39,14 @@ $(document).ready(function () {
         ajax: {
             url: '/Expedition/AjaxTransactions/GetOutGoingExpeditions',
             data: function (d) {
-                d.agency = $('#agencySafeStatusAgencies').val()
-                d.agencyCode = $('#agencySafeStatusAgencyCode').val()
-                d.safeStatus = $('#agencySafeStatusSafeStatus').val()
-                d.region = $('#agencySafeStatusRegion').val()
-                d.plaka = $('#filterPlaka').val()
+                d.firstDate = $('#filterStartDate').val()
+                d.lastDate = $('#filterFinishDate').val()
+                d.serialNo = $('#filterExpeditionSerialNo').val()
+                d.plaka = $('#filterPlaque').val()
+                d.departureBranch = $('#filterDepartureBranch').val()
+                d.arrivalBranch = $('#filterArrivalBranch').val()
+                d.creator = $('#filterCreatorUser').val()
+                d.doneStatus = $('#filterDoneStatus').val()
             },
             error: function (xhr, error, code) {
 
@@ -70,7 +73,9 @@ $(document).ready(function () {
         columns: [
             {data: 'serial_no', name: 'serial_no'},
             {data: 'plaka', name: 'plaka'},
-            {data: 'serial_no', name: 'serial_no'},
+            {data: 'departure_branch', name: 'departure_branch'},
+            {data: 'arrival_branch', name: 'arrival_branch'},
+            {data: 'route_count', name: 'route_count'},
             {data: 'status', name: 'status'},
             {data: 'name_surname', name: 'name_surname'},
             {data: 'description', name: 'description'},
@@ -79,4 +84,12 @@ $(document).ready(function () {
         scrollY: '500px',
         scrollX: true,
     })
+
+    // Local Storage Transaction START
+    let cargoSuccees = localStorage.getItem('expedition-success');
+    if (cargoSuccees) {
+        swal('İşlem Başarılı!', 'Sefer Oluşturuldu!', 'success');
+        localStorage.clear();
+    }
+    // Local Storage Transaction END
 })

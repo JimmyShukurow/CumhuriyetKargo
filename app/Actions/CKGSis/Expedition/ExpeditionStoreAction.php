@@ -40,17 +40,25 @@ class ExpeditionStoreAction
         $car = TcCars::where('plaka', $plaque)->first();
 
         if ($car == null)
-            return response()->json(['status' => '-1', 'message' => $plaque . ' plakalı araç sistemde kayıtlı değil!'], 200);
+            return response()->json([
+                'status' => '-1',
+                'message' => $plaque . ' plakalı araç sistemde kayıtlı değil!'
+            ], 200);
 
         if ($car->status != 1)
-            return response()->json(['status' => '-1', 'message' => $plaque . ' plakalı araç pasif durumda!'], 200);
+            return response()->json([
+                'status' => '-1',
+                'message' => $plaque . ' plakalı araç pasif durumda!'
+            ], 200);
 
         if ($car->confirm == 0)
-            return response()->json(['status' => '-1', 'message' => $plaque . ' plakalı araç onaylı değil!'], 200);
+            return response()->json([
+                'status' => '-1',
+                'message' => $plaque . ' plakalı araç onaylı değil!'
+            ], 200);
 
 
         DB::beginTransaction();
-
         try {
             $create = Expedition::create([
                 'serial_no' => $this->createExpeditionSerialNumber(),
@@ -71,6 +79,7 @@ class ExpeditionStoreAction
                 'expedition_id' => $create->id,
                 'branch_code' => $branch['id'],
                 'branch_type' => $branch['type2'],
+                'branch_model' => $this->getModelAddres($branch['type2']),
                 'order' => 0,
                 'route_type' => 1,
             ]);
@@ -82,6 +91,7 @@ class ExpeditionStoreAction
                         'expedition_id' => $create->id,
                         'branch_code' => $key[1],
                         'branch_type' => $key[0],
+                        'branch_model' => $this->getModelAddres($key[0]),
                         'order' => ++$count,
                         'route_type' => 0,
                     ]);
@@ -92,17 +102,16 @@ class ExpeditionStoreAction
                 'expedition_id' => $create->id,
                 'branch_code' => $request->arrivalBranchCode,
                 'branch_type' => $request->arrivalBranchType,
+                'branch_model' => $this->getModelAddres($request->arrivalBranchType),
                 'order' => ++$count,
                 'route_type' => -1,
             ]);
-
 
         } catch (Exception $e) {
             DB::rollBack();
             return response()
                 ->json(['status' => -1, 'message' => 'Güzergah kayıt işlemi esnasında bir hata oluştu, lütfen daha sonra tekrar deneyiniz!'], 200);
         }
-
         DB::commit();
         return response()->json(['status' => 1, 'message' => 'İşlem başarılı, Sefer oluşturuldu!'], 200);
     }
@@ -123,5 +132,13 @@ class ExpeditionStoreAction
         }
 
         return $rand;
+    }
+
+    function getModelAddres($type)
+    {
+        if ($type == 'Aktarma')
+            return 'App\Models\TransshipmentCenters';
+        else if ($type == 'Acente')
+            return 'App\Models\Agencies';
     }
 }

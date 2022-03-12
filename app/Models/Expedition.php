@@ -37,10 +37,11 @@ class Expedition extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id')
             ->join('roles', 'roles.id', '=', 'users.role_id')
-            ->select(['users.id', 'user.name_surname', 'display_name']);
+            ->select(['users.id', 'user.name_surname', 'display_name'])
+            ->withTrashed();
     }
 
-    public function departureBranch()
+    public function routes()
     {
         return $this->hasMany(ExpeditionRoute::class, 'expedition_id', 'id');
     }

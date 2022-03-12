@@ -207,9 +207,10 @@ $('#btnCreateExpedition').click(function () {
         if (response.status == 1) {
             ToastMessage('success', response.message, 'İşlem Başarılı!')
 
+            localStorage.setItem('expedition-success', true);
             setTimeout(function () {
                 location.href = "/Expedition/OutGoing"
-            }, 250)
+            }, 100)
         } else if (response.status == -1) {
             ToastMessage('error', response.message, 'Hata!')
             $('.app-main__inner').unblock();
@@ -225,7 +226,6 @@ $('#btnCreateExpedition').click(function () {
         $('.app-main__inner').unblock();
     }).always(function () {
     });
-
 })
 
 
