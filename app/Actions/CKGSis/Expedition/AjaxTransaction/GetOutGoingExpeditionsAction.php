@@ -53,7 +53,7 @@ class GetOutGoingExpeditionsAction
                 'routes.branch',
                 'cargoes'
             ])
-            ->when($doneStatus, function ($q) use ($doneStatus) {
+            ->when($doneStatus != null, function ($q) use ($doneStatus) {
                 return $q->where('done', $doneStatus);
             })
             ->when($serialNo, function ($q) use ($serialNo) {
