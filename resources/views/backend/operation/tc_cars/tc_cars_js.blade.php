@@ -65,7 +65,7 @@ $(document).ready(function () {
             {
                 text: 'Araç Ekle',
                 action:function(){
-                    window.location.replace('TCCars/Create')
+                    window.location.replace('/TCCars/Create')
                 },
                 attr: {
                     class: 'btn btn-primary',
@@ -77,7 +77,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: 'AjaxTCCars/GetTransferCars',
+            url: '/AjaxTCCars/GetTransferCars',
             data: function (d) {
                 d.marka = $('#markaFilter').val();
                 d.model = $('#modelFilter').val();

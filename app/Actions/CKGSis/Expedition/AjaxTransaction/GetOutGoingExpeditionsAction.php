@@ -3,7 +3,9 @@
 namespace App\Actions\CKGSis\Expedition\AjaxTransaction;
 
 use App\Models\Expedition;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -38,6 +40,12 @@ class GetOutGoingExpeditionsAction
         $lastDate = substr($lastDate, 0, 10) . ' 23:59:59';
 
 
+        if (Auth::user()->user_type == 'Acente') {
+            $ids = User::where('agency_code', Auth::user()->agency_code)->get()->pluck('id');
+        } else {
+            $ids = User::where('tc_code', Auth::user()->tc_code)->get()->pluck('id');
+        }
+
         $rows = Expedition::with(
             [
                 'car:id,plaka',
@@ -56,8 +64,10 @@ class GetOutGoingExpeditionsAction
                     $query->where('plaka', 'like', '%' . $plaka . '%');
                 });
             })
+            ->whereIn('user_id', $ids)
             ->whereBetween('created_at', [$firstDate, $lastDate])
             ->get();
+
 
         $rows->each(function ($key) {
             $key['departure_branch'] = $key->routes->where('route_type', 1)->first();

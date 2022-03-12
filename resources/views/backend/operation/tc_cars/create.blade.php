@@ -29,7 +29,7 @@
                                 <span class="btn-icon-wrapper pr-2 opacity-7">
                                     <i class="fa fa-step-backward fa-w-20"></i>
                                 </span>
-                                Tüm Acente Araçları Listele
+                                Tüm Araçları Listele
                             </button>
                         </a>
                     </div>
@@ -90,17 +90,19 @@
 
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
-                                        <label for="doors_to_be_sealed" class="font-weight-bold">Mühür Vurulacak Kapı Sayısı</label>
+                                        <label for="doors_to_be_sealed" class="font-weight-bold">Mühür Vurulacak Kapı
+                                            Sayısı</label>
                                         <input name="doors_to_be_sealed" required id="doors_to_be_sealed"
-                                               placeholder="Kapı sayısını giriniz."
-                                               type="text"
+                                               placeholder="Kapı sayısını giriniz." max="20"
+                                               type="number"
                                                class="form-control form-control form-control-sm">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="hat" class="font-weight-bold">Hat</label>
-                                        <select name="hat" required id="hat" placeholder="Hattı giriniz." type="text" class="form-control form-control form-control-sm">
+                                        <select name="hat" required id="hat" placeholder="Hattı giriniz." type="text"
+                                                class="form-control form-control form-control-sm">
                                             <option value=""> Seçiniz</option>
                                             <option {{old('hat') == 'Anahat' ? 'selected' : ''}} value="Anahat">
                                                 Anahat
@@ -114,7 +116,9 @@
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="arac_kapasitesi" class="font-weight-bold">Kapasite</label>
-                                        <select name="arac_kapasitesi" required id="arac_kapasitesi" placeholder="Araç kapasitesini giriniz." type="text"class="form-control form-control form-control-sm">
+                                        <select name="arac_kapasitesi" required id="arac_kapasitesi"
+                                                placeholder="Araç kapasitesini giriniz." type="text"
+                                                class="form-control form-control form-control-sm">
                                             <option value=""> Seçiniz</option>
                                             <option
                                                 {{old('arac_kapasitesi') == 'Panelvan' ? 'selected' : ''}} value="Panelvan">
@@ -143,14 +147,14 @@
                                     <div class="position-relative form-group">
                                         <label for="cikis_aktarma" class="font-weight-bold">Çıkış Aktarma</label>
                                         <select name="cikis_aktarma" required id="cikis_aktarma"
-                                               placeholder="Kapı sayısını giriniz."
-                                               class="form-control form-control form-control-sm">
-                                               <option value=""> Seçiniz</option>
-                                                @foreach($transshipment_centers as $trasferCars)
-                                                    <option
-                                                        {{old('cikis_aktarma') == $trasferCars->id ? 'selected' : ''}}
-                                                        value="{{$trasferCars->id}}">{{$trasferCars->tc_name.' T.M.'}} </option>
-                                                @endforeach
+                                                placeholder="Kapı sayısını giriniz."
+                                                class="form-control form-control form-control-sm">
+                                            <option value=""> Seçiniz</option>
+                                            @foreach($transshipment_centers as $trasferCars)
+                                                <option
+                                                    {{old('cikis_aktarma') == $trasferCars->id ? 'selected' : ''}}
+                                                    value="{{$trasferCars->id}}">{{$trasferCars->tc_name.' T.M.'}} </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -158,15 +162,15 @@
                                     <div class="position-relative form-group">
                                         <label for="varis_aktarma" class="font-weight-bold">Varış Aktarma</label>
                                         <select name="varis_aktarma" required id="varis_aktarma"
-                                               placeholder="Kapı sayısını giriniz."
-                                               type="text"
-                                               class="form-control form-control form-control-sm">
-                                               <option value=""> Seçiniz</option>
-                                                @foreach($transshipment_centers as $trasferCars)
-                                                    <option
-                                                        {{old('cikis_aktarma') == $trasferCars->id ? 'selected' : ''}}
-                                                        value="{{$trasferCars->id}}">{{$trasferCars->tc_name.' T.M.'}} </option>
-                                                @endforeach
+                                                placeholder="Kapı sayısını giriniz."
+                                                type="text"
+                                                class="form-control form-control form-control-sm">
+                                            <option value=""> Seçiniz</option>
+                                            @foreach($transshipment_centers as $trasferCars)
+                                                <option
+                                                    {{old('cikis_aktarma') == $trasferCars->id ? 'selected' : ''}}
+                                                    value="{{$trasferCars->id}}">{{$trasferCars->tc_name.' T.M.'}} </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -176,7 +180,7 @@
                                         <label for="branch_code" class="font-weight-bold">Bağlı olduğu birim</label>
                                         <input name="branch_code" required id="branch_code"
                                                type="text"
-                                               value= "{{ $branch ?? ''}}"
+                                               value="{{ $branch ?? ''}}"
                                                class="form-control form-control form-control-sm" readonly>
                                     </div>
                                 </div>
