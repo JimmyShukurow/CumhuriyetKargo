@@ -144,8 +144,9 @@ class RDController extends Controller
         $region_id = $request->region_id;
 
         $data['region'] = RegioanalDirectorates::find($region_id);
-        $data['employees'][0] = DB::table('view_user_role')->where('id', $data['region']->director_id)->first();
-        $data['employees'][1] = DB::table('view_user_role')->where('id', $data['region']->assistant_director_id)->first();
+
+        $data['employees'][0] = User::with('role:id,display_name')->where('id', $data['region']->director_id)->first();
+        $data['employees'][1] = User::with('role:id,display_name')->where('id', $data['region']->assistant_director_id)->first();
 
         return response()->json($data, 200);
     }

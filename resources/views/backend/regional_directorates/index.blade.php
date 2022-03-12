@@ -89,16 +89,15 @@
                                         style="min-width: 1rem; max-width: 140px !important; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 29px, 0px);"
                                         role="menu" aria-hidden="true" class="dropdown-menu" x-placement="bottom-start">
 
+                                        <button type="button" region_id="{{ $data->id }}" tabindex="0"
+                                                class="dropdown-item  region-detail">
+                                            Detay
+                                        </button>
 
                                         <a href="{{ route('rd.RegionDistrict', ['id' => $data->id]) }}"
                                            class="dropdown-item">
                                             Bağlı İlçeler
                                         </a>
-
-                                        <button type="button" region_id="{{ $data->id }}" tabindex="0"
-                                                class="dropdown-item  region-detail">
-                                            Detay
-                                        </button>
 
                                         <a class="dropdown-item"
                                            href="{{ route('rd.EditRd', ['id' => $data->id]) }}">
@@ -168,10 +167,35 @@
         }
 
         function agencyPost(region_id) {
-            $.post('{{ route('rd.Info') }}', {
-                _token: token,
-                region_id: region_id
-            }, function (response) {
+
+            $('#ModalAgencyDetail').modal()
+            $('#ModalBodyOfDetails').block({
+                message: $('<div class="loader mx-auto">\n' +
+                    '                            <div class="ball-grid-pulse">\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                                <div class="bg-white"></div>\n' +
+                    '                            </div>\n' +
+                    '                        </div>')
+            });
+            $('.blockUI.blockMsg.blockElement').css('width', '100%');
+            $('.blockUI.blockMsg.blockElement').css('border', '0px');
+            $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+            $.ajax('{{ route('rd.Info') }}', {
+                method: 'POST',
+                data: {
+                    _token: token,
+                    region_id: region_id
+                }
+            }).done(function (response) {
+
 
                 console.log(response);
                 let district = response.region.district;
@@ -188,26 +212,26 @@
 
                 $('#tbodyEmployees').html('');
 
-                if (response.employees.length == 0) {
-                    $('#tbodyEmployees').append(
-                        '<tr>' +
-                        '<td class="text-center" colspan="4">Kullanıcı Yok.</td>' +
-                        +'</tr>'
-                    );
-                } else {
+                if (response.employees[0] == null && response.employees[1] == null)
+                    $('#tbodyEmployees').append('<tr><td colspan="4" class="text-danger text-center">Burda hiç veri yok.</td></tr>')
+                else {
                     $.each(response.employees, function (key, value) {
                         $('#tbodyEmployees').append(
                             '<tr>' +
                             '<td>' + (value['name_surname']) + '</td>' +
                             '<td>' + (value['email']) + '</td>' +
-                            '<td>' + (value['display_name']) + '</td>' +
+                            '<td>' + (value['role']['display_name']) + '</td>' +
                             '<td>' + (value['phone']) + '</td>' +
                             +'</tr>'
                         );
                     });
                 }
+
+            }).error(function (jqXHR, response) {
+                ajaxError(jqXHR.status);
+            }).always(function () {
+                $('#ModalBodyOfDetails').unblock();
             });
-            $('#ModalAgencyDetail').modal()
         }
 
         $('button.region-detail').click(function () {
@@ -235,7 +259,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div id="ModalBodyOfDetails" class="modal-body">
 
                     {{-- CARD START --}}
                     <div class="col-md-12">
@@ -263,8 +287,8 @@
                                 <li class="list-group-item">
                                     <div class="widget-content pt-4 pb-4 pr-1 pl-1">
 
-                                        <div style="overflow-x: scroll" class="cont">
-                                            <table style="white-space: nowrap" id="AgencyCard"
+                                        <div style="overflow-x: auto" class="cont">
+                                            <table id="AgencyCard"
                                                    class="TableNoPadding table table-bordered table-striped">
                                                 <thead>
                                                 <tr>
@@ -309,7 +333,7 @@
 
                                         <h4 class="mt-3">Bölge Sorumluları</h4>
 
-                                        <div style="overflow-x: scroll" class="cont">
+                                        <div class="cont">
                                             <table style="white-space: nowrap" id="TableEmployees"
                                                    class="TableNoPadding table table-striped mt-3">
                                                 <thead>
@@ -321,7 +345,9 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody id="tbodyEmployees">
-
+                                                <tr>
+                                                    <td colspan="4" class="text-danger">Burda hiç veri yok.</td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
