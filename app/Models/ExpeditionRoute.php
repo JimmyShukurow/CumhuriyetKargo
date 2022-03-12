@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class ExpeditionRoute extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function branch()
+    {
+        return $this->morphTo('branch','branch_model','branch_code');
+    }
 }

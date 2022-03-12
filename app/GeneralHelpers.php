@@ -1022,6 +1022,32 @@ function getJustFileName($name)
     return $name = substr($name, 0, strpos($name, '.'));
 }
 
+function getUserBranchInfo()
+{
+    ## Get Branch Info
+    if (Auth::user()->user_type == 'Acente') {
+        $agency = Agencies::find(Auth::user()->agency_code);
+        $branch = [
+            'id' => $agency->id,
+            'code' => $agency->agency_code,
+            'city' => $agency->city,
+            'name' => $agency->agency_name,
+            'type' => 'ŞUBE',
+            'type2' => 'Acente'
+        ];
+    } else {
+        $tc = TransshipmentCenters::find(Auth::user()->tc_code);
+        $branch = [
+            'id' => $tc->id,
+            'city' => $tc->city,
+            'name' => $tc->tc_name,
+            'type' => 'TRM.',
+            'type2' => 'Aktarma',
+        ];
+    }
+
+    return $branch;
+}
 
 
 

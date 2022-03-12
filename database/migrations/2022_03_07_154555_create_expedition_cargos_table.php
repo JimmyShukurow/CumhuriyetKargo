@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateExpeditionCargosTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('expedition_cargos', function (Blueprint $table) {
@@ -25,11 +21,7 @@ class CreateExpeditionCargosTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+
     public function down()
     {
         Schema::dropIfExists('expedition_cargos');
