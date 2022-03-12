@@ -2,7 +2,7 @@ $(document).ready(function () {
     tableOutGoingExpeditions = $('#OutGoingExpeditionsTable').DataTable({
         pageLength: 250,
         lengthMenu: dtLengthMenu,
-        order: [8, 'desc'],
+        order: [9, 'desc'],
         language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
         select: {
@@ -76,6 +76,7 @@ $(document).ready(function () {
             {data: 'departure_branch', name: 'departure_branch'},
             {data: 'arrival_branch', name: 'arrival_branch'},
             {data: 'route_count', name: 'route_count'},
+            {data: 'cargo_count', name: 'cargo_count'},
             {data: 'status', name: 'status'},
             {data: 'name_surname', name: 'name_surname'},
             {data: 'description', name: 'description'},

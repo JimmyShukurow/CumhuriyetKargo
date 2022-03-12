@@ -58,6 +58,15 @@ class ExpeditionStoreAction
             ], 200);
 
 
+        $expeditionControl = Expedition::where('car_id', $car->id)->where('done', '0')->first();
+
+        if ($expeditionControl != null)
+            return response()->json([
+                'status' => '-1',
+                'message' => $plaque . ' plakalı aracın bitirilmemiş seferi var, seferi bitirdikten sonra tekrar deneyin!'
+            ], 200);
+
+
         DB::beginTransaction();
         try {
             $create = Expedition::create([

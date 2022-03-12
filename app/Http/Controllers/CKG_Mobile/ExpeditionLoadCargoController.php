@@ -39,7 +39,7 @@ class ExpeditionLoadCargoController extends Controller
             ]);
 
 
-        $cargoes = ExpeditionCargo::where('cargo_id', $cargo->id)->where('unloading_at', null)->get()->pluck('part_no');
+        $cargoes = ExpeditionCargo::where('expedition_id',$validated['expedition_id'])->where('cargo_id', $cargo->id)->where('unloading_at', null)->get()->pluck('part_no');
         if ($cargoes->contains($ctn[1])) {
             return response()->json([
                 'status' => 0,

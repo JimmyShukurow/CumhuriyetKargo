@@ -43,6 +43,7 @@ class GetOutGoingExpeditionsAction
                 'car:id,plaka',
                 'user:users.id,name_surname,display_name',
                 'routes.branch',
+                'cargoes'
             ])
             ->when($doneStatus, function ($q) use ($doneStatus) {
                 return $q->where('done', $doneStatus);
@@ -74,6 +75,7 @@ class GetOutGoingExpeditionsAction
                 $key['arrival_branch'] = $key->arrival_branch->branch->tc_name . ' TRM.';
 
             $key['route_count'] = $key->routes->count() - 2;
+            $key['cargo_count'] = $key->cargoes->count();
         });
 
 

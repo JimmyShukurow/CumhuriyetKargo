@@ -61,7 +61,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <label for="filterStartDate">İlk Tarih:</label>
-                            <input type="date" id="filterStartDate" value="{{ date('Y-m-d') }}"
+                            <input type="date" id="filterStartDate" value="{{ $firstDate }}"
                                    class="form-control form-control-sm  niko-select-filter">
                         </div>
 
@@ -130,6 +130,7 @@
                         <th>Çıkış Birim</th>
                         <th>Varış Birim</th>
                         <th>Ara Durak</th>
+                        <th>Kargo Sayısı</th>
                         <th>Statü</th>
                         <th>Oluşturan</th>
                         <th>Açıklama</th>
@@ -146,6 +147,7 @@
                         <th>Çıkış Birim</th>
                         <th>Varış Birim</th>
                         <th>Ara Durak</th>
+                        <th>Kargo Sayısı</th>
                         <th>Statü</th>
                         <th>Oluşturan</th>
                         <th>Açıklama</th>

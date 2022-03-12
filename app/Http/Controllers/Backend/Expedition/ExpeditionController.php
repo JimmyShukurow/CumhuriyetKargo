@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\Cities;
 use App\Models\TransshipmentCenters;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -49,9 +50,10 @@ class ExpeditionController extends Controller
             ->get();
         $tc = TransshipmentCenters::all();
 
+        $firstDate = Carbon::createFromDate(date('Y-m-d'))->addDay(-7)->format('Y-m-d');
 
         GeneralLog('Giden seferler sayfası görüntülendi');
-        return view('backend.expedition.outgoing.outgoing_expeditions', compact(['data', 'unit', 'agencies', 'tc', 'requestID']));
+        return view('backend.expedition.outgoing.outgoing_expeditions', compact(['data', 'unit', 'firstDate','agencies', 'tc', 'requestID']));
     }
 
     public function ajaxTransactions(Request $request, $val)
