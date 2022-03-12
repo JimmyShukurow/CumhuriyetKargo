@@ -43,6 +43,7 @@ $(document).ready(function () {
                 d.agencyCode = $('#agencySafeStatusAgencyCode').val()
                 d.safeStatus = $('#agencySafeStatusSafeStatus').val()
                 d.region = $('#agencySafeStatusRegion').val()
+                d.plaka = $('#filterPlaka').val()
             },
             error: function (xhr, error, code) {
 

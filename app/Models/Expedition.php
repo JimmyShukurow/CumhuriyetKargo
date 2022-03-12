@@ -42,7 +42,7 @@ class Expedition extends Model
 
     public function departureBranch()
     {
-        return $this->hasOne(ExpeditionRoute::class, 'id', 'expedition_id');
+        return $this->hasMany(ExpeditionRoute::class, 'expedition_id', 'id');
     }
 
 }

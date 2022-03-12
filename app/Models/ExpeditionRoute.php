@@ -10,4 +10,9 @@ class ExpeditionRoute extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function branch()
+    {
+
+    }
 }

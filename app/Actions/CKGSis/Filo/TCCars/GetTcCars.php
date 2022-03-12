@@ -29,17 +29,17 @@ class GetTcCars
             ->when($model, function($q) use($model){ return $q->where('model', 'like', '%'.$model.'%');})
             ->when($plaka, function($q) use($plaka){ return $q->where('plaka', 'like', '%'.$plaka.'%');})
             ->when($soforAd, function($q) use($soforAd){ return $q->where('sofor_ad', 'like', '%'.$soforAd.'%');})
-            ->when($creator, function($q) use($creator){ 
+            ->when($creator, function($q) use($creator){
                 return $q->whereHas('creator', function($query) use ($creator){$query->where('name_surname', 'like', '%'.$creator.'%');});
             })
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        $cars->each(function($key){ 
-            $key['branch'] = $key->branch->agency_name ?? null; 
-            $key['creator'] = $key->creator->name_surname ?? null; 
-            $key['cikis_aktarma'] = $key->cikishAktarma->tc_name ?? null; 
-            $key['varis_aktarma'] = $key->varishAktarma->tc_name ?? null; 
+        $cars->each(function($key){
+            $key['branch'] = $key->branch->agency_name ?? null;
+            $key['creator'] = $key->creator->name_surname ?? null;
+            $key['cikis_aktarma'] = $key->cikishAktarma->tc_name ?? null;
+            $key['varis_aktarma'] = $key->varishAktarma->tc_name ?? null;
         });
 
         // This part is Yajra Datatables, you can google it to research ...

@@ -10,13 +10,16 @@ $(document).ready(function () {
         pageLength: 10,
         lengthMenu: dtLengthMenu,
         order: [
-            13, 'desc'
+            15, 'desc'
         ],
         "columnDefs": [
+            {"visible": false, "targets": [3]},
+            {"visible": false, "targets": [4]},
             {"visible": false, "targets": [6]},
             {"visible": false, "targets": [7]},
-            {"visible": false, "targets": [10]},
-            {"visible": false, "targets": [12]},
+            {"visible": false, "targets": [8]},
+            {"visible": false, "targets": [13]},
+            {"visible": false, "targets": [14]},
         ],
         language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col"f>>rtip',
