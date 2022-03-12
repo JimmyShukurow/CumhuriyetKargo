@@ -45,4 +45,9 @@ class Expedition extends Model
         return $this->hasMany(ExpeditionRoute::class, 'expedition_id', 'id');
     }
 
+    public function cargoes(){
+        return $this->hasMany(ExpeditionCargo::class, 'expedition_id', 'id')
+            ->where('unloading_at', null);
+    }
+
 }

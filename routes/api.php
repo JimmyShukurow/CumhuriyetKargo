@@ -62,6 +62,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('CaroBagTransactions/{val?}',[CargoController::class, 'caroBagTransactions']);
 
     Route::post('load-cargo', [ExpeditionLoadCargoController::class, 'loadCargo'])->name('load-cargo');
+    Route::get('read-expedition', [ExpeditionLoadCargoController::class, 'readExpedition'])->name('read-expedition');
 
 
 });
