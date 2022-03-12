@@ -39,7 +39,7 @@ class GetOutGoingExpeditionsAction
             [
                 'car:id,plaka',
                 'user:users.id,name_surname,display_name',
-                'departureBranch',
+                'departureBranch.branch',
             ])
             ->when($plaka, function ($q) use ($plaka) {
                 return $q->whereHas('car', function ($query) use ($plaka) {
@@ -47,7 +47,6 @@ class GetOutGoingExpeditionsAction
                 });
             })
             ->get();
-
 
         return datatables()->of($rows)
             ->editColumn('description', function ($key) {

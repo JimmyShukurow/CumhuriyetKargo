@@ -13,6 +13,6 @@ class ExpeditionRoute extends Model
 
     public function branch()
     {
-
+        return $this->morphTo('branch','branch_model','branch_code');
     }
 }
