@@ -16,7 +16,6 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/passport": "^10.1",
-        "laravel/telescope": "^4.7",
         "laravel/tinker": "^2.5",
         "lorisleiva/laravel-actions": "^2.1",
         "phpoffice/phpword": "^0.18.2",

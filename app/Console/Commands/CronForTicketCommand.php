@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Models\TicketDetails;
 use App\Models\Tickets;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +16,7 @@ class CronForTicketCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'hello:world';
+    protected $signature = 'cron:ticket';
 
     /**
      * The console command description.
@@ -40,6 +42,39 @@ class CronForTicketCommand extends Command
      */
     public function handle()
     {
-        info('i will make a nice cron bitch ;)');
+        $getAuthIDs = User::where('agency_code', 1)->pluck('id');
+        $expDate = Carbon::now()->subHour(24);
+        $tickets = Tickets::with(['lastReply' => function ($query) use ($getAuthIDs) {
+            return $query->whereNotIn('user_id', $getAuthIDs);
+        }])
+            ->whereDate('updated_at', '<', $expDate)
+            ->whereIn('status', ['AÇIK', 'BEKLEMEDE', 'CEVAPLANDI'])
+            ->get();
+
+
+        foreach ($tickets as $key) {
+
+            $update = Tickets::find($key->id)
+                ->update([
+                    'status' => 'KAPANDI',
+                ]);
+
+            $insert = TicketDetails::create([
+                'ticket_id' => $key->id,
+                'user_id' => 0,
+                'message' => '#### ==> Status Updated <== #### to:Kapandı',
+                'file1' => '',
+                'file2' => '',
+                'file3' => '',
+                'file4' => '',
+            ]);
+
+            activity()
+                ->causedBy(0)
+                ->performedOn($key)
+                ->inLog('Ticket Updated')
+                ->log('Destek talebine 24 saat içerisinde yanıt gelmediğinden Sistem tarafından, durumu KAPANDI olarak güncellendi.');
+        }
+        info('cron for ticket worked!');
     }
 }
