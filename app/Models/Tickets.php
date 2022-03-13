@@ -44,6 +44,12 @@ class Tickets extends Model
         return "Ticket $eventName.";
     }
 
+    public function lastReply()
+    {
+        return $this->hasOne(TicketDetails::class, 'ticket_id', 'id')
+            ->orderBy('id', 'desc');
+    }
+
 
     protected $table = 'tickets';
 }

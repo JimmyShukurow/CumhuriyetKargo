@@ -35,9 +35,13 @@ use App\Models\Cities;
 use App\Models\Currents;
 use App\Models\FilePrice;
 use App\Models\Settings;
+use App\Models\TicketDetails;
+use App\Models\Tickets;
 use App\Models\TransshipmentCenterDistricts;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -422,7 +426,6 @@ class MainCargoController extends Controller
         GeneralLog('Ücret Hesapla sayfası görüntülendi.');
 
         return view('backend.main_cargo.main.calculate_service_fee', compact(['data', 'fee', 'agency', 'tc']));
-
 
 
     }

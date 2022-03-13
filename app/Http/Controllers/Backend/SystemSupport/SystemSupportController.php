@@ -120,6 +120,7 @@ class SystemSupportController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
+
         if ($ticket === null || $ticket->user_id != Auth::id())
             return redirect(route('systemSupport.myTickets'))->with('error', 'Aradığınız destek talebi bulunamadı!');
 
@@ -163,7 +164,7 @@ class SystemSupportController extends Controller
             $file4 = getJustFileName($request->file4->getClientOriginalName()) . '_' . uniqid() . '_' . uniqid() . '.' . $request->file4->getClientOriginalExtension();
             $request->file4->move(public_path('files/ticket_files'), $file4);
         }
-        
+
         $insert = TicketDetails::create([
             'ticket_id' => $ticket_id,
             'user_id' => Auth::id(),
