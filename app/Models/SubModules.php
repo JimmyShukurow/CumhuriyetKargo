@@ -19,4 +19,9 @@ class SubModules extends Model
         $eventName = getLocalEventName($eventName);
         return "Alt modül $eventName.";
     }
+
+    public function module()
+    {
+        return $this->hasOne(Modules::class, 'id', 'module_id');
+    }
 }

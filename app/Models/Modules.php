@@ -24,4 +24,9 @@ class Modules extends Model
         $eventName = getLocalEventName($eventName);
         return "Modül $eventName.";
     }
+
+    public function moduleGroup()
+    {
+        return $this->hasOne(ModuleGroups::class, 'id', 'module_group_id');
+    }
 }

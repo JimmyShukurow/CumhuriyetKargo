@@ -19,4 +19,9 @@ class Roles extends Model
         $eventName = getLocalEventName($eventName);
         return "Yetki $eventName.";
     }
+
+    public function modules()
+    {
+        return $this->hasMany(RoleModules::class, 'role_id', 'id');
+    }
 }

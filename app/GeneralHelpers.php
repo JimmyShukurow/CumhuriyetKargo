@@ -14,6 +14,7 @@ use App\Models\Agencies;
 use App\Models\TransshipmentCenters;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Actions\CKGSis\Layout\GetUserModuleAndSubModuleAction;
 
 function tr_strtoupper($text)
 {
@@ -190,10 +191,8 @@ function getLast10PersonelLog()
 
 function getUserFirstPage()
 {
-    $user_id = Auth::user()->id;
-    $role = DB::table('view_user_role')->where('id', $user_id)->first();
-    $route = $role->link;
-    return $route;
+    $modules = GetUserModuleAndSubModuleAction::run();
+    return $modules[0]['sub_module_link'];
 }
 
 function Crypte4x($key)

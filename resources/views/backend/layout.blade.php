@@ -10,6 +10,7 @@
 <html lang="tr">
 @php $user = GetLayoutInformaiton() @endphp
 @php $theme = getSystemTheme() @endphp
+@php $modules = \App\Actions\CKGSis\Layout\GetUserModuleAndSubModuleAction::run(); @endphp
 
 <head>
     <meta charset="utf-8">
@@ -85,7 +86,7 @@
     <div class="app-header header-shadow {{$theme->header}}">
         <div class="app-header__logo">
             <div style="margin-bottom: 15px" class="logo-src">
-                <a href="{{route(getUserFirstPage())}}">
+                <a href="{{route($modules[0]['sub_module_link'])}}">
                     <img id="main-logo" style="width: 10rem;" src="/backend/assets/images/{{$theme->logo}}" alt="">
                     {{--<img id="main-logo" style="width: 11rem;" src="/backend/assets/images/CKG_Sis_Gif.png" alt="">--}}
                 </a>
@@ -164,7 +165,8 @@
                             <div class="grid-menu grid-menu-xl grid-menu-3col">
                                 <div class="no-gutters row">
                                     <div class="col-sm-6 col-xl-4">
-                                        <a style="text-decoration: none;" href="{{route(getUserFirstPage())}}">
+                                        <a style="text-decoration: none;"
+                                           href="{{route($modules[0]['sub_module_link'])}}">
                                             <button
                                                 class="btn-icon-vertical btn-square btn-transition btn btn-outline-link">
                                                 <i class="pe-7s-world icon-gradient bg-night-fade btn-icon-wrapper btn-icon-lg mb-3"></i>
@@ -495,39 +497,31 @@
             <div class="scrollbar-sidebar">
                 <div id="SideBar" class="app-sidebar__inner">
                     <ul class="vertical-nav-menu">
-                        @php $module = GetTitles()  @endphp
-                        @php $firstURL = get_just_first_url()  @endphp
+                        @php $keysModuleGroups = $modules->countBy('module_group_name')->keys(); @endphp
 
-                        @foreach ($module as $title)
-                            <li class="app-sidebar__heading">{{ $title->title }}</li>
+                        @foreach ($keysModuleGroups as $mg)
+                            <li class="app-sidebar__heading">{{ $mg }}</li>
 
-                            @php $module_names = GetModuleNames($title->title)@endphp
-                            @php $index = $loop->index @endphp
-
-
-                            @foreach ($module_names as $mname)
-
-                                @php $index2 = $loop->index @endphp
-
-
+                            @php $keysModules = $modules->where('module_group_name', '=', $mg)->countBy('module_name')->keys();@endphp
+                            @foreach ($keysModules as $module)
+                                @php $ico = $modules->where('module_name', '=', $module)->first()['module_ico'];@endphp
                                 <li
-                                    class="{{ set_module_active($mname->id, $firstURL, 'mm-active') }} big-parent">
-
+                                    class="big-parent">
                                     <a href="#">
-                                        <i class="metismenu-icon {{ $mname->ico }}"></i>
-                                        {{ $mname->module_name }}
+                                        <i class="metismenu-icon {{ $ico }}"></i>
+                                        {{ $module }}
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
 
-                                    @php $sub_module_names = GetModulesAllInfo($mname->module_name)  @endphp
+                                    @php $keySubModules = $keysModules = $modules->where('module_name', '=', $module); @endphp
                                     <ul>
-                                        @foreach ($sub_module_names as $subname)
+                                        @foreach ($keySubModules as $subModule)
                                             <li style="display: none;" class="sub-items">
 
-                                                <a href="{{ $subname->link != 'not.yet' ? route("$subname->link") : 'javascript:void(0)' }}"
-                                                   class="{{ is_active($subname->link, 'mm-active') }} {{ $subname->link == 'not.yet' ? 'alert-not-yet' : ''  }}">
+                                                <a href="{{ $subModule['sub_module_link'] != 'not.yet' ? route($subModule['sub_module_link']) : 'javascript:void(0)' }}"
+                                                   class="{{ $subModule['sub_module_link'] == 'not.yet' ? 'alert-not-yet' : ''  }}">
                                                     <i class="metismenu-icon">
-                                                    </i>{{ $subname->sub_name }}
+                                                    </i>{{ $subModule['sub_module_name'] }}
                                                 </a>
                                             </li>
                                         @endforeach
@@ -535,7 +529,6 @@
                                 </li>
                             @endforeach
                         @endforeach
-
                     </ul>
                 </div>
             </div>

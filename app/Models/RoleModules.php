@@ -19,4 +19,9 @@ class RoleModules extends Model
         $eventName = getLocalEventName($eventName);
         return "Yetkiye bağlı modül $eventName.";
     }
+
+    public function subModule()
+    {
+        return $this->hasOne(SubModules::class, 'id', 'sub_module_id');
+    }
 }

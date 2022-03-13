@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Backend\Expedition;
 
 use App\Actions\CKGSis\Expedition\AjaxTransaction\GetOutGoingExpeditionsAction;
 use App\Actions\CKGSis\Expedition\ExpeditionStoreAction;
+use App\Actions\CKGSis\Layout\GetUserModuleAndSubModuleAction;
 use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\Cities;
 use App\Models\TransshipmentCenters;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,7 +55,7 @@ class ExpeditionController extends Controller
         $firstDate = Carbon::createFromDate(date('Y-m-d'))->addDay(-7)->format('Y-m-d');
 
         GeneralLog('Giden seferler sayfası görüntülendi');
-        return view('backend.expedition.outgoing.outgoing_expeditions', compact(['data', 'unit', 'firstDate','agencies', 'tc', 'requestID']));
+        return view('backend.expedition.outgoing.outgoing_expeditions', compact(['data', 'unit', 'firstDate', 'agencies', 'tc', 'requestID']));
     }
 
     public function ajaxTransactions(Request $request, $val)
