@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend\ServiceFee;
+namespace App\Http\Controllers\Backend\Marketing\ServiceFee;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdditionalServices;
@@ -44,7 +44,7 @@ class DesiListController extends Controller
                 $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('d-m-Y H:i');
                 return $formatedDate;
             })
-            ->addColumn('edit', 'backend.service_fee.columns.desi-list-edit')
+            ->addColumn('edit', 'backend.marketing.service_fee.columns.desi-list-edit')
             ->rawColumns(['edit', 'mobile_individual_unit_price', 'desi_price', 'corporate_unit_price', 'individual_unit_price'])
             ->make(true);
     }

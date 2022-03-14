@@ -14,7 +14,7 @@ $('#district').change(function () {
 $(document).ready(function () {
     $('#tax-office').select2({
         ajax: {
-            url: "/SenderCurrents/AjaxTransaction/GetTaxOffices",
+            url: "/Marketing/SenderCurrents/AjaxTransaction/GetTaxOffices",
             type: "post",
             delay: 450,
             data: function (params) {
@@ -41,7 +41,7 @@ $(document).ready(function () {
 
     $('#agency').select2({
         ajax: {
-            url: "/SenderCurrents/AjaxTransaction/GetAgencies",
+            url: "/Marketing/SenderCurrents/AjaxTransaction/GetAgencies",
             type: "post",
             delay: 450,
             data: function (params) {

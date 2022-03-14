@@ -38,8 +38,8 @@
             </div>
         </div>
 
-        <div class="main-card mb-3 card">
-            <div class="card-body">
+        <div style="max-width: 1100px;" class="main-card mb-3 card">
+            <div  class="card-body">
                 <div class="row">
 
                 </div>

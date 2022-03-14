@@ -37,7 +37,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '/SenderCurrents/GetCurrents',
+            url: '/Marketing/SenderCurrents/GetCurrents',
             data: function (d) {
                 d.name = $('#name').val();
                 d.agency = $('#agency').val();
@@ -129,7 +129,7 @@ $(document).on('click', '.user-detail', function () {
 var array = new Array();
 
 function userInfo(user) {
-    $.ajax('/SenderCurrents/AjaxTransaction/GetCurrentInfo', {
+    $.ajax('/Marketing/SenderCurrents/AjaxTransaction/GetCurrentInfo', {
         method: 'POST',
         data: {
             _token: token,
@@ -228,7 +228,7 @@ function userInfo(user) {
             $('#currentCollectPrice').html(response.price.collect_price + "₺");
             $('#collectAmountOfIncrease').html("%" + response.price.collect_amount_of_increase);
             $('#currentConfirmed').html(currentConfirmed);
-            $('#PrintCurrentContract').attr('href', '/SenderCurrents/CurrentContract/' + response.current.current_code);
+            $('#PrintCurrentContract').attr('href', '/Marketing/SenderCurrents/CurrentContract/' + response.current.current_code);
 
         }
 
@@ -242,7 +242,7 @@ function userInfo(user) {
 $(document).on('click', '#btnConfirmCurrent', function () {
     $('#btnConfirmCurrent').prop('disabled', true);
 
-    $.ajax('/SenderCurrents/AjaxTransaction/ConfirmCurrent', {
+    $.ajax('/Marketing/SenderCurrents/AjaxTransaction/ConfirmCurrent', {
         method: 'POST',
         data: {
             _token: token,
@@ -286,7 +286,7 @@ $(document).on('click', '#btnEnabledDisabled', function () {
     $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
 
-    $.ajax('/SenderCurrents/AjaxTransaction/GetCurrentInfo', {
+    $.ajax('/Marketing/SenderCurrents/AjaxTransaction/GetCurrentInfo', {
         method: 'POST',
         data: {
             _token: token,
@@ -304,7 +304,7 @@ $(document).on('click', '#btnEnabledDisabled', function () {
 $(document).on('click', '#btnSaveStatus', function () {
 
     ToastMessage('warning', 'İstek alındı, lütfen bekleyiniz.', 'Dikkat!');
-    $.ajax('/SenderCurrents/AjaxTransaction/ChangeStatus', {
+    $.ajax('/Marketing/SenderCurrents/AjaxTransaction/ChangeStatus', {
         method: 'POST',
         data: {
             _token: token,
