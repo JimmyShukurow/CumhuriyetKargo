@@ -46,12 +46,20 @@ class GetOutGoingExpeditionsAction
             $ids = User::where('tc_code', Auth::user()->tc_code)->get()->pluck('id');
         }
 
-        $rows = GetExpeditionActions::run($ids, $firstDate, $lastDate, $doneStatus, $serialNo, $plaka, $creator);
-
+        $expeditionIDs = collect();
         if ($departureBranch) {
-            $rows_ids = FilterExpeditionAction::run($rows, $departureBranch);
-            $new_rows = GetExpeditionActions::run($ids, $firstDate, $lastDate, $doneStatus, $serialNo, $plaka, $creator);
-            $rows = $new_rows->whereIn('id',$rows_ids);
+            $rows_ids_Acente = FilterExpeditionAction::run(GetExpeditionActions::run($ids, $firstDate, $lastDate, $doneStatus, $serialNo, $plaka, $creator), $departureBranch, "Acente");
+            $rows_ids_Aktarma = FilterExpeditionAction::run(GetExpeditionActions::run($ids, $firstDate, $lastDate, $doneStatus, $serialNo, $plaka, $creator), $departureBranch, "Aktarma");
+            $expeditionIDs = $rows_ids_Acente->merge($rows_ids_Aktarma);
+        }
+        if ($arrivalBranch) {
+            $rows_ids_Acente = FilterExpeditionArrivalAction::run(GetExpeditionActions::run($ids, $firstDate, $lastDate, $doneStatus, $serialNo, $plaka, $creator), $arrivalBranch, "Acente");
+            $rows_ids_Aktarma = FilterExpeditionArrivalAction::run(GetExpeditionActions::run($ids, $firstDate, $lastDate, $doneStatus, $serialNo, $plaka, $creator), $arrivalBranch, "Aktarma");
+            $expeditionIDs = $rows_ids_Acente->merge($rows_ids_Aktarma);
+        }
+        $rows = GetExpeditionActions::run($ids, $firstDate, $lastDate, $doneStatus, $serialNo, $plaka, $creator);
+        if ($expeditionIDs->count() > 0) {
+            $rows = $rows->whereIn('id',$expeditionIDs);
         }
 
         $rows->each(function ($key) {
