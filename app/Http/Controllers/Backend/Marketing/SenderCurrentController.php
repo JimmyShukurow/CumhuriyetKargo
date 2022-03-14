@@ -8,6 +8,7 @@ use App\Models\Cargoes;
 use App\Models\Cities;
 use App\Models\CurrentPrices;
 use App\Models\Currents;
+use App\Models\PriceDrafts;
 use App\Models\Roles;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
@@ -46,6 +47,7 @@ class SenderCurrentController extends Controller
     public function create()
     {
         $data['cities'] = Cities::all();
+        $data['price_drafts'] = PriceDrafts::all();
         return view('backend.marketing.sender_currents.create', compact('data'));
     }
 

@@ -39,7 +39,7 @@
         </div>
 
         <div style="max-width: 1100px;" class="main-card mb-3 card">
-            <div  class="card-body">
+            <div class="card-body">
                 <div class="row">
 
                 </div>
@@ -428,6 +428,23 @@
                             <h6 class="text-dark text-center  font-weight-bold">Fiyatlar</h6>
                             <div class="divider"></div>
                         </div>
+
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
+                                        <label for="priceDraft" class="">Fiyat Taslağı:</label>
+                                        <select class="form-control-sm form-control" name="priceDraft" id="priceDraft">
+                                            <option value="special">Özel</option>
+                                            @foreach($data['price_drafts'] as $key)
+                                                <option value="{{$key->id}}">{{$key->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-md-12">
                             <div class="form-row">
                                 <div class="col-md-3">
