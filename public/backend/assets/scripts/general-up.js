@@ -58,7 +58,13 @@ function ajaxError(status, response = null) {
         msg = 'Sunucu ile bağlantı kurulamadı!';
     else if (status == 429)
         msg = 'Aşırı istekte bulundunuz, lütfen bir süre sonra tekrar deneyein! [429]';
-    else
+    else if (status == 422) {
+
+        $.each(response.errors, function (key, val) {
+            ToastMessage('error', val, 'Hata!')
+        })
+
+    } else
         msg = 'Bilinmeyen bir hata oluştu! [' + status + ']';
 
     ToastMessage('error', msg, 'Hata!');
@@ -255,7 +261,7 @@ function NikoStylePostMethod() {
         }
 
     }).error(function (jqXHR, response) {
-        ajaxError(jqXHR.status);
+        ajaxError(jqXHR.status, JSON.parse(jqXHR.responseText));
     }).always(function () {
         $('#ModalCargoDetails').unblock();
     });
@@ -471,3 +477,18 @@ $(document).on('keyup', '.dataTables_filter input', function () {
     $(this).val($(this).val().toLocaleUpperCase())
 });
 
+whiteAnimation = {
+    message: $('<div class="loader mx-auto">\n' +
+        '                            <div class="ball-grid-pulse">\n' +
+        '                                <div class="bg-white"></div>\n' +
+        '                                <div class="bg-white"></div>\n' +
+        '                                <div class="bg-white"></div>\n' +
+        '                                <div class="bg-white"></div>\n' +
+        '                                <div class="bg-white"></div>\n' +
+        '                                <div class="bg-white"></div>\n' +
+        '                                <div class="bg-white"></div>\n' +
+        '                                <div class="bg-white"></div>\n' +
+        '                                <div class="bg-white"></div>\n' +
+        '                            </div>\n' +
+        '                        </div>')
+}

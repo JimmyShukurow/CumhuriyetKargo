@@ -25,7 +25,7 @@ class CreatePriceDraftsTable extends Migration
             $table->double('d_21_25');
             $table->double('d_26_30');
             $table->double('amount_of_increase');
-            $table->double('amount_of_increase');
+            $table->string('agency_permission');
             $table->integer('user_id');
             $table->timestamps();
         });

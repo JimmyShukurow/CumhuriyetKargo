@@ -31,13 +31,13 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
                 Route::get('GetDistancePrice', [DistanceController::class, 'getDistancePrice']);
             });
-
             Route::resource('AdditionalServices', AdditionalServicesController::class);
             Route::resource('DesiList', DesiListController::class);
             Route::any('DesiListDelete/', [DesiListController::class, 'deleteRow']);
         });
 
         Route::resource('PriceDraft', PriceDraftsController::class);
+        Route::get('GetPriceDrafts', [PriceDraftsController::class, 'GetPriceDrafts']);
 
 
     });
