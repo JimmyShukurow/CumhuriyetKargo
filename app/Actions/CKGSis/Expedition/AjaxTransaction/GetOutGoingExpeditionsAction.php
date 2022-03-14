@@ -46,33 +46,13 @@ class GetOutGoingExpeditionsAction
             $ids = User::where('tc_code', Auth::user()->tc_code)->get()->pluck('id');
         }
 
-        $rows = Expedition::with(
-            [
-                'car:id,plaka',
-                'user:users.id,name_surname,display_name',
-                'routes.branch',
-                'cargoes'
-            ])
-            ->when($doneStatus != null, function ($q) use ($doneStatus) {
-                return $q->where('done', $doneStatus);
-            })
-            ->when($serialNo, function ($q) use ($serialNo) {
-                return $q->where('serial_no', str_replace(' ', '', $serialNo));
-            })
-            ->when($plaka, function ($q) use ($plaka) {
-                return $q->whereHas('car', function ($query) use ($plaka) {
-                    $query->where('plaka', 'like', '%' . $plaka . '%');
-                });
-            })
-            ->when($creator, function ($q) use ($creator) {
-                return $q->whereHas('user', function ($query) use ($creator) {
-                    $query->where('name_surname', 'like', '%' . $creator . '%');
-                });
-            })
-            ->whereIn('user_id', $ids)
-            ->whereBetween('created_at', [$firstDate, $lastDate])
-            ->get();
+        $rows = GetExpeditionActions::run($ids, $firstDate, $lastDate, $doneStatus, $serialNo, $plaka, $creator);
 
+        if ($departureBranch) {
+            $rows_ids = FilterExpeditionAction::run($rows, $departureBranch);
+            $new_rows = GetExpeditionActions::run($ids, $firstDate, $lastDate, $doneStatus, $serialNo, $plaka, $creator);
+            $rows = $new_rows->whereIn('id',$rows_ids);
+        }
 
         $rows->each(function ($key) {
             $key['departure_branch'] = $key->routes->where('route_type', 1)->first();
