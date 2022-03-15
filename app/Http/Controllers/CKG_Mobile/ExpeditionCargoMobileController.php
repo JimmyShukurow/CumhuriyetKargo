@@ -13,7 +13,7 @@ use App\Models\ExpeditionCargo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ExpeditionLoadCargoController extends Controller
+class ExpeditionCargoMobileController extends Controller
 {
     public function loadCargo(LoadCargoToExpeditionRequest $request)
     {
@@ -100,5 +100,11 @@ class ExpeditionLoadCargoController extends Controller
             'cargoes' => CargoResource::collection($expedition->cargoes),
 
         ]);
+    }
+
+    public function unloadCargo(Request $request){
+
+
+        return Expedition::find($request->expedition_id);
     }
 }
