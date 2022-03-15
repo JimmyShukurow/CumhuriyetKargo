@@ -405,7 +405,7 @@
                                         @php $date = \Carbon\Carbon::createFromDate(date('Y')) @endphp
                                         @php $endOfYear = \Carbon\Carbon::parse(date('Y-m-d'))->endOfYear()->format('Y-m-d') @endphp
 
-                                        <input readonly name="sozlesmeBitisTarihi" required id="contractEndDate"
+                                        <input name="sozlesmeBitisTarihi" required id="contractEndDate"
                                                type="date"
                                                value="{{$endOfYear}}"
                                                class="form-control input-mask-trigger form-control-sm">
@@ -434,10 +434,12 @@
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="priceDraft" class="">Fiyat Taslağı:</label>
-                                        <select class="form-control-sm form-control" name="priceDraft" id="priceDraft">
-                                            <option value="special">Özel</option>
+                                        <select required class="form-control-sm form-control" name="priceDraft"
+                                                id="priceDraft">
+                                            <option value="0">Özel</option>
                                             @foreach($data['price_drafts'] as $key)
-                                                <option value="{{$key->id}}">{{$key->name}}</option>
+                                                <option
+                                                    {{old('priceDraft') == $key->id ? 'selected' : ''}} value="{{$key->id}}">{{$key->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -445,7 +447,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="container-cargo-price col-md-12">
                             <div class="form-row">
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
@@ -453,7 +455,7 @@
                                         <input name="dosyaUcreti" id="filePrice" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ old('dosyaUcreti') }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -463,7 +465,7 @@
                                         <input name="miUcreti" id="miPrice" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ old('miUcreti') }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -473,7 +475,7 @@
                                         <input name="d1_5" id="d1_5" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ old('d1_5') }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -483,7 +485,7 @@
                                         <input name="d6_10" id="d6_10" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ old('d6_10') }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -493,7 +495,7 @@
                                         <input name="d11_15" id="d11_15" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ old('d11_15') }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -503,7 +505,7 @@
                                         <input name="d16_20" id="d16_20" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ old('d16_20') }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -513,7 +515,7 @@
                                         <input name="d21_25" id="d21_25" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ old('d21_25') }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -523,47 +525,7 @@
                                         <input name="d26_30" id="d26_30" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ old('d26_30') }}"
-                                               class="form-control input-mask-trigger form-control-sm">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="position-relative form-group">
-                                        <label for="d31_35" class="">31-35 Desi:</label>
-                                        <input name="d31_35" id="d31_35" required
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
-                                               type="text" value="{{ old('d31_35') }}"
-                                               class="form-control input-mask-trigger form-control-sm">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="position-relative form-group">
-                                        <label for="d36_40" class="">36-40 Desi:</label>
-                                        <input name="d36_40" id="d36_40" required
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
-                                               type="text" value="{{ old('d36_40') }}"
-                                               class="form-control input-mask-trigger form-control-sm">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="position-relative form-group">
-                                        <label for="d41_45" class="">41-45 Desi:</label>
-                                        <input name="d41_45" id="d41_45" required
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
-                                               type="text" value="{{ old('d41_45') }}"
-                                               class="form-control input-mask-trigger form-control-sm">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="position-relative form-group">
-                                        <label for="d46_50" class="">46-50 Desi:</label>
-                                        <input name="d46_50" id="d46_50" required
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
-                                               type="text" value="{{ old('d46_50') }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -573,7 +535,7 @@
                                         <input name="ustuDesi" id="amountOfIncrease" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ old('ustuDesi') }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 

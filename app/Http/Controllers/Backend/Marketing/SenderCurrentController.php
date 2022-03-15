@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Marketing;
 
+use App\Actions\CKGSis\Marketing\PriceDrafts\GetPriceDraftsAction;
 use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\Cargoes;
@@ -84,42 +85,32 @@ class SenderCurrentController extends Controller
             'd16_20' => ['required', new PriceControl],
             'd21_25' => ['required', new PriceControl],
             'd26_30' => ['required', new PriceControl],
-            'd31_35' => ['required', new PriceControl],
-            'd36_40' => ['required', new PriceControl],
-            'd41_45' => ['required', new PriceControl],
-            'd46_50' => ['required', new PriceControl],
             'ustuDesi' => ['required', new PriceControl],
-            'mbStatus' => 'required|in:1,0'
+            'mbStatus' => 'required|in:1,0',
+            'priceDraft' => 'required'
         ]);
 
         $cityDistrict = DB::table('view_city_district_neighborhoods')
-            ->where('city_id', intval($request->il))
-            ->where('district_id', intval($request->ilce))
-            ->where('neighborhood_id', intval($request->mahalle))
-            ->exists();
+            ->where('city_id', $request->il)
+            ->where('district_id', $request->ilce)
+            ->where('neighborhood_id', $request->mahalle)
+            ->get();
+
         if ($cityDistrict == null) {
             $request->flash();
             return back()->with('error', 'Lütfen geçerli bir il, ilçe ve mahalle seçinizi');
         }
-        $cityDistrict = DB::table('view_city_district_neighborhoods')
-            ->where('city_id', intval($request->il))
-            ->where('district_id', intval($request->ilce))
-            ->where('neighborhood_id', intval($request->mahalle))
-            ->get();
 
         #dispatch city-district control
         $dispatchCityDistrict = DB::table('view_city_districts')
             ->where('city_id', intval($request->sevkIl))
             ->where('district_id', intval($request->sevkIlce))
-            ->exists();
+            ->get();
+
         if ($dispatchCityDistrict == null) {
             $request->flash();
             return back()->with('error', 'Lütfen geçerli bir il-ilçe seçinizi');
         }
-        $dispatchCityDistrict = DB::table('view_city_districts')
-            ->where('city_id', intval($request->sevkIl))
-            ->where('district_id', intval($request->sevkIlce))
-            ->get();
 
         # => cadde sokak kontrolü
         if ($request->cadde == '' && $request->sokak == '') {
@@ -138,81 +129,81 @@ class SenderCurrentController extends Controller
                 ->exists();
         }
 
-        $date = \Carbon\Carbon::createFromDate(date('Y'));
-        $endOfYear = \Carbon\Carbon::parse(date('Y-m-d'))->endOfYear();
-
-
-        ### => insert transaction
-        $insert = Currents::create([
-            'current_type' => 'Gönderici',
-            'current_code' => $current_code,
-            'category' => 'Kurumsal',
-            'name' => tr_strtoupper($request->adSoyadFirma),
-            'tax_administration' => tr_strtoupper($request->vergiDairesi),
-            'tckn' => $request->vknTckn,
-            'city' => tr_strtoupper($cityDistrict[0]->city_name),
-            'district' => tr_strtoupper($cityDistrict[0]->district_name),
-            'neighborhood' => tr_strtoupper($cityDistrict[0]->neighborhood_name),
-            'street' => tr_strtoupper($request->cadde),
-            'street2' => tr_strtoupper($request->sokak),
-            'building_no' => tr_strtoupper($request->bina_no),
-            'door_no' => tr_strtoupper($request->daire_no),
-            'floor' => tr_strtoupper($request->kat_no),
-            'address_note' => tr_strtoupper($request->adres_notu),
-            'phone' => $request->telefon,
-            'phone2' => $request->telefon2,
-            'gsm' => $request->gsm,
-            'gsm2' => $request->gsm2,
-            'email' => $request->email,
-            'web_site' => $request->website,
-            'dispatch_city' => tr_strtoupper($dispatchCityDistrict[0]->city_name),
-            'dispatch_district' => tr_strtoupper($dispatchCityDistrict[0]->district_name),
-            'dispatch_post_code' => $request->sevkPostaKodu,
-            'dispatch_adress' => tr_strtoupper($request->sevkAdres),
-            'status' => '1',
-            'agency' => $request->acente,
-            'bank_iban' => $request->iban,
-            'bank_owner_name' => tr_strtoupper($request->hesapSahibiTamIsim),
-            'discount' => getDoubleValue($request->iskonto),
-            'reference' => tr_strtoupper($request->referans),
-            'confirmed' => '0',
-            'created_by_user_id' => Auth::id(),
-            'contract_start_date' => $request->sozlesmeBaslangicTarihi,
-            'contract_end_date' => $endOfYear,
-            'mb_status' => $request->mbStatus,
-        ]);
-
-        if ($insert) {
-
-            $create = CurrentPrices::create([
+        DB::beginTransaction();
+        try {
+            ### => insert transaction
+            $insert = Currents::create([
+                'current_type' => 'Gönderici',
                 'current_code' => $current_code,
-                'file_price' => getDoubleValue($request->dosyaUcreti),
-                'mi_price' => getDoubleValue($request->miUcreti),
+                'category' => 'Anlaşmalı',
+                'name' => tr_strtoupper($request->adSoyadFirma),
+                'tax_administration' => tr_strtoupper($request->vergiDairesi),
+                'tckn' => $request->vknTckn,
+                'city' => tr_strtoupper($cityDistrict[0]->city_name),
+                'district' => tr_strtoupper($cityDistrict[0]->district_name),
+                'neighborhood' => tr_strtoupper($cityDistrict[0]->neighborhood_name),
+                'street' => tr_strtoupper($request->cadde),
+                'street2' => tr_strtoupper($request->sokak),
+                'building_no' => tr_strtoupper($request->bina_no),
+                'door_no' => tr_strtoupper($request->daire_no),
+                'floor' => tr_strtoupper($request->kat_no),
+                'address_note' => tr_strtoupper($request->adres_notu),
+                'phone' => $request->telefon,
+                'phone2' => $request->telefon2,
+                'gsm' => $request->gsm,
+                'gsm2' => $request->gsm2,
+                'email' => $request->email,
+                'web_site' => $request->website,
+                'dispatch_city' => tr_strtoupper($dispatchCityDistrict[0]->city_name),
+                'dispatch_district' => tr_strtoupper($dispatchCityDistrict[0]->district_name),
+                'dispatch_post_code' => $request->sevkPostaKodu,
+                'dispatch_adress' => tr_strtoupper($request->sevkAdres),
+                'status' => '1',
+                'agency' => $request->acente,
+                'bank_iban' => $request->iban,
+                'bank_owner_name' => tr_strtoupper($request->hesapSahibiTamIsim),
+                'discount' => getDoubleValue($request->iskonto),
+                'reference' => tr_strtoupper($request->referans),
+                'confirmed' => '0',
+                'created_by_user_id' => Auth::id(),
+                'contract_start_date' => $request->sozlesmeBaslangicTarihi,
+                'contract_end_date' =>  $request->sozlesmeBitisTarihi,
+                'mb_status' => $request->mbStatus,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $request->flash();
+            return back()
+                ->with('error', 'Cari kayıt işlemi esnasında bir hata oluştu!');
+        }
+
+        try {
+            $create = CurrentPrices::create([
+                'price_draft_id' => $request->priceDraft,
+                'current_code' => $current_code,
+                'file' => getDoubleValue($request->dosyaUcreti),
+                'mi' => getDoubleValue($request->miUcreti),
                 'd_1_5' => getDoubleValue($request->d1_5),
                 'd_6_10' => getDoubleValue($request->d6_10),
                 'd_11_15' => getDoubleValue($request->d11_15),
                 'd_16_20' => getDoubleValue($request->d16_20),
                 'd_21_25' => getDoubleValue($request->d21_25),
                 'd_26_30' => getDoubleValue($request->d26_30),
-                'd_31_35' => getDoubleValue($request->d31_35),
-                'd_36_40' => getDoubleValue($request->d36_40),
-                'd_41_45' => getDoubleValue($request->d41_45),
-                'd_46_50' => getDoubleValue($request->d46_50),
                 'amount_of_increase' => getDoubleValue($request->ustuDesi),
                 'collect_price' => getDoubleValue($request->tahsilatEkHizmetBedeli),
                 'collect_amount_of_increase' => getDoubleValue($request->tahsilatEkHizmetBedeli200Ustu),
+
             ]);
-
-            if ($create) {
-                GeneralLog($current_code . " kodlu kusumsal cari oluşturuldu.");
-                return back()->with('success', 'Cari oluşturuldu, Onay Bekliyor!');
-            } else {
-                $request->flash();
-                return back()->with('success', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!');
-            }
-
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $request->flash();
+            return back()
+                ->with('error', 'Cari fiyat kayıt işlemi esnasında bir hata oluştu!');
         }
 
+        DB::commit();
+        GeneralLog($current_code . " kodlu kusumsal cari oluşturuldu.");
+        return back()->with('success', 'Cari oluşturuldu, Onay Bekliyor!');
     }
 
 
@@ -240,6 +231,9 @@ class SenderCurrentController extends Controller
         $data['dispatch_districts'] = DB::table('view_city_districts')
             ->where('city_name', $current->dispatch_city)
             ->get();
+
+        $data['price_drafts'] = PriceDrafts::all();
+
         $agency = Agencies::find($current->agency);
 
         return view('backend.marketing.sender_currents.edit', compact(['data', 'current', 'price', 'agency']));
@@ -278,45 +272,59 @@ class SenderCurrentController extends Controller
             'd16_20' => ['required', new PriceControl],
             'd21_25' => ['required', new PriceControl],
             'd26_30' => ['required', new PriceControl],
-            'd31_35' => ['required', new PriceControl],
-            'd36_40' => ['required', new PriceControl],
-            'd41_45' => ['required', new PriceControl],
-            'd46_50' => ['required', new PriceControl],
             'ustuDesi' => ['required', new PriceControl],
-            'mbStatus' => 'required|in:1,0'
+            'mbStatus' => 'required|in:1,0',
+            'priceDraft' => 'required'
         ]);
 
         $cityDistrict = DB::table('view_city_district_neighborhoods')
             ->where('city_id', $request->il)
             ->where('district_id', $request->ilce)
             ->where('neighborhood_id', $request->mahalle)
-            ->exists();
+            ->get();
+
         if ($cityDistrict == null) {
             $request->flash();
             return back()->with('error', 'Lütfen geçerli bir il, ilçe ve mahalle seçinizi');
         }
-        $cityDistrict = DB::table('view_city_district_neighborhoods')
-            ->where('city_id', intval($request->il))
-            ->where('district_id', intval($request->ilce))
-            ->where('neighborhood_id', intval($request->mahalle))
-            ->get();
+
         #dispatch city-district control
-        $dispatchCityDistrict = DB::table('view_city_districts')
-            ->where('city_id', intval($request->sevkIl))
-            ->where('district_id', intval($request->sevkIlce))
-            ->exists();
-        if ($dispatchCityDistrict == null) {
-            $request->flash();
-            return back()->with('error', 'Lütfen geçerli bir il-ilçe seçinizi');
-        }
         $dispatchCityDistrict = DB::table('view_city_districts')
             ->where('city_id', intval($request->sevkIl))
             ->where('district_id', intval($request->sevkIlce))
             ->get();
 
-        ### => insert transaction
-        $update = Currents::find($id)
-            ->update([
+        if ($dispatchCityDistrict == null) {
+            $request->flash();
+            return back()->with('error', 'Lütfen geçerli bir il-ilçe seçinizi');
+        }
+
+        # => cadde sokak kontrolü
+        if ($request->cadde == '' && $request->sokak == '') {
+            $request->flash();
+            return back()->with('error', 'Cadde ve Sokak alanlarından en az bir tanesi zorunludur!');
+        }
+
+        $codeControl = true;
+        $current_code = '';
+
+        # => create current code and code control
+        while ($codeControl != false) {
+            $current_code = rand(111111111, 999999999);
+            $codeControl = DB::table('currents')
+                ->where('current_code', $current_code)
+                ->exists();
+        }
+
+        $date = \Carbon\Carbon::createFromDate(date('Y'));
+        $endOfYear = \Carbon\Carbon::parse(date('Y-m-d'))->endOfYear();
+
+        DB::beginTransaction();
+        try {
+            ### => insert transaction
+            $insert = Currents::create([
+                'current_type' => 'Gönderici',
+                'category' => 'Anlaşmalı',
                 'name' => tr_strtoupper($request->adSoyadFirma),
                 'tax_administration' => tr_strtoupper($request->vergiDairesi),
                 'tckn' => $request->vknTckn,
@@ -345,44 +353,44 @@ class SenderCurrentController extends Controller
                 'bank_owner_name' => tr_strtoupper($request->hesapSahibiTamIsim),
                 'discount' => getDoubleValue($request->iskonto),
                 'reference' => tr_strtoupper($request->referans),
-                'created_by_user_id' => Auth::id(),
                 'contract_start_date' => $request->sozlesmeBaslangicTarihi,
-                'contract_end_date' => $request->sozlesmeBitisTarihi . ' 23:59:58',
+                'contract_end_date' =>  $request->sozlesmeBitisTarihi,
                 'mb_status' => $request->mbStatus,
             ]);
-
-        if ($update) {
-
-            $current = Currents::find($id);
-
-            $update = CurrentPrices::where('current_code', $current->current_code)
-                ->update([
-                    'file_price' => getDoubleValue($request->dosyaUcreti),
-                    'mi_price' => getDoubleValue($request->miUcreti),
-                    'd_1_5' => getDoubleValue($request->d1_5),
-                    'd_6_10' => getDoubleValue($request->d6_10),
-                    'd_11_15' => getDoubleValue($request->d11_15),
-                    'd_16_20' => getDoubleValue($request->d16_20),
-                    'd_21_25' => getDoubleValue($request->d21_25),
-                    'd_26_30' => getDoubleValue($request->d26_30),
-                    'd_31_35' => getDoubleValue($request->d31_35),
-                    'd_36_40' => getDoubleValue($request->d36_40),
-                    'd_41_45' => getDoubleValue($request->d41_45),
-                    'd_46_50' => getDoubleValue($request->d46_50),
-                    'amount_of_increase' => getDoubleValue($request->ustuDesi),
-                    'collect_price' => getDoubleValue($request->tahsilatEkHizmetBedeli),
-                    'collect_amount_of_increase' => getDoubleValue($request->tahsilatEkHizmetBedeli200Ustu),
-                ]);
-
-            if ($update) {
-                GeneralLog($current->current_code . " kodlu kusumsal cari Güncellendi.");
-                return back()->with('success', 'Cari Güncellendi!');
-            } else {
-                $request->flash();
-                return back()->with('success', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!');
-            }
-
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $request->flash();
+            return back()
+                ->with('error', 'Cari kayıt işlemi esnasında bir hata oluştu!');
         }
+
+        try {
+            $create = CurrentPrices::create([
+                'price_draft_id' => $request->priceDraft,
+                'current_code' => $current_code,
+                'file' => getDoubleValue($request->dosyaUcreti),
+                'mi' => getDoubleValue($request->miUcreti),
+                'd_1_5' => getDoubleValue($request->d1_5),
+                'd_6_10' => getDoubleValue($request->d6_10),
+                'd_11_15' => getDoubleValue($request->d11_15),
+                'd_16_20' => getDoubleValue($request->d16_20),
+                'd_21_25' => getDoubleValue($request->d21_25),
+                'd_26_30' => getDoubleValue($request->d26_30),
+                'amount_of_increase' => getDoubleValue($request->ustuDesi),
+                'collect_price' => getDoubleValue($request->tahsilatEkHizmetBedeli),
+                'collect_amount_of_increase' => getDoubleValue($request->tahsilatEkHizmetBedeli200Ustu),
+
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $request->flash();
+            return back()
+                ->with('error', 'Cari fiyat kayıt işlemi esnasında bir hata oluştu!');
+        }
+
+        DB::commit();
+        GeneralLog($current_code . " kodlu kusumsal cari güncellendi.");
+        return back()->with('success', 'Cari güncellendi!');
     }
 
 
@@ -510,6 +518,15 @@ class SenderCurrentController extends Controller
 
                 break;
 
+            case 'GetPriceDraft':
+                $draft = PriceDrafts::find($request->id);
+
+                if ($draft != null)
+                    return response()->json(['status' => 1, 'data' => $draft], 200);
+                else
+                    return response()->json(['status' => -1, 'message' => 'Fiyat taslağı bulunamadı!'], 200);
+                break;
+
             default:
                 return 'no-case';
                 break;
@@ -546,6 +563,9 @@ class SenderCurrentController extends Controller
             ->where('current_type', 'Gönderici');
 
         return datatables()->of($currents)
+            ->editColumn('current_code', function ($current) {
+                return CurrentCodeDesign($current->current_code);
+            })
             ->editColumn('name', function ($current) {
                 return Str::words($current->name, 3, '...');
             })
@@ -556,10 +576,13 @@ class SenderCurrentController extends Controller
                 return "current-item-" . $currents->id;
             })
             ->editColumn('status', function ($currents) {
-                return $currents->status == '1' ? 'Aktif' : 'Pasif';
+                return $currents->status == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>';
+            })
+            ->editColumn('confirmed', function ($currents) {
+                return $currents->confirmed == '1' ? '<b class="text-success">Onaylandı</b>' : '<b class="text-primary">Onay Bekliyor</b>';
             })
             ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
-            ->rawColumns(['edit'])
+            ->rawColumns(['edit', 'status', 'confirmed'])
             ->make(true);
     }
 
@@ -599,7 +622,7 @@ class SenderCurrentController extends Controller
 
         return datatables()->of($data)
             ->editColumn('current_code', function ($current) {
-                return '<b class="customer-detail" id="'.$current->id.'" style="text-decoration:underline; color:#000; cursor:pointer; user-select:none">'.CurrentCodeDesign($current->current_code).'</b>';
+                return '<b class="customer-detail" id="' . $current->id . '" style="text-decoration:underline; color:#000; cursor:pointer; user-select:none">' . CurrentCodeDesign($current->current_code) . '</b>';
             })
             ->editColumn('free', function ($current) {
                 return '';
@@ -638,8 +661,7 @@ class SenderCurrentController extends Controller
                 ->limit(10)
                 ->get();
 
-                $data[0]->current_code = CurrentCodeDesign($data[0]->current_code);
-
+        $data[0]->current_code = CurrentCodeDesign($data[0]->current_code);
 
 
         $data[0]->created_at = Carbon::parse($data[0]->created_at)->diffInSeconds(Carbon::now());
@@ -720,21 +742,20 @@ class SenderCurrentController extends Controller
         $cargoesAsReciever = $current->cargoesAsReciever->count();
         $cargoesAsSender = $current->cargoesAsSender->count();
 
-        if (Auth::user()->agency_code != $creatorUser->agency_code) return response()->json(['status' => 0, 'message' => 'Şubenize ait bir müşteri olmadığından bu müşteriyi silemezsiniz!'],403);
+        if (Auth::user()->agency_code != $creatorUser->agency_code) return response()->json(['status' => 0, 'message' => 'Şubenize ait bir müşteri olmadığından bu müşteriyi silemezsiniz!'], 403);
 
-        elseif($cargoesAsReciever != 0 || $cargoesAsSender != 0 ) return response()->json(['status' => 0, 'message' => 'Bu müşteriye daha önce fatura kesildiği için silme işlemini yapamazsınız!'],403);
+        elseif ($cargoesAsReciever != 0 || $cargoesAsSender != 0) return response()->json(['status' => 0, 'message' => 'Bu müşteriye daha önce fatura kesildiği için silme işlemini yapamazsınız!'], 403);
 
-        elseif( Carbon::parse($current->created_at)->diffInSeconds(Carbon::now()) < 86400 && $cargoesAsReciever == 0 && $cargoesAsSender == 0 ){
+        elseif (Carbon::parse($current->created_at)->diffInSeconds(Carbon::now()) < 86400 && $cargoesAsReciever == 0 && $cargoesAsSender == 0) {
 
             $current->delete();
 
-            GeneralLog( $current->current_code.' Cari Kodlu müşteri silindi!');
+            GeneralLog($current->current_code . ' Cari Kodlu müşteri silindi!');
 
 
-            return response()->json(['status'=> 1 ,'message'=> 'Bşarılı Silindi!'],200);
-        }
-        elseif(Carbon::parse($current->created_at)->diffInSeconds(Carbon::now()) > 86400 ){
-            return response()->json(['status' => 0, 'message'=> '24 saat geçtigi için silemezsiniz!'], 403);
+            return response()->json(['status' => 1, 'message' => 'Bşarılı Silindi!'], 200);
+        } elseif (Carbon::parse($current->created_at)->diffInSeconds(Carbon::now()) > 86400) {
+            return response()->json(['status' => 0, 'message' => '24 saat geçtigi için silemezsiniz!'], 403);
         }
 
     }

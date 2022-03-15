@@ -64,7 +64,7 @@
             <div class="card-body">
                 <form method="POST" id="search-form">
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="agency">Bağlı Acente</label>
                             <select name="agency" id="agency" style="width: 100%"
                                     class="form-control form-control-sm niko-select-filter">
@@ -93,16 +93,17 @@
                         <div class="col-md-2">
                             <label for="status">Statü</label>
                             <select name="status" id="status" class="form-control form-control-sm niko-select-filter">
+                                <option value="">Seçiniz</option>
                                 <option value="1">Aktif</option>
                                 <option value="0">Pasif</option>
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="creatorUser">Ekleyen Personel</label>
                             <select name="agency" style="width: 100%" id="creatorUser"
                                     class="form-control form-control-sm niko-select-filter">
-                                <optgroup label="Genel Merkez Kullanıcıları">
+                                <optgroup label="GM YETKİLİLERİ">
                                     <option value="">Seçiniz</option>
                                     @foreach($data['gm_users'] as $key)
                                         <option value="{{$key->id}}">{{$key->name_surname}}</option>
@@ -114,9 +115,10 @@
                         <div class="col-md-2">
                             <label for="category">Kategori</label>
                             <select name="agency" id="category" class="form-control form-control-sm niko-select-filter">
+                                <option value="-1">Seçiniz</option>
+                                <option value="Anlaşmalı">Anlaşmalı</option>
                                 <option value="Kurumsal">Kurumsal</option>
                                 <option value="Bireysel">Bireysel</option>
-                                <option value="-1">Tümü</option>
                             </select>
                         </div>
 
@@ -132,6 +134,7 @@
                             <label for="confirmed">Onay</label>
                             <select name="record" id="confirmed"
                                     class="form-control form-control-sm niko-select-filter">
+                                <option value="">Seçiniz</option>
                                 <option value="1">Onaylandı</option>
                                 <option value="0">Onay Bekliyor</option>
                             </select>
@@ -156,6 +159,8 @@
                         <th>İl/İlçe</th>
                         <th>Bağlı Şube</th>
                         <th>Oluşturan</th>
+                        <th>Onay</th>
+                        <th>Statü</th>
                         <th>Kayıt Tarihi</th>
                         <th>İşlem</th>
                     </tr>
@@ -171,6 +176,8 @@
                         <th>İl/İlçe</th>
                         <th>Bağlı Şube</th>
                         <th>Oluşturan</th>
+                        <th>Onay</th>
+                        <th>Statü</th>
                         <th>Kayıt Tarihi</th>
                         <th>İşlem</th>
                     </tr>
@@ -403,7 +410,8 @@
 
                                                 <tr>
                                                     <td class="static">Mobil Bölge Ücreti
-                                                        Uygulansın mı</td>
+                                                        Uygulansın mı
+                                                    </td>
                                                     <td id="mbStatus"></td>
                                                 </tr>
 
@@ -452,20 +460,6 @@
                                             </tr>
 
                                             <tr>
-                                                <td class="static">31-35 Desi</td>
-                                                <td class="font-weight-bold" id="current31_35Desi"></td>
-                                                <td class="static">36-40 Desi</td>
-                                                <td class="font-weight-bold" id="current36_40Desi"></td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="static">41-45 Desi</td>
-                                                <td class="font-weight-bold" id="current41_45Desi"></td>
-                                                <td class="static">46-50 Desi</td>
-                                                <td class="font-weight-bold" id="current46_50Desi"></td>
-                                            </tr>
-
-                                            <tr>
                                                 <td class="static">Üstü Desi</td>
                                                 <td class="font-weight-bold" id="currentAmountOfIncrease"></td>
                                                 <td class="static">Tahsilat Bedeli (0-200₺)</td>
@@ -478,7 +472,6 @@
                                             </tr>
                                             </tbody>
                                         </table>
-
 
 
                                         <div id="divConfirmCurrent" class="grid-menu grid-menu-2col">
