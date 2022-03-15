@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\CKGMobile\Expedition;
 
-use App\Http\Resources\CarResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ExpeditionResource extends JsonResource
@@ -10,10 +9,21 @@ class ExpeditionResource extends JsonResource
 
     public function toArray($request)
     {
+        $departure_branch = $this->routes->where('route_type', '1')->first()->branch_type == 'Acente' ?
+            $this->routes->where('route_type', '1')->first()->branch->agency_name . ' ŞUBE' :
+            $this->routes->where('route_type', '1')->first()->branch->tc_name . ' TRM.';
+
+        $arrival_branch = $this->routes->where('route_type', '-1')->first()->branch_type == 'Acente' ?
+            $this->routes->where('route_type', '-1')->first()->branch->agency_name . ' ŞUBE' :
+            $this->routes->where('route_type', '-1')->first()->branch->tc_name . ' TRM.';
         return [
             'id' => $this->id,
-            'car' => new CarResource($this->car),
-            'cargo_count' => $this->cargoes()->count()
+            'plaque' => $this->car->plaka,
+            'expedition_no' => $this->serial_no,
+            'driver_name' => $this->car->sofor_ad,
+            'departure_branch' => $departure_branch,
+            'arrival_branch' => $arrival_branch,
+            'cargo_count' => $this->cargoes()->count(),
 
         ];
     }

@@ -11,4 +11,8 @@ class ExpeditionCargo extends Model
 
     protected $guarded = [];
 
+    public function cargo()
+    {
+        return $this->hasOne(Cargoes::class,'id', 'cargo_id');
+    }
 }
