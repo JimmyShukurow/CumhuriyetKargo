@@ -30,7 +30,7 @@
                                 <span class="btn-icon-wrapper pr-2 opacity-7">
                                     <i class="fa fa-plus fa-w-20"></i>
                                 </span>
-                                Yeni Kullanıcı Ekle
+                                Yeni Müşteri Oluştur
                             </button>
                         </a>
                     </div>
@@ -58,6 +58,7 @@
                                 <option value="">Tümü</option>
                                 <option value="Bireysel">Bireysel</option>
                                 <option value="Kurumsal">Kurumsal</option>
+                                <option value="Anlaşmalı">Anlaşmalı</option>
                             </select>
                         </div>
 
@@ -112,7 +113,7 @@
         <div class="card mb-3">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                        class="header-icon lnr-laptop-phone mr-3 text-muted opacity-6"> </i>Tüm Kullanıcılar
+                        class="header-icon lnr-laptop-phone mr-3 text-muted opacity-6"> </i>Müşteriler
                 </div>
 
             </div>

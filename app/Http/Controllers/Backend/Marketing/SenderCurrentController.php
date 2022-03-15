@@ -167,7 +167,7 @@ class SenderCurrentController extends Controller
                 'confirmed' => '0',
                 'created_by_user_id' => Auth::id(),
                 'contract_start_date' => $request->sozlesmeBaslangicTarihi,
-                'contract_end_date' =>  $request->sozlesmeBitisTarihi,
+                'contract_end_date' => $request->sozlesmeBitisTarihi,
                 'mb_status' => $request->mbStatus,
             ]);
         } catch (\Exception $e) {
@@ -319,68 +319,74 @@ class SenderCurrentController extends Controller
         $date = \Carbon\Carbon::createFromDate(date('Y'));
         $endOfYear = \Carbon\Carbon::parse(date('Y-m-d'))->endOfYear();
 
+        $current = Currents::find($id);
+        if ($current == null)
+            return back()
+                ->with('error', 'Müşteri bulunamadı!');
+
         DB::beginTransaction();
         try {
             ### => insert transaction
-            $insert = Currents::create([
-                'current_type' => 'Gönderici',
-                'category' => 'Anlaşmalı',
-                'name' => tr_strtoupper($request->adSoyadFirma),
-                'tax_administration' => tr_strtoupper($request->vergiDairesi),
-                'tckn' => $request->vknTckn,
-                'city' => tr_strtoupper($cityDistrict[0]->city_name),
-                'district' => tr_strtoupper($cityDistrict[0]->district_name),
-                'neighborhood' => tr_strtoupper($cityDistrict[0]->neighborhood_name),
-                'street' => tr_strtoupper($request->cadde),
-                'street2' => tr_strtoupper($request->sokak),
-                'building_no' => tr_strtoupper($request->bina_no),
-                'door_no' => tr_strtoupper($request->daire_no),
-                'floor' => tr_strtoupper($request->kat_no),
-                'address_note' => tr_strtoupper($request->adres_notu),
-                'phone' => $request->telefon,
-                'phone2' => $request->telefon2,
-                'gsm' => $request->gsm,
-                'gsm2' => $request->gsm2,
-                'email' => $request->email,
-                'web_site' => $request->website,
-                'dispatch_city' => tr_strtoupper($dispatchCityDistrict[0]->city_name),
-                'dispatch_district' => tr_strtoupper($dispatchCityDistrict[0]->district_name),
-                'dispatch_post_code' => $request->sevkPostaKodu,
-                'dispatch_adress' => tr_strtoupper($request->sevkAdres),
-                'status' => '1',
-                'agency' => $request->acente,
-                'bank_iban' => $request->iban,
-                'bank_owner_name' => tr_strtoupper($request->hesapSahibiTamIsim),
-                'discount' => getDoubleValue($request->iskonto),
-                'reference' => tr_strtoupper($request->referans),
-                'contract_start_date' => $request->sozlesmeBaslangicTarihi,
-                'contract_end_date' =>  $request->sozlesmeBitisTarihi,
-                'mb_status' => $request->mbStatus,
-            ]);
+            $insert = Currents::find($id)
+                ->update([
+                    'current_type' => 'Gönderici',
+                    'category' => 'Anlaşmalı',
+                    'name' => tr_strtoupper($request->adSoyadFirma),
+                    'tax_administration' => tr_strtoupper($request->vergiDairesi),
+                    'tckn' => $request->vknTckn,
+                    'city' => tr_strtoupper($cityDistrict[0]->city_name),
+                    'district' => tr_strtoupper($cityDistrict[0]->district_name),
+                    'neighborhood' => tr_strtoupper($cityDistrict[0]->neighborhood_name),
+                    'street' => tr_strtoupper($request->cadde),
+                    'street2' => tr_strtoupper($request->sokak),
+                    'building_no' => tr_strtoupper($request->bina_no),
+                    'door_no' => tr_strtoupper($request->daire_no),
+                    'floor' => tr_strtoupper($request->kat_no),
+                    'address_note' => tr_strtoupper($request->adres_notu),
+                    'phone' => $request->telefon,
+                    'phone2' => $request->telefon2,
+                    'gsm' => $request->gsm,
+                    'gsm2' => $request->gsm2,
+                    'email' => $request->email,
+                    'web_site' => $request->website,
+                    'dispatch_city' => tr_strtoupper($dispatchCityDistrict[0]->city_name),
+                    'dispatch_district' => tr_strtoupper($dispatchCityDistrict[0]->district_name),
+                    'dispatch_post_code' => $request->sevkPostaKodu,
+                    'dispatch_adress' => tr_strtoupper($request->sevkAdres),
+                    'status' => '1',
+                    'agency' => $request->acente,
+                    'bank_iban' => $request->iban,
+                    'bank_owner_name' => tr_strtoupper($request->hesapSahibiTamIsim),
+                    'discount' => getDoubleValue($request->iskonto),
+                    'reference' => tr_strtoupper($request->referans),
+                    'contract_start_date' => $request->sozlesmeBaslangicTarihi,
+                    'contract_end_date' => $request->sozlesmeBitisTarihi,
+                    'mb_status' => $request->mbStatus,
+                ]);
         } catch (\Exception $e) {
             DB::rollBack();
             $request->flash();
             return back()
-                ->with('error', 'Cari kayıt işlemi esnasında bir hata oluştu!');
+                ->with('error', 'Cari güncelleme işlemi esnasında bir hata oluştu!');
         }
 
         try {
-            $create = CurrentPrices::create([
-                'price_draft_id' => $request->priceDraft,
-                'current_code' => $current_code,
-                'file' => getDoubleValue($request->dosyaUcreti),
-                'mi' => getDoubleValue($request->miUcreti),
-                'd_1_5' => getDoubleValue($request->d1_5),
-                'd_6_10' => getDoubleValue($request->d6_10),
-                'd_11_15' => getDoubleValue($request->d11_15),
-                'd_16_20' => getDoubleValue($request->d16_20),
-                'd_21_25' => getDoubleValue($request->d21_25),
-                'd_26_30' => getDoubleValue($request->d26_30),
-                'amount_of_increase' => getDoubleValue($request->ustuDesi),
-                'collect_price' => getDoubleValue($request->tahsilatEkHizmetBedeli),
-                'collect_amount_of_increase' => getDoubleValue($request->tahsilatEkHizmetBedeli200Ustu),
+            $create = CurrentPrices::where('current_code', $current->current_code)
+                ->update([
+                    'price_draft_id' => $request->priceDraft,
+                    'file' => getDoubleValue($request->dosyaUcreti),
+                    'mi' => getDoubleValue($request->miUcreti),
+                    'd_1_5' => getDoubleValue($request->d1_5),
+                    'd_6_10' => getDoubleValue($request->d6_10),
+                    'd_11_15' => getDoubleValue($request->d11_15),
+                    'd_16_20' => getDoubleValue($request->d16_20),
+                    'd_21_25' => getDoubleValue($request->d21_25),
+                    'd_26_30' => getDoubleValue($request->d26_30),
+                    'amount_of_increase' => getDoubleValue($request->ustuDesi),
+                    'collect_price' => getDoubleValue($request->tahsilatEkHizmetBedeli),
+                    'collect_amount_of_increase' => getDoubleValue($request->tahsilatEkHizmetBedeli200Ustu),
 
-            ]);
+                ]);
         } catch (\Exception $e) {
             DB::rollBack();
             $request->flash();
