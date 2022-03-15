@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CKG_Mobile;
 use App\Actions\CKGMobile\Expedition\LoadCargoToExpeditionAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Expedition\LoadCargoToExpeditionRequest;
+use App\Http\Resources\CKGMobile\Expedition\CargoResource;
 use App\Http\Resources\CKGMobile\Expedition\ExpeditionResource;
 use App\Models\Cargoes;
 use App\Models\Expedition;
@@ -96,6 +97,8 @@ class ExpeditionLoadCargoController extends Controller
         return response()->json([
             'status' => 1,
             'expedetion' => new ExpeditionResource($expedition),
+            'cargoes' => CargoResource::collection($expedition->cargoes),
+
         ]);
     }
 }
