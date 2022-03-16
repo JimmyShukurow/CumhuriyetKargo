@@ -104,7 +104,28 @@ class ExpeditionCargoMobileController extends Controller
 
     public function unloadCargo(Request $request){
 
+        $ctn = decryptTrackingNo($request->ctn);
+        $ctn = explode(' ', $ctn);
+        $expedition = Expedition::find($request->expedition_id);
+        $cargo = $expedition->cargoes->filter(function ($item) use ($ctn) {
+            return $item->cargo->tracking_no ==  $ctn[0];
+        })->where('part_no', $ctn[1])->first();
 
-        return Expedition::find($request->expedition_id);
+        if ($cargo == null) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Bu kargo seferde bulunamadı, indirmek istediğinizden emin misiniz?'
+            ]);
+        }
+
+        $cargo->update([
+            'unloading_user_id' => Auth::id(),
+            'unloading_at' => now(),
+        ]);
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Kargo Indirildi'
+        ]);
     }
 }
