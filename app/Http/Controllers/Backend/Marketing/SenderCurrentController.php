@@ -3,6 +3,13 @@
 namespace App\Http\Controllers\Backend\Marketing;
 
 use App\Actions\CKGSis\Marketing\PriceDrafts\GetPriceDraftsAction;
+use App\Actions\CKGSis\Marketing\SenderCurrents\AjaxTransaction\ChangeStatusAction;
+use App\Actions\CKGSis\Marketing\SenderCurrents\AjaxTransaction\ConfirmCurrentAction;
+use App\Actions\CKGSis\Marketing\SenderCurrents\AjaxTransaction\GetAgenciesAction;
+use App\Actions\CKGSis\Marketing\SenderCurrents\AjaxTransaction\GetCurrentInfoAction;
+use App\Actions\CKGSis\Marketing\SenderCurrents\AjaxTransaction\GetTaxOfficesAction;
+use App\Actions\CKGSis\Marketing\SenderCurrents\GetCurrentsAction;
+use App\Actions\CKGSis\Marketing\SenderCurrents\PrintCurrentContractAction;
 use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\Cargoes;
@@ -41,7 +48,7 @@ class SenderCurrentController extends Controller
 
         GeneralLog('Pazarlama-Gönderici Cariler sayfası görüntülendi!');
 
-        return view('backend.marketing.sender_currents.index', compact('data'));
+        return view('backend.marketing.sender_currents.index.index', compact('data'));
     }
 
 
@@ -415,122 +422,27 @@ class SenderCurrentController extends Controller
 
         switch ($transaction) {
             case 'GetTaxOffices':
-
-                $request->SearchTerm = tr_strtoupper(tr_strtolower(enCharacters(urlCharacters($request->SearchTerm))));
-                $data = DB::table('tax_offices')
-                    ->where('office', 'like', '%' . $request->SearchTerm . '%')
-                    ->limit(50)
-                    ->get(['id', 'office', 'city', 'district']);
-                $jsonData = $data;
+                $jsonData = GetTaxOfficesAction::run($request);
                 break;
 
             case 'GetAgencies':
-
-                $request->SearchTerm = tr_strtoupper(tr_strtolower(enCharacters(urlCharacters($request->SearchTerm))));
-                $data = DB::table('agencies')
-                    ->where('agency_name', 'like', '%' . $request->SearchTerm . '%')
-                    ->whereRaw('deleted_at is null')
-                    ->limit(50)
-                    ->get(['id', 'agency_name', 'city', 'district']);
-
-                $jsonData = $data;
+                $jsonData = GetAgenciesAction::run($request);
                 break;
 
             case 'GetCurrentInfo':
-                $currentInfo = DB::table('currents')
-                    ->join('agencies', 'currents.agency', '=', 'agencies.id')
-                    ->join('view_users_all_info', 'currents.created_by_user_id', '=', 'view_users_all_info.id')
-                    ->select(['currents.*', 'agencies.agency_name', 'agencies.city as agency_city', 'agencies.district as agency_district', 'agencies.agency_code', 'view_users_all_info.name_surname as creator_user_name', 'view_users_all_info.display_name as creator_display_name'])
-                    ->where('currents.id', $request->currentID)
-                    ->first();
-
-                $price = CurrentPrices::where('current_code', $currentInfo->current_code)->first();
-
-                $jsonData = ['current' => $currentInfo, 'price' => $price];
-
-
+                $jsonData = GetCurrentInfoAction::run($request);
                 break;
 
             case 'ChangeStatus':
-
-                $rules = [
-                    'status' => 'required|in:0,1',
-                    'currentID' => 'required|numeric'
-                ];
-                $validator = Validator::make($request->all(), $rules);
-
-                if ($validator->fails()) {
-                    return response()->json([
-                        'status' => '-1',
-                        'errors' => $validator->getMessageBag()->toArray()
-                    ], 200);
-                }
-
-                $update = Currents::find(intval($request->currentID))
-                    ->update(['status' => $request->status]);
-
-                if ($update) {
-
-                    $statu = $request->status == '1' ? 'aktif' : 'pasif';
-                    $current = Currents::find(intval($request->currentID));
-                    $properties = [
-                        'Eylemi gerçekleştiren' => Auth::user()->name_surname,
-                        'id\'si' => Auth::id(),
-                        'İşlem Yapılan Kullanıcı' => $current->name,
-                        'Statü' => $statu
-                    ];
-
-                    $log = $current->name . " İsimli gönderici cari " . $statu . ' hale getirildi';
-                    activity()
-                        ->performedOn($current)
-                        ->inLog('Current Enabled-Disabled')
-                        ->withProperties($properties)
-                        ->log($log);
-
-                    return response()->json(['status' => 1], 200);
-                } else
-                    return response()->json([
-                        'status' => 0,
-                        'message' => "Bir hata oluştu, lütfen daha sonra tekrar deneyin!"
-                    ], 200);
+                return ChangeStatusAction::run($request);
                 break;
 
             case 'ConfirmCurrent':
-
-                $current = Currents::find($request->currentID);
-
-                $PermRoleIDs = collect(GetCurrentConfirmerRoleIDs());
-                if ($current->confirmed == '1')
-                    $jsonData = ['status' => -1, 'message' => 'Cari zaten onaylı!'];
-                else if (!$PermRoleIDs->contains(Auth::user()->role_id))
-                    $jsonData = ['status' => -1, 'message' => 'Geçersiz Yetki!'];
-                else if ($PermRoleIDs->contains(Auth::user()->role_id)) {
-
-                    $update = Currents::find($request->currentID)
-                        ->update([
-                            'confirmed' => '1',
-                            'confirmed_by_user_id' => Auth::id()
-                        ]);
-
-                    activity()
-                        ->inLog('Cari Onayı')
-                        ->performedOn($current)
-                        ->log($current->current_code . " kodlu cari hesap onaylandı!");
-
-                    if ($update)
-                        $jsonData = ['status' => 1];
-                }
-
-
+                $jsonData = ConfirmCurrentAction::run($request);
                 break;
 
             case 'GetPriceDraft':
-                $draft = PriceDrafts::find($request->id);
-
-                if ($draft != null)
-                    return response()->json(['status' => 1, 'data' => $draft], 200);
-                else
-                    return response()->json(['status' => -1, 'message' => 'Fiyat taslağı bulunamadı!'], 200);
+                return GetPriceDraftsAction::run($request);
                 break;
 
             default:
@@ -545,51 +457,7 @@ class SenderCurrentController extends Controller
 
     public function getCurrents(Request $request)
     {
-        $record = $request->record;
-        $status = $request->status;
-        $agency = $request->agency;
-        $name = $request->name;
-        $currentCode = str_replace([' ', '_'], '', $request->currentCode);
-        $creatorUser = $request->creatorUser;
-        $category = $request->category != -1 ? $request->category : '';
-        $confirmed = $request->confirmed;
-
-        $currents = DB::table('currents')
-            ->join('agencies', 'currents.agency', '=', 'agencies.id')
-            ->join('users', 'currents.created_by_user_id', '=', 'users.id')
-            ->select(['currents.*', 'agencies.agency_name', 'users.name_surname'])
-            ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
-            ->whereRaw($agency ? 'agency=' . $agency : '1 > 0')
-            ->whereRaw($creatorUser ? 'created_by_user_id=' . $creatorUser : '1 > 0')
-            ->whereRaw($status ? "currents.`status`='" . $status . "'" : '1 > 0')
-            ->whereRaw($category ? "currents.`category`='" . $category . "'" : '1 > 0')
-            ->whereRaw($request->filled('confirmed') ? "confirmed='" . $confirmed . "'" : '1 > 0')
-            ->whereRaw($name ? "name like '%" . $name . "%'" : '1 > 0')
-            ->whereRaw($record == '1' ? 'currents.deleted_at is null' : 'currents.deleted_at is not null')
-            ->where('current_type', 'Gönderici');
-
-        return datatables()->of($currents)
-            ->editColumn('current_code', function ($current) {
-                return CurrentCodeDesign($current->current_code);
-            })
-            ->editColumn('name', function ($current) {
-                return Str::words($current->name, 3, '...');
-            })
-            ->editColumn('city', function ($current) {
-                return $current->city . "/" . $current->district;
-            })
-            ->setRowId(function ($currents) {
-                return "current-item-" . $currents->id;
-            })
-            ->editColumn('status', function ($currents) {
-                return $currents->status == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>';
-            })
-            ->editColumn('confirmed', function ($currents) {
-                return $currents->confirmed == '1' ? '<b class="text-success">Onaylandı</b>' : '<b class="text-primary">Onay Bekliyor</b>';
-            })
-            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
-            ->rawColumns(['edit', 'status', 'confirmed'])
-            ->make(true);
+        return GetCurrentsAction::run($request);
     }
 
     public function customersIndex()
@@ -678,66 +546,7 @@ class SenderCurrentController extends Controller
 
     public function printCurrentContract($CurrentCode)
     {
-
-        $CurrentCode = str_replace(' ', '', $CurrentCode);
-        $templateProccessor = new TemplateProcessor('backend/word-template/CurrentContract.docx');
-
-        $current = Currents::where('current_code', $CurrentCode)->first();
-        $currentPrice = CurrentPrices::where('current_code', $CurrentCode)->first();
-        $agency = Agencies::find($current->agency);
-
-        $templateProccessor->setValue('date', date('d/m/Y'));
-        $templateProccessor->setValue('name', $current->name);
-
-        $templateProccessor->setValue('file', $currentPrice->file_price);
-        $templateProccessor->setValue('mi', $currentPrice->mi_price);
-        $templateProccessor->setValue('d1_5', $currentPrice->d_1_5);
-        $templateProccessor->setValue('d6_10', $currentPrice->d_6_10);
-        $templateProccessor->setValue('d11_15', $currentPrice->d_11_15);
-        $templateProccessor->setValue('d16_20', $currentPrice->d_16_20);
-        $templateProccessor->setValue('d21_25', $currentPrice->d_21_25);
-        $templateProccessor->setValue('d26_30', $currentPrice->d_26_30);
-        $templateProccessor->setValue('d31_35', $currentPrice->d_31_35);
-        $templateProccessor->setValue('d36_40', $currentPrice->d_36_40);
-        $templateProccessor->setValue('d41_45', $currentPrice->d_41_45);
-        $templateProccessor->setValue('d46_50', $currentPrice->d_46_50);
-        $templateProccessor->setValue('amount_of_increase', $currentPrice->amount_of_increase);
-        $templateProccessor->setValue('CurrentCode', CurrentCodeDesign($current->current_code));
-        $templateProccessor->setValue('category', $current->category);
-        $templateProccessor->setValue('tax_office', $current->tax_administration);
-        $templateProccessor->setValue('vkn', $current->tckn);
-        $templateProccessor->setValue('agency', $agency->city . '/' . $agency->district . " - " . $agency->agency_name . " (" . $agency->agency_code . ")");
-        $templateProccessor->setValue('contract_start_date', Carbon::parse($current->contract_start_date)->format('d/m/Y'));
-        $templateProccessor->setValue('contract_end_date', Carbon::parse($current->contract_end_date)->format('d/m/Y'));
-        $templateProccessor->setValue('contract_lifetime', Carbon::parse($current->contract_start_date)->diffInDays($current->contract_end_date));
-
-        $fileName = 'CS-' . substr($current->name, 0, 30) . '.docx';
-        $pdfName = 'CS-' . substr($current->name, 0, 30) . '.pdf';
-
-
-        $templateProccessor
-            ->saveAs($fileName);
-
-        return response()
-            ->download($fileName)
-            ->deleteFileAfterSend(true);
-
-//        /* Set the PDF Engine Renderer Path */
-//        $domPdfPath = base_path('vendor/dompdf/dompdf');
-//        \PhpOffice\PhpWord\Settings::setPdfRendererPath($domPdfPath);
-//        \PhpOffice\PhpWord\Settings::setPdfRendererName('DomPDF');
-//
-//        $content = IOFactory::load($fileName);
-//
-//        $PdfWriter = IOFactory::createWriter($content, 'PDF');
-//
-//        $PdfWriter->save($pdfName);
-//
-//        return response()
-//            ->download($pdfName)
-//            ->deleteFileAfterSend(true);
-
-
+        return PrintCurrentContractAction::run($CurrentCode);
     }
 
     public function deleteCustomer($id)
@@ -748,21 +557,23 @@ class SenderCurrentController extends Controller
         $cargoesAsReciever = $current->cargoesAsReciever->count();
         $cargoesAsSender = $current->cargoesAsSender->count();
 
-        if (Auth::user()->agency_code != $creatorUser->agency_code) return response()->json(['status' => 0, 'message' => 'Şubenize ait bir müşteri olmadığından bu müşteriyi silemezsiniz!'], 403);
+        if (Auth::user()->agency_code != $creatorUser->agency_code)
+            return response()
+                ->json(['status' => 0, 'message' => 'Şubenize ait bir müşteri olmadığından bu müşteriyi silemezsiniz!'], 403);
 
-        elseif ($cargoesAsReciever != 0 || $cargoesAsSender != 0) return response()->json(['status' => 0, 'message' => 'Bu müşteriye daha önce fatura kesildiği için silme işlemini yapamazsınız!'], 403);
+        else if ($cargoesAsReciever != 0 || $cargoesAsSender != 0)
+            return response()
+                ->json(['status' => 0, 'message' => 'Bu müşteriye daha önce fatura kesildiği için silme işlemini yapamazsınız!'], 403);
 
-        elseif (Carbon::parse($current->created_at)->diffInSeconds(Carbon::now()) < 86400 && $cargoesAsReciever == 0 && $cargoesAsSender == 0) {
+        else if (Carbon::parse($current->created_at)->diffInSeconds(Carbon::now()) < 86400 && $cargoesAsReciever == 0 && $cargoesAsSender == 0) {
 
             $current->delete();
-
             GeneralLog($current->current_code . ' Cari Kodlu müşteri silindi!');
-
-
             return response()->json(['status' => 1, 'message' => 'Bşarılı Silindi!'], 200);
-        } elseif (Carbon::parse($current->created_at)->diffInSeconds(Carbon::now()) > 86400) {
-            return response()->json(['status' => 0, 'message' => '24 saat geçtigi için silemezsiniz!'], 403);
-        }
+
+        } else if (Carbon::parse($current->created_at)->diffInSeconds(Carbon::now()) > 86400)
+            return response()
+                ->json(['status' => 0, 'message' => '24 saat geçtigi için silemezsiniz!'], 403);
 
     }
 

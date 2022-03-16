@@ -103,7 +103,7 @@ function dateFormat(date) {
 
 
 $(document).on('click', '.user-detail', function () {
-    $('#ModalUserDetail').modal();
+    $('#ModalCustomerDetail').modal();
 
     $('#ModalBodyUserDetail.modal-body').block({
         message: $('<div class="loader mx-auto">\n' +
