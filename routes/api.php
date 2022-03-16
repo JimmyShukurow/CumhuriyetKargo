@@ -65,6 +65,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('LoadCargo', [ExpeditionCargoMobileController::class, 'loadCargo']);
         Route::post('Read', [ExpeditionCargoMobileController::class, 'readExpedition']);
         Route::post('UnloadCargo', [ExpeditionCargoMobileController::class, 'unloadCargo']);
+        Route::delete('DeleteCargo', [ExpeditionCargoMobileController::class, 'deleteCargo']);
     });
 
 });

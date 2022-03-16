@@ -125,7 +125,32 @@ class ExpeditionCargoMobileController extends Controller
 
         return response()->json([
             'status' => 1,
-            'message' => 'Kargo Indirildi'
+            'message' => 'Kargo Indirildi!'
         ]);
     }
+
+    public function deleteCargo(Request $request){
+        $ctn = decryptTrackingNo($request->ctn);
+        $ctn = explode(' ', $ctn);
+        $expedition = Expedition::find($request->expedition_id);
+        $cargo = $expedition->cargoes->filter(function ($item) use ($ctn) {
+            return $item->cargo->tracking_no ==  $ctn[0];
+        })->where('part_no', $ctn[1])->first();
+
+        if ($cargo == null) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Böyle Bir Kargo Bulunamadı!'
+            ]);
+        }
+        $cargo->update(['deleted_user_id' => Auth::id()]);
+        $cargo->delete();
+
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Kargo Silindi!'
+        ]);
+    }
+
 }
