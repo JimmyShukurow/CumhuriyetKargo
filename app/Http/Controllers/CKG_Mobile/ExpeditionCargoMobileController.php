@@ -66,7 +66,7 @@ class ExpeditionCargoMobileController extends Controller
                 'message' => 'Plaka alanı zorunludur!',
             ]);
 
-        $expedition = Expedition::with('car', 'cargoes')
+        $expedition = Expedition::with('car','routes.branch', 'cargoes.cargo')
             ->whereHas('car', function ($query) use ($plaka) {
                 $query->where('plaka', $plaka);
             })
@@ -132,7 +132,7 @@ class ExpeditionCargoMobileController extends Controller
     public function deleteCargo(Request $request){
         $ctn = decryptTrackingNo($request->ctn);
         $ctn = explode(' ', $ctn);
-        $expedition = Expedition::find($request->expedition_id);
+        $expedition = Expedition::with('cargoes.cargo')->where('id', $request->expedition_id)->first();
         $cargo = $expedition->cargoes->filter(function ($item) use ($ctn) {
             return $item->cargo->tracking_no ==  $ctn[0];
         })->where('part_no', $ctn[1])->first();
@@ -143,8 +143,7 @@ class ExpeditionCargoMobileController extends Controller
                 'message' => 'Böyle Bir Kargo Bulunamadı!'
             ]);
         }
-        $cargo->update(['deleted_user_id' => Auth::id()]);
-        $cargo->delete();
+        $cargo->update(['deleted_user_id' => auth()->id(), 'deleted_at' =>now()]);
 
 
         return response()->json([
