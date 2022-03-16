@@ -370,7 +370,7 @@
                                     <div class="position-relative form-group">
                                         <label for="hesapSahibiTamIsim" class="">Hesap Sahibi Tam İsim:</label>
                                         <input name="hesapSahibiTamIsim" required id="hesapSahibiTamIsim"
-                                               value="{{ $current->bank_iban }}"
+                                               value="{{ $current->bank_owner_name }}"
                                                class="form-control form-control-sm">
                                     </div>
                                 </div>

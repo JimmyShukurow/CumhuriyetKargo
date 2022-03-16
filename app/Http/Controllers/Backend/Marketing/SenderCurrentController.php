@@ -11,17 +11,22 @@ use App\Actions\CKGSis\Marketing\SenderCurrents\AjaxTransaction\GetTaxOfficesAct
 use App\Actions\CKGSis\Marketing\SenderCurrents\GetCurrentsAction;
 use App\Actions\CKGSis\Marketing\SenderCurrents\PrintCurrentContractAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Marketing\SenderCurrentRequest;
 use App\Models\Agencies;
 use App\Models\Cargoes;
 use App\Models\Cities;
 use App\Models\CurrentPrices;
 use App\Models\Currents;
+use App\Models\Districts;
+use App\Models\Neighborhoods;
 use App\Models\PriceDrafts;
 use App\Models\Roles;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
 use App\Notifications\GeneralNotify;
 use App\Rules\AgencyControl;
+use App\Rules\CityDistrictNeighborhoodRule;
+use App\Rules\CityDistrictRule;
 use App\Rules\PriceControl;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -70,7 +75,7 @@ class SenderCurrentController extends Controller
             'telefon' => 'required',
             'il' => 'required|numeric',
             'ilce' => 'required|numeric',
-            'mahalle' => 'required|numeric',
+            'mahalle' => ['required', 'numeric', new CityDistrictNeighborhoodRule($request->il, $request->ilce, $request->mahalle)],
             'bina_no' => 'required',
             'kat_no' => 'required',
             'daire_no' => 'required',
@@ -78,7 +83,7 @@ class SenderCurrentController extends Controller
             'iban' => 'required',
             'hesapSahibiTamIsim' => 'required',
             'sevkIl' => 'required|numeric',
-            'sevkIlce' => 'required|numeric',
+            'sevkIlce' => ['required', 'numeric', new CityDistrictRule($request->sevkIl, $request->sevkIlce)],
             'sevkAdres' => 'required',
             'sozlesmeBaslangicTarihi' => 'required',
             'sozlesmeBitisTarihi' => 'required',
@@ -94,30 +99,10 @@ class SenderCurrentController extends Controller
             'd26_30' => ['required', new PriceControl],
             'ustuDesi' => ['required', new PriceControl],
             'mbStatus' => 'required|in:1,0',
-            'priceDraft' => 'required'
+            'priceDraft' => 'required',
+            'cadde' => 'nullable',
+            'sokak' => 'nullable',
         ]);
-
-        $cityDistrict = DB::table('view_city_district_neighborhoods')
-            ->where('city_id', $request->il)
-            ->where('district_id', $request->ilce)
-            ->where('neighborhood_id', $request->mahalle)
-            ->get();
-
-        if ($cityDistrict == null) {
-            $request->flash();
-            return back()->with('error', 'Lütfen geçerli bir il, ilçe ve mahalle seçinizi');
-        }
-
-        #dispatch city-district control
-        $dispatchCityDistrict = DB::table('view_city_districts')
-            ->where('city_id', intval($request->sevkIl))
-            ->where('district_id', intval($request->sevkIlce))
-            ->get();
-
-        if ($dispatchCityDistrict == null) {
-            $request->flash();
-            return back()->with('error', 'Lütfen geçerli bir il-ilçe seçinizi');
-        }
 
         # => cadde sokak kontrolü
         if ($request->cadde == '' && $request->sokak == '') {
@@ -136,6 +121,9 @@ class SenderCurrentController extends Controller
                 ->exists();
         }
 
+        $neighborhood = Neighborhoods::with('district.city')->where('id', $request->mahalle)->first();
+        $dispatchDistrict = Districts::with('city')->where('id', $request->sevkIlce)->first();
+
         DB::beginTransaction();
         try {
             ### => insert transaction
@@ -146,9 +134,9 @@ class SenderCurrentController extends Controller
                 'name' => tr_strtoupper($request->adSoyadFirma),
                 'tax_administration' => tr_strtoupper($request->vergiDairesi),
                 'tckn' => $request->vknTckn,
-                'city' => tr_strtoupper($cityDistrict[0]->city_name),
-                'district' => tr_strtoupper($cityDistrict[0]->district_name),
-                'neighborhood' => tr_strtoupper($cityDistrict[0]->neighborhood_name),
+                'city' => tr_strtoupper($neighborhood->district->city->city_name),
+                'district' => tr_strtoupper($neighborhood->district->district_name),
+                'neighborhood' => tr_strtoupper($neighborhood->neighborhood_name),
                 'street' => tr_strtoupper($request->cadde),
                 'street2' => tr_strtoupper($request->sokak),
                 'building_no' => tr_strtoupper($request->bina_no),
@@ -161,8 +149,8 @@ class SenderCurrentController extends Controller
                 'gsm2' => $request->gsm2,
                 'email' => $request->email,
                 'web_site' => $request->website,
-                'dispatch_city' => tr_strtoupper($dispatchCityDistrict[0]->city_name),
-                'dispatch_district' => tr_strtoupper($dispatchCityDistrict[0]->district_name),
+                'dispatch_city' => tr_strtoupper($dispatchDistrict->city->city_name),
+                'dispatch_district' => tr_strtoupper($dispatchDistrict->district_name),
                 'dispatch_post_code' => $request->sevkPostaKodu,
                 'dispatch_adress' => tr_strtoupper($request->sevkAdres),
                 'status' => '1',
@@ -181,7 +169,7 @@ class SenderCurrentController extends Controller
             DB::rollBack();
             $request->flash();
             return back()
-                ->with('error', 'Cari kayıt işlemi esnasında bir hata oluştu!');
+                ->with('error', 'Cari kayıt işlemi esnasında bir hata oluştu!  err' . $e->getMessage());
         }
 
         try {
@@ -257,7 +245,7 @@ class SenderCurrentController extends Controller
             'telefon' => 'required',
             'il' => 'required|numeric',
             'ilce' => 'required|numeric',
-            'mahalle' => 'required|numeric',
+            'mahalle' => ['required', 'numeric', new CityDistrictNeighborhoodRule($request->il, $request->ilce, $request->mahalle)],
             'bina_no' => 'required',
             'kat_no' => 'required',
             'daire_no' => 'required',
@@ -265,7 +253,7 @@ class SenderCurrentController extends Controller
             'iban' => 'required',
             'hesapSahibiTamIsim' => 'required',
             'sevkIl' => 'required|numeric',
-            'sevkIlce' => 'required|numeric',
+            'sevkIlce' => ['required', 'numeric', new CityDistrictRule($request->sevkIl, $request->sevkIlce)],
             'sevkAdres' => 'required',
             'sozlesmeBaslangicTarihi' => 'required',
             'sozlesmeBitisTarihi' => 'required',
@@ -281,30 +269,10 @@ class SenderCurrentController extends Controller
             'd26_30' => ['required', new PriceControl],
             'ustuDesi' => ['required', new PriceControl],
             'mbStatus' => 'required|in:1,0',
-            'priceDraft' => 'required'
+            'priceDraft' => 'required',
+            'cadde' => 'nullable',
+            'sokak' => 'nullable',
         ]);
-
-        $cityDistrict = DB::table('view_city_district_neighborhoods')
-            ->where('city_id', $request->il)
-            ->where('district_id', $request->ilce)
-            ->where('neighborhood_id', $request->mahalle)
-            ->get();
-
-        if ($cityDistrict == null) {
-            $request->flash();
-            return back()->with('error', 'Lütfen geçerli bir il, ilçe ve mahalle seçinizi');
-        }
-
-        #dispatch city-district control
-        $dispatchCityDistrict = DB::table('view_city_districts')
-            ->where('city_id', intval($request->sevkIl))
-            ->where('district_id', intval($request->sevkIlce))
-            ->get();
-
-        if ($dispatchCityDistrict == null) {
-            $request->flash();
-            return back()->with('error', 'Lütfen geçerli bir il-ilçe seçinizi');
-        }
 
         # => cadde sokak kontrolü
         if ($request->cadde == '' && $request->sokak == '') {
@@ -331,6 +299,9 @@ class SenderCurrentController extends Controller
             return back()
                 ->with('error', 'Müşteri bulunamadı!');
 
+        $neighborhood = Neighborhoods::with('district.city')->where('id', $request->mahalle)->first();
+        $dispatchDistrict = Districts::with('city')->where('id', $request->sevkIlce)->first();
+
         DB::beginTransaction();
         try {
             ### => insert transaction
@@ -341,9 +312,9 @@ class SenderCurrentController extends Controller
                     'name' => tr_strtoupper($request->adSoyadFirma),
                     'tax_administration' => tr_strtoupper($request->vergiDairesi),
                     'tckn' => $request->vknTckn,
-                    'city' => tr_strtoupper($cityDistrict[0]->city_name),
-                    'district' => tr_strtoupper($cityDistrict[0]->district_name),
-                    'neighborhood' => tr_strtoupper($cityDistrict[0]->neighborhood_name),
+                    'city' => tr_strtoupper($neighborhood->district->city->city_name),
+                    'district' => tr_strtoupper($neighborhood->district->district_name),
+                    'neighborhood' => tr_strtoupper($neighborhood->neighborhood_name),
                     'street' => tr_strtoupper($request->cadde),
                     'street2' => tr_strtoupper($request->sokak),
                     'building_no' => tr_strtoupper($request->bina_no),
@@ -356,8 +327,8 @@ class SenderCurrentController extends Controller
                     'gsm2' => $request->gsm2,
                     'email' => $request->email,
                     'web_site' => $request->website,
-                    'dispatch_city' => tr_strtoupper($dispatchCityDistrict[0]->city_name),
-                    'dispatch_district' => tr_strtoupper($dispatchCityDistrict[0]->district_name),
+                    'dispatch_city' => tr_strtoupper($dispatchDistrict->city->city_name),
+                    'dispatch_district' => tr_strtoupper($dispatchDistrict->district_name),
                     'dispatch_post_code' => $request->sevkPostaKodu,
                     'dispatch_adress' => tr_strtoupper($request->sevkAdres),
                     'status' => '1',
