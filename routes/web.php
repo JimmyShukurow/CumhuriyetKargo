@@ -96,5 +96,4 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
 Route::get('notyet', [DefaultController::class, 'notyet'])->name('not.yet');
 Route::get('notyeXt', [DefaultController::class, 'notyet'])->name('CemIndex');
-Route::get('notyseXt', [DefaultController::class, 'notyet'])->name('PriceDraft.index');
 
