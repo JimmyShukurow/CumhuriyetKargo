@@ -11,24 +11,41 @@ $(document).ready(function () {
         language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
         buttons: [
-            'pdf',
-            'print',
             {
                 extend: 'excelHtml5',
                 exportOptions: {
                     columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                 },
-                title: "CK - Sistem Kullanıcıları"
+                title: "CK - Sistem Kullanıcıları",
+                attr: {
+                    class: 'btn btn-success'
+                }
             },
             {
                 text: 'Yenile',
                 action: function (e, dt, node, config) {
                     dt.ajax.reload();
+                },
+                attr: {
+                    class: 'btn btn-primary'
                 }
             },
             {
                 extend: 'colvis',
-                text: 'Sütun Görünüm'
+                text: 'Sütunlar',
+                attr: {
+                    class: 'btn btn-alternate'
+                }
+            },
+            {
+                text: 'Filtreyi Temizle',
+                attr: {
+                    class: 'btn btn-dark'
+                },
+                action: function (e, dt, node, config) {
+                    $('#search-form').trigger("reset");
+                    dt.ajax.reload();
+                },
             },
         ],
         responsive: true,

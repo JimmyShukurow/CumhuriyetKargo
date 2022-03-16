@@ -77,7 +77,7 @@ $(document).on('click', '#btnGondericiOlustur', function () {
 });
 
 $(document).on('click', '#btnYeniAlici', function () {
-    $('#modalNewReciver').modal();
+    $('#modalNewReceiver').modal();
 });
 
 $(document).on('change', '#selectReciverCategory', function () {
@@ -445,7 +445,7 @@ $(document).on('click', '#btnSaveReceiver', function () {
                 $('#btnSaveCurrent').prop('disabled', false);
                 tcConfirmed = true;
                 getReceiverInfo(response.current_code);
-                $('#modalNewReciver').modal('hide');
+                $('#modalNewReceiver').modal('hide');
 
             } else if (response.status == -1) {
                 $.each(response.errors, function (index, value) {

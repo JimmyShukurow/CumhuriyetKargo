@@ -27,6 +27,7 @@ use App\Actions\CKGSis\MainCargo\AjaxTransactions\SaveReceiverAction;
 use App\Actions\CKGSis\MainCargo\GetCancelledCargoesAction;
 use App\Actions\CKGSis\MainCargo\GetGlobalCargoesAction;
 use App\Actions\CKGSis\MainCargo\GetMainCargoesAction;
+use App\Actions\CKGSis\MainCargo\StatementOfResponsibilityAction;
 use App\Http\Controllers\Controller;
 use App\Models\AdditionalServices;
 use App\Models\Agencies;
@@ -87,48 +88,7 @@ class MainCargoController extends Controller
         $data['agency_users'] = User::where('agency_code', Auth::user()->agency_code)->get();
         $data['cities'] = Cities::all();
 
-        ## daily report start
-        $daily['package_count'] = DB::table('cargoes')
-            ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
-            ->whereRaw('deleted_at is null')
-            ->where('cargo_type', '<>', 'Dosya-Mi')
-            ->where('departure_agency_code', $agency->id)
-            ->count();
-
-        $daily['file_count'] = DB::table('cargoes')
-            ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
-            ->whereRaw('deleted_at is null')
-            ->whereIn('cargo_type', ['Dosya', 'Mi'])
-            ->where('departure_agency_code', $agency->id)
-            ->count();
-
-        $daily['total_cargo_count'] = DB::table('cargoes')
-            ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
-            ->whereRaw('deleted_at is null')
-            ->where('departure_agency_code', $agency->id)
-            ->count();
-
-        $daily['total_desi'] = DB::table('cargoes')
-            ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
-            ->whereRaw('deleted_at is null')
-            ->where('departure_agency_code', $agency->id)
-            ->sum('desi');
-
-        $daily['total_number_of_pieces'] = DB::table('cargoes')
-            ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
-            ->whereRaw('deleted_at is null')
-            ->where('departure_agency_code', $agency->id)
-            ->whereNotIn('cargo_type', ['Dosya', 'Mi'])
-            ->sum('number_of_pieces');
-
-        $daily['total_endorsement'] = DB::table('cargoes')
-            ->whereRaw("created_at BETWEEN '" . date('Y-m-d') . " 00:00:00' and '" . date('Y-m-d') . " 23:59:59'")
-            ->whereRaw('deleted_at is null')
-            ->where('departure_agency_code', $agency->id)
-            ->sum('total_price');
-
-        $daily['total_endorsement'] = round($daily['total_endorsement'], 2);
-        ## daily report end
+        $daily = GetMainDailySummeryAction::run();
 
         $daily['total_desi'] = round($daily['total_desi'], 2);
 
@@ -192,7 +152,7 @@ class MainCargoController extends Controller
         $data['collectible_cargo'] = Settings::where('key', 'collectible_cargo')->first();
 
         GeneralLog('Kargo oluştur sayfası görüntülendi.');
-        return view('backend.main_cargo.main.create', compact(['data', 'fee', 'agency', 'tc']));
+        return view('backend.main_cargo.main.create.create', compact(['data', 'fee', 'agency', 'tc']));
     }
 
     public function ajaxTransacrtions(Request $request, $transaction)
@@ -268,13 +228,15 @@ class MainCargoController extends Controller
                 return GetCargoMovementDetailsAction::run($request);
 
             case 'GetMainDailySummery':
-                return GetMainDailySummeryAction::run($request);
+                return response()
+                    ->json(GetMainDailySummeryAction::run(), 200);
                 break;
 
             case 'MakeCargoCancellationApplication':
                 return MakeCargoCancellationApplicationAction::run($request);
                 break;
             # INDEX TRANSACTION END
+
             case 'GetAllCargoInfo':
                 return GetAllCargoInfoAction::run($request);
                 break;
@@ -303,34 +265,7 @@ class MainCargoController extends Controller
 
     public function statementOfResponsibility($ctn)
     {
-        $ctn = str_replace(' ', '', $ctn);
-
-        $templateProccessor = new TemplateProcessor('backend/word-template/StatementOfResposibility.docx');
-
-        $cargo = Cargoes::where('tracking_no', $ctn)->first();
-        $sender = Currents::find($cargo->sender_id);
-
-        $templateProccessor
-            ->setValue('date', date('d / m / Y'));
-        $templateProccessor
-            ->setValue('name', $cargo->sender_name);
-        $templateProccessor
-            ->setValue('tckn', $sender->tckn);
-        $templateProccessor
-            ->setValue('phone', $cargo->sender_phone);
-        $templateProccessor
-            ->setValue('address', $cargo->sender_address);
-        $templateProccessor
-            ->setValue('ctn', TrackingNumberDesign($cargo->tracking_no));
-
-        $fileName = 'ST-' . substr($cargo->sender_name, 0, 30) . '.docx';
-
-        $templateProccessor
-            ->saveAs($fileName);
-
-        return response()
-            ->download($fileName)
-            ->deleteFileAfterSend(true);
+        return StatementOfResponsibilityAction::run($ctn);
     }
 
     public function cancelledCargoesIndex()
@@ -426,7 +361,5 @@ class MainCargoController extends Controller
         GeneralLog('Ücret Hesapla sayfası görüntülendi.');
 
         return view('backend.main_cargo.main.calculate_service_fee', compact(['data', 'fee', 'agency', 'tc']));
-
-
     }
 }
