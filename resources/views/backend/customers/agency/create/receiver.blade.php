@@ -1,7 +1,7 @@
 @extends('backend.layout')
 
 
-@section('title', 'Tüm Müşterileriniz')
+@section('title', 'Yeni Alıcı Oluştur')
 
 @section('content')
 

@@ -14,6 +14,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::delete('/Delete/{id}', [CustomerController::class, 'deleteCustomer']);
 
         Route::get('Create/{type}', [CustomerController::class, 'create'])->name('create');
+        Route::post('AjaxTransaction/{val}', [CustomerController::class, 'ajaxTransaction']);
     });
 
 

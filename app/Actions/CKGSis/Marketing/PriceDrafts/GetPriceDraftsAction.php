@@ -14,12 +14,28 @@ class GetPriceDraftsAction
 
     public function handle($request)
     {
-        $draft = PriceDrafts::find($request->id);
+        $rows = PriceDrafts::with('user.role')->get();
 
-        if ($draft != null)
-            return response()->json(['status' => 1, 'data' => $draft], 200);
-        else
-            return response()->json(['status' => -1, 'message' => 'Fiyat taslağı bulunamadı!'], 200);
-
+        return datatables()->of($rows)
+            ->editColumn('created_at', function ($key) {
+                return $key->created_at;
+            })
+            ->editColumn('updated_at', function ($key) {
+                return $key->updated_at;
+            })
+            ->editColumn('name_surname', function ($key) {
+                return $key->user->name_surname . '(' . $key->user->role->display_name . ')';
+            })
+            ->addColumn('edit', function ($key) {
+                return '<button class="btn btn-sm btn-primary detail-price-draft" id="' . $key->id . '">Düzenle</button>';
+            })
+            ->addColumn('delete', function ($key) {
+                return '<button class="btn btn-sm btn-danger trash" from="price-draft" id="' . $key->id . '">Sil</button>';
+            })
+            ->addColumn('agency_permission', function ($key) {
+                return $key->agency_permission == '1' ? '<b class="text-success">Evet</b>' : '<b class="text-danger">Hayır</b>';
+            })
+            ->rawColumns(['edit', 'delete', 'agency_permission'])
+            ->make(true);
     }
 }

@@ -1,30 +1,64 @@
 var tcConfirmed = false;
 
 $(document).on('click', '#btnTCConfirm', function () {
-    let confirmBtn = $('#btnTCConfirm');
-    var goPost = false;
-    goPost = currentConfirmTCConfirmValues();
 
-    if (goPost == true) {
+    let confirmBtn = $('#btnTCConfirm');
+
+    if ($('#currentSelectCategory').val() == 'Bireysel') {
+
+        var goPost = false;
+        goPost = currentConfirmTCConfirmValues();
+
+        if (goPost == true) {
+
+            ToastMessage('warning', 'İstek alındı, işleniyor!', 'Bilgi');
+            confirmBtn.prop('disabled', true);
+
+            confirmBtn.prop('disabled', true);
+            $.ajax('/MainCargo/AjaxTransactions/ConfirmTC', {
+                method: 'POST',
+                data: {
+                    _token: token,
+                    ad: $('#currentName').val(),
+                    soyad: $('#currentSurName').val(),
+                    tc: $('#currentTckn').val(),
+                    dogum_tarihi: $('#currentYearOfBirth').val()
+                }
+            }).done(function (response) {
+                if (response.status == 0)
+                    ToastMessage('error', response.message, 'Hata!');
+
+                if (response.status == 1) {
+                    ToastMessage('success', '', 'İşlem Başarılı, Kişi Doğrulandı!');
+                    $('#btnSaveCurrent').prop('disabled', false);
+                    tcConfirmed = true;
+                }
+            }).error(function (jqXHR, exception) {
+                ajaxError(jqXHR.status)
+            }).always(function () {
+                confirmBtn.prop('disabled', false);
+            });
+        }
+    } else if ($('#currentSelectCategory').val() == 'Kurumsal') {
 
         ToastMessage('warning', 'İstek alındı, işleniyor!', 'Bilgi');
         confirmBtn.prop('disabled', true);
 
         confirmBtn.prop('disabled', true);
-        $.ajax('/MainCargo/AjaxTransactions/ConfirmTC', {
+        $.ajax('/Customers/AjaxTransaction/ConfirmCurrentWithVKN', {
             method: 'POST',
             data: {
                 _token: token,
-                ad: $('#currentName').val(),
-                soyad: $('#currentSurName').val(),
-                tc: $('#currentTckn').val(),
-                dogum_tarihi: $('#currentYearOfBirth').val()
+                vkn: $('#currentVkn').val(),
+                city: $('#currentTaxOfficeCity').val(),
+                taxOffice: $('#currentTaxOffice').val()
             }
         }).done(function (response) {
             if (response.status == 0)
                 ToastMessage('error', response.message, 'Hata!');
 
             if (response.status == 1) {
+                $('#currentTitle').val(response.data.unvan)
                 ToastMessage('success', '', 'İşlem Başarılı, Kişi Doğrulandı!');
                 $('#btnSaveCurrent').prop('disabled', false);
                 tcConfirmed = true;
@@ -34,7 +68,9 @@ $(document).on('click', '#btnTCConfirm', function () {
         }).always(function () {
             confirmBtn.prop('disabled', false);
         });
+
     }
+
 });
 
 $(document).on('change', '#currentCity', function () {
@@ -184,4 +220,69 @@ function currentSaveConfirmValues(goPost) {
     }
 
     return goPost;
+}
+
+
+$(document).on('change', '#currentSelectCategory', function () {
+    changeCurrentSelectCategory()
+})
+
+$('#currentSelectCategory').change(function () {
+    changeCurrentSelectCategory()
+})
+
+function changeCurrentSelectCategory() {
+
+    if ($('#currentSelectCategory').val() == 'Bireysel') {
+        $('#divIndividualContainer').show()
+        $('#divCorporateContainer').hide()
+    } else if ($('#currentSelectCategory').val() == 'Kurumsal') {
+        $('#divIndividualContainer').hide()
+        $('#divCorporateContainer').show()
+    }
+}
+
+$('#currentTaxOfficeCity').change(function () {
+    changeCurrentTaxOfficeCitiy()
+})
+
+$(document).on('change', '#currentTaxOfficeCity', function () {
+    changeCurrentTaxOfficeCitiy()
+})
+
+
+function changeCurrentTaxOfficeCitiy() {
+    if ($('#currentTaxOfficeCity').val() == '') {
+        $('#currentTaxOffice').html('');
+        $('#currentTaxOffice').append('<option value="">İl Seçiniz</option>');
+        $('#currentTaxOffice').prop('disabled', true)
+        return false;
+    }
+
+    $.ajax('/Customers/AjaxTransaction/TaxOffices', {
+        method: 'POST',
+        data: {
+            _token: token,
+            plaque: $('#currentTaxOfficeCity').val()
+        }
+    }).done(function (response) {
+
+        if (response.status == 1) {
+
+            $('#currentTaxOffice').html('');
+            $('#currentTaxOffice').append('<option value="">VD Seçin</option>')
+            $.each(response.data, function (key, val) {
+                $('#currentTaxOffice').append('<option value="' + val['code'] + '">' + val['tax_office'] + '</option>');
+            })
+            $('#currentTaxOffice').prop('disabled', false)
+
+        } else if (response.status == 0) {
+            ToastMessage('error', response.message, 'Hata!')
+        }
+
+    }).error(function (jqXHR, response) {
+        ajaxError(jqXHR.status, JSON.parse(jqXHR.responseText));
+    }).always(function () {
+        $('#ModalCargoDetails').unblock();
+    });
 }

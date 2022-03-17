@@ -24,13 +24,12 @@
                 </div>
                 <div class="page-title-actions">
                     <div class="d-inline-block dropdown">
-                        <a href="{{ route('SenderCurrents.index') }}">
-                            <button type="button" aria-haspopup="true" aria-expanded="false"
-                                    class="btn-shadow btn btn-info">
-                                <span class="btn-icon-wrapper pr-2 opacity-7">
-                                    <i class="fa fa-step-backward fa-w-20"></i>
-                                </span>
-                                Gönderici Carileri Listele
+                        <a href="{{route('customers.index')}}">
+                            <button type="button" class="btn-shadow btn btn-info">
+                                 <span class="btn-icon-wrapper pr-2 opacity-7">
+                                  <i class="lnr-arrow-left fa-w-20"></i>
+                                 </span>
+                                Tüm müşterilere geri dön
                             </button>
                         </a>
                     </div>
@@ -64,10 +63,9 @@
                                 <div class="col-md-6">
                                     <div class="position-relative form-group">
                                         <label for="agency" class="">Bağlı Şube*</label>
-                                        <select name="acente" required class="form-control form-control-sm"
-                                                style="width:100%;"
-                                                id="agency">
-                                        </select>
+                                        <input type="text" class="form-control form-control-sm"
+                                               value="{{$data['user_branch']['name'] . ' ' . $data['user_branch']['type']}}"
+                                               readonly>
                                     </div>
                                 </div>
 
@@ -436,7 +434,6 @@
                                         <label for="priceDraft" class="">Fiyat Taslağı:</label>
                                         <select required class="form-control-sm form-control" name="priceDraft"
                                                 id="priceDraft">
-                                            <option value="0">Özel</option>
                                             @foreach($data['price_drafts'] as $key)
                                                 <option
                                                     {{old('priceDraft') == $key->id ? 'selected' : ''}} value="{{$key->id}}">{{$key->name}}</option>
@@ -449,7 +446,7 @@
 
                         <div class="container-cargo-price col-md-12">
                             <div class="form-row">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="filePrice" class="">Dosya:</label>
                                         <input name="dosyaUcreti" id="filePrice" required
@@ -459,7 +456,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="miPrice" class="">Mi:</label>
                                         <input name="miUcreti" id="miPrice" required
@@ -469,7 +466,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="d1_5" class="">1-5 Desi:</label>
                                         <input name="d1_5" id="d1_5" required
@@ -479,7 +476,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="d6_10" class="">6-10 Desi:</label>
                                         <input name="d6_10" id="d6_10" required
@@ -489,7 +486,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="d11_15" class="">11-15 Desi:</label>
                                         <input name="d11_15" id="d11_15" required
@@ -499,7 +496,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="d16_20" class="">16-20 Desi:</label>
                                         <input name="d16_20" id="d16_20" required
@@ -509,7 +506,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="d21_25" class="">21-25 Desi:</label>
                                         <input name="d21_25" id="d21_25" required
@@ -519,7 +516,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="d26_30" class="">26-30 Desi:</label>
                                         <input name="d26_30" id="d26_30" required
@@ -529,7 +526,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="amountOfIncrease" class="">Üstü Desi:</label>
                                         <input name="ustuDesi" id="amountOfIncrease" required
@@ -538,43 +535,6 @@
                                                class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
-
-                                <div class="col-md-3">
-                                    <div class="position-relative form-group">
-                                        <label for="addServicePrice" class="">Tahsilat Ek Hizmet Bedeli (0-200
-                                            TL):</label>
-                                        <input name="tahsilatEkHizmetBedeli" id="addServicePrice"
-                                               type="text" required value="{{ old('tahsilatEkHizmetBedeli') }}"
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
-                                               class="form-control input-mask-trigger form-control-sm">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="position-relative form-group">
-                                        <label for="tahsilatEkHizmetBedeli200Ustu" class="">Tahsilat Ek Hizmet Bedeli
-                                            (%) (200TL+):</label>
-                                        <input name="tahsilatEkHizmetBedeli200Ustu" required
-                                               data-inputmask="'alias': 'numeric', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'prefix': '% ', 'placeholder': '0', 'min':0, 'max': 100"
-                                               id="tahsilatEkHizmetBedeli200Ustu"
-                                               type="text" value="{{ old('tahsilatEkHizmetBedeli200Ustu') }}"
-                                               class="form-control input-mask-trigger form-control-sm">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="position-relative form-group">
-                                        <label for="mbStatus" class="">Mobil Bölge Ücreti
-                                            Uygulansın mı?</label><br>
-                                        <select name="mbStatus" id="" required class="form-control-sm form-control">
-                                            <option {{old('mbStatus') == '1' ? 'selected' : '' }} value="1">Evet
-                                            </option>
-                                            <option {{old('mbStatus') == '0' ? 'selected' : '' }} value="0">Hayır
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-
 
                             </div>
                         </div>
@@ -599,7 +559,7 @@
     <script src="/backend/assets/scripts/backend-modules.js"></script>
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
-    <script src="/backend/assets/scripts/marketing/sender-currents/create-edit.js"></script>
+    <script src="/backend/assets/scripts/customers/create/create-contracted.js"></script>
 
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
     <script>
@@ -622,6 +582,8 @@
                     $(element).addClass("is-valid").removeClass("is-invalid");
                 }
             });
+
+            $('#priceDraft').trigger('change');
         });
     </script>
 

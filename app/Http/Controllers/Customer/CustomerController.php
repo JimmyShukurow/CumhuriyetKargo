@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Actions\CKGSis\Customer\AjaxTransaction\ConfirmCurrentWithVKNAction;
+use App\Actions\CKGSis\Customer\AjaxTransaction\TaxOfficesAction;
 use App\Actions\CKGSis\Customer\DeleteCustomerAction;
 use App\Actions\CKGSis\Customer\GetAllCustomersAction;
+use App\Actions\CKGSis\Marketing\SenderCurrents\AjaxTransaction\GetTaxOfficesAction;
 use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\Cargoes;
@@ -81,7 +84,6 @@ class CustomerController extends Controller
 
     public function create($type)
     {
-
         switch ($type) {
             case 'Receiver':
                 $data['cities'] = Cities::all();
@@ -112,7 +114,8 @@ class CustomerController extends Controller
 
             case 'Contracted':
                 $data['cities'] = Cities::all();
-                $data['price_drafts'] = PriceDrafts::all();
+                $data['price_drafts'] = PriceDrafts::where('agency_permission', '1')->get();
+                $data['user_branch'] = getUserBranchInfo();
                 return view('backend.customers.agency.create.contracted', compact('data'));
                 break;
 
@@ -121,7 +124,25 @@ class CustomerController extends Controller
                     ->with('error', 'Geçersiz müşteri tipi!');
                 break;
         }
+    }
 
+    public function ajaxTransaction(Request $request, $val)
+    {
+        switch ($val) {
+            case 'TaxOffices':
+                return TaxOfficesAction::run($request);
+                break;
+
+            case 'ConfirmCurrentWithVKN':
+                return ConfirmCurrentWithVKNAction::run($request);
+                break;
+
+
+            default:
+                return response()
+                    ->json(['status' => '0', 'message' => 'no-case'], 200);
+                break;
+        }
     }
 
 }

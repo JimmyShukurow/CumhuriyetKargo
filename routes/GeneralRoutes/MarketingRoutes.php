@@ -37,6 +37,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         });
 
         Route::resource('PriceDraft', PriceDraftsController::class);
+        Route::post('GetPriceDraft', [PriceDraftsController::class, 'GetPriceDraft']);
         Route::get('GetPriceDrafts', [PriceDraftsController::class, 'GetPriceDrafts']);
 
 

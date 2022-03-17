@@ -10,6 +10,7 @@ use App\Models\PriceDrafts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Actions\CKGSis\Marketing\PriceDrafts\GetPriceDraftAction;
 
 class PriceDraftsController extends Controller
 {
@@ -49,6 +50,11 @@ class PriceDraftsController extends Controller
         }
 
         return response()->json(['status' => 1, 'message' => 'İşlem başarılı, Taslak oluşturuldu!'], 200);
+    }
+
+    public function GetPriceDraft(Request $request)
+    {
+        return GetPriceDraftAction::run($request);
     }
 
     public function GetPriceDrafts(Request $request)

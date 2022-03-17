@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\CKGSis\Marketing\SenderCurrents\AjaxTransaction;
+namespace App\Actions\CKGSis\Marketing\PriceDrafts;
 
 use App\Models\PriceDrafts;
 use Lorisleiva\Actions\Concerns\AsAction;

@@ -39,32 +39,6 @@ $(document).ready(function () {
         placeholder: "Vergi Dairesi Arayın",
     });
 
-    $('#agency').select2({
-        ajax: {
-            url: "/Marketing/PriceDraft/AjaxTransaction/GetAgencies",
-            type: "post",
-            delay: 450,
-            data: function (params) {
-                return {
-                    _token: token,
-                    SearchTerm: (params.term), // search term,
-                };
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (item) {
-                        return {
-                            text: item.agency_name + " - " + item.city + "/" + item.district,
-                            id: item.id
-                        }
-                    })
-                };
-            },
-        },
-        language: "es",
-        cache: true,
-        placeholder: "Acente Arayın",
-    });
 });
 
 $('#btnCreateCurrent').click(function () {

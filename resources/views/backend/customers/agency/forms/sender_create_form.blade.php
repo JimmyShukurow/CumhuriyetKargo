@@ -1,6 +1,6 @@
 <div class="row">
     {{-- Gönderici START --}}
-    <div class="col-md-4 border-box" id="divider-gonderici">
+    <div class="col-md-5 border-box" id="divider-gonderici">
 
         <div class="form-row">
             <div class="col-md-12">
@@ -8,61 +8,126 @@
                     <label for="currentSelectCategory">Kategori:</label>
                 </div>
                 <div class="input-group mb-1">
-                    <select id="currentSelectCategory" class="form-control" readonly="" name="">
+                    <select id="currentSelectCategory" class="form-control form-control-sm" name="">
                         <option value="Bireysel">Bireysel</option>
+                        <option value="Kurumsal">Kurumsal</option>
                     </select>
                 </div>
             </div>
         </div>
 
-        <div class="form-row">
-            <div class="col-md-12">
-                <div class="position-relative ">
-                    <label for="currentTckn">Gönderici TCKN:</label> <b
-                        class="text-danger">*</b>
+        <div id="divIndividualContainer">
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="position-relative ">
+                        <label for="currentTckn">Gönderici TCKN:</label> <b
+                            class="text-danger">*</b>
+                    </div>
+                    <div class="input-group mb-1">
+                        <input type="text" id="currentTckn" maxlength="11"
+                               class="form-control form-control-sm">
+                    </div>
                 </div>
-                <div class="input-group mb-1">
-                    <input type="text" id="currentTckn" maxlength="11"
-                           class="form-control form-control-sm">
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="position-relative ">
+                        <label for="currentName">Adı:</label><b class="text-danger">*</b>
+                    </div>
+                    <div class="input-group mb-1">
+                        <input type="text" id="currentName" class="form-control form-control-sm">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="position-relative ">
+                        <label for="currentSurName">Soyadı:</label><b class="text-danger">*</b>
+                    </div>
+                    <div class="input-group mb-1">
+                        <input type="text" id="currentSurName" class="form-control form-control-sm">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="position-relative ">
+                        <label for="currentYearOfBirth">Doğum Yılı:</label><b
+                            class="text-danger">*</b>
+                    </div>
+                    <div class="input-group mb-1">
+                        <input type="text" id="currentYearOfBirth"
+                               data-inputmask="'mask': '9999'"
+                               placeholder="____" type="text"
+                               class="form-control input-mask-trigger form-control-sm">
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="form-row">
-            <div class="col-md-12">
-                <div class="position-relative ">
-                    <label for="currentName">Adı:</label><b class="text-danger">*</b>
+        <div style="display: none;" id="divCorporateContainer">
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="position-relative ">
+                        <label for="currentVkn">Gönderici VKN:</label> <b
+                            class="text-danger">*</b>
+                    </div>
+                    <div class="input-group mb-1">
+                        <input type="text" id="currentVkn" maxlength="10"
+                               class="form-control form-control-sm">
+                    </div>
                 </div>
-                <div class="input-group mb-1">
-                    <input type="text" id="currentName" class="form-control form-control-sm">
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="position-relative ">
+                        <label for="currentTaxOfficeCity">Gönderici V.D. Şehir:</label><b class="text-danger">*</b>
+                    </div>
+                    <div class="input-group mb-1">
+                        <select name="" id="currentTaxOfficeCity" class="form-control form-control-sm">
+                            <option value="">İl Seçiniz</option>
+                            @foreach($data['cities'] as $city)
+                                <option value="{{$city->plaque}}">{{$city->city_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="position-relative ">
+                        <label for="currentTaxOffice">Vergi Dairesi:</label><b class="text-danger">*</b>
+                    </div>
+                    <div class="input-group mb-1">
+                        <select name="" id="currentTaxOffice" disabled class="form-control form-control-sm">
+                            <option value="">İl Seçiniz</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="position-relative ">
+                        <label for="currentTitle">Ünvan:</label><b
+                            class="text-danger">*</b>
+                    </div>
+                    <div class="input-group mb-1">
+                        <input type="text" id="currentTitle"
+                               readonly
+                               class="form-control text-primary font-weight-bold form-control-sm">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="position-relative ">
+                        <label for="senderCurrentAuthNameSurname">Yetkili Adı Soyadı:</label><b
+                            class="text-danger">*</b>
+                    </div>
+                    <div class="input-group mb-1">
+                        <input type="text" id="senderCurrentAuthNameSurname"
+                               class="form-control form-control-sm">
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="form-row">
-            <div class="col-md-12">
-                <div class="position-relative ">
-                    <label for="currentSurName">Soyadı:</label><b class="text-danger">*</b>
-                </div>
-                <div class="input-group mb-1">
-                    <input type="text" id="currentSurName" class="form-control form-control-sm">
-                </div>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="col-md-12">
-                <div class="position-relative ">
-                    <label for="currentYearOfBirth">Doğum Yılı:</label><b
-                        class="text-danger">*</b>
-                </div>
-                <div class="input-group mb-1">
-                    <input type="text" id="currentYearOfBirth"
-                           data-inputmask="'mask': '9999'"
-                           placeholder="____" type="text"
-                           class="form-control input-mask-trigger form-control-sm">
-                </div>
-            </div>
-        </div>
-
 
         <div class="row mt-4">
             <div class="col-md-12 text-center">
@@ -73,7 +138,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8 border-box" id="divider-gonderici2">
+    <div class="col-md-7 border-box" id="divider-gonderici2">
 
         <div class="form-row">
             <div class="col-md-4">
