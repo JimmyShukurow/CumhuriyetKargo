@@ -9,6 +9,7 @@ use App\Models\Agencies;
 use App\Models\Cargoes;
 use App\Models\Cities;
 use App\Models\Currents;
+use App\Models\PriceDrafts;
 use App\Models\Roles;
 use App\Models\TransshipmentCenterDistricts;
 use App\Models\TransshipmentCenters;
@@ -106,6 +107,13 @@ class CustomerController extends Controller
                 $data['cities'] = Cities::all();
                 GeneralLog('Yeni gönderici oluştur sayfası görüntülendi.');
                 return view('backend.customers.agency.create.sender', compact(['data']));
+                break;
+
+
+            case 'Contracted':
+                $data['cities'] = Cities::all();
+                $data['price_drafts'] = PriceDrafts::all();
+                return view('backend.customers.agency.create.contracted', compact('data'));
                 break;
 
             default:

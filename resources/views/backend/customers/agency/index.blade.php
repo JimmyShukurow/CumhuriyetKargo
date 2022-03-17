@@ -51,7 +51,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="http://127.0.0.1:8000/Module/AddModule">
+                                    <a class="nav-link" href="{{route('customers.create', 'Contracted')}}">
                                         <i class="nav-link-icon lnr-plus-circle"></i>
                                         <span>Anlaşmalı Müşteri Oluştur</span>
                                     </a>
@@ -188,7 +188,6 @@
     <script src="/backend/assets/scripts/backend-modules.js"></script>
     <script src="/backend/assets/scripts/jquery.blockUI.js"></script>
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
-    <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
     <script src="/backend/assets/scripts/customers/customer-details.js"></script>
     <script src="/backend/assets/scripts/customers/index.js"></script>
 
