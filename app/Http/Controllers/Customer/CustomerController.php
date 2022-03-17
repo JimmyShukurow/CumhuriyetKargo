@@ -10,6 +10,7 @@ use App\Models\Cargoes;
 use App\Models\Cities;
 use App\Models\Currents;
 use App\Models\Roles;
+use App\Models\TransshipmentCenterDistricts;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
 use Carbon\Carbon;
@@ -79,6 +80,39 @@ class CustomerController extends Controller
 
     public function create($type)
     {
+
+        switch ($type) {
+            case 'Receiver':
+                $data['cities'] = Cities::all();
+                GeneralLog('Yeni alıcı oluştur sayfası görüntülendi.');
+                return view('backend.customers.agency.create.receiver', compact(['data']));
+                break;
+
+            case 'Sender':
+                ## get agency district
+                $agency = Agencies::where('id', Auth::user()->agency_code)->first();
+
+                $data['districts'] = DB::table('view_city_districts')
+                    ->where('city_name', $agency->city)
+                    ->get();
+                $data['neighborhoods'] = DB::table('view_city_district_neighborhoods')
+                    ->where('city_name', $agency->city)
+                    ->where('district_name', $agency->district)
+                    ->get();
+                $data['user_neighborhood'] = $agency->neighborhood;
+                $data['user_district'] = $agency->district;
+                $data['user_city'] = $agency->city;
+
+                $data['cities'] = Cities::all();
+                GeneralLog('Yeni gönderici oluştur sayfası görüntülendi.');
+                return view('backend.customers.agency.create.sender', compact(['data']));
+                break;
+
+            default:
+                return redirect(route('customers.index'))
+                    ->with('error', 'Geçersiz müşteri tipi!');
+                break;
+        }
 
     }
 

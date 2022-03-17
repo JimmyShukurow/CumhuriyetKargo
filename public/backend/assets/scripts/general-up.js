@@ -1,3 +1,5 @@
+let componentReceiverFrom = null, componentSenderFrom = null
+
 function ToastMessage(type, message, title) {
     toastr[type](message, title)
 

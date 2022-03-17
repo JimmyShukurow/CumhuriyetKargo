@@ -1,12 +1,13 @@
 var oTable;
 var detailsID = null;
+
 // and The Last Part: NikoStyle
 $(document).ready(function () {
     oTable = $('.NikolasDataTable').DataTable({
         pageLength: 25,
         lengthMenu: dtLengthMenu,
         order: [
-            11, 'desc'
+            9, 'desc'
         ],
         language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
@@ -68,19 +69,16 @@ $(document).ready(function () {
             }
         },
         columns: [
-            {data: 'free', name: 'free'},
             {data: 'current_code', name: 'current_code'},
             {data: 'current_type', name: 'current_type'},
             {data: 'name', name: 'name'},
             {data: 'category', name: 'category'},
-            {data: 'city', name: 'current_type'},
-            {data: 'district', name: 'current_type'},
-            {data: 'neighborhood', name: 'current_type'},
-            {data: 'phone', name: 'current_type'},
+            {data: 'city', name: 'city'},
+            {data: 'district', name: 'district'},
+            {data: 'neighborhood', name: 'neighborhood'},
+            {data: 'gsm', name: 'gsm'},
             {data: 'name_surname', name: 'name_surname'},
             {data: 'created_at', name: 'created_at'},
-            {data: 'edit', name: 'edit'},
-
         ],
         scrollY: "400px",
     });

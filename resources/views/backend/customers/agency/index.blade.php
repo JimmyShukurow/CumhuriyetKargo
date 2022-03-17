@@ -13,7 +13,7 @@
             <div class="page-title-wrapper">
                 <div class="page-title-heading">
                     <div class="page-title-icon">
-                        <i class="lnr-user icon-gradient bg-ripe-malin">
+                        <i class="lnr-briefcase icon-gradient bg-ripe-malin">
                         </i>
                     </div>
                     <div>Tüm Müşterileriniz
@@ -39,13 +39,13 @@
                              style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(111px, 33px, 0px);">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="http://127.0.0.1:8000/Module/AddRole">
+                                    <a class="nav-link" href="{{route('customers.create', 'Receiver')}}">
                                         <i class="nav-link-icon lnr-plus-circle"></i>
                                         <span>Alıcı Oluştur</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="http://127.0.0.1:8000/Module/AddModuleGroup">
+                                    <a class="nav-link" href="{{route('customers.create', 'Sender')}}">
                                         <i class="nav-link-icon lnr-plus-circle"></i>
                                         <span>Gönderici Oluştur</span>
                                     </a>
@@ -144,22 +144,20 @@
             </div>
             <div class="card-body">
 
-                <table style="white-space: nowrap;" id="AgenciesTable"
+                <table width="100%" style="white-space: nowrap;"
                        class="align-middle mb-0 table Table20Padding table-borderless table-striped table-hover NikolasDataTable">
                     <thead>
                     <tr>
-                        <th></th>
                         <th>Cari Kodu</th>
                         <th>Müşteri Tipi</th>
                         <th>Ad</th>
                         <th>Kategori</th>
-                        <th>City</th>
-                        <th>District</th>
-                        <th>Neighborhood</th>
+                        <th>İl</th>
+                        <th>İlçe</th>
+                        <th>Mahalle</th>
                         <th>Tel</th>
                         <th>Kayıt Yapan</th>
                         <th>Kayıt Tarihi</th>
-                        <th>İşlem</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -167,18 +165,16 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <th></th>
                         <th>Cari Kodu</th>
                         <th>Müşteri Tipi</th>
                         <th>Ad</th>
                         <th>Kategori</th>
-                        <th>City</th>
-                        <th>District</th>
-                        <th>Neighborhood</th>
+                        <th>İl</th>
+                        <th>İlçe</th>
+                        <th>Mahalle</th>
                         <th>Tel</th>
                         <th>Kayıt Yapan</th>
                         <th>Kayıt Tarihi</th>
-                        <th>İşlem</th>
                     </tr>
                     </tfoot>
                 </table>
@@ -195,6 +191,7 @@
     <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
     <script src="/backend/assets/scripts/customers/customer-details.js"></script>
     <script src="/backend/assets/scripts/customers/index.js"></script>
+
     <link rel="stylesheet" href="/backend/assets/css/jquery.json-viewer.css">
     <style type="text/css">
         pre#json-renderer {
