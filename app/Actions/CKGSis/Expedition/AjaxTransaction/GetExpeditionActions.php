@@ -9,7 +9,7 @@ class GetExpeditionActions
 {
     use AsAction;
 
-    public function handle( $ids, $firstDate, $lastDate, $doneStatus = null, $serialNo = null, $plaka = null, $creator = null,)
+    public function handle( $ids, $firstDate, $lastDate, $doneStatus = null, $serialNo = null, $plaka = null, $creator = null)
     {
         $rows = Expedition::with(
             [

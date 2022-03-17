@@ -1,4 +1,4 @@
-<div class="tab-pane show" id="tabCargoSMS" role="tabpanel">
+<div class="tab-pane show" id="tabExpeditionSeals" role="tabpanel">
     <h3 class="text-dark text-center mb-4">Gönderilen SMS'ler</h3>
 
     <div style="overflow-x: auto; white-space: nowrap; max-height: 300px;"

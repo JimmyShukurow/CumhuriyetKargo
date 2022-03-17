@@ -1,7 +1,7 @@
 <!-- Large modal => Modal Cargo Details -->
 <div class="modal fade bd-example-modal-lg" id="ModalExpeditionDetails" tabindex="22" role="dialog"
      aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xxl">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalGiveRolePermissionLabel">Sefer Detayları</h5>
@@ -28,7 +28,7 @@
                                     </div>
                                     <div>
                                         <h5 id="titleTrackingNo" class="menu-header-title">###</h5>
-                                        <h6 id="titleCargoInvoiceNumber" class="menu-header-subtitle">###/###</h6>
+                                        <h6 id="titleExpeditionCarPlaque" class="menu-header-subtitle">###/###</h6>
                                     </div>
                                 </div>
                             </div>
@@ -37,19 +37,19 @@
 
                             <div class="main-card mb-12 card">
                                 <div class="card-header"><i
-                                            class="header-icon pe-7s-box2 icon-gradient bg-plum-plate"> </i>Kargo
+                                            class="header-icon pe-7s-box2 icon-gradient bg-plum-plate"> </i>Sefer
                                     Detayları
                                     <div class="btn-actions-pane-right">
                                         <div class="nav">
-                                            <a data-toggle="tab" href="#tabCargoInfo"
+                                            <a data-toggle="tab" href="#tabExpeditionInfo"
                                                class="btn-pill btn-wide btn btn-outline-alternate btn-sm show active">Sefer
                                                 Bilgileri</a>
-                                            <a data-toggle="tab" href="#tabCargoMovements"
+                                            <a data-toggle="tab" href="#tabExpeditionCargoes"
                                                class="btn-pill btn-wide mr-1 ml-1 btn btn-outline-alternate btn-sm show ">Kargolar
                                                 </a>
-                                            <a data-toggle="tab" href="#tabCargoSMS"
+                                            <a data-toggle="tab" href="#tabExpeditionSeals"
                                                class="btn-pill btn-wide btn btn-outline-alternate btn-sm show"> Mühürler </a>
-                                            <a data-toggle="tab" href="#tabCargoDetail"
+                                            <a data-toggle="tab" href="#tabExpeditionMovements"
                                                class="btn-pill ml-1 btn-wide btn btn-outline-alternate btn-sm show">Sefer Hareketleri</a>
                                         </div>
                                     </div>

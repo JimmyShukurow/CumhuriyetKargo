@@ -1,4 +1,4 @@
-<div class="tab-pane show" id="tabCargoDetail" role="tabpanel">
+<div class="tab-pane show" id="tabExpeditionMovements" role="tabpanel">
     <h3 class="text-dark text-center mb-4">Kargo İptal Başvurusu</h3>
 
     <div style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
