@@ -1,10 +1,7 @@
 
 $(document).on('dblclick', '.expedition-details', function() {
-    let tracking_no = $(this).attr('tracking-no')
     let id = $(this).prop('id')
     detailsID = id;
-    // copyToClipBoard(tracking_no);
-    // SnackMessage('Takip numarası kopyalandı!', 'info', 'bl');
     expeditionInfo(id);
 });
 

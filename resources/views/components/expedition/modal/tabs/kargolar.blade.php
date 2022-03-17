@@ -5,7 +5,7 @@
         <div class="card-header-tab card-header">
             <div class="card-header-title">
                 <i class="header-icon pe-7s-box2 icon-gradient bg-ck"> </i>
-                Kargo Hareketleri
+                Sefer Kargoları
             </div>
             <ul class="nav">
                 <li class="nav-item">
