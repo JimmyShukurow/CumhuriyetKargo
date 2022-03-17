@@ -17,7 +17,7 @@ class GetExpeditionInfoAction
             $expedition->routes->where('route_type', '1')->first()->branch->agency_name . ' ŞUBE' :
             $expedition->routes->where('route_type', '1')->first()->branch->tc_name . ' TRM.';
 
-        $between_branchs = $expedition->routes->where('route_type',0);
+        $between_branchs = $expedition->routes()->where('route_type',0)->orderBy('order')->get();
         $between_branchs = $between_branchs->map(function ($item){
             if ($item->branch_type == 'Acente') {
                 return $item->branch->agency_name . ' ŞUBE';
@@ -26,8 +26,6 @@ class GetExpeditionInfoAction
                 return $item->branch->tc_name . ' TRM.';
             }
         });
-
-        $between_branchs = $between_branchs->sortBy('order');
 
 
         $arrival_branch = $expedition->routes->where('route_type', '-1')->first()->branch_type == 'Acente' ?

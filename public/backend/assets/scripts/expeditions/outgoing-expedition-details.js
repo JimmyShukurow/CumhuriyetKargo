@@ -71,7 +71,7 @@ function expeditionInfo(expedition) {
             var length = Object.keys(response.expedition.betweens).length
             var expeditionRoutes = '';
 
-            for (let i = 1; i <length+1 ; i++) {
+            for (let i = 0; i <length ; i++) {
                 expeditionRoutes += '<tr class="expoRoutes"> <td class="static">' + i + '. Güzergah' +  ' </td> <td class="customer-detail unselectable font-weight-bold text-dark">' + response.expedition.betweens[i] +'  </td> </tr>';
             }
             $('#ExpeditionBranchs>tbody>tr:first-child').after(expeditionRoutes);
