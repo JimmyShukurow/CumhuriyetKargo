@@ -208,5 +208,4 @@
     @include('backend.marketing.sender_currents.index.includes.modal_customer_detail')
 
     @include('backend.marketing.sender_currents.index.includes.modal_enabled_disabled')
-
 @endsection
