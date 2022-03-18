@@ -99,6 +99,11 @@ class Cargoes extends Model
         return "Kargo $eventName.";
     }
 
+    protected function serializeDate(\DateTimeInterface  $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+
     public function partDetails()
     {
         return $this->hasMany(CargoPartDetails::class, 'cargo_id', 'id');

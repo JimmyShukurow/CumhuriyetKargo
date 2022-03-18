@@ -10,12 +10,12 @@
             <ul class="nav">
                 <li class="nav-item">
                     <a data-toggle="tab" href="#tab-eg5-0"
-                       class="nav-link active">Ana Hareketler</a>
+                       class="nav-link active">Kargolar</a>
                 </li>
 
                 <li class="nav-item">
                     <a data-toggle="tab" href="#tab-eg5-1" class="nav-link">
-                        Detaylı Hareketler
+                        Detay
                     </a>
                 </li>
             </ul>
@@ -30,19 +30,19 @@
                                class="Table30Padding table table-bordered table-striped mt-3">
                             <thead>
                             <tr>
-                                <th>Durum</th>
-                                <th>Bilgi</th>
-                                <th>Parça</th>
-                                <th>İşlem Zamanı</th>
-                                <th></th>
+                                <th>Fatura numarası</th>
+                                <th>Kargo Adeti</th>
+                                <th>Kargo Tipi</th>
+                                <th>Alıcı</th>
+                                <th>Gönderici</th>
+                                <th>Varış İl/İlçe</th>
+                                <th>Kargo Statü</th>
+                                <th>Yükleyen</th>
+                                <th>Yükleme Tarihi</th>
                             </tr>
                             </thead>
-                            <tbody id="tbodyCargoMovements">
-                            <tr>
-                                <td colspan="4" class="text-center">Burda hiç
-                                    veri yok.
-                                </td>
-                            </tr>
+                            <tbody id="tbodyExpedtionCargoes">
+
                             </tbody>
                         </table>
                     </div>
@@ -55,18 +55,20 @@
                                class="Table30Padding table table-bordered table-striped mt-3">
                             <thead>
                             <tr>
-                                <th>Durum</th>
-                                <th>Bilgi</th>
-                                <th>Parça</th>
-                                <th>İşlem Zamanı</th>
-                                <th></th>
+                                <th>Fatura numarası</th>
+                                <th>Kargo Adeti</th>
+                                <th>Kargo Tipi</th>
+                                <th>Alıcı</th>
+                                <th>Gönderici</th>
+                                <th>Varış İl/İlçe</th>
+                                <th>Kargo Statü</th>
+                                <th>Yükleyen</th>
+                                <th>Yükleme Tarihi</th>
                             </tr>
                             </thead>
-                            <tbody id="tbodyCargoMovementsSecondary">
+                            <tbody id="tbodyExpedtionCargoesSecondary">
                             <tr>
-                                <td colspan="4" class="text-center">Burda hiç
-                                    veri yok.
-                                </td>
+
                             </tr>
                             </tbody>
                         </table>
