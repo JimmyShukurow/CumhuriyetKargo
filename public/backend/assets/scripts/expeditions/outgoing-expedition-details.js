@@ -251,6 +251,7 @@ function expeditionAllCargoes(invoice, count, type, reciever, sender, departure,
     return cargoe;
 }
 
+
 function expeditionCargoesUnloaded(invoice, count, type, reciever, sender, departure, status, loader,loadedDate,  unloadedUser, unloaded_at, deletedUser, deleted_at){
     let cargoe = '<tr class="bg-info">' + '<td class="text-center">' + invoice + '</td>'
         + '<td class="text-center">' + count + '</td>'
