@@ -20,7 +20,11 @@ $(document).on('click', '.trash', function () {
     } else if (from == "transfer_car") {
         url = "TransferCars/" + destroy_id;
         object = "Aktarma aracı"
+    } else if (from == "price-draft") {
+        url = "/Marketing/PriceDraft/" + destroy_id;
+        object = "Fiyat taslağı"
     }
+
 
     swal({
         title: "Silme İşlemini Onaylayın!",

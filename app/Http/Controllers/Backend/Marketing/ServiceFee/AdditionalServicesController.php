@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend\ServiceFee;
+namespace App\Http\Controllers\Backend\Marketing\ServiceFee;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdditionalServices;
@@ -38,7 +38,7 @@ class AdditionalServicesController extends Controller
                 $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('d-m-Y H:i');
                 return $formatedDate;
             })
-            ->addColumn('edit', 'backend.service_fee.columns.additional-services-edit')
+            ->addColumn('edit', 'backend.marketing.service_fee.columns.additional-services-edit')
             ->rawColumns(['edit', 'price', 'status'])
             ->make(true);
     }

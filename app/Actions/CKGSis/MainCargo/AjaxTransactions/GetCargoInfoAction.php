@@ -2,7 +2,9 @@
 
 namespace App\Actions\CKGSis\MainCargo\AjaxTransactions;
 
+use App\Models\Agencies;
 use App\Models\Cargoes;
+use App\Models\User;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -63,14 +65,20 @@ class GetCargoInfoAction
 
         $data['receiver']->current_code = CurrentCodeDesign($data['receiver']->current_code);
 
-        $data['creator'] = DB::table('view_users_all_info')
-            ->select(['name_surname', 'display_name'])
+        $data['creator'] = User::with('role:id,display_name')
             ->where('id', $data['cargo']->creator_user_id)
+            ->withTrashed()
             ->first();
 
-        $data['departure'] = DB::table('agencies')
+        $data['creator'] = [
+            'name_surname' => $data['creator']->name_surname,
+            'display_name' => $data['creator']->role->display_name
+        ];
+
+
+        $data['departure'] = Agencies::where('id', $data['cargo']->departure_agency_code)
             ->select(['agency_code', 'agency_name', 'city', 'district'])
-            ->where('id', $data['cargo']->departure_agency_code)
+            ->withTrashed()
             ->first();
 
         $data['departure_tc'] = DB::table('transshipment_centers')
@@ -78,9 +86,9 @@ class GetCargoInfoAction
             ->where('id', $data['cargo']->departure_tc_code)
             ->first();
 
-        $data['arrival'] = DB::table('agencies')
+        $data['arrival'] = Agencies::where('id', $data['cargo']->arrival_agency_code)
             ->select(['agency_code', 'agency_name', 'city', 'district'])
-            ->where('id', $data['cargo']->arrival_agency_code)
+            ->withTrashed()
             ->first();
 
         $data['arrival_tc'] = DB::table('transshipment_centers')

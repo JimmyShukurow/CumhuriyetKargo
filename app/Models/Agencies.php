@@ -49,7 +49,7 @@ class Agencies extends Model
     {
         return $this->hasMany(Districts::class, 'id', 'district_id');
     }
-  
+
     public function endorsementWithDate($firstDate, $lastDate)
     {
         return $this->hasMany(Cargoes::class, 'departure_agency_code', 'id')
@@ -98,6 +98,5 @@ class Agencies extends Model
         return $this->hasOne(RegionalDistricts::class, 'district_id', 'district_id')
             ->join('regional_directorates', 'region_id', '=', 'regional_directorates.id');
     }
-
 
 }

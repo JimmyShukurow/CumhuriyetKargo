@@ -99,7 +99,6 @@ function getCustomerDetails(user) {
         cache: false
     }).done(function (response) {
 
-        $('#ModalBodyCustomerDetails').unblock();
 
         var current = response.data[0];
         var category = current.category;
@@ -228,7 +227,6 @@ function getCustomerDetails(user) {
     }).always(function () {
         $('#ModalBodyCustomerDetails').unblock();
     });
-
 }
 
 

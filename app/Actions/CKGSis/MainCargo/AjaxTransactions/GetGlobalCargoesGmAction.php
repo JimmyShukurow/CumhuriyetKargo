@@ -2,6 +2,7 @@
 
 namespace App\Actions\CKGSis\MainCargo\AjaxTransactions;
 
+use App\Models\Districts;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;

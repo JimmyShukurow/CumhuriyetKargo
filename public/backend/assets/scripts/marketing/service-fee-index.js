@@ -43,7 +43,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '/AdditionalServices',
+            url: '/Marketing/AdditionalServices',
             data: function (d) {
 
             },
@@ -146,7 +146,7 @@ $(document).on('click', '.trash', function () {
     destroy_id = $(this).attr('id');
 
     if (from == "additional-service") {
-        url = "AdditionalServices/" + destroy_id;
+        url = "/Marketing/AdditionalServices/" + destroy_id;
         object = "Ek hizmet";
     }
 
@@ -224,7 +224,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '/DesiList',
+            url: '/Marketing/DesiList',
             data: function (d) {
 
             },
@@ -257,7 +257,7 @@ $(document).on('click', '#btnInsertNewDesiInterval', function () {
     $(this).prop('disabled', true);
     ToastMessage('info', 'İstek alındı lütfen bekleyiniz!', 'Bilgi');
 
-    $.ajax('/DesiList', {
+    $.ajax('/Marketing/DesiList', {
         method: 'POST',
         data: {
             _token: token,
@@ -303,7 +303,7 @@ $(document).on('click', '#btnUpdateDesiInterval', function () {
     $(this).prop('disabled', true);
     ToastMessage('info', 'İstek alındı lütfen bekleyiniz!', 'Bilgi');
 
-    $.ajax('DesiList/' + edit_desi_interval, {
+    $.ajax('/Marketing/DesiList/' + edit_desi_interval, {
         method: 'PUT',
         data: {
             _token: token,
@@ -346,7 +346,7 @@ $(document).on('click', '#btnUpdateFilePrice', function () {
     $(this).prop('disabled', true);
     ToastMessage('info', 'İstek alındı lütfen bekleyiniz!', 'Bilgi');
 
-    $.ajax('ServiceFees/FilePrice/' + edit_file, {
+    $.ajax('/Marketing/ServiceFees/FilePrice/' + edit_file, {
         method: 'POST',
         data: {
             _token: token,
@@ -383,7 +383,7 @@ function dateFormat(date) {
 }
 
 function getFilePrice() {
-    $.ajax('ServiceFees/GetFilePrice', {
+    $.ajax('/Marketing/ServiceFees/GetFilePrice', {
         method: 'POST',
         data: {_token: token}
     }).done(function (response) {
@@ -424,7 +424,7 @@ $(document).on('click', '#btnUpdateMiPrice', function () {
     $(this).prop('disabled', true);
     ToastMessage('info', 'İstek alındı lütfen basdasdekleyiniz!', 'Bilgi');
 
-    $.ajax('ServiceFees/MiPrice/' + edit_file, {
+    $.ajax('/Marketing/ServiceFees/MiPrice/' + edit_file, {
         method: 'POST',
         data: {
             _token: token,
@@ -486,7 +486,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '/ServiceFees/GetDistancePrice',
+            url: '/Marketing/ServiceFees/GetDistancePrice',
             data: function (d) {
 
             },
