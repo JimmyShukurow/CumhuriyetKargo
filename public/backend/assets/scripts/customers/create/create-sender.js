@@ -54,12 +54,13 @@ $(document).on('click', '#btnTCConfirm', function () {
                 taxOffice: $('#currentTaxOffice').val()
             }
         }).done(function (response) {
-            if (response.status == 0)
+            if (response.status == 0) {
                 ToastMessage('error', response.message, 'Hata!');
-
+                $('#currentTitle').val('')
+            }
             if (response.status == 1) {
                 $('#currentTitle').val(response.data.unvan)
-                ToastMessage('success', '', 'İşlem Başarılı, Kişi Doğrulandı!');
+                ToastMessage('success', '', 'Doğrulama işlemi başarılı!');
                 $('#btnSaveCurrent').prop('disabled', false);
                 tcConfirmed = true;
             }
@@ -104,10 +105,15 @@ $(document).on('click', '#btnSaveCurrent', function () {
             method: 'POST',
             data: {
                 _token: token,
+                kategori: $('#currentSelectCategory').val(),
                 ad: $('#currentName').val(),
                 soyad: $('#currentSurName').val(),
                 tc: $('#currentTckn').val(),
                 dogum_tarihi: $('#currentYearOfBirth').val(),
+                vkn: $('#currentVkn').val(),
+                vd_sehir: $('#currentTaxOfficeCity').val(),
+                vergi_dairesi: $('#currentTaxOffice').val(),
+                yetkili_adi: $('#senderCurrentAuthNameSurname').val(),
                 telefon: $('#currentPhone').val(),
                 cep_telefonu: $('#currentGSM').val(),
                 email: $('#currentEmail').val(),
@@ -155,25 +161,47 @@ $(document).on('click', '#btnSaveCurrent', function () {
 function currentConfirmTCConfirmValues() {
     var goPost = true;
 
-    if ($('#currentTckn').val().trim() == '') {
-        ToastMessage('error', 'Gönderici TCKN alanını doldurunuz!');
-        goPost = false;
+    currentCategory = $('#currentSelectCategory').val();
+    if (currentCategory == 'Bireysel') {
+
+        if ($('#currentTckn').val().trim() == '') {
+            ToastMessage('error', 'Gönderici TCKN alanını doldurunuz!');
+            goPost = false;
+        }
+
+        if ($('#currentName').val().trim() == '') {
+            ToastMessage('error', 'Gönderici Adı alanını doldurunuz!');
+            goPost = false;
+        }
+
+        if ($('#currentSurName').val().trim() == '') {
+            ToastMessage('error', 'Gönderici Soyadı alanını doldurunuz!');
+            goPost = false;
+        }
+
+        if ($('#currentYearOfBirth').val().trim() == '') {
+            ToastMessage('error', 'Gönderici Doğum Yılı alanını doldurunuz!');
+            goPost = false;
+        }
+    } else if (currentCategory == 'Kurumsal') {
+
+        if ($('#currentVkn').val().trim() == '') {
+            ToastMessage('error', 'Gönderici VKN alanını doldurunuz!');
+            goPost = false;
+        }
+
+        if ($('#currentTaxOfficeCity').val().trim() == '') {
+            ToastMessage('error', 'Gönderici V.D. Şehir alanını doldurunuz!');
+            goPost = false;
+        }
+
+        if ($('#senderCurrentAuthNameSurname').val().trim() == '') {
+            ToastMessage('error', 'Gönderici Yetkili adı soyadı alanını doldurunuz!');
+            goPost = false;
+        }
+
     }
 
-    if ($('#currentName').val().trim() == '') {
-        ToastMessage('error', 'Gönderici Adı alanını doldurunuz!');
-        goPost = false;
-    }
-
-    if ($('#currentSurName').val().trim() == '') {
-        ToastMessage('error', 'Gönderici Soyadı alanını doldurunuz!');
-        goPost = false;
-    }
-
-    if ($('#currentYearOfBirth').val().trim() == '') {
-        ToastMessage('error', 'Gönderici Doğum Yılı alanını doldurunuz!');
-        goPost = false;
-    }
     return goPost;
 }
 

@@ -36,10 +36,9 @@ class TaxOfficesAction
 
         return response()
             ->json(['status' => 1, 'data' => $json], 200);
-
     }
 
-    public function jsonData()
+    public static function jsonData()
     {
         return $json = '{
             "001":[

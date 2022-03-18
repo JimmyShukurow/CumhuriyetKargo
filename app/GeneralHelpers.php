@@ -1125,3 +1125,19 @@ function vkn_confirm($vkn, $vd, $il)
     else
         return ['status' => 0, 'message' => 'Bilgiler Gelir İdaresi Başkanlığı Tarafından Onaylanmadı, Lütfen bilgileri kontrol edip tekrar deneyiniz!'];
 }
+
+function CreateNewCurrentNumber()
+{
+    $codeControl = true;
+    $current_code = '';
+
+    # => create current code and code control
+    while ($codeControl != false) {
+        $current_code = rand(111111111, 999999999);
+        $codeControl = DB::table('currents')
+            ->where('current_code', $current_code)
+            ->exists();
+    }
+
+    return $current_code;
+}

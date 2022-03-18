@@ -39,9 +39,6 @@
 
         <div style="max-width: 1100px;" class="main-card mb-3 card">
             <div class="card-body">
-                <div class="row">
-
-                </div>
 
                 <form id="currentForm" method="POST" action="{{ route('SenderCurrents.store') }}">
                     @csrf

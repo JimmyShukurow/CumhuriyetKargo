@@ -256,8 +256,7 @@
                                        id="radioPaymentType3"
                                        value="PÖCH" disabled>
 
-                                <label class="form-check-label cursor-pointer" for="radioPaymentType3">PÖCH
-                                    (disabled)</label>
+                                <label class="form-check-label cursor-pointer" for="radioPaymentType3">PÖCH</label>
                             </div>
                         </div>
                         <div class="form-row collection-container">

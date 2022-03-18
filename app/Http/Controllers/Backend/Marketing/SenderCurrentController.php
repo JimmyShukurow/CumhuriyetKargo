@@ -121,8 +121,8 @@ class SenderCurrentController extends Controller
                 ->exists();
         }
 
-        $neighborhood = Neighborhoods::with('district.city')->where('id', $request->mahalle)->first();
-        $dispatchDistrict = Districts::with('city')->where('id', $request->sevkIlce)->first();
+            $neighborhood = Neighborhoods::with('district.city')->where('id', $request->mahalle)->first();
+            $dispatchDistrict = Districts::with('city')->where('id', $request->sevkIlce)->first();
 
         DB::beginTransaction();
         try {
