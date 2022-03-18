@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -11,6 +12,12 @@ class Expedition extends Model
     use HasFactory, LogsActivity;
 
     protected $guarded = [];
+
+
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 
     protected static $logAttributes = [
         'serial_no',
@@ -37,7 +44,7 @@ class Expedition extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id')
             ->join('roles', 'roles.id', '=', 'users.role_id')
-            ->select(['users.id', 'user.name_surname', 'display_name'])
+            ->select(['users.id', 'users.name_surname', 'display_name'])
             ->withTrashed();
     }
 
@@ -49,6 +56,11 @@ class Expedition extends Model
     public function cargoes(){
         return $this->hasMany(ExpeditionCargo::class, 'expedition_id', 'id')
             ->where('unloading_at', null);
+    }
+
+    public function allCargoes()
+    {
+        return $this->hasMany(ExpeditionCargo::class, 'expedition_id', 'id')->withTrashed();
     }
 
 }

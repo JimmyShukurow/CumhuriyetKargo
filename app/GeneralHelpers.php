@@ -15,6 +15,7 @@ use App\Models\TransshipmentCenters;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Actions\CKGSis\Layout\GetUserModuleAndSubModuleAction;
+use App\Models\User;
 
 function tr_strtoupper($text)
 {
@@ -1024,6 +1025,7 @@ function getJustFileName($name)
 function getUserBranchInfo()
 {
     ## Get Branch Info
+
     if (Auth::user()->user_type == 'Acente') {
         $agency = Agencies::find(Auth::user()->agency_code);
         $branch = [
@@ -1047,7 +1049,6 @@ function getUserBranchInfo()
 
     return $branch;
 }
-
 
 function GetGibToken()
 {
@@ -1073,8 +1074,8 @@ function GetGibToken()
         $datas = json_decode($result, false);
 
         return $datas;
-
-
+      
+      
     } catch (Exception $e) {
         $return = array(
             'status' => 'error',
@@ -1082,6 +1083,38 @@ function GetGibToken()
         );
         return (object)$return;
     }
+}
+
+
+function getUserBranchInfoWithUserID($id)
+{
+    ## Get Branch Info
+
+    $user = User::find($id);
+
+    if ($user->user_type == 'Acente') {
+        $agency = Agencies::find($user->agency_code);
+        $branch = [
+            'id' => $agency->id,
+            'code' => $agency->agency_code,
+            'city' => $agency->city,
+            'name' => $agency->agency_name,
+            'type' => 'ŞUBE',
+            'type2' => 'Acente'
+        ];
+    } else {
+        $tc = TransshipmentCenters::find($user->tc_code);
+        $branch = [
+            'id' => $tc->id,
+            'city' => $tc->city,
+            'name' => $tc->tc_name,
+            'type' => 'TRM.',
+            'type2' => 'Aktarma',
+        ];
+    }
+
+
+    return $branch;
 }
 
 function vkn_confirm($vkn, $vd, $il)

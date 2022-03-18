@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CKG_Mobile;
 use App\Actions\CKGMobile\Expedition\LoadCargoToExpeditionAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Expedition\LoadCargoToExpeditionRequest;
+use App\Http\Resources\CKGMobile\Expedition\CargoResource;
 use App\Http\Resources\CKGMobile\Expedition\ExpeditionResource;
 use App\Models\Cargoes;
 use App\Models\Expedition;
@@ -12,7 +13,7 @@ use App\Models\ExpeditionCargo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ExpeditionLoadCargoController extends Controller
+class ExpeditionCargoMobileController extends Controller
 {
     public function loadCargo(LoadCargoToExpeditionRequest $request)
     {
@@ -65,7 +66,7 @@ class ExpeditionLoadCargoController extends Controller
                 'message' => 'Plaka alanı zorunludur!',
             ]);
 
-        $expedition = Expedition::with('car', 'cargoes')
+        $expedition = Expedition::with('car','routes.branch', 'cargoes.cargo')
             ->whereHas('car', function ($query) use ($plaka) {
                 $query->where('plaka', $plaka);
             })
@@ -96,6 +97,59 @@ class ExpeditionLoadCargoController extends Controller
         return response()->json([
             'status' => 1,
             'expedetion' => new ExpeditionResource($expedition),
+            'cargoes' => CargoResource::collection($expedition->cargoes),
+
         ]);
     }
+
+    public function unloadCargo(Request $request){
+
+        $ctn = decryptTrackingNo($request->ctn);
+        $ctn = explode(' ', $ctn);
+        $expedition = Expedition::find($request->expedition_id);
+        $cargo = $expedition->cargoes->filter(function ($item) use ($ctn) {
+            return $item->cargo->tracking_no ==  $ctn[0];
+        })->where('part_no', $ctn[1])->first();
+
+        if ($cargo == null) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Bu kargo seferde bulunamadı, indirmek istediğinizden emin misiniz?'
+            ]);
+        }
+
+        $cargo->update([
+            'unloading_user_id' => Auth::id(),
+            'unloading_at' => now(),
+        ]);
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Kargo Indirildi!'
+        ]);
+    }
+
+    public function deleteCargo(Request $request){
+        $ctn = decryptTrackingNo($request->ctn);
+        $ctn = explode(' ', $ctn);
+        $expedition = Expedition::with('cargoes.cargo')->where('id', $request->expedition_id)->first();
+        $cargo = $expedition->cargoes->filter(function ($item) use ($ctn) {
+            return $item->cargo->tracking_no ==  $ctn[0];
+        })->where('part_no', $ctn[1])->first();
+
+        if ($cargo == null) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Böyle Bir Kargo Bulunamadı!'
+            ]);
+        }
+        $cargo->update(['deleted_user_id' => auth()->id(), 'deleted_at' =>now()]);
+
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Kargo Silindi!'
+        ]);
+    }
+
 }

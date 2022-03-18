@@ -11,7 +11,7 @@ use App\Http\Controllers\Backend\User\UserTC\UserTCController;
 use App\Http\Controllers\CKG_Mobile\DefaultController;
 use App\Http\Controllers\CKG_Mobile\DebitController;
 use App\Http\Controllers\CKG_Mobile\CargoController;
-use App\Http\Controllers\CKG_Mobile\ExpeditionLoadCargoController;
+use App\Http\Controllers\CKG_Mobile\ExpeditionCargoMobileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,8 +62,10 @@ Route::middleware('auth:api')->group(function () {
     Route::post('CaroBagTransactions/{val?}', [CargoController::class, 'caroBagTransactions']);
 
     Route::group(['prefix' => 'Expedition'], function () {
-        Route::post('LoadCargo', [ExpeditionLoadCargoController::class, 'loadCargo']);
-        Route::post('Read', [ExpeditionLoadCargoController::class, 'readExpedition']);
+        Route::post('LoadCargo', [ExpeditionCargoMobileController::class, 'loadCargo']);
+        Route::post('Read', [ExpeditionCargoMobileController::class, 'readExpedition']);
+        Route::post('UnloadCargo', [ExpeditionCargoMobileController::class, 'unloadCargo']);
+        Route::delete('DeleteCargo', [ExpeditionCargoMobileController::class, 'deleteCargo']);
     });
 
 });
