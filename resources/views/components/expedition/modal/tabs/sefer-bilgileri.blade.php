@@ -72,7 +72,7 @@
                 </table>
             </div>
         </div>
-    <div class="row p-2">
+    <div class="row justify-content-center p-2">
         <x-button type="success" buttonText="TTİ Oluştur"/>
         <x-button type="danger" buttonText="Seferi Sil"/>
         <x-button type="info" buttonText="Düzenle"/>

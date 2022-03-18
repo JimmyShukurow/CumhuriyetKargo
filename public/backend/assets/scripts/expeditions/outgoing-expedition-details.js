@@ -73,7 +73,7 @@ function expeditionInfo(expedition) {
             for (let i = 0; i <length ; i++) {
                 expeditionRoutes +=
                     '<tr class="expoRoutes"> <td class="static">'
-                    + i
+                    + (i+1)
                     + '. Güzergah'
                     + ' </td> <td class="customer-detail unselectable font-weight-bold text-dark">'
                     + response.expedition.betweens[i]
@@ -112,8 +112,8 @@ function expeditionInfo(expedition) {
             for (let i = 0; i < allCargoeslength; i++) {
                 let arrival = allCargoes[i].cargo.arrival_city + '/' + allCargoes[i].cargo.arrival_district;
                 let loader = allCargoes[i].user.name_surname + '(' + allCargoes[i].user.role.display_name + ')';
-                let unloader = allCargoes[i].unloaded_user == null ? 'veri yok'  : allCargoes[i].unloaded_user.name_surname + '(' + allCargoes[i].unloaded_user.role.display_name + ')';
-                let deleter = allCargoes[i].deleted_user == null ? 'veri yok'  : allCargoes[i].deleted_user.name_surname + '(' + allCargoes[i].deleted_user.role.display_name + ')';
+                let unloader = allCargoes[i].unloaded_user == null ? ' '  : allCargoes[i].unloaded_user.name_surname + '(' + allCargoes[i].unloaded_user.role.display_name + ')';
+                let deleter = allCargoes[i].deleted_user == null ? ' '  : allCargoes[i].deleted_user.name_surname + '(' + allCargoes[i].deleted_user.role.display_name + ')';
                 if (allCargoes[i].deleted_at != null) {
                     allCargohtml = allCargohtml
                         + expeditionCargoesDeleted(
@@ -127,9 +127,9 @@ function expeditionInfo(expedition) {
                             loader,
                             allCargoes[i].created_at,
                             unloader,
-                            allCargoes[i].unloading_at == null ? 'veri yok' : allCargoes[i].unloading_at,
+                            allCargoes[i].unloading_at == null ? ' ' : allCargoes[i].unloading_at,
                             deleter,
-                            allCargoes[i].deleted_at == null ? 'veri yok' : allCargoes[i].deleted_at,
+                            allCargoes[i].deleted_at == null ? ' ' : allCargoes[i].deleted_at,
                         );
                 }else if (allCargoes[i].unloading_at != null) {
                     allCargohtml = allCargohtml
@@ -144,9 +144,9 @@ function expeditionInfo(expedition) {
                             loader,
                             allCargoes[i].created_at,
                             unloader,
-                            allCargoes[i].unloading_at == null ? 'veri yok' : allCargoes[i].unloading_at,
+                            allCargoes[i].unloading_at == null ? ' ' : allCargoes[i].unloading_at,
                             deleter,
-                            allCargoes[i].deleted_at == null ? 'veri yok' : allCargoes[i].deleted_at,
+                            allCargoes[i].deleted_at == null ? ' ' : allCargoes[i].deleted_at,
                         );
                 } else {
                     allCargohtml = allCargohtml
@@ -161,9 +161,9 @@ function expeditionInfo(expedition) {
                             loader,
                             allCargoes[i].created_at,
                             unloader,
-                            allCargoes[i].unloading_at == null ? 'veri yok' : allCargoes[i].unloading_at,
+                            allCargoes[i].unloading_at == null ? ' ' : allCargoes[i].unloading_at,
                             deleter,
-                            allCargoes[i].deleted_at == null ? 'veri yok' : allCargoes[i].deleted_at,
+                            allCargoes[i].deleted_at == null ? ' ' : allCargoes[i].deleted_at,
                         );
                 }
 
