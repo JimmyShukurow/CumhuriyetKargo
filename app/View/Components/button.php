@@ -8,11 +8,13 @@ class button extends Component
 {
     public $type;
     public $buttonText;
+    public $id;
 
-    public function __construct($type, $buttonText)
+    public function __construct($type, $buttonText, $id)
     {
         $this->type = $type;
         $this->buttonText = $buttonText;
+        $this->id = $id;
     }
 
 
