@@ -26,4 +26,14 @@ class ExpeditionCargo extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    public function unloadedUser()
+    {
+        return $this->hasOne(User::class, 'id', 'unloading_user_id');
+    }
+
+    public function deletedUser()
+    {
+        return $this->hasOne(User::class, 'id', 'deleted_user_id');
+    }
 }

@@ -27,7 +27,14 @@ class GetExpeditionInfoAction
             }
         });
 
-        $allCargoes = $expedition->allCargoes;
+        $allCargoes = $expedition->allCargoes()->with(
+            [
+                'cargo',
+                'user'=>function($q){$q->with('role');},
+                'unloadedUser'=>function($q){$q->with('role');},
+                'deletedUser' =>function($q){$q->with('role');},
+            ]
+        )->get();
 
 
         $arrival_branch = $expedition->routes->where('route_type', '-1')->first()->branch_type == 'Acente' ?

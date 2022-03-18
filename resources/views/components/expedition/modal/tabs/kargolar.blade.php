@@ -27,7 +27,7 @@
                             style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
                             class="cont">
                         <table style="white-space: nowrap" id="TableEmployees"
-                               class="Table30Padding table table-bordered table-striped mt-3">
+                               class="TableNoPadding table table-bordered table-striped mt-3">
                             <thead>
                             <tr>
                                 <th>Fatura numarası</th>
@@ -52,7 +52,7 @@
                             style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
                             class="cont">
                         <table style="white-space: nowrap" id="TableEmployees"
-                               class="Table30Padding table table-bordered table-striped mt-3">
+                               class="TableNoPadding table table-bordered table-striped mt-3">
                             <thead>
                             <tr>
                                 <th>Fatura numarası</th>
@@ -64,6 +64,10 @@
                                 <th>Kargo Statü</th>
                                 <th>Yükleyen</th>
                                 <th>Yükleme Tarihi</th>
+                                <th>İndiren Kullanıcı</th>
+                                <th>İndirilme Tarihi</th>
+                                <th>Silen Kullanıcı</th>
+                                <th>Silinme Tarihi</th>
                             </tr>
                             </thead>
                             <tbody id="tbodyExpedtionCargoesSecondary">
