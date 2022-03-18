@@ -106,6 +106,61 @@ function expeditionInfo(expedition) {
             }else {
                 $('#tbodyExpedtionCargoes').html('<td colspan="9" class="text-center">Burda hiç veri yok.</td>');
             }
+             let allCargoes = response.expedition.allCargoes;
+            var allCargoeslength = Object.keys(allCargoes).length
+            let allCargohtml = '';
+            for (let i = 0; i < allCargoeslength; i++) {
+                let arrival = allCargoes[i].cargo.arrival_city + '/' + allCargoes[i].cargo.arrival_district;
+                let loader = allCargoes[i].user.name_surname + '(' + allCargoes[i].user.role.display_name + ')';
+                if (allCargoes[i].deleted_at != null) {
+                    allCargohtml = allCargohtml
+                        + expeditionCargoesDeleted(
+                            cargoes[i].cargo.invoice_number,
+                            cargoes[i].cargo.number_of_pieces,
+                            cargoes[i].cargo.cargo_type,
+                            cargoes[i].cargo.receiver_name,
+                            cargoes[i].cargo.sender_name,
+                            arrival,
+                            cargoes[i].cargo.status,
+                            loader,
+                            cargoes[i].created_at,
+                        );
+                }else if (allCargoes[i].unloading_at != null) {
+                    allCargohtml = allCargohtml
+                        + expeditionCargoesUnloaded(
+                            cargoes[i].cargo.invoice_number,
+                            cargoes[i].cargo.number_of_pieces,
+                            cargoes[i].cargo.cargo_type,
+                            cargoes[i].cargo.receiver_name,
+                            cargoes[i].cargo.sender_name,
+                            arrival,
+                            cargoes[i].cargo.status,
+                            loader,
+                            cargoes[i].created_at,
+                        );
+                } else {
+                    allCargohtml = allCargohtml
+                        + expeditionCargoes(
+                            cargoes[i].cargo.invoice_number,
+                            cargoes[i].cargo.number_of_pieces,
+                            cargoes[i].cargo.cargo_type,
+                            cargoes[i].cargo.receiver_name,
+                            cargoes[i].cargo.sender_name,
+                            arrival,
+                            cargoes[i].cargo.status,
+                            loader,
+                            cargoes[i].created_at,
+                        );
+                }
+
+            }
+            if (cargoeslength > 0) {
+                $('#tbodyExpedtionCargoesSecondary').html(allCargohtml);
+            }else {
+                $('#tbodyExpedtionCargoesSecondary').html('<td colspan="9" class="text-center">Burda hiç veri yok.</td>');
+            }
+
+
         }
 
         $('#ModalExpeditionDetails').unblock();
@@ -120,6 +175,33 @@ function expeditionInfo(expedition) {
 }
 function expeditionCargoes(invoice, count, type, reciever, sender, departure, status, loader,loadedDate){
     let cargoe = '<tr>' + '<td class="text-center">' + invoice + '</td>'
+        + '<td class="text-center">' + count + '</td>'
+        + '<td class="text-center">' + type + '</td>'
+        + '<td class="text-center">' + reciever + '</td>'
+        + '<td class="text-center">' + sender + '</td>'
+        + '<td class="text-center">' + departure + '</td>'
+        + '<td class="text-center">' + status + '</td>'
+        + '<td class="text-center">' + loader + '</td>'
+        + '<td class="text-center">' + loadedDate + '</td>'
+        + '</tr>';
+    return cargoe;
+}
+
+function expeditionCargoesUnloaded(invoice, count, type, reciever, sender, departure, status, loader,loadedDate){
+    let cargoe = '<tr class="bg-info">' + '<td class="text-center">' + invoice + '</td>'
+        + '<td class="text-center">' + count + '</td>'
+        + '<td class="text-center">' + type + '</td>'
+        + '<td class="text-center">' + reciever + '</td>'
+        + '<td class="text-center">' + sender + '</td>'
+        + '<td class="text-center">' + departure + '</td>'
+        + '<td class="text-center">' + status + '</td>'
+        + '<td class="text-center">' + loader + '</td>'
+        + '<td class="text-center">' + loadedDate + '</td>'
+        + '</tr>';
+    return cargoe;
+}
+function expeditionCargoesDeleted(invoice, count, type, reciever, sender, departure, status, loader,loadedDate){
+    let cargoe = '<tr class="danger">' + '<td class="text-center">' + invoice + '</td>'
         + '<td class="text-center">' + count + '</td>'
         + '<td class="text-center">' + type + '</td>'
         + '<td class="text-center">' + reciever + '</td>'

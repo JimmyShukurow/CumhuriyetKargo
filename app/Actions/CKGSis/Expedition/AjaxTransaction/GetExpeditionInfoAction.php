@@ -27,6 +27,8 @@ class GetExpeditionInfoAction
             }
         });
 
+        $allCargoes = $expedition->allCargoes;
+
 
         $arrival_branch = $expedition->routes->where('route_type', '-1')->first()->branch_type == 'Acente' ?
             $expedition->routes->where('route_type', '-1')->first()->branch->agency_name . ' ŞUBE' :
@@ -38,12 +40,15 @@ class GetExpeditionInfoAction
         $expedition->departure_branch = $departure_branch;
         $expedition->arrival_branch = $arrival_branch;
         $expedition->betweens = $between_branchs;
+        $expedition->allCargoes = $allCargoes;
+
 
 
 
         return response()->json([
             'status' => 1,
             'expedition' => $expedition,
+
         ]);
     }
 }

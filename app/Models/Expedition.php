@@ -58,4 +58,9 @@ class Expedition extends Model
             ->where('unloading_at', null);
     }
 
+    public function allCargoes()
+    {
+        return $this->hasMany(ExpeditionCargo::class, 'expedition_id', 'id')->withTrashed();
+    }
+
 }
