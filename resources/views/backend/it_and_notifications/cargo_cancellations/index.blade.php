@@ -49,21 +49,21 @@
 
                     <div class="form-row">
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="receiverCode">Kargo Takip No:</label>
                             <input type="text" data-inputmask="'mask': '99999 99999 99999'"
                                    placeholder="_____ _____ _____" type="text" id="trackingNo"
                                    class="form-control input-mask-trigger form-control-sm niko-filter">
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="receiverCode">Fatura NO:</label>
                             <input type="text" data-inputmask="'mask': 'AA-999999'"
                                    placeholder="__ ______" type="text" id="invoice_number"
                                    class="form-control input-mask-trigger form-control-sm niko-filter">
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="name_surname">B. Yapan Ad Soyad</label>
                                 <input type="text" class="form-control form-control-sm"
@@ -72,14 +72,20 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="agency">Acente</label>
-                                <input type="text" class="form-control form-control-sm" id="agency">
+                                <select name="" id="agency" class="form-control form-control-sm"
+                                        style="width: 100%;">
+                                    <option value="">Seçiniz</option>
+                                    @foreach($data['agencies'] as $key)
+                                        <option value="{{$key->id}}">{{$key->agency_name}} ŞUBE</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="confirm">Onay Durumu</label>
                                 <select name="confirm" id="confirm" class="form-control form-control-sm">
@@ -91,7 +97,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="appointment_reason">Başvuru Nedeni</label>
                                 <input type="text" class="form-control form-control-sm"
@@ -100,7 +106,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="confirming_name_surname">Onaylayan Ad Soyad</label>
                                 <input type="text" class="form-control form-control-sm"
@@ -108,14 +114,12 @@
                                        name="confirming_name_surname" id="confirming_name_surname">
                             </div>
                         </div>
-                    </div>
 
-                    <input type="hidden" id="x_token"
-                           value="{{Crypte4x(\Illuminate\Support\Facades\Auth::id())}}}">
+                        <input type="hidden" id="x_token"
+                               value="{{Crypte4x(\Illuminate\Support\Facades\Auth::id())}}}">
 
-                    <div class="form-row">
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="creating_start_date">Oluşturma Başlangıç Tarih</label>
                                 <input type="date" name="creating_start_date" value="{{date('Y-m-d')}}"
@@ -124,7 +128,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="creating_finish_date">Oluşturma Bitiş Tarih</label>
                                 <input type="date" name="creating_finish_date" value="{{date('Y-m-d')}}"
@@ -133,7 +137,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="last_proccess_start_date">Son İşlem Başlangıç Tarih</label>
                                 <input type="date" name="last_proccess_start_date" value="{{date('Y-m-d')}}"
@@ -142,7 +146,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="last_proccess_finish_date">Son İşlem Bitiş Tarih</label>
                                 <input type="date" name="last_proccess_finish_date" value="{{date('Y-m-d')}}"
@@ -156,8 +160,6 @@
                     <div class="row mt-3">
 
                         <div class="col-md-12 text-center">
-                            <button id="btn-submit" type="submit" class="btn btn-primary ml-5">Ara</button>
-                            <input type="reset" class="btn btn-secondary">
 
                             <div style="display: inline-block; float: right;" class="form-check ml-3">
                                 <input style="cursor: pointer;" type="checkbox" id="last_proccess_date_filter"
@@ -185,30 +187,11 @@
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
                         class="header-icon pe-7s-ticket mr-3 text-muted opacity-6"> </i>Kargo İptalleri
-
-                    <button id="CountConfirmed" type="button" data-title="Onaylanan başvurular."
-                            data-toggle="popover-custom-bg"
-                            data-bg-class="text-light bg-premium-dark"
-                            class="mr-2 ml-2  btn btn-sm btn-success">0
-                    </button>
-
-                    <button id="CountRejected" type="button" data-title="Reddedilen başvurular."
-                            data-toggle="popover-custom-bg"
-                            data-bg-class="text-light bg-premium-dark"
-                            class="mr-2 ml-2  btn btn-sm btn-danger">0
-                    </button>
-
-                    <button id="CountWaiting" type="button" data-title="Onay bekleyen başvurular."
-                            data-toggle="popover-custom-bg"
-                            data-bg-class="text-light bg-premium-dark"
-                            class="mr-2 ml-2  btn btn-sm btn-info">0
-                    </button>
-
                 </div>
             </div>
-            <div style="min-height: 70vh;overflow-x: auto;" class="card-body">
+            <div style="overflow-x: auto;" class="card-body">
 
-                <table style="white-space: nowrap;"
+                <table width="100%" style="white-space: nowrap;"
                        class="NikolasDataTable table-hover  table table-bordered Table20Padding">
                     <thead>
                     <tr>
@@ -240,7 +223,106 @@
                     </tr>
                     </tfoot>
                 </table>
+            </div>
 
+            <div id="AgencyPaymentAppRow" class="mt-4 row" style="position: static; zoom: 1;">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card-shadow-primary mb-3 widget-chart widget-chart2 text-left card">
+                        <div class="widget-chat-wrapper-outer">
+                            <div class="widget-chart-content">
+                                <h6 class="widget-subheading">Tüm Zamanlar</h6>
+                                <div class="widget-chart-flex">
+                                    <div class="widget-numbers mb-0 w-100">
+                                        <div class="widget-chart-flex">
+                                            <div class="fsize-4">
+                                                <small class="opacity-5"><i class="lnr-clock text-primary"></i></small>
+                                                <span id="CountWaiting">2</span>
+                                            </div>
+
+                                            <div class="ml-auto">
+                                                <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
+                                                    <span class="text-primary font-weight-bold pl-2">Onay Bekleyenler</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card-shadow-primary mb-3 widget-chart widget-chart2 text-left card">
+                        <div class="widget-chat-wrapper-outer">
+                            <div class="widget-chart-content">
+                                <h6 class="widget-subheading">Tüm Zamanlar</h6>
+                                <div class="widget-chart-flex">
+                                    <div class="widget-numbers mb-0 w-100">
+                                        <div class="widget-chart-flex">
+                                            <div class="fsize-4">
+                                                <small class="opacity-5"><i class="lnr-checkmark-circle text-success"></i></small>
+                                                <span id="CountConfirmed">90</span>
+                                            </div>
+                                            <div class="ml-auto">
+                                                <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
+                                                    <span class="text-success font-weight-bold pl-2">Onaylananlar</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card-shadow-primary mb-3 widget-chart widget-chart2 text-left card">
+                        <div class="widget-chat-wrapper-outer">
+                            <div class="widget-chart-content">
+                                <h6 class="widget-subheading">Tüm Zamanlar</h6>
+                                <div class="widget-chart-flex">
+                                    <div class="widget-numbers mb-0 w-100">
+                                        <div class="widget-chart-flex">
+                                            <div class="fsize-4">
+                                                <small class="opacity-5"><i class="lnr-cross-circle text-danger"></i></small>
+                                                <span id="CountRejected">46</span>
+                                            </div>
+                                            <div class="ml-auto">
+                                                <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
+                                                    <span class="text-danger font-weight-bold pl-2">Reddedilenler</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card-shadow-primary mb-3 widget-chart widget-chart2 text-left card">
+                        <div class="widget-chat-wrapper-outer">
+                            <div class="widget-chart-content">
+                                <h6 class="widget-subheading">Tüm Zamanlar</h6>
+                                <div class="widget-chart-flex">
+                                    <div class="widget-numbers mb-0 w-100">
+                                        <div class="widget-chart-flex">
+                                            <div class="fsize-4">
+                                                <small class="opacity-5"><i class="lnr-cloud text-info"></i></small>
+                                                <span id="AllApp">138</span>
+                                            </div>
+                                            <div class="ml-auto">
+                                                <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
+                                                    <span class="text-info font-weight-bold pl-2">Tümü</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -329,6 +411,7 @@
                 $('#CountConfirmed').html(response.confirmed);
                 $('#CountWaiting').html(response.waiting);
                 $('#CountRejected').html(response.rejected);
+                $('#AllApp').html(response.confirmed + response.waiting + response.rejected)
             }).error(function () {
                 ToastMessage('error', 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!', 'Hata!');
             });
@@ -364,26 +447,32 @@
                 //     }
                 // ],
                 buttons: [
-                    'copy',
-                    'pdf',
-                    'csv',
-                    'print',
                     {
                         extend: 'excelHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7]
-                        },
-                        title: "CK - Kargo İptalleri"
+                        attr: {
+                            class: 'btn btn-success'
+                        }
                     },
                     {
                         text: 'Yenile',
                         action: function (e, dt, node, config) {
                             dt.ajax.reload();
-                            pageRowCount();
+                        },
+                        attr: {
+                            class: 'btn btn-primary'
                         }
-                    }
+                    },
+                    {
+                        text: 'Filtreyi Temizle',
+                        attr: {
+                            class: 'btn btn-dark'
+                        },
+                        action: function (e, dt, node, config) {
+                            $('#search-form').trigger("reset");
+                            dt.ajax.reload();
+                        },
+                    },
                 ],
-                responsive: true,
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -423,6 +512,7 @@
                     {data: 'approval_at', name: 'approval_at'},
                     {data: 'created_at', name: 'created_at'},
                 ],
+                scrollX: true,
             });
         });
 
