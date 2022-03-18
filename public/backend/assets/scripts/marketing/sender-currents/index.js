@@ -9,16 +9,18 @@ $(document).ready(function () {
         pageLength: 25,
         lengthMenu: dtLengthMenu,
         order: [
-            7, 'desc'
+            8, 'desc'
         ],
         language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
         buttons: [
-            'print',
             {
                 extend: 'excelHtml5',
                 exportOptions: {
                     columns: [0, 1, 2, 3, 4, 5, 6]
+                },
+                attr: {
+                    class: 'btn btn-success',
                 },
                 title: "CK - Gönderici Cariler"
             },
@@ -26,18 +28,24 @@ $(document).ready(function () {
                 text: 'Yenile',
                 action: function (e, dt, node, config) {
                     dt.ajax.reload();
-                }
+                },
+                attr: {
+                    class: 'btn btn-primary',
+                },
             },
             {
                 extend: 'colvis',
-                text: 'Sütun Görünüm'
+                text: 'Sütunlar',
+                attr: {
+                    class: 'btn btn-alternate',
+                },
             },
         ],
         responsive: true,
         processing: true,
         serverSide: true,
         ajax: {
-            url: '/SenderCurrents/GetCurrents',
+            url: '/Marketing/SenderCurrents/GetCurrents',
             data: function (d) {
                 d.name = $('#name').val();
                 d.agency = $('#agency').val();
@@ -64,6 +72,8 @@ $(document).ready(function () {
             {data: 'city', name: 'city'},
             {data: 'agency_name', name: 'agency_name'},
             {data: 'name_surname', name: 'name_surname'},
+            {data: 'confirmed', name: 'confirmed'},
+            {data: 'status', name: 'status'},
             {data: 'created_at', name: 'created_at'},
             {data: 'edit', name: 'edit'}
         ],
@@ -101,7 +111,7 @@ function dateFormat(date) {
 
 
 $(document).on('click', '.user-detail', function () {
-    $('#ModalUserDetail').modal();
+    $('#ModalCustomerDetail').modal();
 
     $('#ModalBodyUserDetail.modal-body').block({
         message: $('<div class="loader mx-auto">\n' +
@@ -129,7 +139,7 @@ $(document).on('click', '.user-detail', function () {
 var array = new Array();
 
 function userInfo(user) {
-    $.ajax('/SenderCurrents/AjaxTransaction/GetCurrentInfo', {
+    $.ajax('/Marketing/SenderCurrents/AjaxTransaction/GetCurrentInfo', {
         method: 'POST',
         data: {
             _token: token,
@@ -196,41 +206,35 @@ function userInfo(user) {
         $('#mbStatus').html(response.current.mb_status == '0' ? '<b class="text-danger">Hayır</b>' : '<b class="text-success">Evet</b>')
 
 
-        if (response.current.category == 'Kurumsal') {
-
-            $('#currentFilePrice').html(response.price.file_price + "₺");
-            $('#currentMiPrice').html(response.price.mi_price + "₺");
-            $('#current1_5Desi').html(response.price.d_1_5 + "₺");
-            $('#current6_10Desi').html(response.price.d_6_10 + "₺");
-            $('#current11_15Desi').html(response.price.d_11_15 + "₺");
-            $('#current16_20Desi').html(response.price.d_16_20 + "₺");
-            $('#current21_25Desi').html(response.price.d_21_25 + "₺");
-            $('#current26_30Desi').html(response.price.d_26_30 + "₺");
-            $('#current31_35Desi').html(response.price.d_31_35 + "₺");
-            $('#current36_40Desi').html(response.price.d_36_40 + "₺");
-            $('#current41_45Desi').html(response.price.d_41_45 + "₺");
-            $('#current46_50Desi').html(response.price.d_46_50 + "₺");
-
-            // $('#mCurrentFilePrice').html(response.price.m_file_price + "₺");
-            // $('#mCurrentMiPrice').html(response.price.m_mi_price + "₺");
-            // $('#mCurrent1_5Desi').html(response.price.m_d_1_5 + "₺");
-            // $('#mCurrent6_10Desi').html(response.price.m_d_6_10 + "₺");
-            // $('#mCurrent11_15Desi').html(response.price.m_d_11_15 + "₺");
-            // $('#mCurrent16_20Desi').html(response.price.m_d_16_20 + "₺");
-            // $('#mCurrent21_25Desi').html(response.price.m_d_21_25 + "₺");
-            // $('#mCurrent26_30Desi').html(response.price.m_d_26_30 + "₺");
-            // $('#mCurrent31_35Desi').html(response.price.m_d_31_35 + "₺");
-            // $('#mCurrent36_40Desi').html(response.price.m_d_36_40 + "₺");
-            // $('#mCurrent41_45Desi').html(response.price.m_d_41_45 + "₺");
-            // $('#mCurrent46_50Desi').html(response.price.m_d_46_50 + "₺");
-
+        if (response.current.category == 'Anlaşmalı') {
+            $('td#currentFilePrice').html(response.price.file + "₺");
+            $('td#currentMiPrice').html(response.price.mi + "₺");
+            $('td#current1_5Desi').html(response.price.d_1_5 + "₺");
+            $('td#current6_10Desi').html(response.price.d_6_10 + "₺");
+            $('td#current11_15Desi').html(response.price.d_11_15 + "₺");
+            $('td#current16_20Desi').html(response.price.d_16_20 + "₺");
+            $('td#current21_25Desi').html(response.price.d_21_25 + "₺");
+            $('td#current26_30Desi').html(response.price.d_26_30 + "₺");
             $('#currentAmountOfIncrease').html(response.price.amount_of_increase + "₺");
             $('#currentCollectPrice').html(response.price.collect_price + "₺");
             $('#collectAmountOfIncrease').html("%" + response.price.collect_amount_of_increase);
-            $('#currentConfirmed').html(currentConfirmed);
-            $('#PrintCurrentContract').attr('href', '/SenderCurrents/CurrentContract/' + response.current.current_code);
-
+        } else {
+            $('td#currentFilePrice').html('');
+            $('td#currentMiPrice').html('');
+            $('td#current1_5Desi').html('');
+            $('td#current6_10Desi').html('');
+            $('td#current11_15Desi').html('');
+            $('td#current16_20Desi').html('');
+            $('td#current21_25Desi').html('');
+            $('td#current26_30Desi').html('');
+            $('#currentAmountOfIncrease').html('');
+            $('#currentCollectPrice').html('');
+            $('#collectAmountOfIncrease').html('');
         }
+
+        $('#currentConfirmed').html(currentConfirmed);
+        $('#PrintCurrentContract').attr('href', '/Marketing/SenderCurrents/CurrentContract/' + response.current.current_code);
+
 
         $('.modal-body').unblock();
         return false;
@@ -242,7 +246,7 @@ function userInfo(user) {
 $(document).on('click', '#btnConfirmCurrent', function () {
     $('#btnConfirmCurrent').prop('disabled', true);
 
-    $.ajax('/SenderCurrents/AjaxTransaction/ConfirmCurrent', {
+    $.ajax('/Marketing/SenderCurrents/AjaxTransaction/ConfirmCurrent', {
         method: 'POST',
         data: {
             _token: token,
@@ -255,6 +259,7 @@ $(document).on('click', '#btnConfirmCurrent', function () {
         else if (response.status == 1) {
             ToastMessage('success', 'İşlem başarılı, cari hesabı onaylandı!', 'İşlem Başarılı!');
             userInfo(detailsID);
+            oTable.draw()
             $('#divConfirmCurrent').hide();
         }
 
@@ -286,7 +291,7 @@ $(document).on('click', '#btnEnabledDisabled', function () {
     $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
 
-    $.ajax('/SenderCurrents/AjaxTransaction/GetCurrentInfo', {
+    $.ajax('/Marketing/SenderCurrents/AjaxTransaction/GetCurrentInfo', {
         method: 'POST',
         data: {
             _token: token,
@@ -304,7 +309,7 @@ $(document).on('click', '#btnEnabledDisabled', function () {
 $(document).on('click', '#btnSaveStatus', function () {
 
     ToastMessage('warning', 'İstek alındı, lütfen bekleyiniz.', 'Dikkat!');
-    $.ajax('/SenderCurrents/AjaxTransaction/ChangeStatus', {
+    $.ajax('/Marketing/SenderCurrents/AjaxTransaction/ChangeStatus', {
         method: 'POST',
         data: {
             _token: token,

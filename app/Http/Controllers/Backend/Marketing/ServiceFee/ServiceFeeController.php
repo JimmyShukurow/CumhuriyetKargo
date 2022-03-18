@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend\ServiceFee;
+namespace App\Http\Controllers\Backend\Marketing\ServiceFee;
 
 use App\Http\Controllers\Controller;
 use App\Models\DesiList;
@@ -17,7 +17,7 @@ class ServiceFeeController extends Controller
     {
         $tab = 'AdditionalServices';
         $filePrice = FilePrice::first();
-        return view('backend.service_fee.index', compact(['tab', 'filePrice']));
+        return view('backend.marketing.service_fee.index', compact(['tab', 'filePrice']));
     }
 
     public function updateFilePrice(Request $request, $id)

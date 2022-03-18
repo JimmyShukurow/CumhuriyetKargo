@@ -254,7 +254,6 @@ var detailsID = null;
 // and The Last Part: NikoStyle
 $(document).ready(function () {
 
-
     $('#selectAgency').select2();
     $('#creatorUser').select2();
 
@@ -268,9 +267,9 @@ $(document).ready(function () {
             {
                 extend: 'excelHtml5',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4]
+                    columns: [0, 1, 2, 3, 4, 5]
                 },
-                title: "CK - Mahalli Lokasyon"
+                title: "CKG-Sis - Mahalli Lokasyon"
             },
             {
                 text: 'Yenile',

@@ -14,7 +14,7 @@ $('#district').change(function () {
 $(document).ready(function () {
     $('#tax-office').select2({
         ajax: {
-            url: "/SenderCurrents/AjaxTransaction/GetTaxOffices",
+            url: "/Marketing/SenderCurrents/AjaxTransaction/GetTaxOffices",
             type: "post",
             delay: 450,
             data: function (params) {
@@ -41,7 +41,7 @@ $(document).ready(function () {
 
     $('#agency').select2({
         ajax: {
-            url: "/SenderCurrents/AjaxTransaction/GetAgencies",
+            url: "/Marketing/PriceDraft/AjaxTransaction/GetAgencies",
             type: "post",
             delay: 450,
             data: function (params) {
@@ -117,3 +117,49 @@ function getNeigborhoods(districtElement, neighborhoodElement) {
         $(neighborhoodElement).prop('disabled', false);
     });
 }
+
+$('#priceDraft').change(function () {
+    val = $(this).val()
+    if (val != '0')
+        $('.price-of-cargo').prop('readonly', true)
+    else
+        $('.price-of-cargo').prop('readonly', false)
+
+    $('.container-cargo-price').block(whiteAnimation);
+    $('.blockUI.blockMsg.blockElement').css('border', '0px');
+    $('.blockUI.blockMsg.blockElement').css('background-color', '');
+
+    $.ajax('/Marketing/GetPriceDraft', {
+        method: 'POST',
+        data: {
+            _token: token,
+            id: $('#priceDraft').val()
+        }
+    }).done(function (response) {
+
+        if (response.status == 1) {
+            data = response.data
+            $('#filePrice').val(data.file)
+            $('#miPrice').val(data.mi)
+            $('#d1_5').val(data.d_1_5)
+            $('#d6_10').val(data.d_6_10)
+            $('#d11_15').val(data.d_11_15)
+            $('#d16_20').val(data.d_16_20)
+            $('#d21_25').val(data.d_21_25)
+            $('#d26_30').val(data.d_26_30)
+            $('#amountOfIncrease').val(data.amount_of_increase)
+        } else if (response.status == -1) {
+            ToastMessage('error', response.message, 'Hata!')
+        } else if (response.status == 0) {
+            $.each(response.errors, function (index, value) {
+                ToastMessage('error', value, 'Hata!')
+            });
+        }
+
+    }).error(function (jqXHR, response) {
+        ajaxError(jqXHR.status, JSON.parse(jqXHR.responseText));
+    }).always(function () {
+        $('.container-cargo-price').unblock();
+    });
+
+});
