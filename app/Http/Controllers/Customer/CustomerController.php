@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Actions\CKGSis\Customer\AjaxTransaction\ConfirmCurrentWithVKNAction;
+use App\Actions\CKGSis\Customer\AjaxTransaction\CreateAgencyContractedCustomerAction;
 use App\Actions\CKGSis\Customer\AjaxTransaction\TaxOfficesAction;
 use App\Actions\CKGSis\Customer\DeleteCustomerAction;
 use App\Actions\CKGSis\Customer\GetAllCustomersAction;
@@ -137,6 +138,9 @@ class CustomerController extends Controller
                 return ConfirmCurrentWithVKNAction::run($request);
                 break;
 
+            case 'CreateAgencyContractedCustomer':
+                return CreateAgencyContractedCustomerAction::run($request);
+                break;
 
             default:
                 return response()

@@ -71,8 +71,8 @@ $(document).ready(function () {
         columns: [
             {data: 'current_code', name: 'current_code'},
             {data: 'current_type', name: 'current_type'},
-            {data: 'name', name: 'name'},
             {data: 'category', name: 'category'},
+            {data: 'name', name: 'name'},
             {data: 'city', name: 'city'},
             {data: 'district', name: 'district'},
             {data: 'neighborhood', name: 'neighborhood'},

@@ -50,11 +50,6 @@ $("#currentForm").submit(function (e) {
 
     let goPost = true;
 
-    if ($('#agency').val() == null) {
-        ToastMessage('error', 'Bağlanacak acenteyi seçin!', 'Hata!');
-        goPost = false;
-    }
-
     if ($('#tax-office').val() == null) {
         ToastMessage('error', 'Vergi dairesi alanı zorunludur!', 'Hata!');
         goPost = false;

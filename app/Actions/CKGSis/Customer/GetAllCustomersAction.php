@@ -15,7 +15,7 @@ class GetAllCustomersAction
         $category = $request->category;
         $city = $request->city;
         $currentCode = str_replace([' ', '_'], ['', ''], $request->currentCode);
-        $customer_name_surname = $request->customer_name_surname;
+        $customer_name_surname = tr_strtoupper($request->customer_name_surname);
         $customer_type = $request->customer_type;
         $phone = $request->phone;
 
@@ -26,7 +26,7 @@ class GetAllCustomersAction
             ->whereRaw($category ? "category='" . $category . "'" : '1 > 0')
             ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
             ->whereRaw($city ? "city='" . $city . "'" : '1 > 0')
-            ->whereRaw($customer_name_surname ? "name='" . $customer_name_surname . "'" : '1 > 0')
+            ->whereRaw($customer_name_surname ? "name like '%" . $customer_name_surname . "%'" : '1 > 0')
             ->whereRaw($customer_type ? "current_type='" . $customer_type . "'" : '1 > 0')
             ->whereRaw($phone ? "gsm='" . $phone . "'" : '1 > 0')
             ->where('agency', Auth::user()->agency_code)

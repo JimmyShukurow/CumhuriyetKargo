@@ -40,7 +40,7 @@
         <div style="max-width: 1100px;" class="main-card mb-3 card">
             <div class="card-body">
 
-                <form id="currentForm" method="POST" action="{{ route('SenderCurrents.store') }}">
+                <form id="currentForm" method="POST" action="/Customers/AjaxTransaction/CreateAgencyContractedCustomer">
                     @csrf
                     <div class="row">
                         <div class="col-md-6" id="container-general-info">

@@ -150,8 +150,8 @@
                     <tr>
                         <th>Cari Kodu</th>
                         <th>Müşteri Tipi</th>
-                        <th>Ad</th>
                         <th>Kategori</th>
+                        <th>Ad</th>
                         <th>İl</th>
                         <th>İlçe</th>
                         <th>Mahalle</th>
@@ -167,8 +167,8 @@
                     <tr>
                         <th>Cari Kodu</th>
                         <th>Müşteri Tipi</th>
-                        <th>Ad</th>
                         <th>Kategori</th>
+                        <th>Ad</th>
                         <th>İl</th>
                         <th>İlçe</th>
                         <th>Mahalle</th>
