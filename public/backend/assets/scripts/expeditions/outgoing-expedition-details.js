@@ -179,14 +179,35 @@ function expeditionInfo(expedition) {
                         );
                 }
 
+
+
+
+            }
+
+            let movements = response.expedition.movements;
+            let movementsLength = Object.keys(movements).length;
+            let movementsHtml = '';
+            for (let i = 0; i < movementsLength; i++) {
+                let user =  movements[i].user.name_surname + '(' + movements[i].user.role.display_name + ')';
+                movementsHtml = movementsHtml + expeditionMovements(
+                    response.expedition.serial_no,
+                    user,
+                    movements[i].user.user_type,
+                    movements[i].description,
+                    movements[i].created_at
+                );
+            }
+
+            if (movementsLength > 0) {
+                $('#tbodyExpeditionMovements').html(movementsHtml);
+            }else {
+                $('#tbodyExpeditionMovements').html('<td colspan="5" class="text-center">Burda hiç veri yok.</td>');
             }
             if (cargoeslength > 0) {
                 $('#tbodyExpedtionCargoesSecondary').html(allCargohtml);
             }else {
                 $('#tbodyExpedtionCargoesSecondary').html('<td colspan="9" class="text-center">Burda hiç veri yok.</td>');
             }
-
-
         }
 
         $('#ModalExpeditionDetails').unblock();
@@ -265,6 +286,15 @@ function expeditionCargoesDeleted(invoice, count, type, reciever, sender, depart
     return cargoe;
 }
 
+function expeditionMovements(serial_no, user, user_type, description, created_at) {
+    let movement = '<tr >' + '<td class="text-center">' + serial_no + '</td>'
+        + '<td class="text-center">' + user + '</td>'
+        + '<td class="text-center">' + user_type + '</td>'
+        + '<td class="text-center">' + description + '</td>'
+        + '<td class="text-center">' + created_at + '</td>'
+        + '</tr>';
+    return movement;
+}
 function deleteExpedition (expedition){
     let deleteUrl = '/Expedition/Delete';
     $.ajax(deleteUrl, {

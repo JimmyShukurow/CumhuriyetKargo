@@ -64,4 +64,9 @@ class Expedition extends Model
         return $this->hasMany(ExpeditionCargo::class, 'expedition_id', 'id')->withTrashed();
     }
 
+    public function movements()
+    {
+        return $this->hasMany(ExpeditionMovement::class, 'expedition_id', 'id');
+    }
+
 }
