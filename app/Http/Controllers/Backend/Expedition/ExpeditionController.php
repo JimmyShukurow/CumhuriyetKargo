@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Backend\Expedition;
 
 use App\Actions\CKGSis\Expedition\AjaxTransaction\GetExpeditionInfoAction;
 use App\Actions\CKGSis\Expedition\AjaxTransaction\GetOutGoingExpeditionsAction;
+use App\Actions\CKGSis\Expedition\ExpeditionMovementAction;
 use App\Actions\CKGSis\Expedition\ExpeditionStoreAction;
 use App\Actions\CKGSis\Layout\GetUserModuleAndSubModuleAction;
 use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\Cities;
+use App\Models\Expedition;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
 use Carbon\Carbon;
@@ -74,5 +76,37 @@ class ExpeditionController extends Controller
                     ->json(['status' => 0, 'message' => 'no-case'], 200);
 
         }
+    }
+
+    public function delete(Request $request)
+    {
+        $expedition = Expedition::find($request->expedition_id);
+        $expeditionCreator = User::find($expedition->user->id);
+        $userDeleter = Auth::user();
+        $agencyControl =
+            $expeditionCreator->user_type == $userDeleter->user_type && ($expeditionCreator->agency_code == $userDeleter->agency_code ||
+                $expeditionCreator->tc_code == $userDeleter->tc_code);
+        if (!$agencyControl) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Seferi Sadece Oluşturan Birim Silebilir!'
+            ]);
+        };
+
+        if ($expedition->cargoes->count() != 0) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Seferde Kargo Var!'
+            ]);
+        }
+
+        $expedition->delete();
+        $description = $expedition->car->plaka . ' plakali aracin ' . $expedition->serial_no . ' seri numaralı seferi ' . $userDeleter->name_surname .'('.  $userDeleter->role->display_name .')' . ' tarafından silinmiştir!';
+        ExpeditionMovementAction::run($expedition->id, $userDeleter->id, $description);
+        return response()->json([
+            'status' => 1,
+            'message' => 'Sefer Silindi!'
+        ]);
+
     }
 }

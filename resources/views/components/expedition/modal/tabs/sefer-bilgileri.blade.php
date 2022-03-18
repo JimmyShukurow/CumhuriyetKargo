@@ -74,7 +74,7 @@
         </div>
     <div class="row justify-content-center p-2">
         <x-button type="success" buttonText="TTİ Oluştur"/>
-        <x-button type="danger" buttonText="Seferi Sil"/>
+        <x-button id="deleteExpedition" type="danger" buttonText="Seferi Sil"/>
         <x-button type="info" buttonText="Düzenle"/>
         <x-button type="alternate" buttonText="Mühürle"/>
         <x-button type="primary" buttonText="Mühür Kır"/>

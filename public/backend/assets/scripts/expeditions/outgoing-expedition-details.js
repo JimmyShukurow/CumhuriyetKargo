@@ -4,6 +4,18 @@ $(document).on('dblclick', '.expedition-details', function() {
     expeditionInfo(id);
 });
 
+$(document).on('click','#deleteExpedition', function () {
+    swal({
+        title: "Silme İşlemini Onaylayın!",
+        text: "Emin misiniz? Bu işlem geri alınamaz!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then( function () {
+        deleteExpedition(detailsID)
+    })
+});
+
 function expeditionInfo(expedition) {
 
     $('#ModalExpeditionDetails').modal();
@@ -251,5 +263,23 @@ function expeditionCargoesDeleted(invoice, count, type, reciever, sender, depart
         + '<td class="text-center">' + deleted_at + '</td>'
         + '</tr>';
     return cargoe;
+}
+
+function deleteExpedition (expedition){
+    let deleteUrl = '/Expedition/Delete';
+    $.ajax(deleteUrl, {
+        method: 'DELETE',
+        data: {
+            _token: token,
+            expedition_id: expedition
+        },
+        cache: false
+    }).done(function (response) {
+        ToastMessage('success', response.message, 'SİLİNDİ!');
+        $('#ModalExpeditionDetails').modal('hide');
+        tableOutGoingExpeditions.draw();
+    }).error(function(jqXHR, exception) {
+        ToastMessage('error', response.message, 'HATA!');
+    })
 }
 
