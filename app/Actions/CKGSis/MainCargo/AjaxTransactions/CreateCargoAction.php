@@ -162,6 +162,10 @@ class CreateCargoAction
                         ->json(['status' => -1, 'message' => $service->service_name . ' hizmeti şu anda pasif durumda, bu hizmeti şu anda kulanamazsınız!'], 200);
                     break;
                 }
+                if ($transporter == 'MNG' && $service->partner_status == '0') {
+                    return response()
+                        ->json(['status' => -1, 'message' => 'Taşıyan partner firma olduğundan ' . $service->service_name . ' hizmetini kulanamazsınız!'], 200);
+                }
                 $addServicePrice += $service->price;
             }
 
