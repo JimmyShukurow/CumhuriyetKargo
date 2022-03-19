@@ -206,8 +206,8 @@ function DistributionControl(neighborhood = '') {
         method: 'POST',
         data: {
             _token: token,
-            currentCode: $('#gondericiCariKod').val(),
-            receiverCode: $('#aliciCariKod').val(),
+            gondericiCariKodu: $('#gondericiCariKod').val(),
+            aliciCariKodu: $('#aliciCariKod').val(),
             neighborhood: neighborhood,
         }
     }).done(function (response) {

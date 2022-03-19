@@ -7,7 +7,7 @@ $(document).ready(function () {
         pageLength: 25,
         lengthMenu: dtLengthMenu,
         order: [
-            10, 'desc'
+            11, 'desc'
         ],
         language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
