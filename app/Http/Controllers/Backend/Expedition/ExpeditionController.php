@@ -122,6 +122,7 @@ class ExpeditionController extends Controller
 
         if ($user->branch_details == $expedition->routes()->where('route_type', 1)->first()->branch) {
             $expedition->update(['done' => 1]);
+            ExpeditionMovementAction::run($expedition->id, $user->id, 'Sefer bitirildi!.');
             return response()->json([
                 'status' => 1,
                 'message' => 'Sefer bitirildi',
@@ -130,6 +131,7 @@ class ExpeditionController extends Controller
         }
         if ($user->branch_details == $expedition->routes()->where('route_type', -1)->first()->branch) {
             $expedition->update(['done' => 1]);
+            ExpeditionMovementAction::run($expedition->id, $user->id, 'Sefer bitirildi!.');
             return response()->json([
                 'status' => 1,
                 'message' => 'Sefer bitirildi',
@@ -138,7 +140,7 @@ class ExpeditionController extends Controller
 
         return response()->json([
             'status' => 0,
-            'message' => 'Olmadı',
+            'message' => 'Seferi Sadece Varış Birimi veya Çıkış Birimi Bitirebilir!',
         ]);
     }
 
