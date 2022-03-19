@@ -14,65 +14,107 @@
 
 @section('title', 'Sefer Detayları')
 @section('content')
-    <div class="app-main__inner">
-        <div class="col-md-12">
 
-            <div class="mb-3 profile-responsive card">
-                <div class="dropdown-menu-header">
-                    <div class="dropdown-menu-header-inner bg-dark">
-                        <div class="menu-header-image "
-                             style="background-image: url('/backend/assets/images/dropdown-header/abstract10.jpg');">
-                        </div>
-                        <div class="menu-header-content btn-pane-right">
-                            <div class="avatar-icon-wrapper mr-3 avatar-icon-xl btn-hover-shine">
-                                <div class="avatar-icon rounded">
-                                    <img src="/backend/assets/images/ck-ico-white.png" alt="Avatar 5">
-                                </div>
-                            </div>
-                            <div>
-                                <h5 id="titleTrackingNo" class="menu-header-title"> {{ $expedition->serial_no }} </h5>
-                                <h6 id="titleExpeditionCarPlaque" class="menu-header-subtitle"> {{ $expedition->car->plaka }}</h6>
-                            </div>
+
+    <div class="app-main__inner">
+        <div class="app-page-title">
+            <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                    <div class="page-title-icon">
+                        <i class="fa fa-bus icon-gradient bg-amy-crisp">
+                        </i>
+                    </div>
+                    <div>Sefer Detayları [{{ $expedition->car->plaka }}]
+                        <div class="page-title-subheading">Bu modül <b>{{ $expedition->car->plaka }}</b> plakalı aracın
+                            sefer detaylarını görüntüleyebilirsiniz.
                         </div>
                     </div>
                 </div>
-                <ul class="list-group list-group-flush">
-
-                    <div class="main-card mb-12 card">
-                        <div class="card-header"><i
-                                class="header-icon pe-7s-box2 icon-gradient bg-plum-plate"> </i>Sefer
-                            Detayları
-                            <div class="btn-actions-pane-right">
-                                <div class="nav">
-                                    <a data-toggle="tab" href="#tabExpeditionInfo"
-                                       class="btn-pill btn-wide btn btn-outline-alternate btn-sm show active">Sefer
-                                        Bilgileri</a>
-                                    <a data-toggle="tab" href="#tabExpeditionCargoes"
-                                       class="btn-pill btn-wide mr-1 ml-1 btn btn-outline-alternate btn-sm show ">Kargolar
-                                    </a>
-                                    <a data-toggle="tab" href="#tabExpeditionSeals"
-                                       class="btn-pill btn-wide btn btn-outline-alternate btn-sm show"> Mühürler </a>
-                                    <a data-toggle="tab" href="#tabExpeditionMovements"
-                                       class="btn-pill ml-1 btn-wide btn btn-outline-alternate btn-sm show">Sefer Hareketleri</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="tab-content">
-                                @include('backend.expedition.outgoing.tabs.sefer-bilgileri')
-
-                                @include('backend.expedition.outgoing.tabs.kargolar')
-
-                                @include('backend.expedition.outgoing.tabs.muhurler')
-
-                                @include('backend.expedition.outgoing.tabs.sefer-hareketleri')
-                            </div>
-                        </div>
-                    </div>
-                </ul>
             </div>
         </div>
     </div>
+
+
+    <div style="min-height: 80vh;" class="card-body">
+        <div class="mb-3 profile-responsive card">
+            <ul class="list-group list-group-flush">
+
+                <div class="main-card mb-12 card">
+                    <div class="card-header"><i
+                            class="header-icon pe-7s-box2 icon-gradient bg-plum-plate"> </i>Sefer
+                        Detayları
+                        <div class="btn-actions-pane-right">
+                            <div class="nav">
+                                <a data-toggle="tab" href="#tabExpeditionInfo"
+                                   class="btn-pill btn-wide btn btn-outline-alternate btn-sm show active">Sefer
+                                    Bilgileri</a>
+                                <a data-toggle="tab" href="#tabExpeditionCargoes"
+                                   class="btn-pill btn-wide mr-1 ml-1 btn btn-outline-alternate btn-sm show ">Kargolar
+                                </a>
+                                <a data-toggle="tab" href="#tabExpeditionSeals"
+                                   class="btn-pill btn-wide btn btn-outline-alternate btn-sm show"> Mühürler </a>
+                                <a data-toggle="tab" href="#tabExpeditionMovements"
+                                   class="btn-pill ml-1 btn-wide btn btn-outline-alternate btn-sm show">Sefer
+                                    Hareketleri</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            @include('backend.expedition.outgoing.tabs.sefer-bilgileri')
+
+                            @include('backend.expedition.outgoing.tabs.kargolar')
+
+                            @include('backend.expedition.outgoing.tabs.muhurler')
+
+                            @include('backend.expedition.outgoing.tabs.sefer-hareketleri')
+                        </div>
+                    </div>
+                    <div class="row justify-content-center p-2">
+                        <div class="p-2">
+                            <button
+                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-success col-md-2">
+                                TTİ Oluştur
+                            </button>
+                        </div>
+                        <div class="p-2">
+                            <button id="deleteExpedition"
+                                    class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-danger col-md-2">
+                                Seferi Sil
+                            </button>
+                        </div>
+                        <div class="p-2">
+                            <button
+                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-info col-md-2">
+                                Düzenle
+                            </button>
+                        </div>
+                        <div class="p-2">
+                            <button
+                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-alternate col-md-2">
+                                Mühürle
+                            </button>
+                        </div>
+                        <div class="p-2">
+                            <button
+                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-primary col-md-2">
+                                Mühür Kır
+                            </button>
+                        </div>
+                        <div class="p-2">
+                            <button
+                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-dark col-md-2">
+                                Sefer Değiştir
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </ul>
+        </div>
+    </div>
+
 
 @endsection
 
