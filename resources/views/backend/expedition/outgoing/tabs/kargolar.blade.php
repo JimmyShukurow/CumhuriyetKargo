@@ -23,7 +23,7 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="tab-eg5-0" role="tabpanel">
                     <div
-                            style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
+                            style="overflow-x: auto; white-space: nowrap;"
                             class="cont">
                         <table style="white-space: nowrap" id="TableEmployees"
                                class="TableNoPadding table table-bordered table-striped mt-3">
@@ -60,7 +60,7 @@
                 </div>
                 <div class="tab-pane" id="tab-eg5-1" role="tabpanel">
                     <div
-                            style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
+                            style="overflow-x: auto; white-space: nowrap;"
                             class="cont">
                         <table style="white-space: nowrap" id="TableEmployees"
                                class="TableNoPadding table table-bordered table-striped mt-3">
@@ -98,7 +98,7 @@
                                     <td> {{ $cargo->cargo->sender_name }} </td>
                                     <td> {{ $cargo->cargo->arrival_city }} /{{ $cargo->cargo->arrival_district }}   </td>
                                     <td> {{ $cargo->cargo->status }} </td>
-                                    <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name }}) </td>
+                                    <td> {{ $cargo->user->name_surname ?? 'null' }} ({{ $cargo->user->role->display_name ?? ''}}) </td>
                                     <td> {{ $cargo->cargo->created_at }} </td>
                                     <td>
                                         {{ $cargo->unloadedUser ? $cargo->unloadedUser->name_surname . '(' .$cargo->unloadedUser->role->display_name . ')'  : ''  }}
