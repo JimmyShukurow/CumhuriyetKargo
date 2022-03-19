@@ -91,7 +91,6 @@
                                 @else
                                     <tr>
                                 @endif
-
                                     <td> {{ $cargo->cargo->invoice_number }} </td>
                                     <td> {{ $cargo->part_no }} </td>
                                     <td> {{ $cargo->cargo->cargo_type }} </td>
@@ -101,9 +100,11 @@
                                     <td> {{ $cargo->cargo->status }} </td>
                                     <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name }}) </td>
                                     <td> {{ $cargo->cargo->created_at }} </td>
-                                    <td> {{ $cargo->unloaded_user->name_surname ?? ''  }} </td>
+                                    <td>
+                                        {{ $cargo->unloadedUser ? $cargo->unloadedUser->name_surname . '(' .$cargo->unloadedUser->role->display_name . ')'  : ''  }}
+                                    </td>
                                     <td> {{ $cargo->unloading_at }} </td>
-                                    <td> {{ $cargo->deleted_user->name_surname ??'' }} </td>
+                                    <td> {{ $cargo->deletedUser ? $cargo->deletedUser->name_surname. '(' . $cargo->deletedUser->role->display_name . ')' : ''}}</td>
                                     <td> {{ $cargo->deleted_at }} </td>
                                 </tr>
                                 @endforeach
