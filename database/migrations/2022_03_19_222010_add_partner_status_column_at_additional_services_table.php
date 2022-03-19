@@ -15,6 +15,7 @@ class AddPartnerStatusColumnAtAdditionalServicesTable extends Migration
     {
         Schema::table('additional_services', function (Blueprint $table) {
             $table->string('partner_status')->default('1')->after('status');
+            $table->integer('order')->default('0')->after('partner_status');
         });
     }
 
@@ -27,6 +28,7 @@ class AddPartnerStatusColumnAtAdditionalServicesTable extends Migration
     {
         Schema::table('additional_services', function (Blueprint $table) {
             $table->dropColumn('partner_status');
+            $table->dropColumn('order');
         });
     }
 }

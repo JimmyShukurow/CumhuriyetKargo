@@ -213,46 +213,58 @@ function DistributionControl(neighborhood = '') {
         }
     }).done(function (response) {
 
-        // console.log(response);
-        if (response.status == 0) {
-            ToastMessage('error', response.message, 'Hata!');
-            $('#dagitimDurumu').val('AT DIŞI - DAĞITIM YOK');
-            $('#dagitimDurumu').removeClass('text-alternate');
-            $('#dagitimDurumu').addClass('text-danger');
-        } else if (response.status == 1) {
+            // console.log(response);
+            if (response.status == 0) {
+                ToastMessage('error', response.message, 'Hata!');
+                $('#dagitimDurumu').val('AT DIŞI - DAĞITIM YOK');
+                $('#dagitimDurumu').removeClass('text-alternate');
+                $('#dagitimDurumu').addClass('text-danger');
+            } else if (response.status == 1) {
 
-            $('#varisSube').val(response.arrival_agency);
-            $('#varisTransferMerkezi').val(response.arrival_tc + " TM");
-            $('#dagitimDurumu').val(response.area_type);
-            $('#dagitimDurumu').removeClass('text-danger');
-            $('#dagitimDurumu').removeClass('text-alternate');
-            $('#dagitimDurumu').addClass('text-success');
+                $('#varisSube').val(response.arrival_agency);
+                $('#varisTransferMerkezi').val(response.arrival_tc + " TM");
+                $('#dagitimDurumu').val(response.area_type);
+                $('#dagitimDurumu').removeClass('text-danger');
+                $('#dagitimDurumu').removeClass('text-alternate');
+                $('#dagitimDurumu').addClass('text-success');
 
-            if (response.area_type == 'Mobil Bölge') {
-                ToastMessage('warning', "Bölge mobil olarak kayıtlı, teslimat gecikmeli olabilir. Bölge: " + $('#aliciMahalle').val() + " (Mobil olarak işaretlendi!)");
+                if (response.area_type == 'Mobil Bölge') {
+                    ToastMessage('warning', "Bölge mobil olarak kayıtlı, teslimat gecikmeli olabilir. Bölge: " + $('#aliciMahalle').val() + " (Mobil olarak işaretlendi!)");
 
-                if (MobilBolge.prop('checked') == false) {
-                    MobilBolge.prop('disabled', false);
-                    MobilBolge.click();
-                    MobilBolge.prop('disabled', true);
+                    if (MobilBolge.prop('checked') == false) {
+                        MobilBolge.prop('disabled', false);
+                        MobilBolge.click();
+                        MobilBolge.prop('disabled', true);
+                        calculateTotalPrice();
+                        clearAddServices();
+                    }
+
+                } else if (response.area_type == 'Ana Bölge') {
+                    if (MobilBolge.prop('checked') == true) {
+                        MobilBolge.prop('disabled', false);
+                        MobilBolge.click();
+                        MobilBolge.prop('disabled', true);
+                    }
+                    $('.partner-service-0').prop('disabled', false);
+
                     calculateTotalPrice();
                     clearAddServices();
-                }
+                } else if (response.area_type == 'MNG') {
 
-            } else if (response.area_type == 'Ana Bölge') {
-                if (MobilBolge.prop('checked') == true) {
-                    MobilBolge.prop('disabled', false);
-                    MobilBolge.click();
-                    MobilBolge.prop('disabled', true);
+                    if (MobilBolge.prop('checked') == true) {
+                        MobilBolge.prop('disabled', false);
+                        MobilBolge.click();
+                        MobilBolge.prop('disabled', true);
+                    }
+
+                    $('.partner-service-0').prop('disabled', true);
+                    $('.partner-service-0').prop('checked', false);
+
                 }
-                calculateTotalPrice();
-                clearAddServices();
             }
 
         }
-
-
-    }).error(function (jqXHR, exception) {
+    ).error(function (jqXHR, exception) {
         ajaxError(jqXHR.status);
     }).always(function () {
         $('#divider-alici').unblock();

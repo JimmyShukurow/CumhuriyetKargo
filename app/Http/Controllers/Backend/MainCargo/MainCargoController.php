@@ -99,7 +99,7 @@ class MainCargoController extends Controller
 
     public function newCargo()
     {
-        $data['additional_service'] = AdditionalServices::all();
+        $data['additional_service'] = AdditionalServices::orderBy('order')->get();
         $data['cities'] = Cities::all();
 
         ## get agency district
