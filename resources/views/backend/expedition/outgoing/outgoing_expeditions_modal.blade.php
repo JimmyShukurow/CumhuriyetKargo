@@ -28,6 +28,9 @@
                         <div class="page-title-subheading">Bu modül <b>{{ $expedition->car->plaka }}</b> plakalı aracın
                             sefer detaylarını görüntüleyebilirsiniz.
                         </div>
+                        <div style="display: none" >
+                            <input type="text" id="expeditionID" value="{{ $expedition->id }}">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,8 +81,8 @@
                             </button>
                         </div>
                         <div class="p-2">
-                            <button id="{{ $expedition->id }}"
-                                    class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-danger col-md-2 deleteExpedition">
+                            <button id="deleteExpedition"
+                                    class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-danger col-md-2 ">
                                 Seferi Sil
                             </button>
                         </div>
@@ -102,7 +105,7 @@
                             </button>
                         </div>
                         <div class="p-2">
-                            <button
+                            <button id="finishExpedition"
                                 class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-danger col-md-2">
                                 Sefer Bitir
                             </button>
@@ -119,10 +122,6 @@
 @endsection
 
 @section('js')
-    <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
-    <script src="/backend/assets/scripts/select2.js"></script>
-    <script src="/backend/assets/scripts/city-districts-point.js"></script>
-    <script src="/backend/assets/scripts/expeditions/outgoing-expedition.js"></script>
     <script src="/backend/assets/scripts/expeditions/outgoing-expedition-details.js"></script>
 @endsection
 
