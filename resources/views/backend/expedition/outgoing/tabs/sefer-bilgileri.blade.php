@@ -89,27 +89,27 @@
         </div>
     <div class="row justify-content-center p-2">
         <div class="p-2">
-            <button id="{{ $expedition->id }}"
+            <button
                     class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-success col-md-2"> TTİ Oluştur </button>
         </div>
         <div class="p-2">
-            <button id="{{ $expedition->id }}"
+            <button id="deleteExpedition"
                     class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-danger col-md-2"> Seferi Sil </button>
         </div>
         <div class="p-2">
-            <button id="{{ $expedition->id }}"
+            <button
                     class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-info col-md-2"> Düzenle </button>
         </div>
         <div class="p-2">
-            <button id="{{ $expedition->id }}"
+            <button
                     class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-alternate col-md-2"> Mühürle </button>
         </div>
         <div class="p-2">
-            <button id="{{ $expedition->id }}"
+            <button
                     class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-primary col-md-2"> Mühür Kır </button>
         </div>
         <div class="p-2">
-            <button id="{{ $expedition->id }}"
+            <button
                     class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-dark col-md-2"> Sefer Değiştir </button>
         </div>
 
