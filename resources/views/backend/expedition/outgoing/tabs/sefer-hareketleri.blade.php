@@ -15,7 +15,15 @@
             </tr>
             </thead>
             <tbody id="tbodyExpeditionMovements">
-
+                @foreach($expedition->movements as $movement)
+                    <tr>
+                        <td>{{ $expedition->serial_no }}</td>
+                        <td>{{ $movement->user->name_surname }} ({{ $movement->user->role->display_name }})</td>
+                        <td>{{ $movement->user->user_type }}</td>
+                        <td>{{ $movement->description }}</td>
+                        <td>{{ $movement->created_at }}</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
