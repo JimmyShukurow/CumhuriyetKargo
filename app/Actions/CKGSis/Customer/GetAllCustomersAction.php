@@ -4,6 +4,7 @@ namespace App\Actions\CKGSis\Customer;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class GetAllCustomersAction
@@ -36,11 +37,17 @@ class GetAllCustomersAction
             ->editColumn('current_code', function ($current) {
                 return '<b class="customer-detail" id="' . $current->id . '" style="text-decoration:underline; color:#000; cursor:pointer; user-select:none">' . CurrentCodeDesign($current->current_code) . '</b>';
             })
-            ->editColumn('free', function ($current) {
-                return '';
+            ->editColumn('name', function ($current) {
+                return '<span title="' . $current->name . '">' . Str::words($current->name, 4, '..') . '</span>';
+            })
+            ->editColumn('status', function ($current) {
+                return $current->status == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>';
+            })
+            ->editColumn('confirmed', function ($current) {
+                return $current->confirmed == '1' ? '<b class="text-success">Onaylandı</b>' : '<b class="text-primary">Onay Bekliyor</b>';
             })
             ->addColumn('edit', 'backend.customers.agency.columns.edit')
-            ->rawColumns(['edit', 'current_code'])
+            ->rawColumns(['edit', 'current_code', 'status', 'confirmed', 'name'])
             ->make(true);
     }
 }

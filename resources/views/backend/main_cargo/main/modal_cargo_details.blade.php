@@ -65,7 +65,7 @@
                                                            class="TableNoPadding table table-bordered table-striped">
                                                         <thead>
                                                         <tr>
-                                                            <th class="text-center" id="titleBranch" colspan="2">
+                                                            <th class="text-center" colspan="2">
                                                                 Gönderici Bilgileri
                                                             </th>
                                                         </tr>
@@ -114,7 +114,7 @@
                                                            class="TableNoPadding table table-bordered table-striped">
                                                         <thead>
                                                         <tr>
-                                                            <th class="text-center" id="titleBranch" colspan="2">
+                                                            <th class="text-center" colspan="2">
                                                                 Alıcı Bilgileri
                                                             </th>
                                                         </tr>
