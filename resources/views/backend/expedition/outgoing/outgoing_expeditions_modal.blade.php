@@ -78,8 +78,8 @@
                             </button>
                         </div>
                         <div class="p-2">
-                            <button id="deleteExpedition"
-                                    class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-danger col-md-2">
+                            <button id="{{ $expedition->id }}"
+                                    class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-danger col-md-2 deleteExpedition">
                                 Seferi Sil
                             </button>
                         </div>

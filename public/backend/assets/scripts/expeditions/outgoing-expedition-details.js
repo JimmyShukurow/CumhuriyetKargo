@@ -1,9 +1,6 @@
-$(document).on('dblclick', '.expedition-details', function() {
-    let id = $(this).prop('id')
-    detailsID = id;
-});
-
-$(document).on('click','#deleteExpedition', function () {
+var detailID;
+$(document).on('click','.deleteExpedition', function () {
+    detailID = $(this).attr('id');
     swal({
         title: "Silme İşlemini Onaylayın!",
         text: "Emin misiniz? Bu işlem geri alınamaz!",
@@ -11,7 +8,7 @@ $(document).on('click','#deleteExpedition', function () {
         buttons: true,
         dangerMode: true,
     }).then( function () {
-        deleteExpedition(detailsID)
+        deleteExpedition(detailID)
     })
 });
 
@@ -25,9 +22,12 @@ function deleteExpedition (expedition){
         },
         cache: false
     }).done(function (response) {
-        ToastMessage('success', response.message, 'SİLİNDİ!');
-        $('#ModalExpeditionDetails').modal('hide');
-        tableOutGoingExpeditions.draw();
+        if (response.status == 0) {
+            ToastMessage('error', response.message, 'HATA!');
+        }else {
+            ToastMessage('success', response.message, 'SİLİNDİ!');
+            window.location.replace('/Expedition/OutGoing');
+        }
     }).error(function(jqXHR, exception) {
         ToastMessage('error', response.message, 'HATA!');
     })
