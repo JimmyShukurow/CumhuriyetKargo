@@ -13,8 +13,8 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="static">Sefer No:</td>
-                    <td style="text-decoration: underline; cursor:pointer; color: #000;"
+                    <td style="width: 150px;" class="static">Sefer No:</td>
+                    <td style="text-decoration: underline; color: #000;"
                         class="customer-detail unselectable font-weight-bold"
                         id="expeditionSerialNo"> {{ $expedition->serial_no }}</td>
                 </tr>
@@ -65,7 +65,7 @@
                 </thead>
                 <tbody>
                 <tr id="departure">
-                    <td class="static">Çıkış Birim:</td>
+                    <td style="width: 180px;" class="static">Çıkış Birim:</td>
                     <td style="text-decoration: underline; cursor:pointer; color: #000;"
                         class="customer-detail unselectable font-weight-bold text-danger"
                         id="expeditionDepartureBranch"> {{  $expedition->departure_branch  }}</td>

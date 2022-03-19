@@ -61,13 +61,13 @@
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
-                            @include('backend.expedition.outgoing.tabs.sefer-bilgileri')
+                            @include('backend.expedition.outgoing.tabs.expedition_general_info')
 
-                            @include('backend.expedition.outgoing.tabs.kargolar')
+                            @include('backend.expedition.outgoing.tabs.cargoes')
 
-                            @include('backend.expedition.outgoing.tabs.muhurler')
+                            @include('backend.expedition.outgoing.tabs.seals')
 
-                            @include('backend.expedition.outgoing.tabs.sefer-hareketleri')
+                            @include('backend.expedition.outgoing.tabs.expedition_movements')
                         </div>
                     </div>
                     <div class="row justify-content-center p-2">
@@ -103,8 +103,8 @@
                         </div>
                         <div class="p-2">
                             <button
-                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-dark col-md-2">
-                                Sefer Değiştir
+                                class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-danger col-md-2">
+                                Sefer Bitir
                             </button>
                         </div>
 

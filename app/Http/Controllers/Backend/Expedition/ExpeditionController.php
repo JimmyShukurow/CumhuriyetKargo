@@ -67,7 +67,7 @@ class ExpeditionController extends Controller
             case 'GetOutGoingExpeditions':
                 return GetOutGoingExpeditionsAction::run($request);
                 break;
-             case 'GetExpeditionInfo':
+            case 'GetExpeditionInfo':
                 return GetExpeditionInfoAction::run($request->id);
                 break;
 
@@ -101,7 +101,7 @@ class ExpeditionController extends Controller
         }
 
         $expedition->delete();
-        $description = $expedition->car->plaka . ' plakali aracin ' . $expedition->serial_no . ' seri numaralı seferi ' . $userDeleter->name_surname .'('.  $userDeleter->role->display_name .')' . ' tarafından silinmiştir!';
+        $description = $expedition->car->plaka . ' plakali aracin ' . $expedition->serial_no . ' seri numaralı seferi ' . $userDeleter->name_surname . '(' . $userDeleter->role->display_name . ')' . ' tarafından silinmiştir!';
         ExpeditionMovementAction::run($expedition->id, $userDeleter->id, $description);
         return response()->json([
             'status' => 1,
@@ -109,9 +109,10 @@ class ExpeditionController extends Controller
         ]);
     }
 
-    public function show(Request $request, $id){
+    public function show(Request $request, $id)
+    {
         $expedition = GetExpeditionInfoAction::run($id);
-        return view('backend.expedition.outgoing.outgoing_expeditions_modal',['expedition' => $expedition]);
+        return view('backend.expedition.outgoing.outgoing_expeditions_modal', ['expedition' => $expedition]);
     }
 
 }

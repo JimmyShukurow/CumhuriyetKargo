@@ -12,7 +12,7 @@
     <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
 @endpush
 
-@section('title', 'Giden Tutanaklar')
+@section('title', 'Giden Seferler')
 @section('content')
 
     <div class="app-main__inner">
