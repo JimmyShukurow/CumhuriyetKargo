@@ -90,7 +90,8 @@ class GetOutGoingExpeditionsAction
                 return $key->car->plaka;
             })
             ->editColumn('serial_no', function ($key) {
-                return '<b style="text-decoration: underline; cursor: pointer;" id="' . $key->id . '" class="expedition-details">' . CurrentCodeDesign($key->serial_no) . '</b>';
+                return '<a target="popup" onclick="window.open(\'/Expedition/Details/' . $key->id . '\',\'popup\',\'width=1500,height=1200\'); return false;" href="/Expedition/Details/' . $key->id . '"><b style="text-decoration: underline; cursor: pointer;"  class="expedition-details">' . CurrentCodeDesign($key->serial_no) . '</b></a>';
+
             })
             ->editColumn('name_surname', function ($key) {
                 return $key->user->name_surname . ' (' . $key->user->display_name . ')';

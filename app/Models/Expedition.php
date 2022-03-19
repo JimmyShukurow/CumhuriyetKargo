@@ -5,11 +5,12 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Expedition extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $guarded = [];
 
@@ -61,6 +62,16 @@ class Expedition extends Model
     public function allCargoes()
     {
         return $this->hasMany(ExpeditionCargo::class, 'expedition_id', 'id')->withTrashed();
+    }
+
+    public function movements()
+    {
+        return $this->hasMany(ExpeditionMovement::class, 'expedition_id', 'id');
+    }
+
+    public function seals()
+    {
+        return $this->hasMany(ExpeditionSeals::class, 'expedition_id', 'id');
     }
 
 }

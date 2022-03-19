@@ -96,6 +96,7 @@ class AgencyTransferCarsController extends Controller
         $validated = $request->validated();
         $validated['branch_code'] = $user->getAgency->id;
         $validated['confirm'] = '0';
+        $validated['status'] = '1';
         $validated['creator_id'] = $user->id;
 
         $create = TcCars::create($validated);

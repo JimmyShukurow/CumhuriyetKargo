@@ -11,7 +11,15 @@ class GetExpeditionInfoAction
 
     public function handle($id)
     {
-        $expedition = Expedition::with(['car:id,plaka', 'user', 'routes.branch', 'cargoes' => function($q){$q->with(['cargo', 'user'=>function($q){$q->with('role');}]);}])->where('id',$id)->first();
+        $expedition = Expedition::with(
+            [
+                'car:id,plaka',
+                'user',
+                'movements.user.role',
+                'routes.branch', 'cargoes' => function($q){$q->with(['cargo', 'user'=>function($q){$q->with('role');}]);},
+                'seals'
+            ]
+        )->where('id',$id)->first();
 
         $departure_branch = $expedition->routes->where('route_type', '1')->first()->branch_type == 'Acente' ?
             $expedition->routes->where('route_type', '1')->first()->branch->agency_name . ' ŞUBE' :
@@ -30,9 +38,9 @@ class GetExpeditionInfoAction
         $allCargoes = $expedition->allCargoes()->with(
             [
                 'cargo',
-                'user'=>function($q){$q->with('role');},
-                'unloadedUser'=>function($q){$q->with('role');},
-                'deletedUser' =>function($q){$q->with('role');},
+                'user'=>function($q){$q->with('role')->withTrashed();},
+                'unloadedUser'=>function($q){$q->with('role')->withTrashed();},
+                'deletedUser' =>function($q){$q->with('role')->withTrashed();},
             ]
         )->get();
 
@@ -51,11 +59,6 @@ class GetExpeditionInfoAction
 
 
 
-
-        return response()->json([
-            'status' => 1,
-            'expedition' => $expedition,
-
-        ]);
+        return $expedition;
     }
 }
