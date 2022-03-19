@@ -245,10 +245,16 @@ function DistributionControl(neighborhood = '') {
                         MobilBolge.click();
                         MobilBolge.prop('disabled', true);
                     }
-                    $('.partner-service-0').prop('disabled', false);
 
-                    calculateTotalPrice();
+
+                    $('.partner-service-0').prop('disabled', false);
+                    $('.add-service-default-1').prop('checked', true);
+
                     clearAddServices();
+                    surfAddServices();
+                    calculateTotalPrice();
+
+
                 } else if (response.area_type == 'MNG') {
 
                     if (MobilBolge.prop('checked') == true) {
@@ -260,6 +266,9 @@ function DistributionControl(neighborhood = '') {
                     $('.partner-service-0').prop('disabled', true);
                     $('.partner-service-0').prop('checked', false);
 
+                    clearAddServices();
+                    surfAddServices();
+                    calculateTotalPrice();
                 }
             }
 

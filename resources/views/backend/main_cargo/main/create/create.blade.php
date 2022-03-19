@@ -494,7 +494,7 @@
                                     @foreach($data['additional_service'] as $service)
                                         <div class="form-check mb-1">
                                             <input
-                                                class="form-check-input add-fee cursor-pointer partner-service-{{$service->partner_status}}"
+                                                class="form-check-input add-fee add-service-default-{{$service->default}} cursor-pointer partner-service-{{$service->partner_status}}"
                                                 type="checkbox"
                                                 value="{{$service->price}}" name="add-service-{{$service->id}}"
                                                 {{$service->default == '1' ? 'checked' : ''}}
