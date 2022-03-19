@@ -51,7 +51,6 @@ class GetExpeditionInfoAction
 
 
 
-
         return $expedition;
     }
 }

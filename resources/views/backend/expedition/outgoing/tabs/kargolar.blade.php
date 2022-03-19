@@ -98,7 +98,7 @@
                                     <td> {{ $cargo->cargo->sender_name }} </td>
                                     <td> {{ $cargo->cargo->arrival_city }} /{{ $cargo->cargo->arrival_district }}   </td>
                                     <td> {{ $cargo->cargo->status }} </td>
-                                    <td> {{ $cargo->user->name_surname ?? 'null' }} ({{ $cargo->user->role->display_name ?? ''}}) </td>
+                                    <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name}}) </td>
                                     <td> {{ $cargo->cargo->created_at }} </td>
                                     <td>
                                         {{ $cargo->unloadedUser ? $cargo->unloadedUser->name_surname . '(' .$cargo->unloadedUser->role->display_name . ')'  : ''  }}
