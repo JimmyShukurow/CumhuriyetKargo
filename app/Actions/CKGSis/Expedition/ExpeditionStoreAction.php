@@ -4,6 +4,7 @@ namespace App\Actions\CKGSis\Expedition;
 
 use App\Models\Agencies;
 use App\Models\Expedition;
+use App\Models\ExpeditionMovement;
 use App\Models\ExpeditionRoute;
 use App\Models\TcCars;
 use App\Models\TransshipmentCenters;
@@ -121,6 +122,16 @@ class ExpeditionStoreAction
             return response()
                 ->json(['status' => -1, 'message' => 'Güzergah kayıt işlemi esnasında bir hata oluştu, lütfen daha sonra tekrar deneyiniz!'], 200);
         }
+
+        try {
+            ExpeditionMovementAction::run($create->id, Auth::id(), 'Sefer oluşturuldu.');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()
+                ->json(['status' => -1, 'message' => 'Sefer kayıt işlemi esnasında bir hata oluştu, lütfen daha sonra tekrar deneyiniz!'], 200);
+        }
+
+
         DB::commit();
         return response()->json(['status' => 1, 'message' => 'İşlem başarılı, Sefer oluşturuldu!'], 200);
     }
