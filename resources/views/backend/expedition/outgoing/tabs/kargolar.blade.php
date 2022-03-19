@@ -41,7 +41,19 @@
                             </tr>
                             </thead>
                             <tbody id="tbodyExpedtionCargoes">
-
+                            @foreach($expedition->cargoes as $cargo)
+                                <tr>
+                                    <td> {{ $cargo->cargo->invoice_number }} </td>
+                                    <td> {{ $cargo->part_no }} </td>
+                                    <td> {{ $cargo->cargo->cargo_type }} </td>
+                                    <td> {{ $cargo->cargo->receiver_name }} </td>
+                                    <td> {{ $cargo->cargo->sender_name }} </td>
+                                    <td> {{ $cargo->cargo->arrival_city }} /{{ $cargo->cargo->arrival_district }}   </td>
+                                    <td> {{ $cargo->cargo->status }} </td>
+                                    <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name }}) </td>
+                                    <td> {{ $cargo->cargo->created_at }} </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -71,7 +83,30 @@
                             </thead>
                             <tbody id="tbodyExpedtionCargoesSecondary">
                             <tr>
+                            @foreach($expedition->allCargoes as $cargo)
+                                @if($cargo->unloading_at != null)
+                                    <tr class="text-primary">
+                                @elseif($cargo->deleted_at != null)
+                                    <tr class="text-danger">
+                                @else
+                                    <tr>
+                                @endif
 
+                                    <td> {{ $cargo->cargo->invoice_number }} </td>
+                                    <td> {{ $cargo->part_no }} </td>
+                                    <td> {{ $cargo->cargo->cargo_type }} </td>
+                                    <td> {{ $cargo->cargo->receiver_name }} </td>
+                                    <td> {{ $cargo->cargo->sender_name }} </td>
+                                    <td> {{ $cargo->cargo->arrival_city }} /{{ $cargo->cargo->arrival_district }}   </td>
+                                    <td> {{ $cargo->cargo->status }} </td>
+                                    <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name }}) </td>
+                                    <td> {{ $cargo->cargo->created_at }} </td>
+                                    <td> {{ $cargo->unloaded_user->name_surname ?? ''  }} </td>
+                                    <td> {{ $cargo->unloading_at }} </td>
+                                    <td> {{ $cargo->deleted_user->name_surname ??'' }} </td>
+                                    <td> {{ $cargo->deleted_at }} </td>
+                                </tr>
+                                @endforeach
                             </tr>
                             </tbody>
                         </table>
