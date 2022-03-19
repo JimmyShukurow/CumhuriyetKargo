@@ -10,4 +10,10 @@ class Neighborhoods extends Model
     use HasFactory;
 
     protected $table = 'neighborhoods';
+
+    public function district()
+    {
+        return $this->hasOne(Districts::class, 'id', 'district_id');
+    }
+
 }

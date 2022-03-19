@@ -99,128 +99,101 @@ function getCustomerDetails(user) {
         cache: false
     }).done(function (response) {
 
-        $('#ModalBodyCustomerDetails').unblock();
 
-        var current = response.data[0];
-        var category = current.category;
-        var current_type = current.current_type;
-        var current_code = '#' + current.current_code;
-        let addressNote = adresMaker(current.city, current.district, current.neighborhood, current.street, current.street2, current.building_no, current.door_no, current.floor, current.address_note);
-        let branch_office = current.agencies_city + " / " + current.agencies_district + " / " + current.agency_name + " Acente";
-        let cargo = response.cargo;
-
-        if (current.created_at > 86400)
+        if (response.current.created_at_time > 86400)
             $('#deleteButton').css("display", "none");
         else
             $('#deleteButton').css("display", "block");
 
-        if (current_type == 'Gönderici' && category == 'Bireysel') {
-            fillCargo('tbodyUserTopTen', cargo);
 
+        let currentStatus, currentConfirmed;
+        let creatorDisplayName = '<span class="text-primary font-weight-bold">(' + response.current.creator_display_name + ')</span>';
 
-            // Tables display are changed here
-            $('.taker-table-display').css("display", "none");
-            $('.sender-customer-display').css("display", "none");
-            $('.sender-personal-display').css("display", "block");
+        if (response.current.status == "1")
+            currentStatus = '<span class="text-success">(Aktif Hesap)</span>';
+        else
+            currentStatus = '<span class="text-danger">(Pasif Hesap)</span>';
 
-            $('#senderPersonalCustomerType-1').html(category);
-            $('#senderPersonalCustomerTckn').html(current.tckn)
-            $('#senderPersonalNameSurname').html(current.name);
-            $('#senderPersonalCustomerEmail').html(current.email);
-
-            $('#senderPersonalCustomerCity').html(current.city);
-            $('#senderPersonalCustomerDistrict').html(current.district);
-            $('#senderPersonalCustomerNeighborhood').html(current.neighborhood);
-
-            $('#senderPersonalCustomerPhone').html(current.phone);
-            $('#senderPersonalCustomerGsm').html(current.gsm);
-            $('#senderPersonalCustomerAdress').html(addressNote);
-
-            $('#senderPersonalCustomerVkn').html(current.vkn);
-
-            $('#customerName').html(current.name);
-            $('#customerType').html(current_code + " " + current_type);
-
-        } else if (current_type == 'Gönderici' && category == 'Kurumsal') {
-
-
-            fillCargo('tbodyUserTopTen', cargo);
-
-
-            // Tables display are changed here
-            $('.taker-table-display').css("display", "none");
-            $('.sender-customer-display').css("display", "block");
-            $('.sender-personal-display').css("display", "none");
-
-            $('#senderCustomerType-1').html(category);
-
-            $('#senderCustomerTckn').html(current.tckn)
-            $('#senderCustomerNameSurname').html(current.name);
-            $('#senderCustomerEmail').html(current.email);
-
-            $('#senderCustomerCity').html(current.city);
-            $('#senderCustomerDistrict').html(current.district);
-            $('#senderCustomerNeighborhood').html(current.neighborhood);
-            $('#senderCustomerStreet').html(current.street);
-            $('#senderCustomerStreet2').html(current.street2);
-            $('#senderCustomerBuildingNo').html(current.building_no);
-            $('#senderCustomerFloor').html(current.floor);
-            $('#senderCustomerDaireNo').html(current.door_no);
-            $('#senderCustomerAdressNote').html(current.address_note);
-            $('#senderCustomerAdress').html(addressNote);
-
-
-            $('#senderCustomerPhone').html(current.phone);
-            $('#senderCustomer-phone-2').html(current.phone2);
-            $('#senderCustomerGsm').html(current.gsm);
-            $('#senderCustomerGsm-2').html(current.gsm2);
-            $('#senderCustomerWebSite').html(current.web_site);
-
-            $('#senderCustomerDispatchCity').html(current.dispatch_city);
-            $('#senderCustomerDispatchDistrict').html(current.dispatch_district);
-            $('#senderCustomerDispatchAdress').html(current.dispatch_adress);
-            $('#senderCustomerTaxAdmin').html(current.tax_administration);
-            $('#senderCustomerDispatchPastCode').html(current.dispatch_post_code);
-            $('#senderCustomerBranchOffice').html(branch_office);
-
-            $('#senderCustomerDiscount').html(current.discount);
-            $('#senderCustomerContractEnd').html(current.contract_end_date);
-            $('#senderCustomerCotractStart').html(current.contract_start_date);
-            $('#senderCustomerRefference').html(current.reference);
-
-
-            $('#senderCustomerVkn').html(current.vkn);
-
-            $('#customerName').html(current.name);
-            $('#customerType').html(current_code + " " + current_type);
-
-        } else if (current_type == 'Alıcı') {
-
-            fillCargo('tbodyUserTopTen', cargo);
-
-            // Tables display are changed here
-            $('.taker-table-display').css("display", "block");
-            $('.sender-customer-display').css("display", "none");
-            $('.sender-personal-display').css("display", "none");
-
-            $('#ModalCustomerDetails').modal();
-            $('#tcknTaker').html(current.tckn)
-            $('#nameSurnameTaker').html(current.name);
-            $('#emailTaker').html(current.email);
-
-            $('#cityTaker').html(current.city);
-            $('#districtTaker').html(current.district);
-            $('#neighborhoodTaker').html(current.neighborhood);
-
-            $('#phoneTaker').html(current.phone);
-            $('#phoneGsm').html(current.gsm);
-            $('#adressTaker').html(addressNote);
-
-            $('#vknTaker').html(current.vkn);
-
-            $('#customerName').html(current.name);
-            $('#customerType').html(current_code + " " + current_type);
+        if (response.current.confirmed == "1") {
+            currentConfirmed = '<span class="text-success font-weight-bold">Onaylandı</span>';
+            $('#divConfirmCurrent').hide();
+        } else {
+            currentConfirmed = '<span class="text-danger font-weight-bold">Onay Bekliyor</span>';
+            $('#divConfirmCurrent').show();
         }
+
+        let city = response.current.city + "/",
+            district = response.current.district + " ",
+            neighborhood = response.current.neighborhood + " ",
+            street = response.current.street != '' && response.current.street != null ? response.current.street + " CAD. " : "",
+            street2 = response.current.street2 != '' && response.current.street2 != null ? response.current.street2 + " SK. " : "",
+            buildingNo = "NO:" + response.current.building_no + " ",
+            door = "D:" + response.current.door_no + " ",
+            floor = "KAT:" + response.current.floor + " ",
+            addressNote = "(" + response.current.address_note + ")";
+
+        let fullAddress = neighborhood + street + street2 + buildingNo + floor + door + addressNote;
+
+
+        $('#customerName').html(response.current.name)
+        $('#customerType').html(response.current.current_code);
+        $('#agencyCityDistrict').html(response.current.agency_city + "/" + response.current.agency_district + " - " + response.current.agency_name + " Acente " + "(" + response.current.agency_code + ")");
+        $('#titleBranch').html(response.current.name + ' - ÖZET ' + currentStatus)
+
+        $('#currentCategory').html(response.current.category)
+        $('#modalCurrentCode').html(response.current.current_code)
+        $('#nameSurnameCompany').html(response.current.name)
+        $('#currentAgency').html(response.current.agency_city + "/" + response.current.agency_district + " - " + response.current.agency_name + " Acente " + "(" + response.current.agency_code + ")");
+        $('#taxOffice').html(response.current.tax_administration)
+        $('#tcknVkn').html((response.current.tckn ?? '') + "" + (response.current.vkn ?? ''))
+        $('#phone').html(response.current.phone)
+        $('#cityDistrict').html(response.current.city + "/" + response.current.district)
+        $('#address').html(fullAddress)
+        $('#gsm').html(response.current.gsm)
+        $('#gsm2').html(response.current.gsm2)
+        $('#phone2').html(response.current.phone2)
+        $('#email').html(response.current.email)
+        $('#website').html(response.current.website)
+        $('#regDate').html(response.current.created_at)
+        $('#dispatchCityDistrict').html((response.current.dispatch_city ?? '') + "/" + (response.current.dispatch_district ?? ''))
+        $('#dispatchAddress').html(response.current.dispatch_adress);
+        $('#iban').html(response.current.iban)
+        $('#bankOwner').html(response.current.bank_owner_name)
+        $('#contractStartDate').html(response.current.contract_start_date)
+        $('#contractEndDate').html(response.current.contract_end_date)
+        $('#reference').html(response.current.reference)
+        $('#currentCreatorUser').html(response.current.creator_user_name + " " + creatorDisplayName)
+        $('#mbStatus').html(response.current.mb_status == '0' ? '<b class="text-danger">Hayır</b>' : '<b class="text-success">Evet</b>')
+
+
+        if (response.current.category == 'Anlaşmalı') {
+            $('td#currentFilePrice').html(response.price.file + "₺");
+            $('td#currentMiPrice').html(response.price.mi + "₺");
+            $('td#current1_5Desi').html(response.price.d_1_5 + "₺");
+            $('td#current6_10Desi').html(response.price.d_6_10 + "₺");
+            $('td#current11_15Desi').html(response.price.d_11_15 + "₺");
+            $('td#current16_20Desi').html(response.price.d_16_20 + "₺");
+            $('td#current21_25Desi').html(response.price.d_21_25 + "₺");
+            $('td#current26_30Desi').html(response.price.d_26_30 + "₺");
+            $('#currentAmountOfIncrease').html(response.price.amount_of_increase + "₺");
+            $('#currentCollectPrice').html(response.price.collect_price + "₺");
+            $('#collectAmountOfIncrease').html("%" + response.price.collect_amount_of_increase);
+        } else {
+            $('td#currentFilePrice').html('');
+            $('td#currentMiPrice').html('');
+            $('td#current1_5Desi').html('');
+            $('td#current6_10Desi').html('');
+            $('td#current11_15Desi').html('');
+            $('td#current16_20Desi').html('');
+            $('td#current21_25Desi').html('');
+            $('td#current26_30Desi').html('');
+            $('#currentAmountOfIncrease').html('');
+            $('#currentCollectPrice').html('');
+            $('#collectAmountOfIncrease').html('');
+        }
+
+        $('#currentConfirmed').html(currentConfirmed);
+        $('#PrintCurrentContract').attr('href', '/Marketing/SenderCurrents/CurrentContract/' + response.current.current_code);
 
 
     }).error(function (jqXHR, response) {
@@ -228,7 +201,6 @@ function getCustomerDetails(user) {
     }).always(function () {
         $('#ModalBodyCustomerDetails').unblock();
     });
-
 }
 
 

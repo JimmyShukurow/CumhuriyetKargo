@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\ItAndNotifications;
 
 use App\Http\Controllers\Controller;
+use App\Models\Agencies;
 use App\Models\CargoCancellationApplication;
 use App\Models\Cargoes;
 use App\Models\User;
@@ -19,35 +20,9 @@ class CargoCancellationController extends Controller
 {
     public function index()
     {
-        GeneralLog('[Admin] Ticket görüntülendi.');
-
-        $data['tickets'] = DB::table('tickets')
-            ->join('departments', 'tickets.department_id', '=', 'departments.id')
-            ->select('tickets.*', 'departments.department_name')
-            ->orderBy('id', 'desc')
-            ->paginate(50);
-
-        $data['count'] = DB::table('tickets')
-            ->join('departments', 'tickets.department_id', '=', 'departments.id')
-            ->select('tickets.*', 'departments.department_name')
-            ->orderBy('id', 'desc')
-            ->count();
-
-        $data['title'] = SubModules::where('link', 'admin.systemSupport.index')->first();
-
-        ## departments for roles
-        $data['departments'] = DB::table('department_roles')
-            ->select(['departments.id', 'departments.department_name'])
-            ->join('departments', 'department_roles.department_id', '=', 'departments.id')
-            ->where('department_roles.role_id', Auth::user()->role_id)
-            ->get();
-
+        GeneralLog('[Admin] Kargo iptalleri sayfası görüntülendi.');
         $data['regional_directorates'] = RegioanalDirectorates::all();
-
-        $countRequestDepartment = DB::table('department_roles')
-            ->where('role_id', Auth::user()->role_id)
-            ->get();
-
+        $data['agencies'] = Agencies::orderBy('agency_name', 'asc')->get();
 
         return view('backend.it_and_notifications.cargo_cancellations.index', compact('data'));
     }
@@ -76,8 +51,9 @@ class CargoCancellationController extends Controller
             ->whereRaw($creating_date_filter == 'true' ? "view_cargo_cancellation_app_detail.created_at between '" . $creatingStartDate . "'  and '" . $creatingFinishDate . "'" : '1 > 0')
             ->whereRaw($last_proccess_date_filter == 'true' ? "view_cargo_cancellation_app_detail.approval_at between '" . $lastProccessStartDate . "'  and '" . $lastProccessFinishDate . "'" : '1 > 0')
             ->whereRaw($invoiceNumber ? "cargoes.invoice_number='" . $invoiceNumber . "'" : '1 > 0')
+            ->whereRaw($invoiceNumber ? "cargoes.invoice_number='" . $invoiceNumber . "'" : '1 > 0')
             ->whereRaw($confirm != '' ? "view_cargo_cancellation_app_detail.confirm='" . $confirm . "'" : '1 > 0')
-            ->whereRaw($agency ? 'view_agency_region.agency_name like \'%' . $agency . '%\'' : '1 > 0')
+            ->whereRaw($agency ? 'view_agency_region.id  =' . $agency . '' : '1 > 0')
             ->whereRaw($appointment_reason ? 'view_cargo_cancellation_app_detail.application_reason like \'%' . $appointment_reason . '%\'' : '1 > 0')
             ->whereRaw($name_surname ? 'view_cargo_cancellation_app_detail.name_surname like \'%' . $name_surname . '%\'' : '1 > 0')
             ->whereRaw($confirming_name_surname ? 'view_cargo_cancellation_app_detail.confirming_user_name_surname like \'%' . $confirming_name_surname . '%\'' : '1 > 0')

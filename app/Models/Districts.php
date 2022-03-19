@@ -16,4 +16,6 @@ class Districts extends Model
     {
         return $this->belongsTo(Cities::class, 'city_id', 'id');
     }
+
+
 }

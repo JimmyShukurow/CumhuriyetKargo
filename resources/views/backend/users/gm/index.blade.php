@@ -45,34 +45,34 @@
 
                         <div class="col-md-2">
                             <label for="tc">Aktarma</label>
-                            <select name="tc" id="tc" class="form-control">
+                            <select name="tc" id="tc" class="form-control form-control-sm">
                                 <option value="">Seçiniz</option>
                                 @foreach($data['tc'] as $key)
                                     <option
-                                        value="{{$key->id}}">{{ $key->city . '-' . $key->tc_name}}</option>
+                                        value="{{$key->id}}">{{$key->tc_name . ' TRM.'}}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="col-md-2">
                             <label for="agency">Acente</label>
-                            <select name="agency" id="agency" class="form-control">
+                            <select name="agency" id="agency" class="form-control form-control-sm">
                                 <option value="">Seçiniz</option>
                                 @foreach($data['agencies'] as $key)
                                     <option
-                                        value="{{$key->id}}">{{ $key->city . '/' . $key->district . '-' . $key->agency_name}}</option>
+                                        value="{{$key->id}}">{{$key->agency_name}}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="col-md-2">
                             <label for="name_surname">Ad Soyad</label>
-                            <input type="text" class="form-control" name="name_surname" id="name_surname">
+                            <input type="text" class="form-control form-control-sm" name="name_surname" id="name_surname">
                         </div>
 
                         <div class="col-md-2">
                             <label for="user_type">Kullanıcı Tipi</label>
-                            <select name="user_type" id="user_type" class="form-control">
+                            <select name="user_type" id="user_type" class="form-control form-control-sm">
                                 <option value="">Seçiniz</option>
                                 <option value="Acente">Acente</option>
                                 <option value="Aktarma">Aktarma</option>
@@ -81,7 +81,7 @@
 
                         <div class="col-md-2">
                             <label for="status">Statü</label>
-                            <select name="status" id="status" class="form-control">
+                            <select name="status" id="status" class="form-control form-control-sm">
                                 <option value="">Seçiniz</option>
                                 <option value="Aktif">Aktif</option>
                                 <option value="Pasif">Pasif</option>
@@ -90,7 +90,7 @@
 
                         <div class="col-md-2">
                             <label for="role">Yetki</label>
-                            <select name="role" id="role" class="form-control">
+                            <select name="role" id="role" class="form-control form-control-sm">
                                 <option value="">Seçiniz</option>
                                 @foreach($data['roles'] as $key)
                                     <option
@@ -99,14 +99,6 @@
                             </select>
                         </div>
                     </div>
-
-                    <div class="row text-center mt-3">
-                        <div class="col-md-12 text-center">
-                            <button id="btn-submit" type="submit" class="btn btn-primary ">Ara</button>
-                            <input type="reset" class="btn btn-secondary">
-                        </div>
-                    </div>
-
                 </form>
 
 
@@ -187,57 +179,33 @@
                 order: [
                     9, 'desc'
                 ],
-                language: {
-                    "sDecimal": ",",
-                    "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
-                    "sInfo": "_TOTAL_ kayıttan _START_ - _END_ kayıtlar gösteriliyor",
-                    "sInfoEmpty": "Kayıt yok",
-                    "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
-                    "sInfoPostFix": "",
-                    "sInfoThousands": ".",
-                    "sLengthMenu": "_MENU_",
-                    "sLoadingRecords": "Yükleniyor...",
-                    "sProcessing": "<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>",
-                    "sSearch": "",
-                    "sZeroRecords": "Eşleşen kayıt bulunamadı",
-                    "oPaginate": {
-                        "sFirst": "İlk",
-                        "sLast": "Son",
-                        "sNext": "Sonraki",
-                        "sPrevious": "Önceki"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": artan sütun sıralamasını aktifleştir",
-                        "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
-                    },
-                    "select": {
-                        "rows": {
-                            "_": "%d kayıt seçildi",
-                            "0": "",
-                            "1": "1 kayıt seçildi"
-                        }
-                    }
-                },
-                dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
+                language: dtLanguage,
+                dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">f>rtip',
                 buttons: [
-                    'pdf',
-                    'print',
                     {
                         extend: 'excelHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-                        },
-                        title: "CK - Sistem Kullanıcıları"
+                        attr: {
+                            class: 'btn btn-success'
+                        }
                     },
                     {
                         text: 'Yenile',
                         action: function (e, dt, node, config) {
                             dt.ajax.reload();
+                        },
+                        attr: {
+                            class: 'btn btn-primary'
                         }
                     },
                     {
-                        extend: 'colvis',
-                        text: 'Sütun Görünüm'
+                        text: 'Filtreyi Temizle',
+                        attr: {
+                            class: 'btn btn-dark'
+                        },
+                        action: function (e, dt, node, config) {
+                            $('#search-form').trigger("reset");
+                            dt.ajax.reload();
+                        },
                     },
                 ],
                 responsive: true,

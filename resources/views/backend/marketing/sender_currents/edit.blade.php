@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        <div class="main-card mb-3 card">
+        <div style="max-width: 1100px;" class="main-card mb-3 card">
             <div class="card-body">
                 <div class="row">
 
@@ -370,7 +370,7 @@
                                     <div class="position-relative form-group">
                                         <label for="hesapSahibiTamIsim" class="">Hesap Sahibi Tam İsim:</label>
                                         <input name="hesapSahibiTamIsim" required id="hesapSahibiTamIsim"
-                                               value="{{ $current->bank_iban }}"
+                                               value="{{ $current->bank_owner_name }}"
                                                class="form-control form-control-sm">
                                     </div>
                                 </div>
@@ -424,11 +424,29 @@
                             <div class="form-row">
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
+                                        <label for="priceDraft" class="">Fiyat Taslağı:</label>
+                                        <select required class="form-control-sm form-control" name="priceDraft"
+                                                id="priceDraft">
+                                            <option value="0">Özel</option>
+                                            @foreach($data['price_drafts'] as $key)
+                                                <option
+                                                    {{$price->price_draft_id == $key->id ? 'selected' : ''}} value="{{$key->id}}">{{$key->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container-cargo-price col-md-12">
+                            <div class="form-row">
+                                <div class="col-md-3">
+                                    <div class="position-relative form-group">
                                         <label for="filePrice" class="">Dosya:</label>
                                         <input name="dosyaUcreti" id="filePrice" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
-                                               type="text" value="{{ $price->file_price }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               type="text" value="{{ $price->file }}"
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -437,8 +455,8 @@
                                         <label for="miPrice" class="">Mi:</label>
                                         <input name="miUcreti" id="miPrice" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
-                                               type="text" value="{{ $price->mi_price }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               type="text" value="{{ $price->mi  }}"
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -448,7 +466,7 @@
                                         <input name="d1_5" id="d1_5" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ $price->d_1_5 }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -457,8 +475,8 @@
                                         <label for="d6_10" class="">6-10 Desi:</label>
                                         <input name="d6_10" id="d6_10" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
-                                               type="text" value="{{ $price->d_6_10 }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               type="text" value="{{ $price->d_6_10}}"
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -468,7 +486,7 @@
                                         <input name="d11_15" id="d11_15" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ $price->d_11_15 }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -477,8 +495,8 @@
                                         <label for="d16_20" class="">16-20 Desi:</label>
                                         <input name="d16_20" id="d16_20" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
-                                               type="text" value="{{ $price->d_16_20 }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               type="text" value="{{  $price->d_16_20 }}"
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -488,7 +506,7 @@
                                         <input name="d21_25" id="d21_25" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ $price->d_21_25 }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -498,48 +516,7 @@
                                         <input name="d26_30" id="d26_30" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ $price->d_26_30 }}"
-                                               class="form-control input-mask-trigger form-control-sm">
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-3">
-                                    <div class="position-relative form-group">
-                                        <label for="d31_35" class="">31-35 Desi:</label>
-                                        <input name="d31_35" id="d31_35" required
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
-                                               type="text" value="{{ $price->d_31_35 }}"
-                                               class="form-control input-mask-trigger form-control-sm">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="position-relative form-group">
-                                        <label for="d36_40" class="">36-40 Desi:</label>
-                                        <input name="d36_40" id="d36_40" required
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
-                                               type="text" value="{{ $price->d_36_40 }}"
-                                               class="form-control input-mask-trigger form-control-sm">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="position-relative form-group">
-                                        <label for="d41_45" class="">41-45 Desi:</label>
-                                        <input name="d41_45" id="d41_45" required
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
-                                               type="text" value="{{ $price->d_41_45 }}"
-                                               class="form-control input-mask-trigger form-control-sm">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="position-relative form-group">
-                                        <label for="d46_50" class="">46-50 Desi:</label>
-                                        <input name="d46_50" id="d46_50" required
-                                               data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
-                                               type="text" value="{{ $price->d_46_50 }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -549,7 +526,7 @@
                                         <input name="ustuDesi" id="amountOfIncrease" required
                                                data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₺ ', 'placeholder': '0'"
                                                type="text" value="{{ $price->amount_of_increase }}"
-                                               class="form-control input-mask-trigger form-control-sm">
+                                               class="form-control input-mask-trigger price-of-cargo form-control-sm">
                                     </div>
                                 </div>
 
@@ -567,8 +544,7 @@
                                 <div class="col-md-3">
                                     <div class="position-relative form-group">
                                         <label for="tahsilatEkHizmetBedeli200Ustu" class="">Tahsilat Ek Hizmet Bedeli
-                                            (%)
-                                            (200TL+):</label>
+                                            (%) (200TL+):</label>
                                         <input name="tahsilatEkHizmetBedeli200Ustu" required
                                                data-inputmask="'alias': 'numeric', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'prefix': '% ', 'placeholder': '0', 'min':0, 'max': 100"
                                                id="tahsilatEkHizmetBedeli200Ustu"
@@ -581,17 +557,17 @@
                                     <div class="position-relative form-group">
                                         <label for="mbStatus" class="">Mobil Bölge Ücreti
                                             Uygulansın mı?</label><br>
-                                        <select name="mbStatus" required id="" class="form-control-sm form-control">
-                                            <option {{ $current->mb_status == '1' ? 'selected' : '' }} value="1">Evet
+                                        <select name="mbStatus" id="" required class="form-control-sm form-control">
+                                            <option {{$current->mbStatus == '1' ? 'selected' : '' }} value="1">Evet
                                             </option>
-                                            <option {{ $current->mb_status == '0' ? 'selected' : '' }} value="0">Hayır
+                                            <option {{$current->mbStatus == '0' ? 'selected' : '' }} value="0">Hayır
                                             </option>
                                         </select>
                                     </div>
                                 </div>
 
-                            </div>
 
+                            </div>
                         </div>
                     </div>
 
@@ -643,6 +619,13 @@
             var taxOfficeOption = new Option('{{$current->tax_administration}}', '{{$current->tax_administration}}', true, true);
             $('#tax-office').append(taxOfficeOption).trigger('change');
         });
+
+
+        priceDraft = "{{$price->price_draft_id}}";
+
+        if (priceDraft != 0)
+            $('.price-of-cargo').prop('readonly', true)
+
     </script>
 
 @endsection

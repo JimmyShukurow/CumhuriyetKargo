@@ -11,7 +11,7 @@ class GetMainDailySummeryAction
 {
     use AsAction;
 
-    public function handle($request)
+    public function handle()
     {
 
         $agency = Agencies::where('id', Auth::user()->agency_code)->first();
@@ -64,7 +64,6 @@ class GetMainDailySummeryAction
         $daily['total_endorsement'] = getDotter(round($daily['total_endorsement'], 2));
         ## daily report end
 
-        return response()
-            ->json($daily, 200);
+        return $daily;
     }
 }

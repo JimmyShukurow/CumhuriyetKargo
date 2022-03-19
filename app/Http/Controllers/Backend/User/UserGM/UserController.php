@@ -32,7 +32,7 @@ class UserController extends Controller
     public function index()
     {
         $data['users'] = DB::table('view_users_general_info')->get();
-        $data['agencies'] = Agencies::all();
+        $data['agencies'] = Agencies::orderBy('agency_name')->get();
         $data['tc'] = TransshipmentCenters::all();
         $data['roles'] = Roles::all();
 

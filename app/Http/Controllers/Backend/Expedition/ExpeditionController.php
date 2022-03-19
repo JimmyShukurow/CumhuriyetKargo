@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Expedition;
 
+use App\Actions\CKGSis\Expedition\AjaxTransaction\GetExpeditionInfoAction;
 use App\Actions\CKGSis\Expedition\AjaxTransaction\GetOutGoingExpeditionsAction;
 use App\Actions\CKGSis\Expedition\ExpeditionStoreAction;
 use App\Actions\CKGSis\Layout\GetUserModuleAndSubModuleAction;
@@ -63,6 +64,9 @@ class ExpeditionController extends Controller
         switch ($val) {
             case 'GetOutGoingExpeditions':
                 return GetOutGoingExpeditionsAction::run($request);
+                break;
+             case 'GetExpeditionInfo':
+                return GetExpeditionInfoAction::run($request->id);
                 break;
 
             default:

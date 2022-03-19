@@ -10,21 +10,7 @@ Route::group(
     ['middleware' => ['CheckAuth', 'CheckStatus']],
     function () {
         # ==> Services Fee Transaction START
-        Route::group(['middleware' => 'GeneralServicesFeeMid'], function () {
-            Route::group(['prefix' => 'ServiceFees', 'as' => 'servicefee.'], function () {
-                Route::get('/', [ServiceFeeController::class, 'index'])->name('index');
-                Route::post('FilePrice/{id}', [ServiceFeeController::class, 'updateFilePrice']);
-                Route::post('MiPrice/{id}', [ServiceFeeController::class, 'updateMiPrice']);
-                Route::post('GetFilePrice', [ServiceFeeController::class, 'getFilePrice']);
 
-                Route::get('GetDistancePrice', [DistanceController::class, 'getDistancePrice']);
-            });
-
-            Route::resource('AdditionalServices', AdditionalServicesController::class);
-            Route::resource('DesiList', DesiListController::class);
-            Route::any('DesiListDelete/', [DesiListController::class, 'deleteRow']);
-
-        });
         # ==> Services Fee Transaction END
     }
 );

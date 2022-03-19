@@ -15,6 +15,7 @@ use App\Models\TransshipmentCenters;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Actions\CKGSis\Layout\GetUserModuleAndSubModuleAction;
+use App\Models\User;
 
 function tr_strtoupper($text)
 {
@@ -1024,6 +1025,7 @@ function getJustFileName($name)
 function getUserBranchInfo()
 {
     ## Get Branch Info
+
     if (Auth::user()->user_type == 'Acente') {
         $agency = Agencies::find(Auth::user()->agency_code);
         $branch = [
@@ -1048,8 +1050,127 @@ function getUserBranchInfo()
     return $branch;
 }
 
+function GetGibToken()
+{
+    try {
+        $postdata = http_build_query(
+            array(
+                'assoscmd' => 'cfsession',
+                'rtype' => 'json',
+                'fskey' => 'intvrg.fix.session',
+                'fuserid' => 'INTVRG_FIX'
+            )
+        );
+        $opts = array('http' =>
+            array(
+                'method' => 'POST',
+                'header' => 'Content-Type: application/x-www-form-urlencoded',
+                'content' => $postdata
+            )
+        );
+
+        $context = stream_context_create($opts);
+        $result = file_get_contents('https://ivd.gib.gov.tr/tvd_server/assos-login', false, $context);
+        $datas = json_decode($result, false);
+
+        return $datas;
+      
+      
+    } catch (Exception $e) {
+        $return = array(
+            'status' => 'error',
+            'message' => $e->getMessage() . ' line => ' . $e->getLine()
+        );
+        return (object)$return;
+    }
+}
 
 
+function getUserBranchInfoWithUserID($id)
+{
+    ## Get Branch Info
+
+    $user = User::find($id);
+
+    if ($user->user_type == 'Acente') {
+        $agency = Agencies::find($user->agency_code);
+        $branch = [
+            'id' => $agency->id,
+            'code' => $agency->agency_code,
+            'city' => $agency->city,
+            'name' => $agency->agency_name,
+            'type' => 'ŞUBE',
+            'type2' => 'Acente'
+        ];
+    } else {
+        $tc = TransshipmentCenters::find($user->tc_code);
+        $branch = [
+            'id' => $tc->id,
+            'city' => $tc->city,
+            'name' => $tc->tc_name,
+            'type' => 'TRM.',
+            'type2' => 'Aktarma',
+        ];
+    }
 
 
+    return $branch;
+}
 
+function vkn_confirm($vkn, $vd, $il)
+{
+    $token = GetGibToken();
+
+    $jp = json_encode(array(
+        "dogrulama" => array(
+            "vkn1" => $vkn,
+            "tckn1" => "",
+            "iller" => $il,
+            "vergidaireleri" => $vd
+        )
+    ));
+
+    $data_string = "cmd=vergiNoIslemleri_vergiNumarasiSorgulama&callid=ff81dd010b12d-8&pageName=R_INTVRG_INTVD_VERGINO_DOGRULAMA&token=" . $token->token . "&jp=" . $jp;
+
+    $postdata = http_build_query(
+        array(
+            'cmd' => 'vergiNoIslemleri_vergiNumarasiSorgulama',
+            'callid' => 'ff81dd010b12d-8',
+            'pageName' => 'R_INTVRG_INTVD_VERGINO_DOGRULAMA',
+            'token' => $token->token,
+            'jp' => $jp
+        )
+    );
+    $opts = array('http' =>
+        array(
+            'method' => 'POST',
+            'header' => 'Content-Type: application/x-www-form-urlencoded',
+            'content' => $postdata
+        )
+    );
+
+    $context = stream_context_create($opts);
+    $result = file_get_contents('https://ivd.gib.gov.tr/tvd_server/dispatch', false, $context);
+    $result = json_decode($result);
+
+    if (isset($result->data->unvan))
+        return ['status' => 1, 'data' => $result->data];
+    else
+        return ['status' => 0, 'message' => 'Bilgiler Gelir İdaresi Başkanlığı Tarafından Onaylanmadı, Lütfen bilgileri kontrol edip tekrar deneyiniz!'];
+}
+
+function CreateNewCurrentNumber()
+{
+    $codeControl = true;
+    $current_code = '';
+
+    # => create current code and code control
+    while ($codeControl != false) {
+        $current_code = rand(111111111, 999999999);
+        $codeControl = DB::table('currents')
+            ->where('current_code', $current_code)
+            ->exists();
+    }
+
+    return $current_code;
+}
