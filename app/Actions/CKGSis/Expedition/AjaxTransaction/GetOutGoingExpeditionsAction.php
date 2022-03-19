@@ -41,9 +41,9 @@ class GetOutGoingExpeditionsAction
 
 
         if (Auth::user()->user_type == 'Acente') {
-            $ids = User::where('agency_code', Auth::user()->agency_code)->get()->pluck('id');
+            $ids = User::where('agency_code', Auth::user()->agency_code)->withTrashed()->get()->pluck('id');
         } else {
-            $ids = User::where('tc_code', Auth::user()->tc_code)->get()->pluck('id');
+            $ids = User::where('tc_code', Auth::user()->tc_code)->withTrashed()->get()->pluck('id');
         }
 
         $expeditionIDs = collect();
@@ -59,7 +59,7 @@ class GetOutGoingExpeditionsAction
         }
         $rows = GetExpeditionActions::run($ids, $firstDate, $lastDate, $doneStatus, $serialNo, $plaka, $creator);
         if ($expeditionIDs->count() > 0) {
-            $rows = $rows->whereIn('id',$expeditionIDs);
+            $rows = $rows->whereIn('id', $expeditionIDs);
         }
 
         $rows->each(function ($key) {
@@ -90,7 +90,7 @@ class GetOutGoingExpeditionsAction
                 return $key->car->plaka;
             })
             ->editColumn('serial_no', function ($key) {
-                return '<b style="text-decoration: underline; cursor: pointer;" id="'.$key->id.'" class="expedition-details">' . CurrentCodeDesign($key->serial_no) . '</b>';
+                return '<b style="text-decoration: underline; cursor: pointer;" id="' . $key->id . '" class="expedition-details">' . CurrentCodeDesign($key->serial_no) . '</b>';
             })
             ->editColumn('name_surname', function ($key) {
                 return $key->user->name_surname . ' (' . $key->user->display_name . ')';
