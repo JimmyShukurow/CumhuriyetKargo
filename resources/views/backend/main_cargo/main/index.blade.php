@@ -530,7 +530,6 @@
                            class="align-middle mb-0 table Table20Padding table-bordered table-striped table-hover NikolasDataTable">
                         <thead>
                         <tr>
-                            <th class="free"></th>
                             <th class="check"></th>
                             <th>Fatura NO</th>
                             <th>KTNO</th>
@@ -554,7 +553,6 @@
                             <th>Sistem</th>
                             <th>Oluşturan</th>
                             <th>Kayıt Tarihi</th>
-                            <th>İşlem</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -562,7 +560,6 @@
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th class="free"></th>
                             <th class="check"></th>
                             <th>Fatura NO</th>
                             <th>KTNO</th>
@@ -586,7 +583,6 @@
                             <th>Sistem</th>
                             <th>Oluşturan</th>
                             <th>Kayıt Tarihi</th>
-                            <th>İşlem</th>
                         </tr>
                         </tfoot>
                     </table>

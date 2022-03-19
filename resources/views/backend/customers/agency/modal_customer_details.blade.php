@@ -71,7 +71,7 @@
                                                class="TableNoPadding table table-bordered table-striped">
                                             <thead>
                                             <tr>
-                                                <th class="text-center" id="titleBranch" colspan="2">Özet</th>
+                                                <th class="text-center" id="titleCustomerName" colspan="2">Özet</th>
                                             </tr>
                                             </thead>
                                             <tbody>

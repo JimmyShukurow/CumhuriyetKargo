@@ -132,7 +132,7 @@
                                 </div>
                                 <div class="input-group mb-1">
                                     <input type="text" readonly id="gondericiMusteriTipi"
-                                           class="form-control form-control-sm">
+                                           class="form-control form-control-sm font-weight-bold">
                                 </div>
                             </div>
 
@@ -189,7 +189,7 @@
                                 </div>
                                 <div class="input-group mb-1">
                                         <textarea name="" id="gondericiAdres" class="form-control form-control-sm"
-                                                  cols="30" readonly rows="3"></textarea>
+                                                  cols="30" readonly rows="2"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -418,7 +418,7 @@
                                     <label for="aliciAdres">Alıcı Adres:</label>
                                 </div>
                                 <div class="input-group mb-1">
-                                    <textarea readonly="" name="" id="aliciAdres" cols="30" rows="3"
+                                    <textarea readonly="" name="" id="aliciAdres" cols="30" rows="2"
                                               class="form-control form-control-sm"></textarea>
                                 </div>
                             </div>
@@ -493,10 +493,12 @@
                                 <form id="formAdditionalServices">
                                     @foreach($data['additional_service'] as $service)
                                         <div class="form-check mb-1">
-                                            <input class="form-check-input add-fee cursor-pointer" type="checkbox"
-                                                   value="{{$service->price}}" name="add-service-{{$service->id}}"
-                                                   {{$service->default == '1' ? 'checked' : ''}}
-                                                   id="add-service-{{$service->id}}" {{$service->status == 0 ? 'disabled' : ''}}>
+                                            <input
+                                                class="form-check-input add-fee cursor-pointer partner-service-{{$service->partner_status}}"
+                                                type="checkbox"
+                                                value="{{$service->price}}" name="add-service-{{$service->id}}"
+                                                {{$service->default == '1' ? 'checked' : ''}}
+                                                id="add-service-{{$service->id}}" {{$service->status == 0 ? 'disabled' : ''}}>
                                             <label class="form-check-label cursor-pointer"
                                                    for="add-service-{{$service->id}}">{{$service->service_name}}
                                                 ({{$service->price}}₺)
@@ -641,14 +643,14 @@
 
 @section('modals')
 
-    @include('backend.main_cargo.main.create.includes.modal_new_current')
+    @include('backend.main_cargo.main.create.includes.modals.modal_new_current')
 
-    @include('backend.main_cargo.main.create.includes.modal_new_receiver')
+    @include('backend.main_cargo.main.create.includes.modals.modal_new_receiver')
 
-    @include('backend.main_cargo.main.create.includes.modal_select_customer')
+    @include('backend.main_cargo.main.create.includes.modals.modal_select_customer')
 
-    @include('backend.main_cargo.main.create.includes.modal_calc_desi')
+    @include('backend.main_cargo.main.create.includes.modals.modal_calc_desi')
 
-    @include('backend.main_cargo.main.create.includes.modal_add_row_quantity')
+    @include('backend.main_cargo.main.create.includes.modals.modal_add_row_quantity')
 
 @endsection

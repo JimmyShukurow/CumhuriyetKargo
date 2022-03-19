@@ -138,7 +138,7 @@ function getCustomerDetails(user) {
         $('#customerName').html(response.current.name)
         $('#customerType').html(response.current.current_code);
         $('#agencyCityDistrict').html(response.current.agency_city + "/" + response.current.agency_district + " - " + response.current.agency_name + " Acente " + "(" + response.current.agency_code + ")");
-        $('#titleBranch').html(response.current.name + ' - ÖZET ' + currentStatus)
+        $('#titleCustomerName').html(response.current.name + ' - ÖZET ' + currentStatus)
 
         $('#currentCategory').html(response.current.category)
         $('#modalCurrentCode').html(response.current.current_code)

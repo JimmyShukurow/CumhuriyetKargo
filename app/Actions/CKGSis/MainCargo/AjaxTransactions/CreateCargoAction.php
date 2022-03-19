@@ -108,45 +108,21 @@ class CreateCargoAction
         $permission_collectible_cargo = Settings::where('key', 'collectible_cargo')->first();
 
 
-        ### Distribution Control START ###
-        $distribution = DB::table('local_locations')
-            ->where('city', $receiver->city)
-            ->where('district', $receiver->district)
-            ->where('neighborhood', $receiver->neighborhood)
-            ->first();
-
-        #YK-BAD
-
-        /*if ($distribution == null)
-            return response()
-                ->json([
-                    'status' => -1,
-                    'message' => 'Alıcı için dağıtım yapılmayan bölge: ' . $receiver->neighborhood
-                ]);*/
-
-//        $arrivalAgency = DB::table('agencies')
-//            ->where('id', $distribution->agency_code)
-//            ->first();
-
-//        if ($arrivalAgency->status == '0')
-//            return response()
-//                ->json([
-//                    'status' => -1,
-//                    'message' => 'Alıcı [' . $arrivalAgency->agency_name . '] şube pasif olduğundan kargo kesimi gerçekleştiremezsiniz.'
-//                ]);
-
-//        $arrivalTC = getTCofAgency($arrivalAgency->id);
-        ### Distribution Control END ###
+        $distribution = DistributionControlAction::run($request);
         $arrivalTC = TransshipmentCenters::find(9);
         $arrivalAgency = Agencies::find(1);
 
-        if ($request->tahsilatliKargo == 'true' && $permission_collectible_cargo->value == '0')
-            return response()->json(['status' => -1, 'message' => 'Tahsilatlı kargo Türkiye geneli pasif durumda, tahsilatlı kargo çıkaramazsınız!'], 200);
-
-        if ($request->tahsilatliKargo == 'true') {
-            if ($currentType != 'Gönderici' || $currentCategory != 'Kurumsal')
-                return response()->json(['status' => -1, 'message' => 'Yalnızca Kurumsal-Anlaşmalı cariler tahsilatlı kargo çıkartabilir.'], 200);
+        $transporter = null;
+        if ($distribution['status'] == '1' && $distribution['area_type'] == 'MNG') {
+            $transporter = 'MNG';
+            $arrivalAgency->id = -1;
+            $arrivalTC->id = -1;
+        } else if ($distribution['status'] == '1' && $distribution['area_type'] != 'MNG') {
+            $transporter = 'CK';
+            $arrivalTC = TransshipmentCenters::find($distribution['arrival_tc_code']);
+            $arrivalAgency = Agencies::find($distribution['arrival_agency_code']);
         }
+
 
         ## customers control
         $currentState = CurrentControl($current->current_code);
@@ -195,366 +171,27 @@ class CreateCargoAction
                 ->json(['status' => -1, 'message' => 'Ek hizmet tutarları uyuşmuyor! Lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
 
 
-        # service price control
-        $serviceFee = 0;
-        if (($currentType == 'Gönderici' && $currentCategory == 'Kurumsal') || ($receiverType == 'Gönderici' && $receiverCategory == 'Kurumsal')) {
-            # => contracted / En az 1 Kurumsal
+        $dataGeneralServiceFee = GetPriceForCustomersAction::run($request);
+        $serviceFee = $dataGeneralServiceFee['service_fee'];
+        $heavyLoadCarryingCost = $dataGeneralServiceFee['heavy_load_carrying_cost'];
+        $mobileServiceFee = $dataGeneralServiceFee['mobile_service_fee'];
+        $postServicePrice = $dataGeneralServiceFee['post_service_price'];
+        $totalWeight = $dataGeneralServiceFee['total_weight'];
+        $partQuantity = $dataGeneralServiceFee['part_quantity'];
+        $totalDesi = $dataGeneralServiceFee['total_desi'];
+        $totalVolume = $dataGeneralServiceFee['total_volume'];
 
-            # Gönderici Kurumsal - Alıcı Bireysel
-            if ($currentCategory == 'Kurumsal' && $receiverCategory == 'Bireysel') {
-                # ===> Cari Anlaşmalı Fiyat Standart Fiyat
-                $currentPrice = CurrentPrices::where('current_code', $currentCode)->first();
+        if ($partQuantity != $request->parcaSayisi)
+            return response()
+                ->json(['status' => -1, 'message' => 'Hesaplanan parça sayısı (' . $request->parcaSayisi . ') ile girilen parça sayısı (' . $partQuantity . ') uyuşmuyor, Lütfen desiyi tekrar hesaplayınız!'], 200);
 
-                if ($cargoType == 'Dosya') {
-                    $filePrice = $currentPrice->file_price;
-                    $serviceFee = $filePrice;
-                } else if ($cargoType == 'Mi') {
-                    $filePrice = $currentPrice->mi_price;
-                    $serviceFee = $filePrice;
-                } else if ($request->gonderiTuru != 'Dosya' && $request->gonderiTuru != 'Mi') {
-                    ## calc desi price
-                    $desiPrice = 0;
-                    if ($desi > 50) {
-                        $desiPrice = $currentPrice->d_26_30;
-                        $amountOfIncrease = $currentPrice->amount_of_increase;
-                        for ($i = 50; $i < $desi; $i++)
-                            $desiPrice += $amountOfIncrease;
-                    } else
-                        $desiPrice = $currentPrice[CatchDesiInterval($desi)]; #get interval                              #get interval
-                    $serviceFee = $desiPrice;
-                }
-            }
-
-
-            # Gönderici Bireysel - Alıcı Kurumsal
-            if ($currentCategory == 'Bireysel' && $receiverCategory == 'Kurumsal') {
-                # ===> Cari Anlaşmalı Fiyat Standart Fiyat
-                $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
-                if ($cargoType == 'Dosya') {
-                    $filePrice = $currentPrice->file_price;
-                    $serviceFee = $filePrice;
-                } else if ($cargoType == 'Mi') {
-                    $filePrice = $currentPrice->mi_price;
-                    $serviceFee = $filePrice;
-                } else if ($cargoType != 'Dosya-Mi') {
-                    ## calc desi price
-                    $desiPrice = 0;
-                    if ($desi > 30) {
-                        $desiPrice = $currentPrice->d_26_30;
-                        $amountOfIncrease = $currentPrice->amount_of_increase;
-                        for ($i = 30; $i < $desi; $i++)
-                            $desiPrice += $amountOfIncrease;
-                    } else
-                        $desiPrice = $currentPrice[CatchDesiInterval($desi)]; #get interval #get interval
-                    $serviceFee = $desiPrice;
-                }
-            }
-
-            # Gönderici Kurumsal - Alıcı Kurumsal
-            if ($currentCategory == 'Kurumsal' && $receiverCategory == 'Kurumsal') {
-                # ===> Ödeme Taraflı Cari Anlaşmalı Fiyat Standart Fiyat
-
-                # ===> Gönderici Ödemeli
-                if ($paymenyType == 'Gönderici Ödemeli')
-                    $currentPrice = CurrentPrices::where('current_code', $currentCode)->first();
-
-                # ===> Alıcı Ödemeli
-                else if ($paymenyType == 'Alıcı Ödemeli')
-                    $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
-
-
-                if ($cargoType == 'Dosya-Mi') {
-                    $filePrice = $currentPrice->file_price;
-                    $serviceFee = $filePrice;
-                } else if ($cargoType != 'Dosya-Mi') {
-                    ## calc desi price
-                    $desiPrice = 0;
-                    if ($desi > 30) {
-                        $desiPrice = $currentPrice->d_26_30;
-                        $amountOfIncrease = $currentPrice->amount_of_increase;
-                        for ($i = 30; $i < $desi; $i++)
-                            $desiPrice += $amountOfIncrease;
-                    } else
-                        $desiPrice = $currentPrice[CatchDesiInterval($desi)]; #get interval                              #get interval
-                    $serviceFee = $desiPrice;
-                }
-            }
-
-        } else {
-            # => not contracted / Bireysel - Bireysel
-            if ($cargoType == 'Dosya') {
-
-                $filePrice = FilePrice::first();
-                $filePrice = $filePrice->individual_file_price;
-                $serviceFee = $filePrice;
-
-            } else if ($cargoType == 'Mi') {
-
-                $filePrice = FilePrice::first();
-                $filePrice = $filePrice->individual_mi_price;
-                $serviceFee = $filePrice;
-
-            } else if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
-
-                #parça başı start
-                if (true) {
-                    $parcaBasiFiyat = 0;
-                    $totalAgirlik = 0;
-                    # Control Parts Of Cargo
-                    if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
-                        $desiData = $request->desiData;
-                        $partQuantity = count($desiData) / 4;
-
-                        $desiValues = array_values($desiData);
-                        $desiKeys = array_keys($desiData);
-
-                        $totalHacim = 0;
-                        $totalDesi = 0;
-                        while (true) {
-
-                            $i = 0;
-                            $en = 0;
-                            $boy = 0;
-                            $yukseklik = 0;
-                            $agirlik = 0;
-                            $hacim = 1;
-                            $desi = 1;
-
-                            if (str_contains($desiKeys[$i], 'En'))
-                                $en = $desiValues[$i];
-
-                            if (str_contains($desiKeys[$i + 1], 'Boy'))
-                                $boy = $desiValues[$i + 1];
-
-                            if (str_contains($desiKeys[$i + 2], 'Yukseklik'))
-                                $yukseklik = $desiValues[$i + 2];
-
-                            if (str_contains($desiKeys[$i + 3], 'Agirlik'))
-                                $agirlik = $desiValues[$i + 3];
-
-                            //echo $en . ' ' . $boy . ' ' . $yukseklik . ' ' . $agirlik;
-                            # calc hacim
-                            $hacim = ($en * $boy * $yukseklik) / 1000000;
-                            $hacim = round($hacim, 5);
-                            $totalHacim += $hacim;
-
-                            #calc desi
-                            $desi = ($en * $boy * $yukseklik) / 3000;
-                            $desi = $agirlik > $desi ? $agirlik : $desi;
-                            $totalDesi += round($desi, 2);
-
-//                                echo $desi . " => " . getDesiPrice($desi) . " <br>";
-
-                            $parcaBasiFiyat = $parcaBasiFiyat + getDesiPrice($desi);
-                            unset($desiKeys[$i]);
-                            unset($desiValues[$i]);
-
-                            unset($desiKeys[$i + 1]);
-                            unset($desiValues[$i + 1]);
-
-                            unset($desiKeys[$i + 2]);
-                            unset($desiValues[$i + 2]);
-
-                            unset($desiKeys[$i + 3]);
-                            unset($desiValues[$i + 3]);
-                            #re-indexing
-                            $desiValues = array_values($desiValues);
-                            $desiKeys = array_values($desiKeys);
-
-                            $totalAgirlik += $agirlik;
-
-                            if ($desi > 300 || $agirlik > 100)
-                                $heavyLoadCarryingStatus = true;
-
-                            if (count($desiKeys) == 0)
-                                break;
-                        }
-                        $desiPrice = $parcaBasiFiyat;
-                    }
-                } else
-                    $desiPrice = getDesiPrice($desi);
-
-
-                $serviceFee = $desiPrice;
-            }
-        }
 
         if (!(compareFloatEquality($request->hizmetUcreti, $serviceFee)))
             return response()
                 ->json(['status' => -1, 'message' => 'Hizmet tutarları eşleşmiyor, lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
 
-        # MobileServiceFee Start
-        $location = LocalLocation::where('neighborhood', $receiver->neighborhood)->first();
 
-        $mobileServiceFee = 0;
-        $filePrice = FilePrice::find(1);
-
-        ## YK-BAD
-        if (true)
-            $mobileServiceFee = 0;
-        else
-            if ($location != null && $location->area_type == 'MB') {
-
-                switch ($cargoType) {
-                    case 'Dosya':
-                        $mobileServiceFee = $filePrice->mobile_file_price;
-                        break;
-                    case 'Mi':
-                        $mobileServiceFee = $filePrice->mobile_mi_price;
-                        break;
-
-                    case 'Paket':
-                    case 'Koli':
-                    case 'Çuval':
-                    case 'Rulo':
-                    case 'Palet':
-                    case 'Sandık':
-                    case 'Valiz':
-                        if ($current->mb_status == '0' || $receiver->mb_status == '0')
-                            $mobileServiceFee = 0;
-                        else {
-                            $desi = $request->desi;
-
-                            if ($desi > 1) {
-                                ## calc desi price
-                                $maxDesiInterval = DB::table('desi_lists')
-                                    ->orderBy('finish_desi', 'desc')
-                                    ->first();
-                                $maxDesiPrice = $maxDesiInterval->mobile_individual_unit_price;
-                                $maxDesiInterval = $maxDesiInterval->finish_desi;
-
-                                $desiPrice = 0;
-                                if ($desi > $maxDesiInterval) {
-                                    $desiPrice = $maxDesiPrice;
-
-                                    $amountOfIncrease = DB::table('settings')->where('key', 'mobile_desi_amount_of_increase')->first();
-                                    $amountOfIncrease = $amountOfIncrease->value;
-
-                                    for ($i = $maxDesiInterval; $i < $desi; $i++)
-                                        $desiPrice += $amountOfIncrease;
-                                } else {
-                                    #catch interval
-                                    $desiPrice = DB::table('desi_lists')
-                                        ->where('start_desi', '<=', $desi)
-                                        ->where('finish_desi', '>=', $desi)
-                                        ->first();
-                                    $desiPrice = $desiPrice->mobile_individual_unit_price;
-                                }
-                                $mobileServiceFee = $desiPrice;
-                            } else
-                                $mobileServiceFee = 0;
-                        }
-                        break;
-                }
-            }
-        # MobileServiceFee End
-
-        # evrensel posta hizmetleri ücreti start
-        $postServicePercent = GetSettingsVal('post_services_percent');
-
-        $postServicePrice = ($serviceFee * $postServicePercent) / 100;
-        $postServicePrice = round($postServicePrice, 2);
-        # evrensel posta hizmetleri ücreti start
-
-        if (!(compareFloatEquality($request->postaHizmetleriUcreti, $postServicePrice)))
-            return response()
-                ->json(['status' => -1, 'message' => 'Posta hizmetleri bedeli eşleşmiyor, lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
-
-
-        $heavyLoadCarryingStatus = false;
-
-        $totalAgirlik = 0;
-        # Control Parts Of Cargo
-        if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
-            $desiData = $request->desiData;
-            $partQuantity = count($desiData) / 4;
-
-            if ($partQuantity != $request->parcaSayisi)
-                return response()
-                    ->json(['status' => -1, 'message' => 'Hesaplanan parça sayısı (' . $request->parcaSayisi . ') ile girilen parça sayısı (' . $partQuantity . ') uyuşmuyor, Lütfen desiyi tekrar hesaplayınız!'], 200);
-
-
-            $desiValues = array_values($desiData);
-            $desiKeys = array_keys($desiData);
-
-            $totalHacim = 0;
-            $totalDesi = 0;
-            while (true) {
-
-                $i = 0;
-                $en = 0;
-                $boy = 0;
-                $yukseklik = 0;
-                $agirlik = 0;
-                $hacim = 1;
-                $desi = 1;
-
-                if (str_contains($desiKeys[$i], 'En'))
-                    $en = $desiValues[$i];
-
-                if (str_contains($desiKeys[$i + 1], 'Boy'))
-                    $boy = $desiValues[$i + 1];
-
-                if (str_contains($desiKeys[$i + 2], 'Yukseklik'))
-                    $yukseklik = $desiValues[$i + 2];
-
-                if (str_contains($desiKeys[$i + 3], 'Agirlik'))
-                    $agirlik = $desiValues[$i + 3];
-
-                //echo $en . ' ' . $boy . ' ' . $yukseklik . ' ' . $agirlik;
-                # calc hacim
-                $hacim = ($en * $boy * $yukseklik) / 1000000;
-                $hacim = round($hacim, 5);
-                $totalHacim += $hacim;
-
-                #calc desi
-                $desi = ($en * $boy * $yukseklik) / 3000;
-                $desi = $agirlik > $desi ? $agirlik : $desi;
-                $totalDesi += round($desi, 2);
-
-                unset($desiKeys[$i]);
-                unset($desiValues[$i]);
-
-                unset($desiKeys[$i + 1]);
-                unset($desiValues[$i + 1]);
-
-                unset($desiKeys[$i + 2]);
-                unset($desiValues[$i + 2]);
-
-                unset($desiKeys[$i + 3]);
-                unset($desiValues[$i + 3]);
-                #re-indexing
-                $desiValues = array_values($desiValues);
-                $desiKeys = array_values($desiKeys);
-
-                $totalAgirlik += $agirlik;
-
-                if ($desi > 300 || $agirlik > 100)
-                    $heavyLoadCarryingStatus = true;
-
-                if (count($desiKeys) == 0)
-                    break;
-            }
-
-            // return $totalDesi . ' => ' . $request->desi;
-            if (!compareFloatEquality($request->desi, $totalDesi))
-                return response()
-                    ->json(['status' => -1, 'message' => 'Hesaplanan desi ile girilen desi eşleşmiyor, lütfen desiyi tekrar hesaplayınız!'], 200);
-
-            if (!compareFloatEquality($request->totalHacim, $totalHacim))
-                return response()
-                    ->json(['status' => -1, 'message' => 'Toplam hacim eşleşmiyor, lütfen desiyi tekrar hesaplayınız!'], 200);
-
-            # return $totalHacim . ' => ' . $totalDesi;
-        }
-
-        if (($cargoType != 'Dosya' && $cargoType != 'Mi') && $heavyLoadCarryingStatus == true && $request->parcaSayisi == 1) {
-            $heavyLoadCarryingCost = GetSettingsVal('heavy_load_carrying_cost');
-            $heavyLoadCarryingCost = $heavyLoadCarryingCost + (($heavyLoadCarryingCost * 18) / 100);
-        } else
-            $heavyLoadCarryingCost = 0;
-
-//                return $request->agirYukTasimaBedeli . ' - ' . $heavyLoadCarryingCost;
+        //return $request->agirYukTasimaBedeli . ' - ' . $heavyLoadCarryingCost;
         if (!(compareFloatEquality($request->agirYukTasimaBedeli, $heavyLoadCarryingCost)))
             return response()
                 ->json(['status' => -1, 'message' => 'Ağır yük taşıma bedeli eşleşmiyor, lütfen sayfayı yenileyip tekrar deneyiniz!'], 200);
@@ -593,7 +230,7 @@ class CreateCargoAction
 
         if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
             $number_of_pieces = $partQuantity;
-            $cubic_meter_volume = $totalHacim;
+            $cubic_meter_volume = $totalVolume;
             $desi = $totalDesi;
         } else {
             $number_of_pieces = 1;
@@ -603,14 +240,8 @@ class CreateCargoAction
 
         $invoiceNumber = DesignInvoiceNumber();
 
-        $transporter = 'MNG';
 
-        if ($transporter == 'MNG') {
-            $arrivalAgency->id = -1;
-            $arrivalTC->id = -1;
-        }
-
-//        DB::beginTransaction();
+        DB::beginTransaction();
         try {
             # start create new Cargo
             $CreateCargo = Cargoes::create([
@@ -663,7 +294,7 @@ class CreateCargoAction
                 'collection_fee' => $request->tahsilatliKargo == 'true' ? getDoubleValue($request->faturaTutari) : 0,
                 'collection_payment_type' => $request->tahsilatliKargo == 'true' ? 'Nakit' : '0',
                 'desi' => $desi,
-                'kg' => $totalAgirlik,
+                'kg' => $totalWeight,
                 'kdv_percent' => 18,
                 'cubic_meter_volume' => $cubic_meter_volume,
                 'kdv_price' => $kdvPrice,
@@ -679,13 +310,12 @@ class CreateCargoAction
                 'pick_up_address' => $pickUpAddress,
                 'agency_delivery' => $homeDelivery == '1' ? '0' : '1',
                 'status_for_human' => 'HAZIRLANIYOR',
-                // 'transporter' => 'CK',
                 'transporter' => $transporter,
                 'system' => 'CKG-Sis',
             ]);
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['status' => -1, 'message' => 'Kargo kaydı esnasında hata oluştu']);
+            return response()->json(['status' => -1, 'message' => 'Kargo kaydı esnasında hata oluştu  ' . $e->getMessage() . ' line :' . $e->getLine()]);
         }
 
         # Get Movement Text
@@ -763,8 +393,8 @@ class CreateCargoAction
             ## INSERT Cargo Parts START
             if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
 
-                $desiValues = array_values($desiData);
-                $desiKeys = array_keys($desiData);
+                $desiValues = array_values($request->desiData);
+                $desiKeys = array_keys($request->desiData);
 
                 $totalHacim = 0;
                 $totalDesi = 0;

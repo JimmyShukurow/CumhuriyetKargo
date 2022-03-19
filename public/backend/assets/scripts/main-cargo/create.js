@@ -1,4 +1,4 @@
-var CurrentCity = "", DistancePrice = 0, PaymentType = 'Gönderici Ödemeli', CargoType = "Dosya";
+var CurrentCity = "", ReceiverCity = "", DistancePrice = 0, PaymentType = 'Gönderici Ödemeli', CargoType = "Dosya";
 var MobilBolge = $('#add-service-19');
 var AdreseTeslim = $('#add-service-8');
 var SubeTeslim = $('#add-service-11');
@@ -122,19 +122,16 @@ function getReceiverInfo(currentCode, tryExist = false) {
 
         $('#aliciCariKod').val(response.current_code);
 
-        // if ($('#gondericiCariKod').val() == $('#aliciCariKod').val()) {
-        //     $('#aliciCariKod').val('');
-        //     ToastMessage('error', 'Alıcı ve gönderici aynı olamaz!', 'Hata!');
-        //     return false;
-        // }
 
         if (response.category == 'Bireysel') {
             $('#aliciMusteriTipi').val('Bireysel');
             $('#aliciMusteriTipi').addClass('text-primary');
             $('#aliciMusteriTipi').removeClass('text-success');
+            $('#aliciMusteriTipi').removeClass('text-alternate');
         } else if (response.category == 'Kurumsal' && response.current_type == 'Gönderici') {
-            $('#aliciMusteriTipi').val('Kurumsal - Anlaşmalı Cari');
-            $('#aliciMusteriTipi').addClass('text-success');
+            $('#aliciMusteriTipi').val('Kurumsal');
+            $('#aliciMusteriTipi').addClass('text-alternate');
+            $('#aliciMusteriTipi').removeClass('text-success');
             $('#aliciMusteriTipi').removeClass('text-primary');
         } else if (response.category == 'Kurumsal' && response.current_type == 'Alıcı') {
             $('#aliciMusteriTipi').val('Kurumsal');
@@ -172,7 +169,8 @@ function getReceiverInfo(currentCode, tryExist = false) {
 
         $('#aliciAdres').val(fullAddress);
 
-        getDistance(CurrentCity, response.city);
+        ReceiverCity = response.city;
+        getDistance(CurrentCity, ReceiverCity);
 
         getPriceForCustomers();
         DistributionControl();
@@ -209,52 +207,64 @@ function DistributionControl(neighborhood = '') {
         method: 'POST',
         data: {
             _token: token,
-            currentCode: $('#gondericiCariKod').val(),
-            receiverCode: $('#aliciCariKod').val(),
+            gondericiCariKodu: $('#gondericiCariKod').val(),
+            aliciCariKodu: $('#aliciCariKod').val(),
             neighborhood: neighborhood,
         }
     }).done(function (response) {
 
-        // console.log(response);
-        if (response.status == 0) {
-            ToastMessage('error', response.message, 'Hata!');
-            $('#dagitimDurumu').val('AT DIŞI - DAĞITIM YOK');
-            $('#dagitimDurumu').removeClass('text-alternate');
-            $('#dagitimDurumu').addClass('text-danger');
-        } else if (response.status == 1) {
+            // console.log(response);
+            if (response.status == 0) {
+                ToastMessage('error', response.message, 'Hata!');
+                $('#dagitimDurumu').val('AT DIŞI - DAĞITIM YOK');
+                $('#dagitimDurumu').removeClass('text-alternate');
+                $('#dagitimDurumu').addClass('text-danger');
+            } else if (response.status == 1) {
 
-            $('#varisSube').val(response.arrival_agency);
-            $('#varisTransferMerkezi').val(response.arrival_tc + " TM");
-            $('#dagitimDurumu').val(response.area_type);
-            $('#dagitimDurumu').removeClass('text-danger');
-            $('#dagitimDurumu').removeClass('text-alternate');
-            $('#dagitimDurumu').addClass('text-success');
+                $('#varisSube').val(response.arrival_agency);
+                $('#varisTransferMerkezi').val(response.arrival_tc + " TM");
+                $('#dagitimDurumu').val(response.area_type);
+                $('#dagitimDurumu').removeClass('text-danger');
+                $('#dagitimDurumu').removeClass('text-alternate');
+                $('#dagitimDurumu').addClass('text-success');
 
-            if (response.area_type == 'Mobil Bölge') {
-                ToastMessage('warning', "Bölge mobil olarak kayıtlı, teslimat gecikmeli olabilir. Bölge: " + $('#aliciMahalle').val() + " (Mobil olarak işaretlendi!)");
+                if (response.area_type == 'Mobil Bölge') {
+                    ToastMessage('warning', "Bölge mobil olarak kayıtlı, teslimat gecikmeli olabilir. Bölge: " + $('#aliciMahalle').val() + " (Mobil olarak işaretlendi!)");
 
-                if (MobilBolge.prop('checked') == false) {
-                    MobilBolge.prop('disabled', false);
-                    MobilBolge.click();
-                    MobilBolge.prop('disabled', true);
+                    if (MobilBolge.prop('checked') == false) {
+                        MobilBolge.prop('disabled', false);
+                        MobilBolge.click();
+                        MobilBolge.prop('disabled', true);
+                        calculateTotalPrice();
+                        clearAddServices();
+                    }
+
+                } else if (response.area_type == 'Ana Bölge') {
+                    if (MobilBolge.prop('checked') == true) {
+                        MobilBolge.prop('disabled', false);
+                        MobilBolge.click();
+                        MobilBolge.prop('disabled', true);
+                    }
+                    $('.partner-service-0').prop('disabled', false);
+
                     calculateTotalPrice();
                     clearAddServices();
-                }
+                } else if (response.area_type == 'MNG') {
 
-            } else if (response.area_type == 'Ana Bölge') {
-                if (MobilBolge.prop('checked') == true) {
-                    MobilBolge.prop('disabled', false);
-                    MobilBolge.click();
-                    MobilBolge.prop('disabled', true);
+                    if (MobilBolge.prop('checked') == true) {
+                        MobilBolge.prop('disabled', false);
+                        MobilBolge.click();
+                        MobilBolge.prop('disabled', true);
+                    }
+
+                    $('.partner-service-0').prop('disabled', true);
+                    $('.partner-service-0').prop('checked', false);
+
                 }
-                calculateTotalPrice();
-                clearAddServices();
             }
 
         }
-
-
-    }).error(function (jqXHR, exception) {
+    ).error(function (jqXHR, exception) {
         ajaxError(jqXHR.status);
     }).always(function () {
         $('#divider-alici').unblock();
@@ -302,10 +312,17 @@ function getCurrentInfo(currentCode, tryExist = false) {
             $('#gondericiMusteriTipi').val('Bireysel');
             $('#gondericiMusteriTipi').addClass('text-primary');
             $('#gondericiMusteriTipi').removeClass('text-success');
+            $('#gondericiMusteriTipi').removeClass('text-alternate');
         } else if (response.category == 'Kurumsal' && response.current_type == 'Gönderici') {
-            $('#gondericiMusteriTipi').val('Kurumsal - Anlaşmalı Cari');
+            $('#gondericiMusteriTipi').val('Kurumsal');
             $('#gondericiMusteriTipi').addClass('text-success');
             $('#gondericiMusteriTipi').removeClass('text-primary');
+            $('#gondericiMusteriTipi').removeClass('text-alternate');
+        } else if (response.category == 'Anlaşmalı' && response.current_type == 'Gönderici') {
+            $('#gondericiMusteriTipi').val('Anlaşmalı');
+            $('#gondericiMusteriTipi').addClass('text-alternate');
+            $('#gondericiMusteriTipi').removeClass('text-primary');
+            $('#gondericiMusteriTipi').removeClass('text-success');
         }
 
         let legal_number = response.tckn != '' ? response.tckn : response.vkn;
@@ -334,7 +351,7 @@ function getCurrentInfo(currentCode, tryExist = false) {
             $('#gondericiAdres').val(fullAddress);
 
         CurrentCity = response.city;
-        getDistance(CurrentCity, $('#aliciIl').val());
+        getDistance(CurrentCity, ReceiverCity);
 
         $('#TahsilatFaturaTutari').trigger('keyup');
 
@@ -380,13 +397,14 @@ function getPriceForCustomers() {
             method: 'POST',
             data: {
                 _token: token,
-                currentCode: currentCode,
-                receiverCode: receiverCode,
-                paymentType: PaymentType,
+                gondericiCariKodu: currentCode,
+                aliciCariKodu: receiverCode,
+                odemeTipi: PaymentType,
                 cargoType: $('#selectCargoType').val(),
                 desi: parseFloat($('#labelDesi').text()),
                 desiData: getFormData($('#formPartDesiContainer')),
-                partQuantity: $('#partQuantity').text(),
+                parcaSayisi: $('#partQuantity').text(),
+
             }
         }).done(function (response) {
 
@@ -484,8 +502,8 @@ function getCustomer(name, phone, from) {
 
             let fullAddress = city + district + neighborhood + street + street2 + buildingNo + floor + door + addressNote;
 
-            let bgType = val['category'] == 'Kurumsal' ? 'bg-warning' : '';
-            let rowTitle = val['category'] == 'Kurumsal' ? 'Anlaşmalı Cari' : '';
+            let bgType = val['category'] == 'Anlaşmalı' ? 'bg-warning' : '';
+            let rowTitle = val['category'] == 'Anlaşmalı' ? 'Anlaşmalı Cari' : '';
 
             if (from == 'Gönderici') {
 
@@ -785,6 +803,13 @@ $('#aliciCariKod').keyup(function (e) {
 });
 
 function getDistance(startPoint, endPoint) {
+
+    if (startPoint == undefined)
+        return false;
+
+    if (endPoint == undefined)
+        return false;
+
 
     if (startPoint != '' && endPoint != '') {
 
@@ -1157,8 +1182,8 @@ function CalculateDesi(RealDesi, PartNumber, clickButton) {
             desi: RealDesi,
             cargoType: CargoType,
             paymentType: PaymentType,
-            currentCode: $('#gondericiCariKod').val(),
-            receiverCode: $('#aliciCariKod').val(),
+            gondericiCariKodu: $('#gondericiCariKod').val(),
+            aliciCariKodu: $('#aliciCariKod').val(),
             desiData: getFormData($('#formPartDesiContainer')),
             partQuantity: $('#partQuantity').text(),
         }
