@@ -170,9 +170,4 @@
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
     <script src="/backend/assets/scripts/expeditions/outgoing-expedition.js"></script>
-    <script src="/backend/assets/scripts/expeditions/outgoing-expedition-details.js"></script>
-@endsection
-
-@section('modals')
-    @include('backend.expedition.outgoing.outgoing_expeditions_modal')
 @endsection

@@ -107,6 +107,11 @@ class ExpeditionController extends Controller
             'status' => 1,
             'message' => 'Sefer Silindi!'
         ]);
-
     }
+
+    public function show(Request $request, $id){
+         $expedition = GetExpeditionInfoAction::run($id);
+        return view('backend.expedition.outgoing.outgoing_expeditions_modal',['expedition' => $expedition]);
+    }
+
 }

@@ -52,10 +52,6 @@ class GetExpeditionInfoAction
 
 
 
-        return response()->json([
-            'status' => 1,
-            'expedition' => $expedition,
-
-        ]);
+        return $expedition;
     }
 }
