@@ -239,24 +239,24 @@
                                    class="col-sm-5 col-form-label">Ödeme Tipi:</label>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input radio-payment-type" checked type="radio"
-                                       name="radioPaymentType" id="radioPaymentType1"
+                                       name="radioPaymentType" id="radioPaymentTypeGondericiOdemeli"
                                        value="Gönderici Ödemeli">
-                                <label class="form-check-label cursor-pointer" for="radioPaymentType1">Gönderici
+                                <label class="form-check-label cursor-pointer" for="radioPaymentTypeGondericiOdemeli">Gönderici
                                     Ödemeli</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input radio-payment-type" type="radio" name="radioPaymentType"
-                                       id="radioPaymentType2"
+                                       id="radioPaymentTypeAliciOdemeli"
                                        value="Alıcı Ödemeli">
-                                <label class="form-check-label cursor-pointer" for="radioPaymentType2">Alıcı
+                                <label class="form-check-label cursor-pointer" for="radioPaymentTypeAliciOdemeli">Alıcı
                                     Ödemeli</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="radioPaymentType"
-                                       id="radioPaymentType3"
+                                       id="radioPaymentTypePOCH"
                                        value="PÖCH" disabled>
 
-                                <label class="form-check-label cursor-pointer" for="radioPaymentType3">PÖCH</label>
+                                <label class="form-check-label cursor-pointer" for="radioPaymentTypePOCH">PÖCH</label>
                             </div>
                         </div>
                         <div class="form-row collection-container">

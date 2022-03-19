@@ -1285,6 +1285,7 @@ $(document).ready(function () {
 })
 
 function checkCurrent() {
+
     $.ajax('/MainCargo/AjaxTransactions/GetCustomer', {
         method: 'POST',
         data: {
