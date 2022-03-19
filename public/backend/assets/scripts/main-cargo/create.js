@@ -1170,8 +1170,8 @@ function CalculateDesi(RealDesi, PartNumber, clickButton) {
             desi: RealDesi,
             cargoType: CargoType,
             paymentType: PaymentType,
-            currentCode: $('#gondericiCariKod').val(),
-            receiverCode: $('#aliciCariKod').val(),
+            gondericiCariKodu: $('#gondericiCariKod').val(),
+            aliciCariKodu: $('#aliciCariKod').val(),
             desiData: getFormData($('#formPartDesiContainer')),
             partQuantity: $('#partQuantity').text(),
         }

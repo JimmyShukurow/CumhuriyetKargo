@@ -177,6 +177,14 @@ class CreateCargoAction
         $mobileServiceFee = $dataGeneralServiceFee['mobile_service_fee'];
         $postServicePrice = $dataGeneralServiceFee['post_service_price'];
         $totalWeight = $dataGeneralServiceFee['total_weight'];
+        $partQuantity = $dataGeneralServiceFee['part_quantity'];
+        $totalDesi = $dataGeneralServiceFee['total_desi'];
+        $totalVolume = $dataGeneralServiceFee['total_volume'];
+
+        if ($partQuantity != $request->parcaSayisi)
+            return response()
+                ->json(['status' => -1, 'message' => 'Hesaplanan parça sayısı (' . $request->parcaSayisi . ') ile girilen parça sayısı (' . $partQuantity . ') uyuşmuyor, Lütfen desiyi tekrar hesaplayınız!'], 200);
+
 
         if (!(compareFloatEquality($request->hizmetUcreti, $serviceFee)))
             return response()
@@ -222,7 +230,7 @@ class CreateCargoAction
 
         if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
             $number_of_pieces = $partQuantity;
-            $cubic_meter_volume = $totalHacim;
+            $cubic_meter_volume = $totalVolume;
             $desi = $totalDesi;
         } else {
             $number_of_pieces = 1;
@@ -385,8 +393,8 @@ class CreateCargoAction
             ## INSERT Cargo Parts START
             if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
 
-                $desiValues = array_values($desiData);
-                $desiKeys = array_keys($desiData);
+                $desiValues = array_values($request->desiData);
+                $desiKeys = array_keys($request->desiData);
 
                 $totalHacim = 0;
                 $totalDesi = 0;

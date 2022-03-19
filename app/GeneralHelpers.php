@@ -984,6 +984,39 @@ function createNgiShipmentWithAddress()
     return $array['ns1createNgiShipmentWithAddressResponse']['XShipmentDataResponse'];
 }
 
+function getPartnerDesiPrice($desi)
+{
+    $desi = round($desi);
+
+    ## calc desi price
+    $maxDesiInterval = DB::table('desi_lists')
+        ->orderBy('finish_desi', 'desc')
+        ->first();
+    $maxDesiPrice = $maxDesiInterval->corporate_unit_price;
+    $maxDesiInterval = $maxDesiInterval->finish_desi;
+
+    $desiPrice = 0;
+    if ($desi > $maxDesiInterval) {
+
+        $desiPrice = $maxDesiPrice;
+
+        $amountOfIncrease = DB::table('settings')->where('key', 'partner_desi_amount_of_increase')->first();
+        $amountOfIncrease = $amountOfIncrease->value;
+
+        for ($i = $maxDesiInterval; $i < $desi; $i++)
+            $desiPrice += $amountOfIncrease;
+    } else {
+        #catch interval
+        $desiPrice = DB::table('desi_lists')
+            ->where('start_desi', '<=', $desi)
+            ->where('finish_desi', '>=', $desi)
+            ->first();
+        $desiPrice = $desiPrice->corporate_unit_price;
+    }
+
+    return $desiPrice;
+}
+
 function getDesiPrice($desi)
 {
     $desi = round($desi);

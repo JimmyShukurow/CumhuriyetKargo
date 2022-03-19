@@ -40,7 +40,7 @@ class DistributionControlAction
 
         $agency = Agencies::find($control->agency_code);
 
-        if ($agency->status == '0' || $agency->operation_statys == '0')
+        if ($agency->status == '0' || $agency->operation_status == '0')
             if ($entegration)
                 return ['status' => 1, 'arrival_agency' => '-', 'arrival_tc' => '-', 'area_type' => 'MNG'];
             else
