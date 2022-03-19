@@ -17,9 +17,9 @@ class GetPriceForCustomersAction
     {
         $desi = $request->desi;
         $cargoType = $request->cargoType;
-        $currentCode = str_replace(' ', '', $request->currentCode);
-        $receiverCode = str_replace(' ', '', $request->receiverCode);
-        $paymenyType = $request->paymentType;
+        $currentCode = str_replace(' ', '', $request->gondericiCariKodu);
+        $receiverCode = str_replace(' ', '', $request->aliciCariKodu);
+        $paymenyType = $request->odemeTipi;
 
         $current = Currents::where('current_code', $currentCode)->first();
         $receiver = Currents::where('current_code', $receiverCode)->first();
@@ -35,60 +35,12 @@ class GetPriceForCustomersAction
             $json = ['service_fee' => $desiPrice];
         } else {
 
-            if (($currentType == 'Gönderici' && $currentCategory == 'Kurumsal') || ($receiverType == 'Gönderici' && $receiverCategory == 'Kurumsal')) {
-                # => contracted / En az 1 Kurumsal
+            if (($currentType == 'Gönderici' && $currentCategory == 'Anlaşmalı') || ($receiverType == 'Gönderici' && $receiverCategory == 'Anlaşmalı')) {
+                # => contracted / En az 1 Anlaşmalı
 
-                # Gönderici Kurumsal - Alıcı Bireysel
-                if ($currentCategory == 'Kurumsal' && $receiverCategory == 'Bireysel') {
-                    # ===> Cari Anlaşmalı Fiyat Standart Fiyat
-                    $currentPrice = CurrentPrices::where('current_code', $currentCode)->first();
 
-                    if ($cargoType == 'Dosya') {
-                        $filePrice = $currentPrice->file_price;
-                        $json = ['service_fee' => $filePrice];
-                    } else if ($cargoType == 'Mi') {
-                        $filePrice = $currentPrice->mi_price;
-                        $json = ['service_fee' => $filePrice];
-                    } else if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
-                        ## calc desi price
-                        $desiPrice = 0;
-                        if ($desi > 50) {
-                            $desiPrice = $currentPrice->d_46_50;
-                            $amountOfIncrease = $currentPrice->amount_of_increase;
-                            for ($i = 50; $i < $desi; $i++)
-                                $desiPrice += $amountOfIncrease;
-                        } else
-                            $desiPrice = $currentPrice[CatchDesiInterval($desi)]; #get interval                              #get interval
-                        $json = ['service_fee' => $desiPrice];
-                    }
-                }
-
-                # Gönderici Bireysel - Alıcı Kurumsal
-                if ($currentCategory == 'Bireysel' && $receiverCategory == 'Kurumsal') {
-                    # ===> Cari Anlaşmalı Fiyat Standart Fiyat
-                    $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
-                    if ($cargoType == 'Dosya') {
-                        $filePrice = $currentPrice->file_price;
-                        $json = ['service_fee' => $filePrice];
-                    } else if ($cargoType == 'Mi') {
-                        $filePrice = $currentPrice->mi_price;
-                        $json = ['service_fee' => $filePrice];
-                    } else if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
-                        ## calc desi price
-                        $desiPrice = 0;
-                        if ($desi > 50) {
-                            $desiPrice = $currentPrice->d_46_50;
-                            $amountOfIncrease = $currentPrice->amount_of_increase;
-                            for ($i = 50; $i < $desi; $i++)
-                                $desiPrice += $amountOfIncrease;
-                        } else
-                            $desiPrice = $currentPrice[CatchDesiInterval($desi)]; #get interval                              #get interval
-                        $json = ['service_fee' => $desiPrice];
-                    }
-                }
-
-                # Gönderici Kurumsal - Alıcı Kurumsal
-                if ($currentCategory == 'Kurumsal' && $receiverCategory == 'Kurumsal') {
+                # Gönderici Anlaşmalı - Alıcı Anlaşmalı
+                if ($currentCategory == 'Anlaşmalı' && $receiverCategory == 'Anlaşmalı') {
                     # ===> Ödeme Taraflı Cari Anlaşmalı Fiyat Standart Fiyat
 
                     # ===> Gönderici Ödemeli
@@ -99,12 +51,11 @@ class GetPriceForCustomersAction
                     else if ($paymenyType == 'Alıcı Ödemeli')
                         $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
 
-
                     if ($cargoType == 'Dosya') {
-                        $filePrice = $currentPrice->file_price;
+                        $filePrice = $currentPrice->file;
                         $json = ['service_fee' => $filePrice];
                     } else if ($cargoType == 'Mi') {
-                        $filePrice = $currentPrice->mi_price;
+                        $filePrice = $currentPrice->mi;
                         $json = ['service_fee' => $filePrice];
                     } else if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
                         ## calc desi price
@@ -119,6 +70,56 @@ class GetPriceForCustomersAction
                         $json = ['service_fee' => $desiPrice];
                     }
                 }
+
+                # Gönderici Anlaşmalı ise
+                if ($currentCategory == 'Anlaşmalı') {
+                    # ===> Cari Anlaşmalı Fiyat Standart Fiyat
+                    $currentPrice = CurrentPrices::where('current_code', $currentCode)->first();
+
+                    if ($cargoType == 'Dosya') {
+                        $filePrice = $currentPrice->file;
+                        $json = ['service_fee' => $filePrice];
+                    } else if ($cargoType == 'Mi') {
+                        $filePrice = $currentPrice->mi;
+                        $json = ['service_fee' => $filePrice];
+                    } else if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
+                        ## calc desi price
+                        $desiPrice = 0;
+                        if ($desi > 30) {
+                            $desiPrice = $currentPrice->d_26_30;
+                            $amountOfIncrease = $currentPrice->amount_of_increase;
+                            for ($i = 30; $i < $desi; $i++)
+                                $desiPrice += $amountOfIncrease;
+                        } else
+                            $desiPrice = $currentPrice[CatchDesiInterval($desi)]; #get interval                              #get interval
+                        $json = ['service_fee' => $desiPrice];
+                    }
+                }
+
+                # Alıcı Anlaşmalı ise
+                if ($receiverCategory == 'Anlaşmalı') {
+                    # ===> Cari Anlaşmalı Fiyat Standart Fiyat
+                    $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
+                    if ($cargoType == 'Dosya') {
+                        $filePrice = $currentPrice->file;
+                        $json = ['service_fee' => $filePrice];
+                    } else if ($cargoType == 'Mi') {
+                        $filePrice = $currentPrice->mi;
+                        $json = ['service_fee' => $filePrice];
+                    } else if ($cargoType != 'Dosya' && $cargoType != 'Mi') {
+                        ## calc desi price
+                        $desiPrice = 0;
+                        if ($desi > 30) {
+                            $desiPrice = $currentPrice->d_26_30;
+                            $amountOfIncrease = $currentPrice->amount_of_increase;
+                            for ($i = 30; $i < $desi; $i++)
+                                $desiPrice += $amountOfIncrease;
+                        } else
+                            $desiPrice = $currentPrice[CatchDesiInterval($desi)]; #get interval                              #get interval
+                        $json = ['service_fee' => $desiPrice];
+                    }
+                }
+
 
             } else {
                 # => not contracted / Bireysel - Bireysel
@@ -364,7 +365,7 @@ class GetPriceForCustomersAction
 
         }
 
-        if (($cargoType != 'Dosya' && $cargoType != 'Mi') && $heavyLoadCarryingStatus == true && $request->partQuantity == 1) {
+        if (($cargoType != 'Dosya' && $cargoType != 'Mi') && $heavyLoadCarryingStatus == true && $request->parcaSayisi == 1) {
             $heavyLoadCarryingCost = GetSettingsVal('heavy_load_carrying_cost');
             $heavyLoadCarryingCost = $heavyLoadCarryingCost + (($heavyLoadCarryingCost * 18) / 100);
         } else
@@ -376,9 +377,10 @@ class GetPriceForCustomersAction
             'service_fee' => $json['service_fee'],
             'post_service_price' => $postServicePrice,
             'heavy_load_carrying_cost' => $heavyLoadCarryingCost,
-            'mobile_service_fee' => $mobileServiceFee
+            'mobile_service_fee' => $mobileServiceFee,
+            'total_weight' => $totalAgirlik,
         ];
 
-        return response()->json($json, 200);
+        return $json;
     }
 }

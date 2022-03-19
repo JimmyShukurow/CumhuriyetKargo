@@ -122,19 +122,16 @@ function getReceiverInfo(currentCode, tryExist = false) {
 
         $('#aliciCariKod').val(response.current_code);
 
-        // if ($('#gondericiCariKod').val() == $('#aliciCariKod').val()) {
-        //     $('#aliciCariKod').val('');
-        //     ToastMessage('error', 'Alıcı ve gönderici aynı olamaz!', 'Hata!');
-        //     return false;
-        // }
 
         if (response.category == 'Bireysel') {
             $('#aliciMusteriTipi').val('Bireysel');
             $('#aliciMusteriTipi').addClass('text-primary');
             $('#aliciMusteriTipi').removeClass('text-success');
+            $('#aliciMusteriTipi').removeClass('text-alternate');
         } else if (response.category == 'Kurumsal' && response.current_type == 'Gönderici') {
-            $('#aliciMusteriTipi').val('Kurumsal - Anlaşmalı Cari');
-            $('#aliciMusteriTipi').addClass('text-success');
+            $('#aliciMusteriTipi').val('Kurumsal');
+            $('#aliciMusteriTipi').addClass('text-alternate');
+            $('#aliciMusteriTipi').removeClass('text-success');
             $('#aliciMusteriTipi').removeClass('text-primary');
         } else if (response.category == 'Kurumsal' && response.current_type == 'Alıcı') {
             $('#aliciMusteriTipi').val('Kurumsal');
@@ -302,10 +299,17 @@ function getCurrentInfo(currentCode, tryExist = false) {
             $('#gondericiMusteriTipi').val('Bireysel');
             $('#gondericiMusteriTipi').addClass('text-primary');
             $('#gondericiMusteriTipi').removeClass('text-success');
+            $('#gondericiMusteriTipi').removeClass('text-alternate');
         } else if (response.category == 'Kurumsal' && response.current_type == 'Gönderici') {
-            $('#gondericiMusteriTipi').val('Kurumsal - Anlaşmalı Cari');
+            $('#gondericiMusteriTipi').val('Kurumsal');
             $('#gondericiMusteriTipi').addClass('text-success');
             $('#gondericiMusteriTipi').removeClass('text-primary');
+            $('#gondericiMusteriTipi').removeClass('text-alternate');
+        } else if (response.category == 'Anlaşmalı' && response.current_type == 'Gönderici') {
+            $('#gondericiMusteriTipi').val('Anlaşmalı');
+            $('#gondericiMusteriTipi').addClass('text-alternate');
+            $('#gondericiMusteriTipi').removeClass('text-primary');
+            $('#gondericiMusteriTipi').removeClass('text-success');
         }
 
         let legal_number = response.tckn != '' ? response.tckn : response.vkn;
@@ -380,13 +384,14 @@ function getPriceForCustomers() {
             method: 'POST',
             data: {
                 _token: token,
-                currentCode: currentCode,
-                receiverCode: receiverCode,
-                paymentType: PaymentType,
+                gondericiCariKodu: currentCode,
+                aliciCariKodu: receiverCode,
+                odemeTipi: PaymentType,
                 cargoType: $('#selectCargoType').val(),
                 desi: parseFloat($('#labelDesi').text()),
                 desiData: getFormData($('#formPartDesiContainer')),
-                partQuantity: $('#partQuantity').text(),
+                parcaSayisi: $('#partQuantity').text(),
+
             }
         }).done(function (response) {
 
@@ -484,8 +489,8 @@ function getCustomer(name, phone, from) {
 
             let fullAddress = city + district + neighborhood + street + street2 + buildingNo + floor + door + addressNote;
 
-            let bgType = val['category'] == 'Kurumsal' ? 'bg-warning' : '';
-            let rowTitle = val['category'] == 'Kurumsal' ? 'Anlaşmalı Cari' : '';
+            let bgType = val['category'] == 'Anlaşmalı' ? 'bg-warning' : '';
+            let rowTitle = val['category'] == 'Anlaşmalı' ? 'Anlaşmalı Cari' : '';
 
             if (from == 'Gönderici') {
 
@@ -785,6 +790,13 @@ $('#aliciCariKod').keyup(function (e) {
 });
 
 function getDistance(startPoint, endPoint) {
+
+    if (startPoint == undefined)
+        return false;
+
+    if (endPoint == undefined)
+        return false;
+
 
     if (startPoint != '' && endPoint != '') {
 

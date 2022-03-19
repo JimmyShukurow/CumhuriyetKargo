@@ -132,7 +132,7 @@
                                 </div>
                                 <div class="input-group mb-1">
                                     <input type="text" readonly id="gondericiMusteriTipi"
-                                           class="form-control form-control-sm">
+                                           class="form-control form-control-sm font-weight-bold">
                                 </div>
                             </div>
 
