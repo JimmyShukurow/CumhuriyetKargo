@@ -218,6 +218,7 @@ class GetPriceForCustomersAction
             }
         }
 
+        $distribution = DistributionControlAction::run($request);
         # MobileServiceFee Start
         $location = LocalLocation::where('neighborhood', $receiver->neighborhood)->first();
 
@@ -225,7 +226,7 @@ class GetPriceForCustomersAction
         $filePrice = FilePrice::find(1);
 
         ## YK-BAD
-        if (true)
+        if ($distribution['area_type'] == 'MNG' || $receiver->mb_status == '0')
             $mobileServiceFee = 0;
         else
             if ($location != null && $location->area_type == 'MB') {

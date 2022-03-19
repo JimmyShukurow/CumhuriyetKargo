@@ -519,7 +519,7 @@ function CurrentControl($currentCode)
         return $array = ['status' => -1, 'result' => $current->name . ' isimli müşteri onaylanmamış.'];
     }
 
-    if ($current->category == 'Kurumsal' && $current->current_type == 'Gönderici') {
+    if ($current->category == 'Anlaşmalı' && $current->current_type == 'Gönderici') {
 
         $currentDate = date('Y-m-d');
         $currentDate = date('Y-m-d', strtotime($currentDate));
@@ -1074,8 +1074,8 @@ function GetGibToken()
         $datas = json_decode($result, false);
 
         return $datas;
-      
-      
+
+
     } catch (Exception $e) {
         $return = array(
             'status' => 'error',

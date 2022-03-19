@@ -1,4 +1,4 @@
-var CurrentCity = "", DistancePrice = 0, PaymentType = 'Gönderici Ödemeli', CargoType = "Dosya";
+var CurrentCity = "", ReceiverCity = "", DistancePrice = 0, PaymentType = 'Gönderici Ödemeli', CargoType = "Dosya";
 var MobilBolge = $('#add-service-19');
 var AdreseTeslim = $('#add-service-8');
 var SubeTeslim = $('#add-service-11');
@@ -169,7 +169,8 @@ function getReceiverInfo(currentCode, tryExist = false) {
 
         $('#aliciAdres').val(fullAddress);
 
-        getDistance(CurrentCity, response.city);
+        ReceiverCity = response.city;
+        getDistance(CurrentCity, ReceiverCity);
 
         getPriceForCustomers();
         DistributionControl();
@@ -338,7 +339,7 @@ function getCurrentInfo(currentCode, tryExist = false) {
             $('#gondericiAdres').val(fullAddress);
 
         CurrentCity = response.city;
-        getDistance(CurrentCity, $('#aliciIl').val());
+        getDistance(CurrentCity, ReceiverCity);
 
         $('#TahsilatFaturaTutari').trigger('keyup');
 
