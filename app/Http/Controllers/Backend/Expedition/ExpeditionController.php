@@ -115,4 +115,33 @@ class ExpeditionController extends Controller
         return view('backend.expedition.outgoing.outgoing_expeditions_modal', ['expedition' => $expedition]);
     }
 
+    public function finish(Request $request)
+    {
+        $user = Auth::user();
+        $expedition = Expedition::find($request->expedition_id);
+
+        if ($user->branch_details == $expedition->routes()->where('route_type', 1)->first()->branch) {
+            $expedition->update(['done' => 1]);
+            ExpeditionMovementAction::run($expedition->id, $user->id, 'Sefer bitirildi!.');
+            return response()->json([
+                'status' => 1,
+                'message' => 'Sefer bitirildi',
+            ]);
+
+        }
+        if ($user->branch_details == $expedition->routes()->where('route_type', -1)->first()->branch) {
+            $expedition->update(['done' => 1]);
+            ExpeditionMovementAction::run($expedition->id, $user->id, 'Sefer bitirildi!.');
+            return response()->json([
+                'status' => 1,
+                'message' => 'Sefer bitirildi',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 0,
+            'message' => 'Seferi Sadece Varış Birimi veya Çıkış Birimi Bitirebilir!',
+        ]);
+    }
+
 }

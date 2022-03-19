@@ -93,4 +93,20 @@ class User extends Authenticatable
         return $this->hasOne(TransshipmentCenters::class, 'id', 'tc_code');
     }
 
+    public function getBranchAttribute()
+    {
+        return $this->user_type == 'Acente' ? $this->getAgency->agency_name . " ŞUBE" : $this->transshipment->tc_name . " TRM.";
+    }
+
+    public function getNameRoleAttribute()
+    {
+        return $this->name_surname . '(' . $this->role->display_name . ')';
+    }
+
+    public function getBranchDetailsAttribute()
+    {
+        return $this->user_type == 'Acente' ? $this->getAgency : $this->transshipment;
+
+    }
+
 }

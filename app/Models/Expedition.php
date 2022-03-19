@@ -69,4 +69,9 @@ class Expedition extends Model
         return $this->hasMany(ExpeditionMovement::class, 'expedition_id', 'id');
     }
 
+    public function seals()
+    {
+        return $this->hasMany(ExpeditionSeals::class, 'expedition_id', 'id');
+    }
+
 }

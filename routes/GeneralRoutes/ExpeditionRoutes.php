@@ -10,6 +10,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('Create', [ExpeditionController::class, 'create'])->name('create');
         Route::post('Store', [ExpeditionController::class, 'store']);
         Route::get('Details/{id?}', [ExpeditionController::class, 'Show'])->name('expedition-details');
+        Route::post('Finish/{id?}', [ExpeditionController::class, 'finish'])->name('expedition-details');
         Route::delete('Delete', [ExpeditionController::class, 'delete']);
 
         Route::get('OutGoing', [ExpeditionController::class, 'outGoing'])->name('outGoing');
