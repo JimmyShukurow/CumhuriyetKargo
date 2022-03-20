@@ -47,7 +47,7 @@ class ExpeditionCargoMobileController extends Controller
             ]);
 
 
-        $cargoes = ExpeditionCargo::where('expedition_id',$validated['expedition_id'])->where('cargo_id', $cargo->id)->where('unloading_at', null)->get()->pluck('part_no');
+        $cargoes = ExpeditionCargo::where('expedition_id', $validated['expedition_id'])->where('cargo_id', $cargo->id)->where('unloading_at', null)->get()->pluck('part_no');
         if ($cargoes->contains($ctn[1])) {
             return response()->json([
                 'status' => 0,
@@ -58,8 +58,8 @@ class ExpeditionCargoMobileController extends Controller
         $fields = $request->only('expedition_id');
         $fields['cargo_id'] = $cargo->id;
         $fields['part_no'] = $ctn[1];
-        $fields['user_id'] =$user_id;
-        CargoExpeditionMovementAction::run($ctn[0], $cargo, $user_id, $ctn[1], rand(4,10), 1, 'load_cargo_expedition', $expedition->car->plaka);
+        $fields['user_id'] = $user_id;
+        CargoExpeditionMovementAction::run($ctn[0], $cargo, $user_id, $ctn[1], rand(4, 10), 1, 'load_cargo_expedition', $expedition->car->plaka);
 
         return LoadCargoToExpeditionAction::run($fields);
     }
@@ -74,7 +74,7 @@ class ExpeditionCargoMobileController extends Controller
                 'message' => 'Plaka alanı zorunludur!',
             ]);
 
-        $expedition = Expedition::with('car','routes.branch', 'cargoes.cargo')
+        $expedition = Expedition::with('car', 'routes.branch', 'cargoes.cargo')
             ->whereHas('car', function ($query) use ($plaka) {
                 $query->where('plaka', $plaka);
             })
@@ -110,13 +110,14 @@ class ExpeditionCargoMobileController extends Controller
         ]);
     }
 
-    public function unloadCargo(Request $request){
+    public function unloadCargo(Request $request)
+    {
 
         $ctn = decryptTrackingNo($request->ctn);
         $ctn = explode(' ', $ctn);
         $expedition = Expedition::find($request->expedition_id);
         $cargo = $expedition->cargoes->filter(function ($item) use ($ctn) {
-            return $item->cargo->tracking_no ==  $ctn[0];
+            return $item->cargo->tracking_no == $ctn[0];
         })->where('part_no', $ctn[1])->first();
 
         if ($cargo == null) {
@@ -132,7 +133,7 @@ class ExpeditionCargoMobileController extends Controller
         ]);
 
         $user_id = Auth::id();
-        CargoExpeditionMovementAction::run($ctn[0], $cargo->cargo, $user_id, $ctn[1], rand(4,10), 1, 'unload_cargo_expedition', $expedition->car->plaka);
+        CargoExpeditionMovementAction::run($ctn[0], $cargo->cargo, $user_id, $ctn[1], rand(4, 10), 1, 'unload_cargo_expedition', $expedition->car->plaka);
 
         return response()->json([
             'status' => 1,
@@ -140,17 +141,19 @@ class ExpeditionCargoMobileController extends Controller
         ]);
     }
 
-    public function deleteCargo(Request $request){
+    public function deleteCargo(Request $request)
+    {
         $ctn = decryptTrackingNo($request->ctn);
         $ctn = explode(' ', $ctn);
         $expedition = Expedition::with('cargoes.cargo')->where('id', $request->expedition_id)->first();
 
         $cargo = $expedition->cargoes->filter(function ($item) use ($ctn) {
-            return $item->cargo->tracking_no ==  $ctn[0];
+            return $item->cargo->tracking_no == $ctn[0];
         })->where('part_no', $ctn[1])->first();
 
         $cargoLoader = $cargo->user;
         $userDeleter = Auth::user();
+
         $agencyControl =
             $cargoLoader->user_type == $userDeleter->user_type && ($cargoLoader->agency_code == $userDeleter->agency_code ||
                 $cargoLoader->tc_code == $userDeleter->tc_code);
@@ -165,17 +168,16 @@ class ExpeditionCargoMobileController extends Controller
 
 
 
-
         if ($cargo == null) {
             return response()->json([
                 'status' => 0,
                 'message' => 'Böyle Bir Kargo Bulunamadı!'
             ]);
         }
-        $cargo->update(['deleted_user_id' => auth()->id(), 'deleted_at' =>now()]);
+        $cargo->update(['deleted_user_id' => auth()->id(), 'deleted_at' => now()]);
 
         $user_id = Auth::id();
-        CargoExpeditionMovementAction::run($ctn[0], $cargo->cargo, $user_id, $ctn[1], rand(4,10), 1, 'delete_cargo_expedition', $expedition->car->plaka);
+        CargoExpeditionMovementAction::run($ctn[0], $cargo->cargo, $user_id, $ctn[1], rand(4, 10), 1, 'delete_cargo_expedition', $expedition->car->plaka);
 
         return response()->json([
             'status' => 1,

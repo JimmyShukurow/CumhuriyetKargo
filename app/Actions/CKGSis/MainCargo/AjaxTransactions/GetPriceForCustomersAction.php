@@ -137,13 +137,15 @@ class GetPriceForCustomersAction
                     if ($currentCategory == 'Anlaşmalı' && $receiverCategory == 'Anlaşmalı') {
                         # ===> Ödeme Taraflı Cari Anlaşmalı Fiyat Standart Fiyat
 
-                        # ===> Gönderici Ödemeli
-                        if ($paymenyType == 'Gönderici Ödemeli')
+                        # ===> Peşin Ödemeli Cari Hesap => PÖCH
+                        if ($paymenyType == 'PÖCH')
                             $currentPrice = CurrentPrices::where('current_code', $currentCode)->first();
 
                         # ===> Alıcı Ödemeli
                         else if ($paymenyType == 'Alıcı Ödemeli')
                             $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
+
+
 
                         if ($cargoType == 'Dosya') {
                             $filePrice = $currentPrice->file;

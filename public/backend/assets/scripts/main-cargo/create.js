@@ -141,9 +141,14 @@ function getReceiverInfo(currentCode, tryExist = false) {
             $('#aliciMusteriTipi').removeClass('text-success');
         }
 
+
+
         // console.log(response);
         var newOption = new Option(response.name, response.name, true, true);
         $('#aliciAdi').append(newOption).trigger('change');
+
+        if ($('#gondericiCariKod').val() != '')
+            $('.radio-payment-type').trigger('click')
 
         $('#aliciTelNo').val(response.gsm);
         $('#AliciTelefon').val(response.gsm);
@@ -351,7 +356,8 @@ function getCurrentInfo(currentCode, tryExist = false) {
             $('#radioPaymentTypeGondericiOdemeli').prop('disabled', true);
         }
 
-        $('.radio-payment-type').trigger('click')
+        if ($('#aliciCariKod').val() != '')
+            $('.radio-payment-type').trigger('click')
 
         let legal_number = response.tckn != '' ? response.tckn : response.vkn;
         $('#gondericiTCKN').val(legal_number);

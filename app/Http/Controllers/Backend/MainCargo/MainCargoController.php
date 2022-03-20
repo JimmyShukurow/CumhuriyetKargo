@@ -140,12 +140,12 @@ class MainCargoController extends Controller
             ->first();
         $postServicePercent = $postServicePercent->value;
 
-        $fee['postal_services_fee'] = ($fee['first_file_price'] * $postServicePercent) / 100;
+        $fee['postal_services_fee'] = round(($fee['first_file_price'] * $postServicePercent) / 100, 2);
 
         $totalFirst = 0;
         $totalFirstNoKDV = 0;
         $totalFirst += $fee['first_total'] + $fee['first_file_price'] + $fee['postal_services_fee'];
-        $totalFirstNoKDV = $fee['first_total'] + $fee['first_file_price'] + $fee['postal_services_fee'];
+        $totalFirstNoKDV = round($fee['first_total'] + $fee['first_file_price'] + $fee['postal_services_fee'], 2);
 
         $fee['first_total'] = round($totalFirst + ((18 * $totalFirst) / 100), 2);
         $fee['first_total_no_kdv'] = $totalFirstNoKDV;
