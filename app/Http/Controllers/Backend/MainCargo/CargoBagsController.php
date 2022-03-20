@@ -42,18 +42,27 @@ class CargoBagsController extends Controller
 
     public function getCargoBags(Request $request)
     {
+        $ids = null;
+        $branchInfo = getUserBranchInfo();
+        if ($branchInfo['type2'] == 'Acente')
+            $ids = User::where('agency_code', $branchInfo['id'])->withTrashed()->get()->pluck('id');
+        else if ($branchInfo['type2'] == 'Aktarma')
+            $ids = User::where('tc_code', $branchInfo['id'])->withTrashed()->get()->pluck('id');
+
+
         $creator = $request->creatorUser;
         $startDate = $request->startDate;
         $endDate = $request->endDate;
         $dateFilterStatus = $request->dateFilterStatus;
 
-        $data =  CargoBags::
-            selectRaw('cargo_bags.*, (select count(*) from cargo_bag_details where bag_id = cargo_bags.id and deleted_at is null and is_inside = "1")  as included_cargo_count, users.name_surname')
+        $data = CargoBags::
+        selectRaw('cargo_bags.*, (select count(*) from cargo_bag_details where bag_id = cargo_bags.id and deleted_at is null and is_inside = "1")  as included_cargo_count, users.name_surname')
             ->join('users', 'cargo_bags.creator_user_id', '=', 'users.id')
-            ->when($dateFilterStatus == 'true' , function($q) use($creator, $startDate, $endDate) {
+            ->when($dateFilterStatus == 'true', function ($q) use ($creator, $startDate, $endDate) {
                 return $q->whereRaw($creator ? "users.name_surname like '%" . $creator . "%'" : ' 1 > 0 ')
-                         ->whereRaw("cargo_bags.created_at between '" . $startDate . " 00:00:00" . "' and '" . $endDate . " 23:59:59" . "'");
-            });
+                    ->whereRaw("cargo_bags.created_at between '" . $startDate . " 00:00:00" . "' and '" . $endDate . " 23:59:59" . "'");
+            })
+            ->whereIn('creator_user_id', $ids);
 
         return datatables()->of($data)
             ->setRowId(function ($key) {
@@ -154,6 +163,7 @@ class CargoBagsController extends Controller
             ], 200);
 
     }
+
     public function deleteCargoBag(Request $request)
     {
         $cargoBag = CargoBags::find($request->destroy_id);

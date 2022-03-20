@@ -7,17 +7,13 @@ $(document).ready(function () {
         pageLength: 25,
         lengthMenu: dtLengthMenu,
         order: [
-            9, 'desc'
+            11, 'desc'
         ],
         language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
         buttons: [
             {
                 extend: 'excelHtml5',
-                exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-                },
-                title: "CK - Sistem Kullanıcıları",
                 attr: {
                     class: 'btn btn-success'
                 }
@@ -77,6 +73,8 @@ $(document).ready(function () {
             {data: 'district', name: 'district'},
             {data: 'neighborhood', name: 'neighborhood'},
             {data: 'gsm', name: 'gsm'},
+            {data: 'status', name: 'status'},
+            {data: 'confirmed', name: 'confirmed'},
             {data: 'name_surname', name: 'name_surname'},
             {data: 'created_at', name: 'created_at'},
         ],

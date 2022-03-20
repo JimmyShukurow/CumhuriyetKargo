@@ -156,6 +156,8 @@
                         <th>İlçe</th>
                         <th>Mahalle</th>
                         <th>Tel</th>
+                        <th>Statü</th>
+                        <th>Onay</th>
                         <th>Kayıt Yapan</th>
                         <th>Kayıt Tarihi</th>
                     </tr>
@@ -173,6 +175,8 @@
                         <th>İlçe</th>
                         <th>Mahalle</th>
                         <th>Tel</th>
+                        <th>Statü</th>
+                        <th>Onay</th>
                         <th>Kayıt Yapan</th>
                         <th>Kayıt Tarihi</th>
                     </tr>
@@ -190,13 +194,6 @@
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
     <script src="/backend/assets/scripts/customers/customer-details.js"></script>
     <script src="/backend/assets/scripts/customers/index.js"></script>
-
-    <link rel="stylesheet" href="/backend/assets/css/jquery.json-viewer.css">
-    <style type="text/css">
-        pre#json-renderer {
-            border: 1px solid #aaa;
-        }
-    </style>
 @endsection
 
 @section('modals')

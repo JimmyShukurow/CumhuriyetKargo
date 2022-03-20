@@ -150,7 +150,7 @@ function adresMaker(city, district, neighborhood, street, street2, building_no, 
         buildingNoX = "NO:" + building_no + " ",
         doorX = "D:" + door_no + " ",
         floorX = "KAT:" + floor + " ",
-        addressNoteX = "(" + address_note + ")";
+        addressNoteX = address_note != '' && address_note != null ? "(" + address_note + ")" : "";
 
     let fullAddress = cityX + districtX + neighborhoodX + streetX + street2X + buildingNoX + floorX + doorX + addressNoteX;
     return fullAddress;

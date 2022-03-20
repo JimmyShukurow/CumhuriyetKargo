@@ -18,15 +18,15 @@ $(document).ready(function () {
         columnDefs: [{
             orderable: false,
             className: 'select-checkbox',
-            targets: 1
+            targets: 0
         }],
         lengthMenu: dtLengthMenu,
-        order: [23, 'desc'],
+        order: [22, 'desc'],
         language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
         select: {
             style: 'multi',
-            selector: 'td:nth-child(2)'
+            selector: 'td:nth-child(1)'
         },
         buttons: [
             {
@@ -71,7 +71,7 @@ $(document).ready(function () {
                 text: 'Sütun Görünüm'
             },
         ],
-        responsive: true,
+        responsive: false,
         processing: true,
         serverSide: true,
         ajax: {
@@ -112,7 +112,6 @@ $(document).ready(function () {
             }
         },
         columns: [
-            {data: 'free_btn', name: 'free_btn'},
             {data: 'check', name: 'check'},
             {data: 'invoice_number', name: 'invoice_number'},
             {data: 'tracking_no', name: 'tracking_no'},
@@ -136,10 +135,9 @@ $(document).ready(function () {
             {data: 'system', name: 'system'},
             {data: 'name_surname', name: 'name_surname'},
             {data: 'created_at', name: 'created_at'},
-            {data: 'edit', name: 'edit'},
         ],
         // scrollY: '450px',
-        // scrollX: false,
+        scrollX: true,
     });
 
     $('#selectedExcelBtn').hide();
@@ -151,6 +149,8 @@ $(document).ready(function () {
         localStorage.clear();
     }
     // Local Storage Transaction END
+
+    $('.dataTables_scrollBody').addClass('mostly-customized-scrollbar');
 
 });
 

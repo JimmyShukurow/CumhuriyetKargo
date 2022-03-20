@@ -99,7 +99,7 @@ class MainCargoController extends Controller
 
     public function newCargo()
     {
-        $data['additional_service'] = AdditionalServices::all();
+        $data['additional_service'] = AdditionalServices::orderBy('order')->get();
         $data['cities'] = Cities::all();
 
         ## get agency district
@@ -201,7 +201,8 @@ class MainCargoController extends Controller
                 break;
 
             case 'GetPriceForCustomers':
-                return GetPriceForCustomersAction::run($request);
+                return response()
+                    ->json(GetPriceForCustomersAction::run($request), 200);
                 break;
 
             case 'CreateCargo':
@@ -213,7 +214,8 @@ class MainCargoController extends Controller
                 break;
 
             case 'DistributionControl':
-                return DistributionControlAction::run($request);
+                return response()
+                    ->json(DistributionControlAction::run($request), 200);
                 break;
 
             # INDEX TRANSACTION START
