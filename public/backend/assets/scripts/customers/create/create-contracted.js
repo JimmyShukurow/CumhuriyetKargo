@@ -14,8 +14,8 @@ $('#district').change(function () {
 $(document).ready(function () {
     $('#tax-office').select2({
         ajax: {
-            url: "/Marketing/SenderCurrents/AjaxTransaction/GetTaxOffices",
-            type: "post",
+            url: "/Customers/AjaxTransaction/GetTaxOffices",
+            type: 'POST',
             delay: 450,
             data: function (params) {
                 return {

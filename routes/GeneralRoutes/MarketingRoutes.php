@@ -13,14 +13,14 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::group(['prefix' => 'Marketing'], function () {
 
 
-        Route::group(['middleware' => 'SenderCurrentsMid'], function () {
-            Route::group(['prefix' => 'SenderCurrents', 'as' => 'senderCurrents.'], function () {
-                Route::post('AjaxTransaction/{transaction}', [SenderCurrentController::class, 'ajaxTransaction']);
-                Route::get('GetCurrents', [SenderCurrentController::class, 'getCurrents'])->name('getCurrents');
-                Route::get('CurrentContract/{CurrentCode}', [SenderCurrentController::class, 'printCurrentContract']);
-            });
-            Route::resource('SenderCurrents', SenderCurrentController::class);
+        Route::group(['prefix' => 'SenderCurrents', 'as' => 'senderCurrents.', 'middleware' => 'SenderCurrentsMid'], function () {
+            Route::post('AjaxTransaction/{transaction}', [SenderCurrentController::class, 'ajaxTransaction']);
+            Route::get('GetCurrents', [SenderCurrentController::class, 'getCurrents'])->name('getCurrents');
+            Route::get('CurrentContract/{CurrentCode}', [SenderCurrentController::class, 'printCurrentContract']);
         });
+        Route::resource('SenderCurrents', SenderCurrentController::class)
+            ->middleware('SenderCurrentsMid');
+
 
         Route::group(['middleware' => 'GeneralServicesFeeMid'], function () {
             Route::group(['prefix' => 'ServiceFees', 'as' => 'servicefee.'], function () {
