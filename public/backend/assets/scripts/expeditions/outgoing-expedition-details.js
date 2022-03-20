@@ -71,6 +71,7 @@ function endExpedition(expedition) {
             ToastMessage('error', response.message, 'HATA!');
         }else {
             ToastMessage('success', response.message, 'BİTİRİLDİ!');
+            location.reload();
         }
     }).error(function(jqXHR, exception) {
         ToastMessage('error', response.message, 'HATA!');

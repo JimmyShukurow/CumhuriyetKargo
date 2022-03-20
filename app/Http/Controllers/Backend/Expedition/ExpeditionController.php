@@ -120,6 +120,13 @@ class ExpeditionController extends Controller
         $user = Auth::user();
         $expedition = Expedition::find($request->expedition_id);
 
+        if ($expedition->done == 1){
+            return response()->json([
+                'status' => 0,
+                'message' => 'Bu sefer zaten bitirilmiş!',
+            ]);
+        }
+        //Burda Cikish shube oldugu kontrol ediliyor
         if ($user->branch_details == $expedition->routes()->where('route_type', 1)->first()->branch) {
             $expedition->update(['done' => 1]);
             ExpeditionMovementAction::run($expedition->id, $user->id, 'Sefer bitirildi!.');
@@ -129,6 +136,7 @@ class ExpeditionController extends Controller
             ]);
 
         }
+        //Burda Varish shube oldugu kontrol ediliyor
         if ($user->branch_details == $expedition->routes()->where('route_type', -1)->first()->branch) {
             $expedition->update(['done' => 1]);
             ExpeditionMovementAction::run($expedition->id, $user->id, 'Sefer bitirildi!.');
