@@ -153,8 +153,9 @@ class ExpeditionCargoMobileController extends Controller
         if (!$agencyControl) {
             return response()->json([
                 'status' => 0,
-                'message' => 'Kargoyu Sadece Oluşturan Birim Silebilir!'
+                'message' => 'Kargo Silme İşlemini Sadece Kargoyuyükleyen Birim Yapabilir!'
             ]);
+
         };
 
         $cargo = $expedition->cargoes->filter(function ($item) use ($ctn) {
