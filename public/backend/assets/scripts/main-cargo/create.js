@@ -267,6 +267,10 @@ function DistributionControl(neighborhood = '') {
                         MobilBolge.prop('disabled', true);
                     }
 
+                    $('#radioPaymentTypeGondericiOdemeli').prop('disabled', false);
+                    $('#radioPaymentTypeGondericiOdemeli').prop('checked', true);
+                    $('#radioPaymentTypePOCH').prop('disabled', true);
+
                     $('.partner-service-0').prop('disabled', true);
                     $('.partner-service-0').prop('checked', false);
 
