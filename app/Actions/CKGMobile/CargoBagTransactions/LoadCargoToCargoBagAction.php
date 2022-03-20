@@ -55,6 +55,11 @@ class LoadCargoToCargoBagAction
                     'status' => 0,
                     'message' => 'Kargo bulunamadı!'
                 ];
+            elseif ($cargo->transporter	!= 'CK')
+                return [
+                    'status' => 0,
+                    'message' => 'Bu kargonun taşımasını Cumhuriyet Kargo yapmadığından torbaya yükleyemezsiniz!'
+                ];
             else {
 
                 #debit control
