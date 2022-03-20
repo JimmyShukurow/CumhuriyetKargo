@@ -252,7 +252,7 @@
                                     Ödemeli</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="radioPaymentType"
+                                <input class="form-check-input radio-payment-type" type="radio" name="radioPaymentType"
                                        id="radioPaymentTypePOCH"
                                        value="PÖCH" disabled>
 
@@ -365,7 +365,7 @@
                                 </div>
                                 <div class="input-group mb-1">
                                     <input type="text" readonly id="aliciMusteriTipi"
-                                           class="form-control form-control-sm">
+                                           class="form-control font-weight-bold form-control-sm">
                                 </div>
                             </div>
                             <div class="col-md-3">
