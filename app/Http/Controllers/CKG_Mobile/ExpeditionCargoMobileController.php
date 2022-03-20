@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CKG_Mobile;
 
+use App\Actions\CKGMobile\Expedition\CargoExpeditionMovementAction;
 use App\Actions\CKGMobile\Expedition\LoadCargoToExpeditionAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Expedition\LoadCargoToExpeditionRequest;
@@ -38,6 +39,11 @@ class ExpeditionCargoMobileController extends Controller
                 'status' => 0,
                 'message' => 'Kargo bulunamadı!',
             ]);
+        elseif ($cargo->transporter != 'CK')
+            return response()->json([
+                'status' => 0,
+                'message' => 'Bu kargonun taşımasını Cumhuriyet Kargo yapmadığından yükleme işlemi gerçekletiremezsiniz!',
+            ]);
 
 
         $cargoes = ExpeditionCargo::where('expedition_id',$validated['expedition_id'])->where('cargo_id', $cargo->id)->where('unloading_at', null)->get()->pluck('part_no');
@@ -47,11 +53,12 @@ class ExpeditionCargoMobileController extends Controller
                 'message' => 'Bu Kargo Zaten Araçta Var',
             ]);
         }
-
+        $user_id = Auth::id();
         $fields = $request->only('expedition_id');
         $fields['cargo_id'] = $cargo->id;
         $fields['part_no'] = $ctn[1];
-        $fields['user_id'] = Auth::id();
+        $fields['user_id'] =$user_id;
+        CargoExpeditionMovementAction::run($ctn[0], $cargo, $user_id, $ctn[1], rand(4,10), 1, 'load_cargo_expedition', $expedition->car->plaka);
 
         return LoadCargoToExpeditionAction::run($fields);
     }
@@ -123,6 +130,9 @@ class ExpeditionCargoMobileController extends Controller
             'unloading_at' => now(),
         ]);
 
+        $user_id = Auth::id();
+        CargoExpeditionMovementAction::run($ctn[0], $cargo->cargo, $user_id, $ctn[1], rand(4,10), 1, 'unload_cargo_expedition', $expedition->car->plaka);
+
         return response()->json([
             'status' => 1,
             'message' => 'Kargo Indirildi!'
@@ -145,6 +155,8 @@ class ExpeditionCargoMobileController extends Controller
         }
         $cargo->update(['deleted_user_id' => auth()->id(), 'deleted_at' =>now()]);
 
+        $user_id = Auth::id();
+        CargoExpeditionMovementAction::run($ctn[0], $cargo->cargo, $user_id, $ctn[1], rand(4,10), 1, 'delete_cargo_expedition', $expedition->car->plaka);
 
         return response()->json([
             'status' => 1,
