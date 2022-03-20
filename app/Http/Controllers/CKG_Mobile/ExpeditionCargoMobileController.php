@@ -145,11 +145,15 @@ class ExpeditionCargoMobileController extends Controller
         $ctn = explode(' ', $ctn);
         $expedition = Expedition::with('cargoes.cargo')->where('id', $request->expedition_id)->first();
 
-        $expeditionCreator = $expedition->user;
+        $cargo = $expedition->cargoes->filter(function ($item) use ($ctn) {
+            return $item->cargo->tracking_no ==  $ctn[0];
+        })->where('part_no', $ctn[1])->first();
+
+        $cargoLoader = $cargo->user;
         $userDeleter = Auth::user();
         $agencyControl =
-            $expeditionCreator->user_type == $userDeleter->user_type && ($expeditionCreator->agency_code == $userDeleter->agency_code ||
-                $expeditionCreator->tc_code == $userDeleter->tc_code);
+            $cargoLoader->user_type == $userDeleter->user_type && ($cargoLoader->agency_code == $userDeleter->agency_code ||
+                $cargoLoader->tc_code == $userDeleter->tc_code);
         if (!$agencyControl) {
             return response()->json([
                 'status' => 0,
@@ -158,9 +162,7 @@ class ExpeditionCargoMobileController extends Controller
 
         };
 
-        $cargo = $expedition->cargoes->filter(function ($item) use ($ctn) {
-            return $item->cargo->tracking_no ==  $ctn[0];
-        })->where('part_no', $ctn[1])->first();
+
 
 
 
