@@ -3,7 +3,6 @@
 namespace App\Actions\CKGMobile\Expedition;
 
 use App\Models\ExpeditionCargo;
-use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class LoadCargoToExpeditionAction
