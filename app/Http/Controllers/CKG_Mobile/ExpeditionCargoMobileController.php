@@ -11,6 +11,7 @@ use App\Http\Resources\CKGMobile\Expedition\ExpeditionResource;
 use App\Models\Cargoes;
 use App\Models\Expedition;
 use App\Models\ExpeditionCargo;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -143,9 +144,24 @@ class ExpeditionCargoMobileController extends Controller
         $ctn = decryptTrackingNo($request->ctn);
         $ctn = explode(' ', $ctn);
         $expedition = Expedition::with('cargoes.cargo')->where('id', $request->expedition_id)->first();
+
+        $expeditionCreator = $expedition->user;
+        $userDeleter = Auth::user();
+        $agencyControl =
+            $expeditionCreator->user_type == $userDeleter->user_type && ($expeditionCreator->agency_code == $userDeleter->agency_code ||
+                $expeditionCreator->tc_code == $userDeleter->tc_code);
+        if (!$agencyControl) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Seferi Sadece Oluşturan Birim Silebilir!'
+            ]);
+        };
+        
         $cargo = $expedition->cargoes->filter(function ($item) use ($ctn) {
             return $item->cargo->tracking_no ==  $ctn[0];
         })->where('part_no', $ctn[1])->first();
+
+
 
         if ($cargo == null) {
             return response()->json([
