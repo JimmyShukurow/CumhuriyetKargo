@@ -73,7 +73,7 @@
                                 <div class="card-body">
                                     <div style="overflow-x: auto; ">
                                         <table style="white-space: nowrap;"
-                                               class="table table-bordered  TableAdditionalServices table-striped Table30Padding mb-5">
+                                               class="table table-bordered  table-hover TableAdditionalServices table-striped Table30Padding mb-5">
                                             <thead>
                                             <tr>
                                                 <th>Ek Hizmet</th>
