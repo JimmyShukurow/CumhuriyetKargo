@@ -128,15 +128,17 @@ function getReceiverInfo(currentCode, tryExist = false) {
             $('#aliciMusteriTipi').addClass('text-primary');
             $('#aliciMusteriTipi').removeClass('text-success');
             $('#aliciMusteriTipi').removeClass('text-alternate');
-        } else if (response.category == 'Kurumsal' && response.current_type == 'Gönderici') {
-            $('#aliciMusteriTipi').val('Kurumsal');
-            $('#aliciMusteriTipi').addClass('text-alternate');
-            $('#aliciMusteriTipi').removeClass('text-success');
-            $('#aliciMusteriTipi').removeClass('text-primary');
-        } else if (response.category == 'Kurumsal' && response.current_type == 'Alıcı') {
+
+        } else if (response.category == 'Kurumsal') {
             $('#aliciMusteriTipi').val('Kurumsal');
             $('#aliciMusteriTipi').addClass('text-success');
             $('#aliciMusteriTipi').removeClass('text-primary');
+            $('#aliciMusteriTipi').removeClass('text-alternate');
+        } else if (response.category == 'Anlaşmalı') {
+            $('#aliciMusteriTipi').val('Anlaşmalı');
+            $('#aliciMusteriTipi').addClass('text-alternate');
+            $('#aliciMusteriTipi').removeClass('text-primary');
+            $('#aliciMusteriTipi').removeClass('text-success');
         }
 
         // console.log(response);
@@ -245,10 +247,16 @@ function DistributionControl(neighborhood = '') {
                         MobilBolge.click();
                         MobilBolge.prop('disabled', true);
                     }
-                    $('.partner-service-0').prop('disabled', false);
 
-                    calculateTotalPrice();
+
+                    $('.partner-service-0').prop('disabled', false);
+                    $('.add-service-default-1').prop('checked', true);
+
                     clearAddServices();
+                    surfAddServices();
+                    calculateTotalPrice();
+
+
                 } else if (response.area_type == 'MNG') {
 
                     if (MobilBolge.prop('checked') == true) {
@@ -260,6 +268,9 @@ function DistributionControl(neighborhood = '') {
                     $('.partner-service-0').prop('disabled', true);
                     $('.partner-service-0').prop('checked', false);
 
+                    clearAddServices();
+                    surfAddServices();
+                    calculateTotalPrice();
                 }
             }
 
@@ -278,6 +289,7 @@ function clearAddServices() {
 }
 
 function getCurrentInfo(currentCode, tryExist = false) {
+
 
     // block div
     $('#divider-gonderici').block({
@@ -313,17 +325,33 @@ function getCurrentInfo(currentCode, tryExist = false) {
             $('#gondericiMusteriTipi').addClass('text-primary');
             $('#gondericiMusteriTipi').removeClass('text-success');
             $('#gondericiMusteriTipi').removeClass('text-alternate');
+
+            $('#radioPaymentTypePOCH').prop('disabled', true);
+            $('#radioPaymentTypeGondericiOdemeli').prop('disabled', false);
+            $('#radioPaymentTypeGondericiOdemeli').prop('checked', true);
+
         } else if (response.category == 'Kurumsal' && response.current_type == 'Gönderici') {
             $('#gondericiMusteriTipi').val('Kurumsal');
             $('#gondericiMusteriTipi').addClass('text-success');
             $('#gondericiMusteriTipi').removeClass('text-primary');
             $('#gondericiMusteriTipi').removeClass('text-alternate');
+
+            $('#radioPaymentTypePOCH').prop('disabled', true);
+            $('#radioPaymentTypeGondericiOdemeli').prop('disabled', false);
+            $('#radioPaymentTypeGondericiOdemeli').prop('checked', true);
+
         } else if (response.category == 'Anlaşmalı' && response.current_type == 'Gönderici') {
             $('#gondericiMusteriTipi').val('Anlaşmalı');
             $('#gondericiMusteriTipi').addClass('text-alternate');
             $('#gondericiMusteriTipi').removeClass('text-primary');
             $('#gondericiMusteriTipi').removeClass('text-success');
+
+            $('#radioPaymentTypePOCH').prop('disabled', false);
+            $('#radioPaymentTypePOCH').prop('checked', true);
+            $('#radioPaymentTypeGondericiOdemeli').prop('disabled', true);
         }
+
+        $('.radio-payment-type').trigger('click')
 
         let legal_number = response.tckn != '' ? response.tckn : response.vkn;
         $('#gondericiTCKN').val(legal_number);
@@ -399,7 +427,7 @@ function getPriceForCustomers() {
                 _token: token,
                 gondericiCariKodu: currentCode,
                 aliciCariKodu: receiverCode,
-                odemeTipi: PaymentType,
+                odemeTipi: $('input[name="radioPaymentType"]:checked').val(),
                 cargoType: $('#selectCargoType').val(),
                 desi: parseFloat($('#labelDesi').text()),
                 desiData: getFormData($('#formPartDesiContainer')),
@@ -664,6 +692,9 @@ $('.radio-payment-type').click(function () {
     let receiverSelect = $('#aliciAdi').select2('data');
     let currentSelect = $('#gondericiAdi').select2('data');
 
+    PaymentType = $('input[name="radioPaymentType"]:checked').val();
+
+
     if (receiverSelect.length == 0 || currentSelect.length == 0) {
         ToastMessage('error', 'Önce Göndericiyi ve Alıcıyı Seçmelisiniz!', 'Hata!');
         return false;
@@ -675,8 +706,7 @@ $('.radio-payment-type').click(function () {
         $('#paymentType').prop('disabled', true);
     } else {
 
-        PaymentType = $('input[name="radioPaymentType"]:checked').val();
-        if (PaymentType != 'Alıcı Ödemeli' && PaymentType != 'Gönderici Ödemeli') {
+        if (PaymentType != 'Alıcı Ödemeli' && PaymentType != 'Gönderici Ödemeli' && PaymentType != 'PÖCH') {
             ToastMessage('error', 'Lütfen geçerli bir ödeme tipi seçiniz!');
             return false;
         }
@@ -687,6 +717,7 @@ $('.radio-payment-type').click(function () {
 
         $('#fakeButton').trigger('click');
     }
+
 
     if (PaymentType == 'Alıcı Ödemeli') {
 
@@ -703,6 +734,14 @@ $('.radio-payment-type').click(function () {
 
         $('#selectCollectionType').val('NAKİT')
         $('#tahsilatAciklama').val('Kargo nakit tahsilat:')
+    } else if (PaymentType == 'PÖCH') {
+
+        $('#selectCollectionType').attr('disabled', 'disabled');
+        $('#tahsilatOnayKodu').val('').attr('disabled', 'disabled');
+        $('#tahsilatKartSahibi').val('').attr('disabled', 'disabled');
+
+        $('#tahsilatAciklama').val('Peşin ödemeli cari hesap:')
+
     }
 
 });
@@ -1181,7 +1220,7 @@ function CalculateDesi(RealDesi, PartNumber, clickButton) {
             endPoint: $('#aliciIl').val(),
             desi: RealDesi,
             cargoType: CargoType,
-            paymentType: PaymentType,
+            paymentType: $('input[name="radioPaymentType"]:checked').val(),
             gondericiCariKodu: $('#gondericiCariKod').val(),
             aliciCariKodu: $('#aliciCariKod').val(),
             desiData: getFormData($('#formPartDesiContainer')),
@@ -1232,7 +1271,7 @@ $('#add-service-tahsilatli').click(function () {
         $('#TahsilatFaturaTutari').prop('readonly', false);
         ToastMessage('info', 'Tahsilatlı kargo aktif, lütfen tahsilat fatura tutarını giriniz.', 'Bilgi');
 
-        if ($('#add-service-tahsilatli').prop('checked') == true && PaymentType == 'Alıcı Ödemeli')
+        if ($('#add-service-tahsilatli').prop('checked') == true && $('input[name="radioPaymentType"]:checked').val() == 'Alıcı Ödemeli')
             ToastMessage('error', 'Alıcı ödemeli tahsilatlı kargo çıkaramazsınız. Sadece gönderici ödemeli tahsilatlı kargo çıkarılabilir!', 'Hata!');
 
         $('#TahsilatFaturaTutari').trigger('keyup');
@@ -1276,6 +1315,7 @@ $(document).ready(function () {
 })
 
 function checkCurrent() {
+
     $.ajax('/MainCargo/AjaxTransactions/GetCustomer', {
         method: 'POST',
         data: {
@@ -1393,7 +1433,7 @@ function createCargo() {
             aliciCariKodu: $('#aliciCariKod').val(),
             gonderiTuru: $('#selectCargoType').val(),
             cargoType: CargoType,
-            odemeTipi: PaymentType,
+            odemeTipi: $('input[name="radioPaymentType"]:checked').val(),
             desi: $('#labelDesi').text(),
             parcaSayisi: $('#partQuantity').text(),
             tahsilatliKargo: $('#add-service-tahsilatli').prop('checked'),
@@ -1486,7 +1526,7 @@ $('#btnCargoComplate').click(delay(function () {
         return false;
     }
 
-    if ($('#add-service-tahsilatli').prop('checked') == true && PaymentType == 'Alıcı Ödemeli') {
+    if ($('#add-service-tahsilatli').prop('checked') == true && $('input[name="radioPaymentType"]:checked').val() == 'Alıcı Ödemeli') {
         ToastMessage('error', 'Alıcı ödemeli tahsilatlı kargo çıkaramazsınız. Sadece gönderici ödemeli tahsilatlı kargo çıkarılabilir!', 'Hata!');
         return false;
     }
@@ -1510,7 +1550,7 @@ $('#btnCargoComplate').click(delay(function () {
         return false;
     }
 
-    if (PaymentType == 'Gönderici Ödemeli') {
+    if ($('input[name="radioPaymentType"]:checked').val() == 'Gönderici Ödemeli') {
         if ($('#selectCollectionType').val() == 'POS' && $('#tahsilatOnayKodu').val().trim() == '') {
             ToastMessage('error', 'Lütfen postan çıkan fiş üzerindeki onay kodunu giriniz.', 'Hata');
             goCreate = false;

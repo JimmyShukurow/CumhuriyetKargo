@@ -210,7 +210,12 @@ function Decrypte4x($key)
 
 function SendSMS($text, $number, $subject = 'UNKNOWN', $heading = 'CUMHURIYETK', $ctn = '')
 {
-    $xmlContent = '<?xml version="1.0"?>
+
+    if (env('APP_DEBUG') == true) {
+        return true;
+    } else {
+
+        $xmlContent = '<?xml version="1.0"?>
              <SMS>
                  <authentication>
                      <username>cumhuriyetkargo</username>
@@ -227,32 +232,34 @@ function SendSMS($text, $number, $subject = 'UNKNOWN', $heading = 'CUMHURIYETK',
                  </receivers>
              </SMS>';
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_HEADER, 0);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_URL, "http://panel.kayseritoplusms.com/xmlapi/sendsms");
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlContent);
-    $xmlArrayAlici = simplexml_load_string(curl_exec($ch));
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, "http://panel.kayseritoplusms.com/xmlapi/sendsms");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlContent);
+        $xmlArrayAlici = simplexml_load_string(curl_exec($ch));
 
-    $insert = SentSms::create([
-        'company' => 'KAYSERİ TOPLU SMS',
-        'heading' => $heading,
-        'subject' => tr_strtoupper($subject),
-        'sms_content' => $text,
-        'phone' => $number,
-        'length' => strlen($text),
-        'quantity' => intval((strlen($text) / 155)) + 1,
-        'causer_user_id' => Auth::id(),
-        'ip_address' => request()->ip(),
-        'ctn' => $ctn,
-        'result' => $xmlArrayAlici->status == 'OK' ? '1' : '0',
-    ]);
+        $insert = SentSms::create([
+            'company' => 'KAYSERİ TOPLU SMS',
+            'heading' => $heading,
+            'subject' => tr_strtoupper($subject),
+            'sms_content' => $text,
+            'phone' => $number,
+            'length' => strlen($text),
+            'quantity' => intval((strlen($text) / 155)) + 1,
+            'causer_user_id' => Auth::id(),
+            'ip_address' => request()->ip(),
+            'ctn' => $ctn,
+            'result' => $xmlArrayAlici->status == 'OK' ? '1' : '0',
+        ]);
 
-    if ($xmlArrayAlici->status == "OK") {
-        return true;
-    } else
-        return false;
+        if ($xmlArrayAlici->status == "OK") {
+            return true;
+        } else
+            return false;
+    }
+
 }
 
 function SendSMS2($text, $number, $subject = 'UNKNOWN', $heading = 'CUMHURIYETK', $ctn = '')
@@ -1206,4 +1213,27 @@ function CreateNewCurrentNumber()
     }
 
     return $current_code;
+}
+
+function PaymentTypeColor($paymentType)
+{
+    switch ($paymentType) {
+        case 'Gönderici Ödemeli':
+            $color = '<b class="text-alternate">GÖ</b>';
+            break;
+
+        case 'Alıcı Ödemeli':
+            $color = '<b class="text-dark">AÖ</b>';
+            break;
+
+        case 'PÖCH':
+            $color = '<b class="text-primary">PÖCH</b>';
+            break;
+
+        default:
+            $color = '<b class="text-warning">' . $paymentType . '</b>';
+            break;
+    }
+
+    return $color;
 }

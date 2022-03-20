@@ -70,7 +70,7 @@ class GetMainCargoesAction
 //                return '<b class="text-dark">' . $cargoes->invoice_number . '</b>';
 //            })
             ->editColumn('payment_type', function ($cargoes) {
-                return $cargoes->payment_type == 'Gönderici Ödemeli' ? '<b class="text-alternate">' . 'GÖ' . '</b>' : '<b class="text-dark">' . 'AÖ' . '</b>';
+                return PaymentTypeColor($cargoes->payment_type);
             })
             ->editColumn('receiver_address', function ($cargoes) {
                 return substr($cargoes->receiver_address, 0, 30);

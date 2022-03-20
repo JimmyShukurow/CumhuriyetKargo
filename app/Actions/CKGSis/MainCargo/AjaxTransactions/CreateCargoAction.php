@@ -65,10 +65,25 @@ class CreateCargoAction
         if ($validator->fails())
             return response()->json(['status' => '0', 'errors' => $validator->getMessageBag()->toArray()], 200);
 
-        ## YK-BAD
-        if ($request->odemeTipi == 'Alıcı Ödemeli')
-            return response()
-                ->json(['status' => -1, 'message' => 'Alıcı ödemeli kargo kesimine izin verilmiyor!'], 200);
+        $distribution = DistributionControlAction::run($request);
+        $arrivalTC = TransshipmentCenters::find(9);
+        $arrivalAgency = Agencies::find(1);
+
+        $transporter = null;
+        if ($distribution['status'] == '1' && $distribution['area_type'] == 'MNG') {
+            $transporter = 'MNG';
+            $arrivalAgency->id = -1;
+            $arrivalTC->id = -1;
+        } else if ($distribution['status'] == '1' && $distribution['area_type'] != 'MNG') {
+            $transporter = 'CK';
+            $arrivalTC = TransshipmentCenters::find($distribution['arrival_tc_code']);
+            $arrivalAgency = Agencies::find($distribution['arrival_agency_code']);
+        }
+
+        if ($transporter == 'MNG')
+            if ($request->odemeTipi == 'Alıcı Ödemeli')
+                return response()
+                    ->json(['status' => -1, 'message' => 'Partner firmanın taşıyacağı kargolar Alıcı Ödemeli olamaz!'], 200);
 
         if (($request->gonderiTuru != 'Dosya' && $request->gonderiTuru != 'Mi') && $request->desi == 0)
             return response()
@@ -108,22 +123,6 @@ class CreateCargoAction
         $permission_collectible_cargo = Settings::where('key', 'collectible_cargo')->first();
 
 
-        $distribution = DistributionControlAction::run($request);
-        $arrivalTC = TransshipmentCenters::find(9);
-        $arrivalAgency = Agencies::find(1);
-
-        $transporter = null;
-        if ($distribution['status'] == '1' && $distribution['area_type'] == 'MNG') {
-            $transporter = 'MNG';
-            $arrivalAgency->id = -1;
-            $arrivalTC->id = -1;
-        } else if ($distribution['status'] == '1' && $distribution['area_type'] != 'MNG') {
-            $transporter = 'CK';
-            $arrivalTC = TransshipmentCenters::find($distribution['arrival_tc_code']);
-            $arrivalAgency = Agencies::find($distribution['arrival_agency_code']);
-        }
-
-
         ## customers control
         $currentState = CurrentControl($current->current_code);
         $receiverState = CurrentControl($receiver->current_code);
@@ -161,6 +160,10 @@ class CreateCargoAction
                     return response()
                         ->json(['status' => -1, 'message' => $service->service_name . ' hizmeti şu anda pasif durumda, bu hizmeti şu anda kulanamazsınız!'], 200);
                     break;
+                }
+                if ($transporter == 'MNG' && $service->partner_status == '0') {
+                    return response()
+                        ->json(['status' => -1, 'message' => 'Taşıyan partner firma olduğundan ' . $service->service_name . ' hizmetini kulanamazsınız!'], 200);
                 }
                 $addServicePrice += $service->price;
             }
