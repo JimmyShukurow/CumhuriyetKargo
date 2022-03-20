@@ -80,7 +80,8 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->hasOne(Roles::class, 'id', 'role_id');
+        return $this->hasOne(Roles::class, 'id', 'role_id')
+            ->select(['id', 'display_name']);
     }
 
     public function getAgency()

@@ -368,11 +368,11 @@
                                                                class="nav-link active">Ana Hareketler</a>
                                                         </li>
 
-                                                        <li class="nav-item">
-                                                            <a data-toggle="tab" href="#tab-eg5-1" class="nav-link">
-                                                                Detaylı Hareketler
-                                                            </a>
-                                                        </li>
+{{--                                                        <li class="nav-item">--}}
+{{--                                                            <a data-toggle="tab" href="#tab-eg5-1" class="nav-link">--}}
+{{--                                                                Detaylı Hareketler--}}
+{{--                                                            </a>--}}
+{{--                                                        </li>--}}
                                                     </ul>
                                                 </div>
                                                 <div class="card-body">
@@ -388,13 +388,14 @@
                                                                         <th>Durum</th>
                                                                         <th>Bilgi</th>
                                                                         <th>Parça</th>
+                                                                        <th>Kullanıcı</th>
                                                                         <th>İşlem Zamanı</th>
                                                                         <th></th>
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody id="tbodyCargoMovements">
                                                                     <tr>
-                                                                        <td colspan="4" class="text-center">Burda hiç
+                                                                        <td colspan="5" class="text-center">Burda hiç
                                                                             veri yok.
                                                                         </td>
                                                                     </tr>
