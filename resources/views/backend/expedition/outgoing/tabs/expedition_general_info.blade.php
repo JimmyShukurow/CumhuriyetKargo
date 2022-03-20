@@ -48,7 +48,7 @@
                 </tr>
                 <tr>
                     <td class="static"> Toplam Kargo Sayısı</td>
-                    <td> <b> {{ $expedition->cargoes->count() == 0 ? ' Kargo Yok' : $expedition->cargoes->count() }} </b></td>
+                    <td id="totalCargoCount"> <b> {{ $expedition->cargoes->count() == 0 ? ' Kargo Yok' : $expedition->cargoes->count() }} </b></td>
                 </tr>
                 <tr>
                     <td class="static">Kayıt Tarihi:</td>
