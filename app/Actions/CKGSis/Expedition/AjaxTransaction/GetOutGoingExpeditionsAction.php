@@ -78,7 +78,7 @@ class GetOutGoingExpeditionsAction
                 $key['arrival_branch'] = $key->arrival_branch->branch->tc_name . ' TRM.';
 
             $key['route_count'] = $key->routes->count() - 2;
-            $key['cargo_count'] = $key->cargoes->count();
+            $key['cargo_count'] = $key->cargoes->groupBy('cargo_id')->count();
         });
 
 
