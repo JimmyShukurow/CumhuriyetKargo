@@ -142,13 +142,10 @@ function getReceiverInfo(currentCode, tryExist = false) {
         }
 
 
-
         // console.log(response);
         var newOption = new Option(response.name, response.name, true, true);
         $('#aliciAdi').append(newOption).trigger('change');
 
-        if ($('#gondericiCariKod').val() != '')
-            $('.radio-payment-type').trigger('click')
 
         $('#aliciTelNo').val(response.gsm);
         $('#AliciTelefon').val(response.gsm);
