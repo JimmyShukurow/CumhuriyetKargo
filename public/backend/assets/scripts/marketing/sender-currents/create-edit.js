@@ -41,7 +41,7 @@ $(document).ready(function () {
 
     $('#agency').select2({
         ajax: {
-            url: "/Marketing/PriceDraft/AjaxTransaction/GetAgencies",
+            url: "/Marketing/SenderCurrents/AjaxTransaction/GetAgencies",
             type: "post",
             delay: 450,
             data: function (params) {

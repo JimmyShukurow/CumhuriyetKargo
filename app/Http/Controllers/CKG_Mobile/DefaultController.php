@@ -129,6 +129,11 @@ class DefaultController extends Controller
                     ->json(['count' => $count], 200);
                 break;
 
+            case 'GetVersion':
+                return response()
+                    ->json(['status' => 1, 'version' => 0, 'link' => ''], 200);
+                break;
+
             default:
                 $data = 'no-case';
                 break;

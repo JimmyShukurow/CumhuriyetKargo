@@ -67,7 +67,7 @@
                             <thead>
                             <tr>
                                 <th>Fatura numarası</th>
-                                <th>Kargo Adeti</th>
+                                <th>Parça No</th>
                                 <th>Kargo Tipi</th>
                                 <th>Alıcı</th>
                                 <th>Gönderici</th>
