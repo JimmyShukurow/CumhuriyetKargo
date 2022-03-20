@@ -52,29 +52,29 @@ class CronForTicketCommand extends Command
             ->get();
 
 
-        foreach ($tickets as $key) {
-
-            $update = Tickets::find($key->id)
-                ->update([
-                    'status' => 'KAPANDI',
-                ]);
-
-            $insert = TicketDetails::create([
-                'ticket_id' => $key->id,
-                'user_id' => 0,
-                'message' => '#### ==> Status Updated <== #### to:Kapandı',
-                'file1' => '',
-                'file2' => '',
-                'file3' => '',
-                'file4' => '',
-            ]);
-
-            activity()
-                ->causedBy(0)
-                ->performedOn($key)
-                ->inLog('Ticket Updated')
-                ->log('Destek talebine 24 saat içerisinde yanıt gelmediğinden Sistem tarafından, durumu KAPANDI olarak güncellendi.');
-        }
+//        foreach ($tickets as $key) {
+//
+//            $update = Tickets::find($key->id)
+//                ->update([
+//                    'status' => 'KAPANDI',
+//                ]);
+//
+//            $insert = TicketDetails::create([
+//                'ticket_id' => $key->id,
+//                'user_id' => 0,
+//                'message' => '#### ==> Status Updated <== #### to:Kapandı',
+//                'file1' => '',
+//                'file2' => '',
+//                'file3' => '',
+//                'file4' => '',
+//            ]);
+//
+//            activity()
+//                ->causedBy(0)
+//                ->performedOn($key)
+//                ->inLog('Ticket Updated')
+//                ->log('Destek talebine 24 saat içerisinde yanıt gelmediğinden Sistem tarafından, durumu KAPANDI olarak güncellendi.');
+//        }
         info('cron for ticket worked!');
     }
 }

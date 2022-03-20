@@ -50,6 +50,11 @@ class Tickets extends Model
             ->orderBy('id', 'desc');
     }
 
+    public function replies()
+    {
+        return $this->hasMany(TicketDetails::class, 'ticket_id', 'id');
+    }
+
 
     protected $table = 'tickets';
 }

@@ -60,7 +60,6 @@ class MainCargoController extends Controller
 
     public function index()
     {
-//        return vkn_confirm('4070830196', '034248', '34');
         $data['agencies'] = Agencies::all();
         $data['gm_users'] = DB::table('users')
             ->where('agency_code', 1)
