@@ -17,7 +17,7 @@ class GetExpeditionInfoAction
                 'user',
                 'movements.user.role',
                 'routes.branch',
-                'cargoes' => function($q){$q->with(['cargo', 'user'=>function($q){$q->with('role');}])->groupBy('cargo_id');},
+                'cargoes' => function($q){$q->with(['cargo', 'user'=>function($q){$q->with('role');}]);},
                 'seals'
             ]
         )->where('id',$id)->first();
