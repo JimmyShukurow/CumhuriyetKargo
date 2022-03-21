@@ -36,7 +36,6 @@ class GetAllCargoInfoAction
             ->orderBy('created_at')
             ->get();
 
-
         foreach ($data['movements'] as $key) {
             $format = Carbon::parse($key->created_at);
             $key->created_time = $format->format('Y-m-d H:m:s');
