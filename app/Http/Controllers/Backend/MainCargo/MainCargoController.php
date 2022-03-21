@@ -93,7 +93,7 @@ class MainCargoController extends Controller
         $daily['total_desi'] = round($daily['total_desi'], 2);
 
         GeneralLog('Kargolar Ana Menü görüntülendi.');
-        return view('backend.main_cargo.main.index', compact(['data', 'daily']));
+        return view('backend.main_cargo.main.index.index', compact(['data', 'daily']));
     }
 
     public function newCargo()

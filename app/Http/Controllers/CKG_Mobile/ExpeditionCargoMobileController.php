@@ -37,7 +37,7 @@ class ExpeditionCargoMobileController extends Controller
 
         $cargo = Cargoes::where('tracking_no', $ctn[0])->first();
 
-        if ($cargo->cargo_type == 'Dosya' || $cargo->cargo_type == 'Mi')
+        if ($cargo != null && ($cargo->cargo_type == 'Dosya' || $cargo->cargo_type == 'Mi'))
             return response()->json([
                 'status' => 0,
                 'message' => 'Dosya ve Mi kargoları sadece torba ile yükleyebilirsiniz!',
