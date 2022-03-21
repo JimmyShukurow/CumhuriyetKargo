@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Expedition\LoadCargoToExpeditionRequest;
 use App\Http\Resources\CKGMobile\Expedition\CargoResource;
 use App\Http\Resources\CKGMobile\Expedition\ExpeditionResource;
+use App\Models\CargoBags;
 use App\Models\Cargoes;
 use App\Models\Expedition;
 use App\Models\ExpeditionCargo;
@@ -35,11 +36,31 @@ class ExpeditionCargoMobileController extends Controller
         }
 
         $cargo = Cargoes::where('tracking_no', $ctn[0])->first();
-        if ($cargo == null)
+        if ($cargo == null){
+            $cargoBag = CargoBags::where('tracking_no', $ctn)->first();
+            if ($cargoBag == null) {
+                return response()->json([
+                    'status' => 0,
+                    'message' => 'Kargo bulunamadı!',
+                ]);
+            }
+            $cargoes = $cargoBag->details()->get();
+            $cargoes->map(function ($cargo) use ($expedition) {
+                $user_id = Auth::id();
+                $fields = [];
+                $fields['expedition_id'] = $expedition->id;
+                $fields['cargo_id'] = $cargo->cargo->id;
+                $fields['part_no'] = $cargo->part_no;
+                $fields['user_id'] = $user_id;
+                CargoExpeditionMovementAction::run($cargo->cargo->tracking_no, $cargo->cargo, $user_id, $cargo->part_no,rand(4, 10), 1, 'load_cargo_expedition', $expedition->car->plaka);
+                LoadCargoToExpeditionAction::run($fields);
+
+            });
             return response()->json([
-                'status' => 0,
-                'message' => 'Kargo bulunamadı!',
+                'status' => 1,
+                'message' => 'Torba Yüklendi!',
             ]);
+        }
         elseif ($cargo->transporter != 'CK')
             return response()->json([
                 'status' => 0,

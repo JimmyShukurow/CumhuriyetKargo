@@ -39,4 +39,9 @@ class CargoBags extends Model
     {
         return $this->hasOne(User::class, 'id', 'last_opener');
     }
+
+    public function details()
+    {
+        return $this->hasMany(CargoBagDetails::class, 'bag_id', 'id');
+    }
 }
