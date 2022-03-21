@@ -25,7 +25,8 @@
                     <div
                         style="overflow-x: auto; white-space: nowrap;"
                         class="cont">
-                        <table style="white-space: nowrap" id="TableEmployees"
+                        <table style="white-space: nowrap; width: 100% !important;" id="TableCargoesInExpedition"
+                               excelTitle="CKG-Sis TTİ / PLAKA:{{ $expedition->car->plaka }} SEFER NO: {{$expedition->serial_no}} {{$expedition->departure_branch}} - {{ $expedition->arrival_branch }} SEFERİ"
                                class="TableNoPadding table table-bordered table-striped mt-3">
                             <thead>
                             <tr>
@@ -55,8 +56,7 @@
                                         <td> {{ $cargo->cargo->cargo_type }} </td>
                                         <td> {{ $cargo->cargo->receiver_name }} </td>
                                         <td> {{ $cargo->cargo->sender_name }} </td>
-                                        <td class="font-weight-bold"> {{ $cargo->cargo->arrival_city }}
-                                            /{{ $cargo->cargo->arrival_district }}   </td>
+                                        <td class="font-weight-bold"> {{ $cargo->cargo->arrival_city .'/'. $cargo->cargo->arrival_district }}   </td>
                                         <td> {{ $cargo->cargo->status }} </td>
                                         <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name }})
                                         </td>

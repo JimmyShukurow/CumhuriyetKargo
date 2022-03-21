@@ -51,7 +51,7 @@
                                 <a data-toggle="tab" href="#tabExpeditionInfo"
                                    class="btn-pill btn-wide btn btn-outline-alternate btn-sm show active">Sefer
                                     Bilgileri</a>
-                                <a data-toggle="tab" href="#tabExpeditionCargoes"
+                                <a id="TabExpeditionCargoes" data-toggle="tab" href="#tabExpeditionCargoes"
                                    class="btn-pill btn-wide mr-1 ml-1 btn btn-outline-alternate btn-sm show ">Kargolar
                                 </a>
                                 <a data-toggle="tab" href="#tabExpeditionSeals"
@@ -122,6 +122,7 @@
 @endsection
 
 @section('js')
+    <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
     <script src="/backend/assets/scripts/expeditions/outgoing-expedition-details.js"></script>
 @endsection
 
