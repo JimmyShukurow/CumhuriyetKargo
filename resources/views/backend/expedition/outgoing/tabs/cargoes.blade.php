@@ -23,14 +23,15 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="tab-eg5-0" role="tabpanel">
                     <div
-                            style="overflow-x: auto; white-space: nowrap;"
-                            class="cont">
-                        <table style="white-space: nowrap" id="TableEmployees"
+                        style="overflow-x: auto; white-space: nowrap;"
+                        class="cont">
+                        <table style="white-space: nowrap; width: 100% !important;" id="TableCargoesInExpedition"
+                               excelTitle="CKG-Sis TTİ / PLAKA:{{ $expedition->car->plaka }} SEFER NO: {{$expedition->serial_no}} {{$expedition->departure_branch}} - {{ $expedition->arrival_branch }} SEFERİ"
                                class="TableNoPadding table table-bordered table-striped mt-3">
                             <thead>
                             <tr>
                                 <th>Fatura numarası</th>
-                                <th>Kargo Adeti</th>
+                                <th>Parça No</th>
                                 <th>Kargo Tipi</th>
                                 <th>Alıcı</th>
                                 <th>Gönderici</th>
@@ -41,27 +42,36 @@
                             </tr>
                             </thead>
                             <tbody id="tbodyExpedtionCargoes">
-                            @foreach($expedition->cargoes as $cargo)
+                            @if(count($expedition->cargoes) == 0)
                                 <tr>
-                                    <td> {{ $cargo->cargo->invoice_number }} </td>
-                                    <td> {{ $cargo->part_no }} </td>
-                                    <td> {{ $cargo->cargo->cargo_type }} </td>
-                                    <td> {{ $cargo->cargo->receiver_name }} </td>
-                                    <td> {{ $cargo->cargo->sender_name }} </td>
-                                    <td> {{ $cargo->cargo->arrival_city }} /{{ $cargo->cargo->arrival_district }}   </td>
-                                    <td> {{ $cargo->cargo->status }} </td>
-                                    <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name }}) </td>
-                                    <td> {{ $cargo->cargo->created_at }} </td>
+                                    <td class="text-center text-danger font-weight-bold" colspan="9">Burda hiç veri
+                                        yok.
+                                    </td>
                                 </tr>
-                            @endforeach
+                            @else
+                                @foreach($expedition->cargoes as $cargo)
+                                    <tr>
+                                        <td> {{ $cargo->cargo->invoice_number }} </td>
+                                        <td> {{ $cargo->part_no }} </td>
+                                        <td> {{ $cargo->cargo->cargo_type }} </td>
+                                        <td> {{ $cargo->cargo->receiver_name }} </td>
+                                        <td> {{ $cargo->cargo->sender_name }} </td>
+                                        <td class="font-weight-bold"> {{ $cargo->cargo->arrival_city .'/'. $cargo->cargo->arrival_district }}   </td>
+                                        <td> {{ $cargo->cargo->status }} </td>
+                                        <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name }})
+                                        </td>
+                                        <td> {{ $cargo->cargo->created_at }} </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="tab-pane" id="tab-eg5-1" role="tabpanel">
                     <div
-                            style="overflow-x: auto; white-space: nowrap;"
-                            class="cont">
+                        style="overflow-x: auto; white-space: nowrap;"
+                        class="cont">
                         <table style="white-space: nowrap" id="TableEmployees"
                                class="TableNoPadding table table-bordered table-striped mt-3">
                             <thead>
@@ -83,32 +93,43 @@
                             </thead>
                             <tbody id="tbodyExpedtionCargoesSecondary">
                             <tr>
-                            @foreach($expedition->allCargoes as $cargo)
-                                @if($cargo->unloading_at != null)
-                                    <tr class="text-primary">
-                                @elseif($cargo->deleted_at != null)
-                                    <tr class="text-danger">
-                                @else
-                                    <tr>
-                                @endif
-                                    <td> {{ $cargo->cargo->invoice_number }} </td>
-                                    <td> {{ $cargo->part_no }} </td>
-                                    <td> {{ $cargo->cargo->cargo_type }} </td>
-                                    <td> {{ $cargo->cargo->receiver_name }} </td>
-                                    <td> {{ $cargo->cargo->sender_name }} </td>
-                                    <td> {{ $cargo->cargo->arrival_city }} /{{ $cargo->cargo->arrival_district }}   </td>
-                                    <td> {{ $cargo->cargo->status }} </td>
-                                    <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name}}) </td>
-                                    <td> {{ $cargo->cargo->created_at }} </td>
-                                    <td>
-                                        {{ $cargo->unloadedUser ? $cargo->unloadedUser->name_surname . '(' .$cargo->unloadedUser->role->display_name . ')'  : ''  }}
+                            @if(count($expedition->allCargoes) == 0)
+                                <tr>
+                                    <td class="text-center text-danger font-weight-bold" colspan="13">Burda hiç veri
+                                        yok.
                                     </td>
-                                    <td> {{ $cargo->unloading_at }} </td>
-                                    <td> {{ $cargo->deletedUser ? $cargo->deletedUser->name_surname. '(' . $cargo->deletedUser->role->display_name . ')' : ''}}</td>
-                                    <td> {{ $cargo->deleted_at }} </td>
                                 </tr>
-                                @endforeach
-                            </tr>
+                            @else
+                                @foreach($expedition->allCargoes as $cargo)
+                                    @if($cargo->unloading_at != null)
+                                        <tr class="text-primary">
+                                    @elseif($cargo->deleted_at != null)
+                                        <tr class="text-danger">
+                                    @else
+                                        <tr>
+                                            @endif
+                                            <td> {{ $cargo->cargo->invoice_number }} </td>
+                                            <td> {{ $cargo->part_no }} </td>
+                                            <td> {{ $cargo->cargo->cargo_type }} </td>
+                                            <td> {{ $cargo->cargo->receiver_name }} </td>
+                                            <td> {{ $cargo->cargo->sender_name }} </td>
+                                            <td class="font-weight-bold"> {{ $cargo->cargo->arrival_city }}
+                                                /{{ $cargo->cargo->arrival_district }}   </td>
+                                            <td> {{ $cargo->cargo->status }} </td>
+                                            <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name}}
+                                                )
+                                            </td>
+                                            <td> {{ $cargo->cargo->created_at }} </td>
+                                            <td>
+                                                {{ $cargo->unloadedUser ? $cargo->unloadedUser->name_surname . '(' .$cargo->unloadedUser->role->display_name . ')'  : ''  }}
+                                            </td>
+                                            <td> {{ $cargo->unloading_at }} </td>
+                                            <td> {{ $cargo->deletedUser ? $cargo->deletedUser->name_surname. '(' . $cargo->deletedUser->role->display_name . ')' : ''}}</td>
+                                            <td> {{ $cargo->deleted_at }} </td>
+                                        </tr>
+                                        @endforeach
+                                        </tr>
+                                    @endif
                             </tbody>
                         </table>
                     </div>

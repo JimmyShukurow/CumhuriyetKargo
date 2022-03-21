@@ -15,7 +15,7 @@ $(document).ready(function () {
     $('#tax-office').select2({
         ajax: {
             url: "/Customers/AjaxTransaction/GetTaxOffices",
-            type: "post",
+            type: 'POST',
             delay: 450,
             data: function (params) {
                 return {

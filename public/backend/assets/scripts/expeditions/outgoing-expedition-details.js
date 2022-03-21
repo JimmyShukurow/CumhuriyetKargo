@@ -1,7 +1,7 @@
 var detailID;
 
 
-$(document).on('click','#deleteExpedition', function () {
+$(document).on('click', '#deleteExpedition', function () {
     detailID = $('#expeditionID').val();
     swal({
         title: "Silme İşlemini Onaylayın!",
@@ -9,7 +9,7 @@ $(document).on('click','#deleteExpedition', function () {
         icon: "warning",
         buttons: true,
         dangerMode: true,
-    }).then( (willDelete) => {
+    }).then((willDelete) => {
         if (willDelete) {
             deleteExpedition(detailID);
         } else {
@@ -18,7 +18,7 @@ $(document).on('click','#deleteExpedition', function () {
     })
 });
 
-$(document).on('click','#finishExpedition', function () {
+$(document).on('click', '#finishExpedition', function () {
     detailID = $('#expeditionID').val();
     var cargoCount = $('#totalCargoCount').text();
     console.log(cargoCount);
@@ -40,7 +40,7 @@ $(document).on('click','#finishExpedition', function () {
 
 });
 
-function deleteExpedition (expedition){
+function deleteExpedition(expedition) {
     let deleteUrl = '/Expedition/Delete';
     $.ajax(deleteUrl, {
         method: 'DELETE',
@@ -52,11 +52,11 @@ function deleteExpedition (expedition){
     }).done(function (response) {
         if (response.status == 0) {
             ToastMessage('error', response.message, 'HATA!');
-        }else {
+        } else {
             ToastMessage('success', response.message, 'SİLİNDİ!');
             window.location.replace('/Expedition/OutGoing');
         }
-    }).error(function(jqXHR, exception) {
+    }).error(function (jqXHR, exception) {
         ToastMessage('error', response.message, 'HATA!');
     })
 }
@@ -73,11 +73,11 @@ function endExpedition(expedition) {
     }).done(function (response) {
         if (response.status == 0) {
             ToastMessage('error', response.message, 'HATA!');
-        }else {
+        } else {
             ToastMessage('success', response.message, 'BİTİRİLDİ!');
             location.reload();
         }
-    }).error(function(jqXHR, exception) {
+    }).error(function (jqXHR, exception) {
         ToastMessage('error', response.message, 'HATA!');
     })
 }
@@ -89,12 +89,52 @@ function proceedEndingExpedition(detailID) {
         icon: "warning",
         buttons: true,
         dangerMode: true,
-    }).then( (willDelete) => {
+    }).then((willDelete) => {
         if (willDelete) {
             endExpedition(detailID);
         } else {
             ToastMessage('info', 'Bitirme işlemi iptal edilidi.', 'Bilgi');
         }
     });
+}
+
+
+$('#TabExpeditionCargoes').click(function () {
+    initGraphTable()
+
+    setTimeout(function () {
+        initGraphTable()
+    }, 1)
+})
+
+
+tabTableInit = false;
+
+function initGraphTable() {
+    if (tabTableInit == false) {
+        tabTableInit = true;
+        oTable = $('#TableCargoesInExpedition').DataTable({
+            pageLength: 25,
+            lengthMenu: dtLengthMenu,
+            order: [3, 'desc'],
+            language: dtLanguage,
+            dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>frtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: $('#TableCargoesInExpedition').attr('excelTitle'),
+                    attr: {
+                        class: 'btn btn-success'
+                    }
+                },
+            ],
+            search: {"regex": true},
+            scrollY: "400px",
+        });
+    } else {
+        oTable.destroy()
+        tabTableInit = false
+        initGraphTable()
+    }
 }
 

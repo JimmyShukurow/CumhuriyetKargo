@@ -421,6 +421,8 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
                 barcodePaymentType = 'AÖ';
             else if (cargo.payment_type == "Gönderici Ödemeli")
                 barcodePaymentType = 'GÖ';
+            else if (cargo.payment_type == "PÖCH")
+                barcodePaymentType = 'PÖCH';
 
             barcodePaymentType += " / " + delivery;
 
@@ -473,18 +475,23 @@ $(document).on('click', '#btnCargoPrintBarcode', function () {
 function designBarcodes(elementStyle, className, departure, departure_tc, barcodePaymentType, invoiceNumber, cargo, val, arrival_tc, arrival, cumhuriyetCargoType) {
 
     let slogan = "Cumhuriyet Kargo - Sevgi ve Değer Taşıyoruz..";
-    slogan = "";
 
 
-    let departureAgencyName = departure_tc.agency_name;
+    let departureAgencyName = departure.agency_name;
     let departureTcName = departure_tc.tc_name + " TRM.";
-    departureAgencyName = "";
-    departureTcName = "";
 
     let arrivalTcName = arrival_tc == null ? '' : arrival_tc.tc_name + " TRM.";
     let arrivalAgencyName = arrival == null ? '' : arrival.agency_name;
     cumhuriyetCargoType = "CUMHURİYET " + cumhuriyetCargoType + " KARGO";
-    cumhuriyetCargoType = "";
+
+
+    if (cargo.transporter != 'CK') {
+        slogan = "";
+        departureAgencyName = "";
+        departureTcName = "";
+        cumhuriyetCargoType = "";
+    }
+
 
     $('#ContainerBarcodes').prepend('<div style="' + elementStyle + '" class="row barcode-row ' + className + '">\n' +
         '                            <div class="col-6">\n' +
@@ -659,6 +666,8 @@ $('#btnPrintSelectedBarcode').click(function () {
                 barcodePaymentType = 'AÖ';
             else if (cargo.payment_type == "Gönderici Ödemeli")
                 barcodePaymentType = 'GÖ';
+            else if (cargo.payment_type == "PÖCH")
+                barcodePaymentType = 'PÖCH';
 
             barcodePaymentType += " / " + delivery;
 

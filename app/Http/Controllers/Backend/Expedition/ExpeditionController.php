@@ -93,10 +93,10 @@ class ExpeditionController extends Controller
             ]);
         };
 
-        if ($expedition->cargoes->count() != 0) {
+        if ($expedition->liveCargoes->count() != 0) {
             return response()->json([
                 'status' => 0,
-                'message' => 'Seferde Kargo Var!'
+                'message' => 'Seferdeki kargolar işlem gördüğünden bu seferi silemezsiniz!'
             ]);
         }
 
@@ -120,7 +120,7 @@ class ExpeditionController extends Controller
         $user = Auth::user();
         $expedition = Expedition::find($request->expedition_id);
 
-        if ($expedition->done == 1){
+        if ($expedition->done == 1) {
             return response()->json([
                 'status' => 0,
                 'message' => 'Bu sefer zaten bitirilmiş!',

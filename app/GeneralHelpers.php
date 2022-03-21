@@ -526,17 +526,21 @@ function CurrentControl($currentCode)
         return $array = ['status' => -1, 'result' => $current->name . ' isimli müşteri onaylanmamış.'];
     }
 
-    if ($current->category == 'Anlaşmalı' && $current->current_type == 'Gönderici') {
+    if ($current->category == 'Anlaşmalı') {
 
         $currentDate = date('Y-m-d');
         $currentDate = date('Y-m-d', strtotime($currentDate));
         $startDate = date('Y-m-d', strtotime($current->contract_start_date));
         $endDate = date('Y-m-d', strtotime($current->contract_end_date));
 
-        if (($currentDate >= $startDate) && ($currentDate <= $endDate))
-            return $array = ['status' => 1];
-        else
+        if (!($currentDate >= $startDate) && ($currentDate <= $endDate))
             return $array = ['status' => -1, 'result' => $current->name . ' isimli müşterinin sözleşme tarihi geçerli değil.'];
+
+        $agencyOfCurrent = Agencies::where('id', $current->agency)->withTrashed()->first();
+
+        if (Auth::user()->agency_code != $current->agency)
+            return $array = ['status' => -1, 'result' => $current->name . ' müşterisinin bağlı olduğu şube ' . $agencyOfCurrent->agency_name . ' ŞUBE olduğundan, bu cari şubenizde kullanılamaz.'];
+
     }
 
     return $array = ['status' => 1];

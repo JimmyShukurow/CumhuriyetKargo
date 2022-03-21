@@ -119,7 +119,8 @@ class CustomerController extends Controller
                 break;
 
             case 'GetTaxOffices':
-                return $jsonData = GetTaxOfficesAction::run($request);
+                return response()
+                    ->json(GetTaxOfficesAction::run($request), 200);
                 break;
 
             case 'ConfirmCurrentWithVKN':

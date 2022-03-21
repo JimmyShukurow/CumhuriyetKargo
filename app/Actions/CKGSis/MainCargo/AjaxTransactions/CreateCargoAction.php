@@ -81,9 +81,9 @@ class CreateCargoAction
         }
 
         if ($transporter == 'MNG')
-            if ($request->odemeTipi == 'Alıcı Ödemeli')
+            if ($request->odemeTipi != 'Gönderici Ödemeli')
                 return response()
-                    ->json(['status' => -1, 'message' => 'Partner firmanın taşıyacağı kargolar Alıcı Ödemeli olamaz!'], 200);
+                    ->json(['status' => -1, 'message' => 'Partner firmanın taşıyacağı kargolar sadece Gönderici Ödemeli olabilir!'], 200);
 
         if (($request->gonderiTuru != 'Dosya' && $request->gonderiTuru != 'Mi') && $request->desi == 0)
             return response()
