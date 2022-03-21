@@ -36,7 +36,15 @@ class ExpeditionCargoMobileController extends Controller
         }
 
         $cargo = Cargoes::where('tracking_no', $ctn[0])->first();
-        if ($cargo == null){
+
+        if ($cargo->cargo_type == 'Dosya' || $cargo->cargo_type == 'Mi')
+            return response()->json([
+                'status' => 0,
+                'message' => 'Dosya ve Mi kargoları sadece torba ile yükleyebilirsiniz!',
+            ]);
+
+
+        if ($cargo == null) {
             $cargoBag = CargoBags::where('tracking_no', $ctn)->first();
             if ($cargoBag == null) {
                 return response()->json([
@@ -52,7 +60,7 @@ class ExpeditionCargoMobileController extends Controller
                 $fields['cargo_id'] = $cargo->cargo->id;
                 $fields['part_no'] = $cargo->part_no;
                 $fields['user_id'] = $user_id;
-                CargoExpeditionMovementAction::run($cargo->cargo->tracking_no, $cargo->cargo, $user_id, $cargo->part_no,rand(4, 10), 1, 'load_cargo_expedition', $expedition->car->plaka);
+                CargoExpeditionMovementAction::run($cargo->cargo->tracking_no, $cargo->cargo, $user_id, $cargo->part_no, rand(4, 10), 1, 'load_cargo_expedition', $expedition->car->plaka);
                 LoadCargoToExpeditionAction::run($fields);
 
             });
@@ -60,8 +68,7 @@ class ExpeditionCargoMobileController extends Controller
                 'status' => 1,
                 'message' => 'Torba Yüklendi!',
             ]);
-        }
-        elseif ($cargo->transporter != 'CK')
+        } elseif ($cargo->transporter != 'CK')
             return response()->json([
                 'status' => 0,
                 'message' => 'Bu kargonun taşımasını Cumhuriyet Kargo yapmadığından yükleme işlemi gerçekletiremezsiniz!',
@@ -140,24 +147,50 @@ class ExpeditionCargoMobileController extends Controller
 
         $cargo = Cargoes::where('tracking_no', $ctn[0])->first();
 
-        if ($cargo == null)
+
+        if ($cargo == null) {
+            $cargoBag = CargoBags::where('tracking_no', $ctn)->first();
+            if ($cargoBag == null) {
+                return response()->json([
+                    'status' => 0,
+                    'message' => 'Kargo bulunamadı!',
+                ]);
+            }
+            $cargoes = $cargoBag->details()->get();
+            $cargoes->map(function ($cargo) use ($expedition) {
+                $user_id = Auth::id();
+                $fields = [];
+                $fields['expedition_id'] = $expedition->id;
+                $fields['cargo_id'] = $cargo->cargo->id;
+                $fields['part_no'] = $cargo->part_no;
+                $fields['user_id'] = $user_id;
+                CargoExpeditionMovementAction::run($cargo->cargo->tracking_no, $cargo->cargo, $user_id, $cargo->part_no, rand(4, 10), 1, 'unload_cargo_expedition', $expedition->car->plaka);
+                LoadCargoToExpeditionAction::run($fields);
+
+            });
             return response()->json([
-                'status' => 0,
-                'message' => 'Kargo bulunamadı!',
+                'status' => 1,
+                'message' => 'Torba İndirildi!',
             ]);
+        }
+
 
         $cargo = $expedition->cargoes->filter(function ($item) use ($ctn) {
             return $item->cargo->tracking_no == $ctn[0];
         })->where('part_no', $ctn[1])->first();
 
 
-        $cargo->update([
-            'unloading_user_id' => Auth::id(),
-            'unloading_at' => now(),
-        ]);
+        if ($cargo != null)
+            $cargo->update([
+                'unloading_user_id' => Auth::id(),
+                'unloading_at' => now(),
+            ]);
+        else
+            $cargo = Cargoes::where('tracking_no', $ctn[0])->first();
+
 
         $user_id = Auth::id();
-        CargoExpeditionMovementAction::run($ctn[0], $cargo->cargo, $user_id, $ctn[1], rand(4, 10), 1, 'unload_cargo_expedition', $expedition->car->plaka);
+        CargoExpeditionMovementAction::run($ctn[0], $cargo->cargo ?? $cargo, $user_id, $ctn[1], rand(4, 10), 1, 'unload_cargo_expedition', $expedition->car->plaka);
 
         return response()->json([
             'status' => 1,
@@ -169,6 +202,22 @@ class ExpeditionCargoMobileController extends Controller
     {
         $ctn = decryptTrackingNo($request->ctn);
         $ctn = explode(' ', $ctn);
+
+        $cargo = Cargoes::where('tracking_no', $ctn[0])->first();
+
+        if ($cargo == null)
+            return response()->json([
+                'status' => 0,
+                'message' => 'Kargo bulunamadı!',
+            ]);
+
+        if ($cargo->cargo_type == 'Dosya' || $cargo->cargo_type == 'Mi')
+            return response()->json([
+                'status' => 0,
+                'message' => 'Çuval içerisindeki bir kargoyu silemezsiniz!',
+            ]);
+
+
         $expedition = Expedition::with('cargoes.cargo')->where('id', $request->expedition_id)->first();
 
         $cargo = $expedition->cargoes->filter(function ($item) use ($ctn) {
