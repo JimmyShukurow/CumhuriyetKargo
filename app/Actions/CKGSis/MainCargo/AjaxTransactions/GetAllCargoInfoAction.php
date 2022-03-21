@@ -2,6 +2,8 @@
 
 namespace App\Actions\CKGSis\MainCargo\AjaxTransactions;
 
+use App\Models\CargoMovements;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -29,12 +31,16 @@ class GetAllCargoInfoAction
             ->first();
         $data['sender']->current_code = CurrentCodeDesign($data['sender']->current_code);
 
-        $data['movements'] = DB::table('cargo_movements')
-            ->selectRaw('cargo_movements.*, number_of_pieces,  cargo_movements.group_id as testmebitch, (SELECT Count(*) FROM cargo_movements where cargo_movements.group_id = testmebitch) as current_pieces')
-            ->groupBy('group_id')
-            ->join('cargoes', 'cargoes.tracking_no', '=', 'cargo_movements.ctn')
-            ->where('ctn', '=', str_replace(' ', '', $data['cargo']->tracking_no))
+        $data['movements'] = CargoMovements::with(['cargo', 'user.role'])
+            ->where('cargo_id', $data['cargo']->id)
+            ->orderBy('created_at')
             ->get();
+
+
+        foreach ($data['movements'] as $key) {
+            $format = Carbon::parse($key->created_at);
+            $key->created_time = $format->format('Y-m-d H:m:s');
+        }
 
         $data['movementsSecondary'] = DB::table('cargo_movements')
             ->selectRaw('cargo_movements.*, number_of_pieces,  cargo_movements.group_id as testmebitch, (SELECT Count(*) FROM cargo_movements where cargo_movements.group_id = testmebitch) as current_pieces')
