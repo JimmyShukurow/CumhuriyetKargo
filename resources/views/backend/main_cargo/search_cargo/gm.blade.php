@@ -9,6 +9,8 @@
             left: 5px;
         }
     </style>
+    <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
+    <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
 @endpush
 
 @section('title', 'GM Kargo Sorgulama Ekranı')
@@ -239,9 +241,14 @@
 
                         <div class="col-md-3">
                             <label for="senderDistrict">Gönderici İlçe:</label>
-                            <select id="senderDistrict"
+                            <select id="senderDistrict" multiple="multiple"
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
+                            </select>
+                            <select style="display: none;" id="multi-select-areas" multiple="multiple">
+                                <optgroup label="Bölge Müdürlükleri">
+
+                                </optgroup>
                             </select>
                         </div>
 
@@ -328,6 +335,5 @@
     @include('backend.main_cargo.main.modal_cargo_details')
 
     @include('backend.OfficialReports.report_modal')
-
     @include('backend/customers/agency/modal_customer_details')
 @endsection
