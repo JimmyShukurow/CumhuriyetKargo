@@ -116,16 +116,19 @@ class ExpeditionCargoMobileController extends Controller
         $ctn = decryptTrackingNo($request->ctn);
         $ctn = explode(' ', $ctn);
         $expedition = Expedition::find($request->expedition_id);
+
+        $cargo = Cargoes::where('tracking_no', $ctn[0])->first();
+
+        if ($cargo == null)
+            return response()->json([
+                'status' => 0,
+                'message' => 'Kargo bulunamadı!',
+            ]);
+
         $cargo = $expedition->cargoes->filter(function ($item) use ($ctn) {
             return $item->cargo->tracking_no == $ctn[0];
         })->where('part_no', $ctn[1])->first();
 
-        if ($cargo == null) {
-            return response()->json([
-                'status' => 0,
-                'message' => 'Bu kargo seferde bulunamadı, indirmek istediğinizden emin misiniz?'
-            ]);
-        }
 
         $cargo->update([
             'unloading_user_id' => Auth::id(),
@@ -164,8 +167,6 @@ class ExpeditionCargoMobileController extends Controller
             ]);
 
         };
-
-
 
 
         if ($cargo == null) {
