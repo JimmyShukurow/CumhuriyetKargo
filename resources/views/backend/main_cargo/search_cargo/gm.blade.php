@@ -294,19 +294,8 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <th>Fatura No</th>
-                        <th>Çıkış Şube</th>
-                        <th>Ç.Ş. Kodu</th>
-                        <th>Gönderici Adı</th>
-                        <th>Gönderici İl</th>
-                        <th>Alıcı Adı</th>
-                        <th>Alıcı İl</th>
-                        <th>Alıcı İlçe</th>
-                        <th>Kargo Tipi</th>
-                        <th>Ödeme Tipi</th>
-                        <th>Ücret</th>
-                        <th>Statü</th>
-                        <th>Kayıt Tarihi</th>
+                        <th colspan="3" class="text-right">Total:</th>
+                        <th colspan="3" class="text-left"></th>
                     </tr>
                     </tfoot>
                 </table>

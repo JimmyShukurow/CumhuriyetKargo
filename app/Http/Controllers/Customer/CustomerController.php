@@ -123,7 +123,6 @@ class CustomerController extends Controller
                     ->json(GetTaxOfficesAction::run($request), 200);
                 break;
 
-
             case 'ConfirmCurrentWithVKN':
                 return ConfirmCurrentWithVKNAction::run($request);
                 break;

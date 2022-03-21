@@ -66,7 +66,7 @@ class GetGlobalCargoesGmAction
         $cargoes = DB::table('cargoes')
             ->join('users', 'users.id', '=', 'cargoes.creator_user_id')
             ->join('view_agency_region', 'view_agency_region.id', '=', 'cargoes.departure_agency_code')
-            ->select(['cargoes.*', 'view_agency_region.city as city_name', 'view_agency_region.agency_code as departure_real_agency_code', 'view_agency_region.district as district_name', 'view_agency_region.agency_name', 'users.name_surname as user_name_surname', 'view_agency_region.tc_id'])
+            ->select(['cargoes.id', 'cargoes.tracking_no', 'cargoes.collectible','cargoes.departure_agency_code', 'cargoes.invoice_number', 'cargoes.created_at', 'cargoes.sender_name', 'cargoes.receiver_name', 'cargoes.sender_city', 'cargoes.receiver_city', 'cargoes.receiver_district', 'cargoes.cargo_type', 'cargoes.payment_type', 'cargoes.total_price', 'cargoes.status', 'view_agency_region.city as city_name', 'view_agency_region.agency_code as departure_real_agency_code', 'view_agency_region.district as district_name', 'view_agency_region.agency_name', 'users.name_surname as user_name_surname', 'view_agency_region.tc_id'])
             ->whereRaw($cargoType ? "cargo_type='" . $cargoType . "'" : '1 > 0')
             ->whereRaw($currentCity ? "sender_city='" . $currentCity . "'" : '1 > 0')
             ->whereRaw($currentDistrict ? "sender_district='" . $currentDistrict . "'" : '1 > 0')
@@ -89,14 +89,11 @@ class GetGlobalCargoesGmAction
             ->whereRaw($receiverName ? "receiver_name like '%" . $receiverName . "%'" : '1 > 0')
             ->whereRaw($filterByDAte == "true" ? "cargoes.created_at between '" . $startDate . "'  and '" . $finishDate . "'" : '1 > 0')
             ->whereRaw('cargoes.deleted_at is null')
-            ->limit(350)
+            ->limit(2000)
             ->orderByDesc('created_at')
             ->get();
 
         return datatables()->of($cargoes)
-            ->editColumn('free', function () {
-                return '';
-            })
             ->editColumn('agency_name', function ($cargoes) {
                 return $cargoes->agency_name;
             })
@@ -109,10 +106,8 @@ class GetGlobalCargoesGmAction
             ->editColumn('collectible', function ($cargoes) {
                 return $cargoes->collectible == '1' ? '<b class="text-success">Evet</b>' : '<b class="text-danger">Hayır</b>';
             })
-            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
-            ->addColumn('tracking_no', 'backend.main_cargo.search_cargo.columns.tracking_no')
             ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
-            ->rawColumns(['tracking_no', 'invoice_number', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
+            ->rawColumns(['invoice_number', 'agency_name'])
             ->make(true);
     }
 
