@@ -98,8 +98,8 @@
             </div>
             <div class="card-body">
 
-                <table id="AgenciesTable"
-                       class="align-middle mb-0 table table-borderless table-striped table-hover TableNoPadding NikolasDataTable">
+                <table style="white-space: nowrap;" width="100%" id="AgenciesTable"
+                       class="align-middle mb-0 table table-borderless table-striped table-hover Table20Padding NikolasDataTable">
                     <thead>
                     <tr>
                         <th>Şube</th>
@@ -138,22 +138,16 @@
 
     <script src="/backend/assets/scripts/backend-modules.js"></script>
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
-
     <script>
-        var oTable;
-
-        // and The Last Part: NikoStyle
+        let oTable;
         $(document).ready(function () {
             oTable = $('.NikolasDataTable').DataTable({
                 pageLength: 25,
                 lengthMenu: dtLengthMenu,
-                order: [
-                    7, 'desc'
-                ],
+                order: [7, 'desc'],
                 language: dtLanguage,
                 dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
                 buttons: [
-                    'print',
                     {
                         extend: 'excelHtml5',
                         exportOptions: {
@@ -183,7 +177,6 @@
                         }
                     }
                 ],
-                responsive: true,
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -213,6 +206,7 @@
                     {data: 'created_at', name: 'created_at'}
                 ],
                 scrollY: "400px",
+                scrollX: true,
             });
         });
 
@@ -405,7 +399,7 @@
                                                         </thead>
                                                         <tbody>
                                                         <tr>
-                                                            <td  width="100;">İşlem Zamanı</td>
+                                                            <td width="100;">İşlem Zamanı</td>
                                                             <td id="log-time"></td>
                                                         </tr>
                                                         <tr>
