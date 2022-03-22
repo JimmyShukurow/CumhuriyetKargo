@@ -267,6 +267,10 @@ function DistributionControl(neighborhood = '') {
                         MobilBolge.prop('disabled', true);
                     }
 
+                    $('#radioPaymentTypeGondericiOdemeli').prop('disabled', false);
+                    $('#radioPaymentTypeGondericiOdemeli').prop('checked', true);
+                    $('#radioPaymentTypePOCH').prop('disabled', true);
+
                     $('.partner-service-0').prop('disabled', true);
                     $('.partner-service-0').prop('checked', false);
 
@@ -351,6 +355,12 @@ function getCurrentInfo(currentCode, tryExist = false) {
             $('#radioPaymentTypePOCH').prop('disabled', false);
             $('#radioPaymentTypePOCH').prop('checked', true);
             $('#radioPaymentTypeGondericiOdemeli').prop('disabled', true);
+
+            $('#selectCollectionType').attr('disabled', true);
+            $('#tahsilatOnayKodu').val('').attr('disabled', 'disabled');
+            $('#tahsilatKartSahibi').val('').attr('disabled', 'disabled');
+
+            $('#tahsilatAciklama').val('Peşin ödemeli cari hesap:')
         }
 
         if ($('#aliciCariKod').val() != '')
@@ -739,7 +749,7 @@ $('.radio-payment-type').click(function () {
         $('#tahsilatAciklama').val('Kargo nakit tahsilat:')
     } else if (PaymentType == 'PÖCH') {
 
-        $('#selectCollectionType').attr('disabled', 'disabled');
+        $('#selectCollectionType').attr('disabled', true);
         $('#tahsilatOnayKodu').val('').attr('disabled', 'disabled');
         $('#tahsilatKartSahibi').val('').attr('disabled', 'disabled');
 

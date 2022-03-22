@@ -73,7 +73,7 @@ $(document).on('click', '#btnInsertAdditionalService', function () {
     $(this).prop('disabled', true);
     ToastMessage('info', 'İstek alındı lütfen bekleyiniz!', 'Bilgi');
 
-    $.ajax('/AdditionalServices', {
+    $.ajax('/Marketing/AdditionalServices', {
         method: 'POST',
         data: {
             _token: token,

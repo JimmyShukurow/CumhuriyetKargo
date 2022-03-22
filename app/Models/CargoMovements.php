@@ -20,6 +20,7 @@ class CargoMovements extends Model
     public function cargo()
     {
         return $this->hasOne(Cargoes::class, 'id', 'cargo_id')
-            ->select(['id', 'number_of_pieces']);
+            ->select(['id', 'number_of_pieces'])
+            ->withTrashed();
     }
 }

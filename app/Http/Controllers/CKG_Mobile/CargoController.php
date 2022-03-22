@@ -11,6 +11,7 @@ use App\Models\CargoBagDetails;
 use App\Models\CargoBags;
 use App\Models\Cargoes;
 use App\Models\CargoMovements;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,17 +33,14 @@ class CargoController extends Controller
                 if ($cargo == null)
                     $data = ['status' => '0', 'message' => 'Kargo bulunamadı!'];
                 else {
-                    //                    $cargo['movements'] = CargoMovements::where('ctn', $tracking_no)
-                    //                        ->get();
 
-                    $cargo['movements'] = DB::table('cargo_movements')
-                        ->selectRaw('cargo_movements.*, number_of_pieces,  cargo_movements.group_id as testmebitch, (SELECT Count(*) FROM cargo_movements where cargo_movements.group_id = testmebitch) as current_pieces')
-                        ->groupBy('group_id')
+                    $cargo['movements'] = CargoMovements::selectRaw('cargo_movements.*, number_of_pieces,  part_no as current_pieces')
                         ->join('cargoes', 'cargoes.tracking_no', '=', 'cargo_movements.ctn')
                         ->where('ctn', '=', $tracking_no)
                         ->get();
 
-                    //                    $cargo['cargo']->tracking_no = TrackingNumberDesign($tracking_no);
+
+                    // $cargo['cargo']->tracking_no = TrackingNumberDesign($tracking_no);
 
                     $cargo['cargo']->collectible = $cargo['cargo']->collectible == '0' ? 'HAYIR' : 'EVET';
 
@@ -107,12 +105,23 @@ class CargoController extends Controller
             case 'CargoMovements':
                 $tracking_no = str_replace(' ', '', $request->ctn);
 
-                $data['cargo_movements'] = DB::table('cargo_movements')
-                    ->selectRaw('cargo_movements.*, number_of_pieces,  cargo_movements.group_id as testmebitch, (SELECT Count(*) FROM cargo_movements where cargo_movements.group_id = testmebitch) as current_pieces')
-                    ->groupBy('group_id')
-                    ->join('cargoes', 'cargoes.tracking_no', '=', 'cargo_movements.ctn')
-                    ->where('ctn', '=', $tracking_no)
+//                $data['cargo_movements'] = DB::table('cargo_movements')
+//                    ->selectRaw('cargo_movements.*, number_of_pieces,  cargo_movements.group_id as testmebitch, (SELECT Count(*) FROM cargo_movements where cargo_movements.group_id = testmebitch) as current_pieces')
+//                    ->groupBy('group_id')
+//                    ->join('cargoes', 'cargoes.tracking_no', '=', 'cargo_movements.ctn')
+//                    ->where('ctn', '=', $tracking_no)
+//                    ->get();
+
+                $data['cargo_movements'] = CargoMovements::with(['cargo', 'user.role'])
+                    ->where('ctn', $tracking_no)
+                    ->orderBy('created_at')
                     ->get();
+
+
+                foreach ($data['cargo_movements'] as $key) {
+                    $format = Carbon::parse($key->created_at);
+                    $key->created_time = $format->format('Y-m-d H:m:s');
+                }
                 break;
 
             default:
@@ -130,19 +139,19 @@ class CargoController extends Controller
 
         switch ($val) {
             case 'ReadCargoBag':
-                    return ReadCargoBagAction::run($request);
+                return ReadCargoBagAction::run($request);
                 break;
 
             case 'LoadCargoToCargoBag':
-                    return LoadCargoToCargoBagAction::run($request);
+                return LoadCargoToCargoBagAction::run($request);
                 break;
 
             case 'UnLoadCargoToCargoBag':
-                    return UnLoadCargoToCargoBagAction::run($request);
+                return UnLoadCargoToCargoBagAction::run($request);
                 break;
-           
-           case 'DeleteCargoFromBag':
-                    return DeleteCargoFromBagAction::run($request);
+
+            case 'DeleteCargoFromBag':
+                return DeleteCargoFromBagAction::run($request);
                 break;
 
             default:
