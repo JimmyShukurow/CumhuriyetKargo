@@ -299,20 +299,15 @@ class UserController extends Controller
         $tc = $request->tc;
         $log_name = $request->log_name;
 
-        if (($name_surname != '') || $agency != '' || $tc != '' || $log_name != '') {
-            $logs = DB::table('view_user_log_detail')
-                ->select(['id', 'log_name', 'description', 'created_at', 'branch_city', 'branch_name', 'user_type', 'display_name'])
-                ->whereRaw("created_at between '" . $startDate . "'  and '" . $finish_date . "'")
-                ->whereRaw($request->filled('agency') ? 'agency_code=' . $agency : '1 > 0')
-                ->whereRaw($request->filled('tc') ? 'tc_code=' . $tc : '1 > 0')
-                ->whereRaw($request->filled('log_name') ? "log_name='" . $log_name . "'" : '1 > 0')
-                ->whereRaw("name_surname like '%" . $name_surname . "%'");
-        } else {
-            $logs = DB::table('view_user_log_detail')
-                ->select(['id', 'log_name', 'description', 'created_at', 'branch_city', 'branch_name', 'user_type', 'display_name'])
-                ->whereRaw("created_at between '" . $startDate . "'  and '" . $finish_date . "'")
-                ->get();
-        }
+        $logs = DB::table('view_user_log_detail')
+            ->select(['id', 'log_name', 'description', 'created_at', 'branch_city', 'branch_name', 'user_type', 'name_surname', 'display_name', 'properties'])
+            ->whereRaw("created_at between '" . $startDate . "'  and '" . $finish_date . "'")
+            ->whereRaw($request->filled('agency') ? 'agency_code=' . $agency : '1 > 0')
+            ->whereRaw($request->filled('tc') ? 'tc_code=' . $tc : '1 > 0')
+            ->whereRaw($request->filled('log_name') ? "log_name='" . $log_name . "'" : '1 > 0')
+            ->whereRaw("name_surname like '%" . $name_surname . "%'")
+            ->whereRaw("created_at between '" . $startDate . "'  and '" . $finish_date . "'");
+
         return datatables()->of($logs)
             ->setRowId(function ($log) {
                 return "logs-item-" . $log->id;
