@@ -48,14 +48,14 @@
                                     <div class="position-relative form-group">
                                         <label for="car_type" class="font-weight-bold">Araç Tipi:</label>
                                         <select name="car_type"  id="car_type"
-                                                class="form-control form-control-sm">
+                                                class="form-control form-control-sm" required>
                                             <option value=""> Seçiniz</option>
                                             <option
                                                     {{old('car_type') == 'Aktarma' ? 'selected' : ''}} value="Aktarma">
                                                 Aktarma
                                             </option>
                                             <option
-                                                    {{old('car_type') == 'Acente' ? 'selected' : ''}} value="Acente">
+                                                    {{old('car_type') == 'Acente' ? 'selected' : ''}} value="Acente" selected>
                                                 Acente
                                             </option>
                                         </select>
@@ -66,9 +66,13 @@
                                     <div class="position-relative form-group">
                                         <label for="branch" class="font-weight-bold">Bağlı olduğu şube:</label>
                                         <select name="branch_code"  id="branch"
-                                                class="form-control form-control-sm">
+                                                class="form-control form-control-sm" required>
                                             <option value=""> Seçiniz</option>
-
+{{--                                            @foreach($data['agencies'] as $agency)--}}
+{{--                                                <option--}}
+{{--                                                        {{old('branch_code') == $agency->id ? 'selected' : ''}}--}}
+{{--                                                        value="{{$agency->id}}">{{$agency->agency_name.' ŞUBE'}} </option>--}}
+{{--                                            @endforeach--}}
                                         </select>
                                     </div>
                                 </div>
@@ -443,7 +447,7 @@
                     }).done(function (response) {
                         let allAgencies = '<option value=""> Seçiniz</option>';
                        $.each(response, function (key, value){
-                           allAgencies += '<option value='+ value.id +'>'+value.agency_name +'</option>';
+                           allAgencies += '<option \{\{old("branch_code") ==' + value.id + '? "selected" : "" \}\} value='+ value.id + '>'+value.agency_name +'</option>';
                        })
                        $('#branch').html('').append(allAgencies);
                         }
@@ -472,7 +476,7 @@
                     }).done(function (response) {
                         let allTC =  '<option value=""> Seçiniz</option>';;
                         $.each(response, function (key, value){
-                            allTC += '<option value='+ value.id +'>'+value.tc_name +'</option>';
+                            allTC += '<option \{\{old("branch_code") ==' + value.id + '? "selected" : "" \}\} value='+ value.id +'>'+value.tc_name +'</option>';
                         })
                         $('#branch').html('').append(allTC);
 
