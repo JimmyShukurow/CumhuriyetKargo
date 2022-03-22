@@ -301,6 +301,7 @@ class UserController extends Controller
 
         if (($name_surname != '') || $agency != '' || $tc != '' || $log_name != '') {
             $logs = DB::table('view_user_log_detail')
+                ->select(['id', 'log_name', 'description', 'created_at', 'branch_city', 'branch_name', 'user_type', 'display_name'])
                 ->whereRaw("created_at between '" . $startDate . "'  and '" . $finish_date . "'")
                 ->whereRaw($request->filled('agency') ? 'agency_code=' . $agency : '1 > 0')
                 ->whereRaw($request->filled('tc') ? 'tc_code=' . $tc : '1 > 0')
@@ -502,7 +503,8 @@ class UserController extends Controller
     public function getUserLogInfo(Request $request)
     {
 
-        $log = DB::table('activity_log')->where('id', $request->id)->first();
+        $log = DB::table('activity_log')
+            ->where('id', $request->id)->first();
 
         if ($log == null)
             return response()->json(['status' => 0, 'message' => 'Log bulunamadı!']);
