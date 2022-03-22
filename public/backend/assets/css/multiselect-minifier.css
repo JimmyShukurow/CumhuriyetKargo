@@ -1,0 +1,7 @@
+.multiselect.dropdown-toggle.custom-select {
+    width: 100%;
+    min-height: 30px !important;
+    line-height: 13px;
+    height: 10px;
+    border-radius: 0px;
+}

@@ -34,7 +34,7 @@
                         <button id="btnExportExcel"
                                 class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-warning">
                             <i class="fas fa-file-excel text-warning opacity-7 btn-icon-wrapper mb-2"> </i>
-                            Excel'e Aktar
+                            Excel
                         </button>
                     </div>
 
