@@ -36,6 +36,8 @@ class GetExpeditionInfoAction
             }
         });
 
+
+
         $allCargoes = $expedition->allCargoes()->with(
             [
                 'cargo',

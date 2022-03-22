@@ -59,6 +59,10 @@ class GetIncomingExpeditionsAction
         if ($expeditionIDs->count() > 0) {
             $rows = $rows->whereIn('id', $expeditionIDs);
         }
+       $rows = $rows->filter(function ($item){
+            return $item->routes->where('route_type', 0)->orWhere('route_type', 1);
+        })->all();
+
 
         $rows->each(function ($key) {
             $key['departure_branch'] = $key->routes->where('route_type', 1)->first();
