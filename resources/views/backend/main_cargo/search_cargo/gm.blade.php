@@ -11,6 +11,7 @@
     </style>
     <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
     <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
+    <link href="/backend/assets/css/multiselect-minifier.css" rel="stylesheet"/>
 @endpush
 
 @section('title', 'GM Kargo Sorgulama Ekranı')
@@ -245,7 +246,7 @@
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
                             </select>
-                            <select style="display: none;" id="multi-select-areas" multiple="multiple">
+                            <select style="display: none;" id="multi-select-areas" multiple data-mdb-filter="true" multiple="multiple">
                                 <optgroup label="Bölge Müdürlükleri">
 
                                 </optgroup>
@@ -318,6 +319,8 @@
 @endsection
 
 @section('js')
+    <!-- Include the plugin's CSS and JS: -->
+    <script type="text/javascript" src="/backend/assets/scripts/bootstrap-multiselect.js"></script>
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
     <script src="/backend/assets/scripts/jquery.json-viewer.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>

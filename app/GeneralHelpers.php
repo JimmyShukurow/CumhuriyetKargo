@@ -839,8 +839,8 @@ function dateFormatForJsonOutput($date)
 
 function allCargoTypes()
 {
-//    $CargoTypes = ['Dosya', 'Mi', 'Paket', 'Koli', 'Çuval', 'Rulo', 'Palet', 'Sandık', 'Valiz'];
-    $CargoTypes = ['Dosya', 'Koli'];
+    $CargoTypes = ['Dosya', 'Mi', 'Paket', 'Koli', 'Çuval', 'Rulo', 'Palet', 'Sandık', 'Valiz'];
+//    $CargoTypes = ['Dosya', 'Koli'];
     return $CargoTypes;
 }
 

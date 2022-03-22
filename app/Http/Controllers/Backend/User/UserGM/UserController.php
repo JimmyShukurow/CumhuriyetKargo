@@ -278,7 +278,7 @@ class UserController extends Controller
 
     public function userLogs()
     {
-        $data['agencies'] = Agencies::all();
+        $data['agencies'] = Agencies::orderBy('agency_name')->get();
         $data['tc'] = TransshipmentCenters::all();
         $data['log_names'] = DB::table('activity_log')
             ->select('log_name')
@@ -316,11 +316,11 @@ class UserController extends Controller
                 return "logs-item-" . $log->id;
             })
             ->editColumn('agency', function ($logs) {
-                return $logs->branch_city . '/' . $logs->branch_district . '-' . $logs->branch_name;
+                return $logs->branch_city . '-' . $logs->branch_name;
             })
-            ->addColumn('properties', 'backend.users.gm.columns.properties')
-            ->addColumn('properties_detail', function ($log) {
-                return $log->properties;
+            ->addColumn('properties', function ($key) {
+
+                return $key->properties != '[]' ? '<button id="' . $key->id . '"  class="btn btn-xs btn-danger properties-log">Detay</button>' : '';
             })
             ->rawColumns(['properties'])
             ->make(true);
@@ -499,5 +499,20 @@ class UserController extends Controller
 
     }
 
+    public function getUserLogInfo(Request $request)
+    {
+
+        $log = DB::table('activity_log')->where('id', $request->id)->first();
+
+        if ($log == null)
+            return response()->json(['status' => 0, 'message' => 'Log bulunamadı!']);
+
+
+        $user = User::with('role')->where('id', $log->causer_id)->first();
+        $branch = getUserBranchInfoWithUserID($user->id);
+
+        return response()->json(['status' => 1, 'user' => $user, 'branch' => $branch, 'log' => $log]);
+
+    }
 
 }
