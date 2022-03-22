@@ -200,10 +200,6 @@ class MainCargoController extends Controller
                 break;
 
             case 'GetPriceForCustomers':
-
-                return GetPriceForCustomersAction::run($request);
-
-
                 return response()
                     ->json(GetPriceForCustomersAction::run($request), 200);
                 break;
