@@ -16,6 +16,12 @@ class TransferCarsRequest extends FormRequest
 
 use FieldsToUppercaseTrait;
 
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'plaka' => str_replace(' ', '', $this->plaka),
+        ]);
+    }
 
     public function rules()
     {
