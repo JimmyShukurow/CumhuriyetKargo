@@ -170,6 +170,7 @@ class GetPriceForCustomersAction
 
                     # Gönderici Anlaşmalı ise
                     if ($currentCategory == 'Anlaşmalı') {
+
                         # ===> Cari Anlaşmalı Fiyat Standart Fiyat
                         $currentPrice = CurrentPrices::where('current_code', $currentCode)->first();
 

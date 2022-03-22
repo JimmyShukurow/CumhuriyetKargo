@@ -112,7 +112,7 @@
                                     </div>
                                     <div class="widget-content-right">
                                         <div class="widget-numbers text-primary" id="total_endorsement">
-                                            ₺{{getDotter($daily['total_endorsement'])}}</div>
+                                            ₺{{$daily['total_endorsement']}}</div>
                                     </div>
                                 </div>
                             </div>
