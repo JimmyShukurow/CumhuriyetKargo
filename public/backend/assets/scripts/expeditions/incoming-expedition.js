@@ -37,7 +37,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '/Expedition/AjaxTransactions/GetOutGoingExpeditions',
+            url: '/Expedition/AjaxTransactions/GetIncomingExpeditions',
             data: function (d) {
                 d.firstDate = $('#filterStartDate').val()
                 d.lastDate = $('#filterFinishDate').val()

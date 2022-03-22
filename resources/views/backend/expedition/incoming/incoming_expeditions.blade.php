@@ -169,5 +169,5 @@
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
-    <script src="/backend/assets/scripts/expeditions/incoming-expedition.js"></script>
+        <script src="/backend/assets/scripts/expeditions/incoming-expedition.js"></script>
 @endsection
