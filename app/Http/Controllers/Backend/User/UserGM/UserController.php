@@ -309,6 +309,7 @@ class UserController extends Controller
                 ->whereRaw("name_surname like '%" . $name_surname . "%'");
         } else {
             $logs = DB::table('view_user_log_detail')
+                ->select(['id', 'log_name', 'description', 'created_at', 'branch_city', 'branch_name', 'user_type', 'display_name'])
                 ->whereRaw("created_at between '" . $startDate . "'  and '" . $finish_date . "'")
                 ->get();
         }
