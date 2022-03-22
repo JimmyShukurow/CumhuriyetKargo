@@ -98,7 +98,7 @@
             </div>
             <div class="card-body">
 
-                <table style="white-space: nowrap;" width="100%" id="AgenciesTable"
+                <table width="100%" id="AgenciesTable"
                        class="align-middle mb-0 table table-borderless table-striped table-hover Table20Padding NikolasDataTable">
                     <thead>
                     <tr>
@@ -151,7 +151,7 @@
                     {
                         extend: 'excelHtml5',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 6]
+                            columns: [0, 1, 2, 3, 4,5, 7]
                         },
                         title: "CKG-Sis User Logs",
                         attr: {
