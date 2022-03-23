@@ -625,6 +625,13 @@ function CreateCargoBagTrackingNo()
         if ($cargo == null)
             break;
 
+        $cargo = DB::table('cargoes')
+            ->where('tracking_no', $ctn)
+            ->first();
+
+        if ($cargo == null)
+            break;
+
         $i++;
     }
     return $ctn;

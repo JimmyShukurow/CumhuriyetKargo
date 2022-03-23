@@ -99,4 +99,10 @@ class Agencies extends Model
             ->join('regional_directorates', 'region_id', '=', 'regional_directorates.id');
     }
 
+    public function tc()
+    {
+        return $this->hasOne(TransshipmentCenterDistricts::class, 'district_id', 'district_id')
+            ->join('transshipment_centers', 'tc_id', '=', 'transshipment_centers.id');
+    }
+
 }

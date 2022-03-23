@@ -18,25 +18,32 @@ class CargoBagsController extends Controller
 {
     public function agencyIndex()
     {
-        $data['users'] = DB::table('view_users_general_info')->get();
         $data['agencies'] = Agencies::all();
         $data['tc'] = TransshipmentCenters::all();
-        $data['roles'] = Roles::all();
-        $data['cities'] = Cities::all();
 
+        $arrivalPoint = "";
+        $tc = "";
 
-        $agency = DB::table('view_agency_region')
-            ->where('id', Auth::user()->agency_code)
-            ->first();
+        if (Auth::user()->user_type == 'Acente') {
 
-        $tc = TransshipmentCenters::find($agency->tc_id);
+            $agency = DB::table('view_agency_region')
+                ->where('id', Auth::user()->agency_code)
+                ->first();
 
-        $departure_point = $agency->agency_name;
-        $arrival_point = $tc->tc_name . ' TRM.';
-        $arrivalPoint = $arrival_point;
-        $departurePoint = $departure_point;
+            $tc = TransshipmentCenters::find($agency->tc_id);
+            $departure_point = $agency->agency_name;
+            $arrival_point = $tc->tc_name . ' TRM.';
+            $arrivalPoint = $arrival_point;
+            $departurePoint = $departure_point;
 
-        GeneralLog('Acente Torba & Çuval Sayfası görüntülendi.');
+        } elseif (Auth::user()->user_type == 'Aktarma') {
+
+            $tc = TransshipmentCenters::find(Auth::user()->tc_code);
+            $departurePoint = $tc->tc_name . ' TRM.';
+
+        }
+
+        GeneralLog('Torba & Çuval Sayfası görüntülendi.');
         return view('backend.main_cargo.cargo_bags.index', compact(['data', 'arrivalPoint', 'departurePoint']));
     }
 
@@ -98,12 +105,31 @@ class CargoBagsController extends Controller
             return response()
                 ->json(['status' => 0, 'message' => 'Lütfen geçerli bir tip seçiniz.'], 200);
 
-        $createBag = CargoBags::create([
-            'type' => $request->bag_type,
-            'tracking_no' => CreateCargoBagTrackingNo(),
-            'creator_user_id' => Auth::id(),
-            'status' => '0',
-        ]);
+
+        if (Auth::user()->user_type == 'Acente') {
+
+            $agency = Agencies::find(Auth::user()->agency_code);
+
+            $createBag = CargoBags::create([
+                'type' => $request->bag_type,
+                'tracking_no' => CreateCargoBagTrackingNo(),
+                'creator_user_id' => Auth::id(),
+                'arrival_branch_id' => $agency->tc->id,
+                'arrival_branch_type' => 'Aktarma',
+                'status' => '0',
+            ]);
+
+        } else if (Auth::user()->user_type == 'Aktarma') {
+
+            $createBag = CargoBags::create([
+                'type' => $request->bag_type,
+                'tracking_no' => CreateCargoBagTrackingNo(),
+                'creator_user_id' => Auth::id(),
+                'arrival_branch_id' => $request->arrivalBranchId,
+                'arrival_branch_type' => $request->arrivalBranchType,
+                'status' => '0',
+            ]);
+        }
 
         if ($createBag)
             return response()
@@ -213,27 +239,29 @@ class CargoBagsController extends Controller
         $departure_point = "";
         $arrival_point = "";
         if ($creator_user->user_type == 'Acente') {
-
-            $agency = DB::table('view_agency_region')
-                ->where('id', $creator_user->agency_code)
-                ->first();
-
-            $tc = TransshipmentCenters::find($agency->tc_id);
-
+            $agency = Agencies::find($creator_user->agency_code);
+            $tc = TransshipmentCenters::find($agency->tc->id);
             $departure_point = $agency->agency_name;
             $arrival_point = $tc->tc_name . ' TRM.';
+        } else if ($creator_user->user_type == 'Aktarma') {
+            $tc = TransshipmentCenters::find(Auth::user()->tc_code);
+            $departure_point = $tc->tc_name . ' TRM.';
+            if ($bagInfo->arrival_branch_type == 'Acente') {
+                $arrivalAgency = Agencies::find($bagInfo->arrival_branch_id)->withTrashed();
+                $arrival_point = $arrivalAgency->agenc_name;
+            } else if ($bagInfo->arrival_branch_type == 'Aktarma') {
+                $arrival = TransshipmentCenters::find($bagInfo->arrival_branch_id);
+                $arrival_point = $arrival->tc_name . ' TRM.';
+            }
         }
 
         $bagInfo->departure_point = $departure_point;
         $bagInfo->arrival_point = $arrival_point;
 
-
-        $data = [
+        return response()->json([
             'status' => 1,
             'bag_info' => $bagInfo,
-        ];
-
-        return response()->json($data, 200);
+        ], 200);
     }
 
 }

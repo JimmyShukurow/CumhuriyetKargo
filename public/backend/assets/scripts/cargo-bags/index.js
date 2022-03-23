@@ -59,7 +59,6 @@ $(document).ready(function () {
 })
 
 
-
 $('#search-form').on('submit', function (e) {
     oTable.draw();
     e.preventDefault();
@@ -117,6 +116,8 @@ $(document).on('click', '#btnInsertBag', function () {
         data: {
             _token: token,
             bag_type: $('#bag_type').val(),
+            arrivalBranchType: $('#arrivalBranchType').val(),
+            arrivalBranchId: $('#arrivalBranchType').val() == 'Acente' ? $('#arrivalAgency').val() : $('#arrivalTc').val()
         }
     }).done(function (response) {
 
@@ -316,3 +317,14 @@ function makeBarcodeQRCode(selector, val) {
 $(document).on('click', '#btnPrintBarcode', function () {
     printBarcode('#ModalBarcodes');
 });
+
+
+$(document).on('change', '#arrivalBranchType', function () {
+    if ($(this).val() == 'Acente') {
+        $('#divArrivalTc').hide()
+        $('#divArrivalAgency').show()
+    } else if ($(this).val() == 'Aktarma') {
+        $('#divArrivalTc').show()
+        $('#divArrivalAgency').hide()
+    }
+})
