@@ -147,7 +147,6 @@ class GetPriceForCustomersAction
                             $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
 
 
-
                         if ($cargoType == 'Dosya') {
                             $filePrice = $currentPrice->file;
                             $json = ['service_fee' => $filePrice];
@@ -238,7 +237,12 @@ class GetPriceForCustomersAction
         }
 
         # MobileServiceFee Start
-        $location = LocalLocation::where('neighborhood', $receiver->neighborhood)->first();
+        $location = DB::table('local_locations')
+            ->where('city', $receiver->city)
+            ->where('district', $receiver->district)
+            ->where('neighborhood', $receiver->neighborhood)
+            ->first();
+
 
         $mobileServiceFee = 0;
         $filePrice = FilePrice::find(1);
