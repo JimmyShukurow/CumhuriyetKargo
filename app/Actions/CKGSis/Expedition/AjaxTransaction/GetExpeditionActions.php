@@ -13,7 +13,7 @@ class GetExpeditionActions
     {
         $rows = Expedition::with(
             [
-                'car:id,plaka',
+                'car'=> function($q) {$q->withTrashed();},
                 'user:users.id,name_surname,display_name',
                 'routes.branch',
                 'cargoes'

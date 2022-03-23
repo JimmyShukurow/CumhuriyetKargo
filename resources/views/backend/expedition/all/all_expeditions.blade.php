@@ -42,7 +42,7 @@
                     <div class="btn-group dropdown">
                         <button type="button" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false" class="btn-icon btn-icon-only btn btn-link"><i
-                                class="pe-7s-menu btn-icon-wrapper"></i></button>
+                                    class="pe-7s-menu btn-icon-wrapper"></i></button>
                         <div tabindex="-1" role="menu" aria-hidden="true"
                              class="dropdown-menu-right rm-pointers dropdown-menu-shadow dropdown-menu-hover-link dropdown-menu">
 
@@ -168,5 +168,5 @@
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
-    <script src="/backend/assets/scripts/expeditions/incoming-expedition.js"></script>
+    <script src="/backend/assets/scripts/expeditions/all-expeditions.js"></script>
 @endsection

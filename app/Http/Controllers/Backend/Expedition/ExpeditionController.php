@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Expedition;
 
+use App\Actions\CKGSis\Expedition\AjaxTransaction\GetAllExpeditionsAction;
 use App\Actions\CKGSis\Expedition\AjaxTransaction\GetExpeditionInfoAction;
 use App\Actions\CKGSis\Expedition\AjaxTransaction\GetIncomingExpeditionsAction;
 use App\Actions\CKGSis\Expedition\AjaxTransaction\GetOutGoingExpeditionsAction;
@@ -79,6 +80,24 @@ class ExpeditionController extends Controller
         return view('backend.expedition.incoming.incoming_expeditions', compact(['data', 'unit', 'firstDate', 'agencies', 'tc', 'requestID']));
     }
 
+    public function allExpeditions($requestID = null)
+    {
+        $data['cities'] = Cities::all();
+        $user = Auth::user();
+
+        $unit = $user->branch;
+
+        $agencies = Agencies::orderBy('agency_name')
+            ->get();
+        $tc = TransshipmentCenters::all();
+
+        $firstDate = Carbon::createFromDate(date('Y-m-d'))->addDay(-7)->format('Y-m-d');
+
+        GeneralLog('Seferler sayfası görüntülendi');
+
+        return view('backend.expedition.all.all_expeditions', compact(['data', 'unit', 'firstDate', 'agencies', 'tc', 'requestID']));
+    }
+
     public function ajaxTransactions(Request $request, $val)
     {
         switch ($val) {
@@ -87,6 +106,9 @@ class ExpeditionController extends Controller
 
             case 'GetIncomingExpeditions':
                 return GetIncomingExpeditionsAction::run($request);
+
+            case 'GetAllExpeditions':
+                return GetAllExpeditionsAction::run($request);
 
             case 'GetExpeditionInfo':
                 return GetExpeditionInfoAction::run($request->id);
