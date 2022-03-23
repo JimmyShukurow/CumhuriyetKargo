@@ -73,7 +73,7 @@
                             @include('backend.expedition.details.tabs.expedition_movements')
                         </div>
                     </div>
-                    @if($rotue != null)
+                    @if($expedition->buttonsIsactive && $expedition->button)
                         <div class="row justify-content-center p-2">
 
                             <div class="p-2">

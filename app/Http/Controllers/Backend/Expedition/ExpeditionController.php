@@ -154,22 +154,28 @@ class ExpeditionController extends Controller
 
     public function show(Request $request, $id, $button=null)
     {
-        $Branch = getUserBranchInfoWithUserID(Auth::id());
-
-        $expedition = Expedition::where('branch_type', '');
+        $buttonsIsactive = false;
+        $user = Auth::user();
+        $expedition = GetExpeditionInfoAction::run($id);
 
         if ($expedition == null)
             return back()
                 ->with('error', 'Sefer bulunmadı!');
 
-
-        $rotue = ExpeditionRoute::where('expedtion_id', $expedition->id)
-            ->where('route_type', '-1')
-            ->first();
+        $expedition = $expedition->routes->filter(function ($key) use ($user) {
+            return ($key->route_type == 0 || $key->route_type == -1) && $key->branch_details == $user->branch;
+        })->first();
+        if (! $expedition) {
+            $buttonsIsactive = true;
+        }
 
         $expedition = GetExpeditionInfoAction::run($id);
-        $expedition->buttons = $button;
-        return view('backend.expedition.details.details', ['expedition' => $expedition, 'route' => $rotue]);
+
+        $expedition->buttonsIsactive = $buttonsIsactive;
+        $expedition->button = $button;
+
+
+        return view('backend.expedition.details.details', ['expedition' => $expedition]);
     }
 
     public function finish(Request $request)
