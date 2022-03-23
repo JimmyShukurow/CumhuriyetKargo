@@ -25,7 +25,7 @@
                         </i>
                     </div>
                     <div> Seferler <b>[{{$unit}}]</b>
-                        <div class="page-title-subheading">Bu modül üzerinden biriminize gelen seferleri görüntüleyebilir, işlem yapabilirsiniz.
+                        <div class="page-title-subheading">Bu modül üzerinden Cumhuriyet Kargo geneli tüm seferleri görüntüleyebilirsiniz.
                         </div>
                     </div>
                 </div>
