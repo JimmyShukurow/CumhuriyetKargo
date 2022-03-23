@@ -16,8 +16,8 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
         Route::get('OutGoing', [ExpeditionController::class, 'outGoing'])->name('outGoing');
         Route::any('AjaxTransactions/{val}', [ExpeditionController::class, 'ajaxTransactions']);
 
-        Route::get('Incomig',[ExpeditionController::class,'incoming'])->name('incoming');
-        Route::get('All',[ExpeditionController::class,'allExpeditions'])->name('all');
+        Route::get('Incoming',[ExpeditionController::class,'incoming'])->name('incoming');
+        Route::get('',[ExpeditionController::class,'allExpeditions'])->name('all');
     });
 
 
