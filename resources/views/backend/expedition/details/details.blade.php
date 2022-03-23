@@ -64,16 +64,18 @@
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
-                            @include('backend.expedition.outgoing.tabs.expedition_general_info')
+                            @include('backend.expedition.details.tabs.expedition_general_info')
 
-                            @include('backend.expedition.outgoing.tabs.cargoes')
+                            @include('backend.expedition.details.tabs.cargoes')
 
-                            @include('backend.expedition.outgoing.tabs.seals')
+                            @include('backend.expedition.details.tabs.seals')
 
-                            @include('backend.expedition.outgoing.tabs.expedition_movements')
+                            @include('backend.expedition.details.tabs.expedition_movements')
                         </div>
                     </div>
+                    @if($expedition->buttons)
                     <div class="row justify-content-center p-2">
+
                         <div class="p-2">
                             <button
                                 class="btn-icon-vertical alert-not-yet  btn-transition-text btn-transition btn-transition-alt p-2 btn btn-outline-success col-md-2">
@@ -112,6 +114,7 @@
                         </div>
 
                     </div>
+                    @endif
 
                 </div>
             </ul>
@@ -123,7 +126,7 @@
 
 @section('js')
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
-    <script src="/backend/assets/scripts/expeditions/outgoing-expedition-details.js"></script>
+    <script src="/backend/assets/scripts/expeditions/expedition-details.js"></script>
 @endsection
 
 

@@ -151,10 +151,11 @@ class ExpeditionController extends Controller
         ]);
     }
 
-    public function show(Request $request, $id)
+    public function show(Request $request, $id, $button=null)
     {
         $expedition = GetExpeditionInfoAction::run($id);
-        return view('backend.expedition.outgoing.outgoing_expeditions_modal', ['expedition' => $expedition]);
+        $expedition->buttons = $button;
+        return view('backend.expedition.details.details', ['expedition' => $expedition]);
     }
 
     public function finish(Request $request)
