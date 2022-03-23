@@ -14,7 +14,8 @@ class CargoMovements extends Model
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id')
-            ->select(['id', 'name_surname', 'user_type', 'role_id', 'agency_code', 'tc_code']);
+            ->select(['id', 'name_surname', 'user_type', 'role_id', 'agency_code', 'tc_code'])
+            ->withTrashed();
     }
 
     public function cargo()
