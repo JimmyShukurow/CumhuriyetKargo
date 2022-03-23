@@ -12,7 +12,7 @@
     <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
 @endpush
 
-@section('title', 'Gelen Seferler')
+@section('title', 'Seferler')
 @section('content')
 
     <div class="app-main__inner">
@@ -24,7 +24,7 @@
                         <i class="fa fa-bus icon-gradient bg-ck">
                         </i>
                     </div>
-                    <div>Gelen Seferler <b>[{{$unit}}]</b>
+                    <div> Seferler <b>[{{$unit}}]</b>
                         <div class="page-title-subheading">Bu modül üzerinden biriminize gelen seferleri görüntüleyebilir, işlem yapabilirsiniz.
                         </div>
                     </div>
