@@ -10,9 +10,13 @@ class UnloadCargoFromExpedition
 {
     use AsAction;
 
-    public function handle($cargoID, $partNo)
+    public function handle($cargoID, $partNo, $expeditionID)
     {
-        $expedition = ExpeditionCargo::where('cargo_id', $cargoID)->where('part_no', $partNo)->first();
+        $expedition = ExpeditionCargo::where('cargo_id', $cargoID)
+            ->where('part_no', $partNo)
+            ->where('expedition_id', $expeditionID)
+            ->where('unloading_at', null)
+            ->first();
         $expedition->update(['unloading_user_id' => Auth::id(), 'unloading_at' => now()]);
         if ($expedition){
             return response()->json([

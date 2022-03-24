@@ -76,13 +76,6 @@ class ExpeditionCargoMobileController extends Controller
             ]);
 
 
-        $cargoes = ExpeditionCargo::where('expedition_id', $validated['expedition_id'])->where('cargo_id', $cargo->id)->where('unloading_at', null)->get()->pluck('part_no');
-        if ($cargoes->contains($ctn[1])) {
-            return response()->json([
-                'status' => 0,
-                'message' => 'Bu Kargo Zaten Araçta Var',
-            ]);
-        }
         $user_id = Auth::id();
         $fields = $request->only('expedition_id');
         $fields['cargo_id'] = $cargo->id;
@@ -157,11 +150,11 @@ class ExpeditionCargoMobileController extends Controller
                     'message' => 'Kargo bulunamadı!',
                 ]);
             }
-            $cargoes = $cargoBag->details()->get();
+            $cargoes = $cargoBag->details;
             $cargoes->map(function ($cargo) use ($expedition) {
                 $user_id = Auth::id();
                 CargoExpeditionMovementAction::run($cargo->cargo->tracking_no, $cargo->cargo, $user_id, $cargo->part_no, rand(4, 10), 1, 'unload_cargo_expedition', $expedition->car->plaka);
-                UnloadCargoFromExpedition::run($cargo->cargo->id, $cargo->part_no);
+                UnloadCargoFromExpedition::run($cargo->cargo_id, $cargo->part_no, $expedition->id);
 
             });
             return response()->json([

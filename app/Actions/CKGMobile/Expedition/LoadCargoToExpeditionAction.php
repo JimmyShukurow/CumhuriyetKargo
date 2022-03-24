@@ -11,6 +11,16 @@ class LoadCargoToExpeditionAction
 
     public function handle($fields)
     {
+
+        $cargoes = ExpeditionCargo::where('expedition_id',$fields['expedition_id'])->where('cargo_id', $fields['cargo_id'])->where('unloading_at', null)->get()->pluck('part_no');
+        if ($cargoes->contains($fields['part_no'])) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Bu Kargo Zaten Araçta Var',
+            ]);
+        }
+
+
         $expedition = ExpeditionCargo::create($fields);
         if ($expedition){
             return response()->json([
@@ -18,5 +28,8 @@ class LoadCargoToExpeditionAction
                 'expedition' => $expedition,
             ]);
         }
+
+
+
     }
 }
