@@ -151,6 +151,9 @@
 
                 let cars = response.cars;
 
+                $('#plaka').html(cars.plaka);
+
+
                 $('#tdPlaka').html(cars.plaka);
                 $('#branch').html(cars.branch ? cars.branch.agency_name : '');
                 $('#creator-agency-name').html(cars.creator ? cars.creator.get_agency.agency_name : '');

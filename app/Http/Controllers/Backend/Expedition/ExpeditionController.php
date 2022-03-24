@@ -163,9 +163,9 @@ class ExpeditionController extends Controller
                 ->with('error', 'Sefer bulunmadı!');
 
         $expedition = $expedition->routes->filter(function ($key) use ($user) {
-            return ($key->route_type == 0 || $key->route_type == -1) && $key->branch_details == $user->branch;
+            return ($key->route_type == 1 || $key->route_type == -1) && $key->branch_details == $user->branch;
         })->first();
-        if (! $expedition) {
+        if ($expedition) {
             $buttonsIsactive = true;
         }
 
@@ -189,6 +189,7 @@ class ExpeditionController extends Controller
                 'message' => 'Bu sefer zaten bitirilmiş!',
             ]);
         }
+
         //Burda Cikish shube oldugu kontrol ediliyor
         if ($user->branch_details == $expedition->routes()->where('route_type', 1)->first()->branch) {
             $expedition->update(['done' => 1]);
@@ -199,6 +200,7 @@ class ExpeditionController extends Controller
             ]);
 
         }
+
         //Burda Varish shube oldugu kontrol ediliyor
         if ($user->branch_details == $expedition->routes()->where('route_type', -1)->first()->branch) {
             $expedition->update(['done' => 1]);

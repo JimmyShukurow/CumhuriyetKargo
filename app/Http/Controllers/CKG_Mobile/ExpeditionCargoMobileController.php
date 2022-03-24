@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CKG_Mobile;
 
 use App\Actions\CKGMobile\Expedition\CargoExpeditionMovementAction;
 use App\Actions\CKGMobile\Expedition\LoadCargoToExpeditionAction;
+use App\Actions\CKGMobile\Expedition\UnloadCargoFromExpedition;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Expedition\LoadCargoToExpeditionRequest;
 use App\Http\Resources\CKGMobile\Expedition\CargoResource;
@@ -37,7 +38,7 @@ class ExpeditionCargoMobileController extends Controller
 
         $cargo = Cargoes::where('tracking_no', $ctn[0])->first();
 
-        if ($cargo->cargo_type == 'Dosya' || $cargo->cargo_type == 'Mi')
+        if ($cargo && ($cargo->cargo_type == 'Dosya' || $cargo->cargo_type == 'Mi'))
             return response()->json([
                 'status' => 0,
                 'message' => 'Dosya ve Mi kargoları sadece torba ile yükleyebilirsiniz!',
@@ -159,13 +160,8 @@ class ExpeditionCargoMobileController extends Controller
             $cargoes = $cargoBag->details()->get();
             $cargoes->map(function ($cargo) use ($expedition) {
                 $user_id = Auth::id();
-                $fields = [];
-                $fields['expedition_id'] = $expedition->id;
-                $fields['cargo_id'] = $cargo->cargo->id;
-                $fields['part_no'] = $cargo->part_no;
-                $fields['user_id'] = $user_id;
                 CargoExpeditionMovementAction::run($cargo->cargo->tracking_no, $cargo->cargo, $user_id, $cargo->part_no, rand(4, 10), 1, 'unload_cargo_expedition', $expedition->car->plaka);
-                LoadCargoToExpeditionAction::run($fields);
+                UnloadCargoFromExpedition::run($cargo->cargo->id, $cargo->part_no);
 
             });
             return response()->json([
