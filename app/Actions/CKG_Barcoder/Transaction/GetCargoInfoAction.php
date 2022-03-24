@@ -36,7 +36,7 @@ class GetCargoInfoAction
         $data['cargo']->tracking_no = TrackingNumberDesign($data['cargo']->tracking_no);
         $data['cargo']->distance = getDotter($data['cargo']->distance);
 
-        $data['cargo']->created_at = dateFormatForJsonOutput($data['cargo']->created_at);
+//        $data['cargo']->created_at = dateFormatForJsonOutput($data['cargo']->created_at);
         $data['cargo']->crypte_invoice_no = Crypt::encryptString(Auth::id()) . "[TESLA]" . Crypt::encryptString($data['cargo']->invoice_number);
 
         $data['sender'] = DB::table('currents')
@@ -106,6 +106,7 @@ class GetCargoInfoAction
 
         $data['part_details'] = DB::table('cargo_part_details')
             ->where('tracking_no', str_replace(' ', '', $data['cargo']->tracking_no))
+            ->orderBy('part_no')
             ->get();
 
         $newPartDetais = [];
