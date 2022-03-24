@@ -247,8 +247,8 @@ class CargoBagsController extends Controller
             $tc = TransshipmentCenters::find(Auth::user()->tc_code);
             $departure_point = $tc->tc_name . ' TRM.';
             if ($bagInfo->arrival_branch_type == 'Acente') {
-                $arrivalAgency = Agencies::find($bagInfo->arrival_branch_id)->withTrashed();
-                $arrival_point = $arrivalAgency->agenc_name;
+                $arrivalAgency = Agencies::find($bagInfo->arrival_branch_id);
+                $arrival_point = $arrivalAgency->agency_name . ' ŞUBE';
             } else if ($bagInfo->arrival_branch_type == 'Aktarma') {
                 $arrival = TransshipmentCenters::find($bagInfo->arrival_branch_id);
                 $arrival_point = $arrival->tc_name . ' TRM.';

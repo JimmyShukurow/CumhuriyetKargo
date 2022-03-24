@@ -76,8 +76,9 @@
                                 </select>
                             </div>
                         </div>
+                    @endif
+
                 </div>
-                @endif
             </div>
 
             <div class="modal-footer">

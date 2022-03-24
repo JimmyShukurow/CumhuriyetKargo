@@ -129,10 +129,9 @@
 
 @section('modals')
 
-    @php $tc = '$tc'; @endphp
-    @include('backend.main_cargo.cargo_bags.includes.modal_bag_details')
-
     @include('backend.main_cargo.cargo_bags.includes.modal_create_bag')
+
+    @include('backend.main_cargo.cargo_bags.includes.modal_bag_details')
 
     @include('backend.main_cargo.cargo_bags.includes.modal_show_barcode')
 
