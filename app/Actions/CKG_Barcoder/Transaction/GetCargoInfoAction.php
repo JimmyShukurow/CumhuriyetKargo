@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\CKGSis\MainCargo\AjaxTransactions;
+namespace App\Actions\CKG_Barcoder\Transaction;
 
 use App\Models\Agencies;
 use App\Models\Cargoes;
@@ -18,19 +18,20 @@ class GetCargoInfoAction
 
     public function handle($request)
     {
-        if ($request->invoice_number != null)
+        $vals = explode('[TESLA]', $request->val);
 
-            $data['cargo'] = Cargoes::where('invoice_number', $request->invoice_number)
-                ->first();
-        else if ($request->tracking_number != null)
-            $data['cargo'] = Cargoes::where('tracking_no', str_replace(' ', '', $request->tracking_number))
-                ->first();
-        else
-            $data['cargo'] = Cargoes::find($request->id);
+        $id = Crypt::decryptString($vals[0]);
+        $invoiceNumber = Crypt::decryptString($vals[1]);
 
-        if ($data['cargo'] == null)
+        $user = User::find($vals[0]);
+
+        $cargo = Cargoes::where('invoice_number', $invoiceNumber)->first();
+
+        if ($cargo == null)
             return response()
-                ->json(['status' => 0, 'message' => 'Kargo Bulunamadı!'], 200);
+                ->json(['status' => 0, 'message' => 'Kargo Bulunamdı!']);
+
+        $data['cargo'] = Cargoes::find($cargo->id);
 
         $data['cargo']->tracking_no = TrackingNumberDesign($data['cargo']->tracking_no);
         $data['cargo']->distance = getDotter($data['cargo']->distance);
@@ -49,20 +50,11 @@ class GetCargoInfoAction
             ->orderBy('created_at')
             ->get();
 
-
         foreach ($data['movements'] as $key) {
             $format = Carbon::parse($key->created_at);
             $key->created_time = $format->format('Y-m-d H:m:s');
         }
 
-
-        $data['movementsSecondary'] = DB::table('cargo_movements')
-            ->selectRaw('cargo_movements.*, number_of_pieces,  cargo_movements.group_id as testmebitch, (SELECT Count(*) FROM cargo_movements where cargo_movements.group_id = testmebitch) as current_pieces')
-            ->groupBy('group_id')
-            ->join('cargoes', 'cargoes.tracking_no', '=', 'cargo_movements.ctn')
-            ->where('ctn', '=', str_replace(' ', '', $data['cargo']->tracking_no))
-            ->orderBy('created_at', 'asc')
-            ->get();
 
         $data['receiver'] = DB::table('currents')
             ->select(['id', 'current_code', 'tckn', 'category'])
@@ -149,6 +141,6 @@ class GetCargoInfoAction
         $data['bag_tracking_no'] = $data['cargo']->bagDetails->isNotEmpty() ? $data['cargo']->bagDetails()->first()->tracking_no : null;
 
         return response()
-            ->json($data, 200);
+            ->json(['status' => 1, 'data' => $data]);
     }
 }

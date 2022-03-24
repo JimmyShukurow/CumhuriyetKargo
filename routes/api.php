@@ -12,7 +12,7 @@ use App\Http\Controllers\CKG_Mobile\DefaultController;
 use App\Http\Controllers\CKG_Mobile\DebitController;
 use App\Http\Controllers\CKG_Mobile\CargoController;
 use App\Http\Controllers\CKG_Mobile\ExpeditionCargoMobileController;
-
+use App\Http\Controllers\CKG_Barcoder\CKGBarcoderController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -67,6 +67,12 @@ Route::middleware('auth:api')->group(function () {
         Route::post('UnloadCargo', [ExpeditionCargoMobileController::class, 'unloadCargo']);
         Route::delete('DeleteCargo', [ExpeditionCargoMobileController::class, 'deleteCargo']);
     });
+
+});
+
+Route::group(['prefix' => 'CKG-Barcoder'], function () {
+
+    Route::get('Transactions/{transaction}', [CKGBarcoderController::class, 'transactions']);
 
 });
 
