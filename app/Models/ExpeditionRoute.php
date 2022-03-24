@@ -16,4 +16,9 @@ class ExpeditionRoute extends Model
     {
         return $this->morphTo('branch','branch_model','branch_code');
     }
+
+    public function getBranchDetailsAttribute()
+    {
+        return $this->branch_type == 'Acente' ? $this->branch->agency_name . " ŞUBE" : $this->branch->tc_name . " TRM.";
+    }
 }

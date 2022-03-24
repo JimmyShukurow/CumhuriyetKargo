@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Expedition;
 
+use App\Actions\CKGSis\Expedition\AjaxTransaction\GetAllExpeditionsAction;
 use App\Actions\CKGSis\Expedition\AjaxTransaction\GetExpeditionInfoAction;
 use App\Actions\CKGSis\Expedition\AjaxTransaction\GetIncomingExpeditionsAction;
 use App\Actions\CKGSis\Expedition\AjaxTransaction\GetOutGoingExpeditionsAction;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\Cities;
 use App\Models\Expedition;
+use App\Models\ExpeditionRoute;
 use App\Models\TransshipmentCenters;
 use App\Models\User;
 use Carbon\Carbon;
@@ -79,6 +81,24 @@ class ExpeditionController extends Controller
         return view('backend.expedition.incoming.incoming_expeditions', compact(['data', 'unit', 'firstDate', 'agencies', 'tc', 'requestID']));
     }
 
+    public function allExpeditions($requestID = null)
+    {
+        $data['cities'] = Cities::all();
+        $user = Auth::user();
+
+        $unit = $user->branch;
+
+        $agencies = Agencies::orderBy('agency_name')
+            ->get();
+        $tc = TransshipmentCenters::all();
+
+        $firstDate = Carbon::createFromDate(date('Y-m-d'))->addDay(-7)->format('Y-m-d');
+
+        GeneralLog('Seferler sayfası görüntülendi');
+
+        return view('backend.expedition.all.all_expeditions', compact(['data', 'unit', 'firstDate', 'agencies', 'tc', 'requestID']));
+    }
+
     public function ajaxTransactions(Request $request, $val)
     {
         switch ($val) {
@@ -87,6 +107,9 @@ class ExpeditionController extends Controller
 
             case 'GetIncomingExpeditions':
                 return GetIncomingExpeditionsAction::run($request);
+
+            case 'GetAllExpeditions':
+                return GetAllExpeditionsAction::run($request);
 
             case 'GetExpeditionInfo':
                 return GetExpeditionInfoAction::run($request->id);
@@ -129,10 +152,30 @@ class ExpeditionController extends Controller
         ]);
     }
 
-    public function show(Request $request, $id)
+    public function show(Request $request, $id, $button=null)
     {
+        $buttonsIsactive = false;
+        $user = Auth::user();
         $expedition = GetExpeditionInfoAction::run($id);
-        return view('backend.expedition.outgoing.outgoing_expeditions_modal', ['expedition' => $expedition]);
+
+        if ($expedition == null)
+            return back()
+                ->with('error', 'Sefer bulunmadı!');
+
+        $expedition = $expedition->routes->filter(function ($key) use ($user) {
+            return ($key->route_type == 0 || $key->route_type == -1) && $key->branch_details == $user->branch;
+        })->first();
+        if (! $expedition) {
+            $buttonsIsactive = true;
+        }
+
+        $expedition = GetExpeditionInfoAction::run($id);
+
+        $expedition->buttonsIsactive = $buttonsIsactive;
+        $expedition->button = $button;
+
+
+        return view('backend.expedition.details.details', ['expedition' => $expedition]);
     }
 
     public function finish(Request $request)

@@ -38,11 +38,8 @@ class GetIncomingExpeditionsAction
         $lastDate = substr($lastDate, 0, 10) . ' 23:59:59';
 
 
-        if (Auth::user()->user_type == 'Acente') {
-            $ids = User::where('agency_code', Auth::user()->agency_code)->withTrashed()->get()->pluck('id');
-        } else {
-            $ids = User::where('tc_code', Auth::user()->tc_code)->withTrashed()->get()->pluck('id');
-        }
+
+            $ids = User::withTrashed()->get()->pluck('id');
 
         $expeditionIDs = collect();
         if ($departureBranch) {
@@ -55,13 +52,12 @@ class GetIncomingExpeditionsAction
             $rows_ids_Aktarma = FilterExpeditionArrivalAction::run(GetExpeditionActions::run($ids, $firstDate, $lastDate, $doneStatus, $serialNo, $plaka, $creator), $arrivalBranch, "Aktarma");
             $expeditionIDs = $rows_ids_Acente->merge($rows_ids_Aktarma);
         }
+
         $rows = GetExpeditionActions::run($ids, $firstDate, $lastDate, $doneStatus, $serialNo, $plaka, $creator);
         if ($expeditionIDs->count() > 0) {
             $rows = $rows->whereIn('id', $expeditionIDs);
         }
-       $rows = $rows->filter(function ($item){
-            return $item->routes->where('route_type', 0)->orWhere('route_type', 1);
-        })->all();
+        $rows = FilterIncomingExpeditionsAction::run($rows);
 
 
         $rows->each(function ($key) {

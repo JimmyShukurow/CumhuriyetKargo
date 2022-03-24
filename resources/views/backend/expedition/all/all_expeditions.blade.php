@@ -12,7 +12,7 @@
     <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
 @endpush
 
-@section('title', 'Gelen Seferler')
+@section('title', 'Seferler')
 @section('content')
 
     <div class="app-main__inner">
@@ -24,8 +24,8 @@
                         <i class="fa fa-bus icon-gradient bg-ck">
                         </i>
                     </div>
-                    <div>Gelen Seferler <b>[{{$unit}}]</b>
-                        <div class="page-title-subheading">Bu modül üzerinden biriminize gelen seferleri görüntüleyebilir, işlem yapabilirsiniz.
+                    <div> Seferler <b>[{{$unit}}]</b>
+                        <div class="page-title-subheading">Bu modül üzerinden Cumhuriyet Kargo geneli tüm seferleri görüntüleyebilirsiniz.
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                     <div class="btn-group dropdown">
                         <button type="button" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false" class="btn-icon btn-icon-only btn btn-link"><i
-                                class="pe-7s-menu btn-icon-wrapper"></i></button>
+                                    class="pe-7s-menu btn-icon-wrapper"></i></button>
                         <div tabindex="-1" role="menu" aria-hidden="true"
                              class="dropdown-menu-right rm-pointers dropdown-menu-shadow dropdown-menu-hover-link dropdown-menu">
 
@@ -168,5 +168,5 @@
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
-    <script src="/backend/assets/scripts/expeditions/incoming-expedition.js"></script>
+    <script src="/backend/assets/scripts/expeditions/all-expeditions.js"></script>
 @endsection

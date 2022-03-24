@@ -2,15 +2,12 @@
 
 namespace App\Actions\CKGSis\Expedition\AjaxTransaction;
 
-use App\Models\Expedition;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class GetOutGoingExpeditionsAction
+class GetAllExpeditionsAction
 {
     use AsAction;
 
@@ -40,11 +37,8 @@ class GetOutGoingExpeditionsAction
         $lastDate = substr($lastDate, 0, 10) . ' 23:59:59';
 
 
-        if (Auth::user()->user_type == 'Acente') {
-            $ids = User::where('agency_code', Auth::user()->agency_code)->withTrashed()->get()->pluck('id');
-        } else {
-            $ids = User::where('tc_code', Auth::user()->tc_code)->withTrashed()->get()->pluck('id');
-        }
+
+        $ids = User::withTrashed()->get()->pluck('id');
 
         $expeditionIDs = collect();
         if ($departureBranch) {
@@ -57,6 +51,7 @@ class GetOutGoingExpeditionsAction
             $rows_ids_Aktarma = FilterExpeditionArrivalAction::run(GetExpeditionActions::run($ids, $firstDate, $lastDate, $doneStatus, $serialNo, $plaka, $creator), $arrivalBranch, "Aktarma");
             $expeditionIDs = $rows_ids_Acente->merge($rows_ids_Aktarma);
         }
+
         $rows = GetExpeditionActions::run($ids, $firstDate, $lastDate, $doneStatus, $serialNo, $plaka, $creator);
         if ($expeditionIDs->count() > 0) {
             $rows = $rows->whereIn('id', $expeditionIDs);
@@ -90,7 +85,7 @@ class GetOutGoingExpeditionsAction
                 return $key->car->plaka;
             })
             ->editColumn('serial_no', function ($key) {
-                return '<a target="popup" onclick="window.open(\'/Expedition/Details/' . $key->id . '/true' . '\',\'popup\',\'width=1500,height=1200\'); return false;" href="/Expedition/Details/' . $key->id . '"><b style="text-decoration: underline; cursor: pointer;"  class="expedition-details">' . CurrentCodeDesign($key->serial_no) . '</b></a>';
+                return '<a target="popup" onclick="window.open(\'/Expedition/Details/' . $key->id . '\',\'popup\',\'width=1500,height=1200\'); return false;" href="/Expedition/Details/' . $key->id . '"><b style="text-decoration: underline; cursor: pointer;"  class="expedition-details">' . CurrentCodeDesign($key->serial_no) . '</b></a>';
 
             })
             ->editColumn('name_surname', function ($key) {
@@ -105,4 +100,5 @@ class GetOutGoingExpeditionsAction
             ->rawColumns(['description', 'status', 'add_files', 'serial_no'])
             ->make(true);
     }
+
 }
