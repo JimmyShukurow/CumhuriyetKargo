@@ -366,7 +366,7 @@ function getCurrentInfo(currentCode, tryExist = false) {
         if ($('#aliciCariKod').val() != '')
             $('.radio-payment-type').trigger('click')
 
-        let legal_number = response.tckn != '' ? response.tckn : response.vkn;
+        let legal_number = response.tckn != null ? response.tckn : response.vkn;
         $('#gondericiTCKN').val(legal_number);
 
         var newOption = new Option(response.name, response.name, true, true);

@@ -625,6 +625,13 @@ function CreateCargoBagTrackingNo()
         if ($cargo == null)
             break;
 
+        $cargo = DB::table('cargoes')
+            ->where('tracking_no', $ctn)
+            ->first();
+
+        if ($cargo == null)
+            break;
+
         $i++;
     }
     return $ctn;
@@ -839,8 +846,8 @@ function dateFormatForJsonOutput($date)
 
 function allCargoTypes()
 {
-//    $CargoTypes = ['Dosya', 'Mi', 'Paket', 'Koli', 'Çuval', 'Rulo', 'Palet', 'Sandık', 'Valiz'];
-    $CargoTypes = ['Dosya', 'Koli'];
+    $CargoTypes = ['Dosya', 'Mi', 'Paket', 'Koli', 'Çuval', 'Rulo', 'Palet', 'Sandık', 'Valiz'];
+//    $CargoTypes = ['Dosya', 'Koli'];
     return $CargoTypes;
 }
 

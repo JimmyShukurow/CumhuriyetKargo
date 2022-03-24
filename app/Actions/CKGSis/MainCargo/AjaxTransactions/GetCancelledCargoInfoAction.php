@@ -3,6 +3,7 @@
 namespace App\Actions\CKGSis\MainCargo\AjaxTransactions;
 
 use App\Models\CargoMovements;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -56,9 +57,10 @@ class GetCancelledCargoInfoAction
 
         $data['receiver']->current_code = CurrentCodeDesign($data['receiver']->current_code);
 
-        $data['creator'] = DB::table('view_users_all_info')
-            ->select(['name_surname', 'display_name'])
+        $data['creator'] = User::with('role')
+            ->select(['id', 'name_surname', 'role_id'])
             ->where('id', $data['cargo']->creator_user_id)
+            ->withTrashed()
             ->first();
 
         $data['departure'] = DB::table('agencies')

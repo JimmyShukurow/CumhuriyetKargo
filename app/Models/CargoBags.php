@@ -11,8 +11,8 @@ class CargoBags extends Model
 {
     use HasFactory, LogsActivity;
 
-    protected $fillable = ['type', 'tracking_no', 'creator_user_id', 'status', 'last_opener', 'last_closer', 'last_opening_date'];
-    protected static $logAttributes = ['type', 'tracking_no', 'creator_user_id', 'status', 'last_opener', 'last_closer'];
+    protected $guarded = [];
+    protected static $logAttributes = ['type', 'tracking_no', 'creator_user_id', 'arrival_branch_id', 'arrival_branch_type', 'status', 'last_opener', 'last_closer'];
 
     public function getDescriptionForEvent(string $eventName): string
     {
@@ -25,7 +25,7 @@ class CargoBags extends Model
         return $this
             ->belongsToMany(Cargoes::class, 'cargo_bag_details', 'bag_id', 'cargo_id')
             ->wherePivotNull('deleted_at')
-            ->where('is_inside', '=','1')
+            ->where('is_inside', '=', '1')
             ->wherePivotNull('unloaded_time');
     }
 

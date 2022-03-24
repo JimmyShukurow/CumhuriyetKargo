@@ -15,7 +15,7 @@
                         <div class="page-title-wrapper">
                             <div class="page-title-heading">
                                 <div class="page-title-icon">
-                                    <i class="fa fa-university icon-gradient bg-asteroid"> </i>
+                                    <i class="pe-7s-rocket icon-gradient bg-asteroid"> </i>
                                 </div>
                                 <div>
                                     Dashboard (Genel Müdürlük)

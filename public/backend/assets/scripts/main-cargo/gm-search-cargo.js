@@ -19,35 +19,35 @@ $(document).ready(function () {
         order: [12, 'desc'],
         language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
-        "footerCallback": function ( row, data, start, end, display ) {
+        "footerCallback": function (row, data, start, end, display) {
             var api = this.api();
 
             // Remove the formatting to get integer data for summation
-            var intVal = function ( i ) {
+            var intVal = function (i) {
                 return typeof i === 'string' ?
-                    i.replace(/[\$,]/g, '')*1 :
+                    i.replace(/[\$,]/g, '') * 1 :
                     typeof i === 'number' ?
                         i : 0;
             };
 
             // Total over all pages
             total = api
-                .column( 10 )
+                .column(10)
                 .data()
-                .reduce( function (a, b) {
+                .reduce(function (a, b) {
                     return intVal(a) + intVal(b);
-                }, 0 );
+                }, 0);
 
             // Total over this page
             pageTotal = api
-                .column( 10, { page: 'current'} )
+                .column(10, {page: 'current'})
                 .data()
-                .reduce( function (a, b) {
+                .reduce(function (a, b) {
                     return intVal(a) + intVal(b);
-                }, 0 );
+                }, 0);
 
             // Update footer
-            $( api.column( 4 ).footer() ).html(
+            $(api.column(4).footer()).html(
                 pageTotal.toFixed(2)
             );
         },
@@ -153,3 +153,27 @@ $('#btnClearFilter').click(function () {
 var array = new Array();
 
 
+$(document).ready(function () {
+    $('#senderDistrict').multiselect({
+        includeSelectAllOption: true,
+        selectAllName: 'select-all-name',
+        allSettled: true,
+        selectAllText: 'Tümünü Seç',
+        onSelectAll: function () {
+            oTable.draw();
+            pageRowCount();
+        },
+        onDeselectAll: function () {
+            oTable.draw();
+            pageRowCount();
+        },
+        widthSynchronizationMode: 'always',
+        buttonWidth: '100%',
+        onChange: function (option, checked, select) {
+            // alert('Changed option ' + $(option).val() + '. Checked : ' + checked);
+            oTable.draw();
+            pageRowCount();
+        }
+    });
+
+});
