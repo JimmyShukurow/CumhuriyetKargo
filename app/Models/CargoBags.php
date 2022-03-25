@@ -44,4 +44,11 @@ class CargoBags extends Model
     {
         return $this->hasMany(CargoBagDetails::class, 'bag_id', 'id');
     }
+
+    public function agency()
+    {
+        return $this->hasOne(Agencies::class,'id', 'arrival_branch_id');
+    }
+
+
 }

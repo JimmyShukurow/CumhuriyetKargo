@@ -36,6 +36,7 @@ class LoadCargoToCargoBagAction
         $bag = CargoBags::find($bagID);
 
 
+
         if ($bag == null) {
             return [
                 'status' => 0,
@@ -49,7 +50,18 @@ class LoadCargoToCargoBagAction
         } else {
 
             $cargo = Cargoes::where('tracking_no', $ctn[0])->where('confirm', '1')->first();
-            $cargoInBag = CargoBagDetails::where('cargo_id', $cargo->id)->first();
+
+            #check if cargoes is in write bag
+            if ($bag->arrival_branch_type == 'Acente') {
+                $check = CheckCargoBagLocationMatchAction::run($bag, $cargo);
+                if (! $check) {
+                    return [
+                        'status' => 0,
+                        'message' => 'Kargonun ve Torbanın Varış noktası uyuşmuyor!'
+                    ];
+                }
+            }
+            $cargoInBag = CargoBagDetails::where('cargo_id', $cargo->id)->where('bag_id', '!=', $bagID )->first();
             if ($cargoInBag) {
                 $cargoInBag->delete();
             }
