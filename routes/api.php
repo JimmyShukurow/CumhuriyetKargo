@@ -13,6 +13,7 @@ use App\Http\Controllers\CKG_Mobile\DebitController;
 use App\Http\Controllers\CKG_Mobile\CargoController;
 use App\Http\Controllers\CKG_Mobile\ExpeditionCargoMobileController;
 use App\Http\Controllers\CKG_Barcoder\CKGBarcoderController;
+use App\Http\Controllers\OurAppsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -71,26 +72,7 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::group(['prefix' => 'CKG-Barcoder'], function () {
-
     Route::get('Transactions/{transaction}', [CKGBarcoderController::class, 'transactions']);
-
 });
 
-
-
-//Route::middleware('auth:auth')->group(function () {
-//
-//Route::group(['middleware' => 'ApiAuthenticate'], function () {
-//    Route::post('/logout', [DefaultController::class, 'logout']);
-//    Route::get('/user', [DefaultController::class, 'user']);
-//    Route::get('/GetDefaultData/{val?}', [DefaultController::class, 'getDefaultData']);
-//    Route::post('DefaultTransaction/{val?}', [DefaultController::class, 'defaultTransaction']);
-//
-//    Route::any('DebitTransaction/{val?}', [DebitController::class, 'debitTransaction']);
-//    Route::post('CargoTransaction/{val?}', [CargoController::class, 'cargoTransaction']);
-//    });
-//});
-
-
-
-
+Route::get('OurApps/{app}', [OurAppsController::class, 'ourApps']);
