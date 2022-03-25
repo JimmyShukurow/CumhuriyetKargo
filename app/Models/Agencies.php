@@ -99,4 +99,8 @@ class Agencies extends Model
             ->join('regional_directorates', 'region_id', '=', 'regional_directorates.id');
     }
 
+    public function localLocations()
+    {
+        return $this->hasMany(LocalLocation::class, 'agency_code', 'id');
+    }
 }
