@@ -36,7 +36,8 @@ class GetCargoInfoAction
         $data['cargo']->distance = getDotter($data['cargo']->distance);
 
         $data['cargo']->created_at = dateFormatForJsonOutput($data['cargo']->created_at);
-        $data['cargo']->crypte_invoice_no = Crypt::encryptString(Auth::id()) . "[TESLA]" . Crypt::encryptString($data['cargo']->invoice_number);
+
+        $data['cargo']->crypte_invoice_no = "v=CreateBarcode&key=" . Crypt::encryptString(Auth::id()) . "[TESLA]" . Crypt::encryptString($data['cargo']->invoice_number);
 
         $data['sender'] = DB::table('currents')
             ->select(['id', 'current_code', 'tckn', 'category'])
