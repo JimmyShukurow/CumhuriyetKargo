@@ -4,6 +4,7 @@ namespace App\Actions\CKGSis\MainCargo\AjaxTransactions;
 
 use App\Models\Agencies;
 use App\Models\Currents;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -39,8 +40,9 @@ class DistributionControlAction
 
 
         $agency = Agencies::find($control->agency_code);
+        $agencySelf = Agencies::find(Auth::user()->agency_code);
 
-        if ($agency->status == '0' || $agency->operation_status == '0')
+        if ($agency->status == '0' || $agency->operation_status == '0' || $agencySelf->operation_status == '0')
             if ($entegration)
                 return ['status' => 1, 'arrival_agency' => '-', 'arrival_tc' => '-', 'area_type' => 'MNG'];
             else

@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="/backend/assets/css/ck-bag-barcode.css">
 @endpush()
 
-@section('title', 'Acente Torba & Çuval')
+@section('title', 'Torba & Çuval (Manifesto)')
 
 @section('content')
 
@@ -17,7 +17,7 @@
                         <i class="pe-7s-box2 icon-gradient bg-ripe-malin">
                         </i>
                     </div>
-                    <div>Torba & Çuval
+                    <div>Torba & Çuval (Manifesto)
                         <div class="page-title-subheading">
                             Bu modül üzerinden oluşturmuş olduğunuz torba ve çuvallarınızı görüntüleyebilirsiniz. <b>
                                 Çuval
@@ -128,171 +128,11 @@
 @endsection
 
 @section('modals')
-    <!-- Large modal => Modal Create Bag -->
-    <div class="modal fade bd-example-modal-lg" id="modalCreateBag" tabindex="-1" role="dialog"
-         aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalGiveRolePermissionLabel">Çuval & Torba Oluştur</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div style="overflow-y: auto; max-height: 75vh;" id="modalBodyCreateBag" class="modal-body">
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" for="bag_type">Tip:</label>
-                                <select name="" id="bag_type" class="font-weight-bold form-control form-control-sm">
-                                    <option value="">Seçiniz</option>
-                                    <option value="Torba">Torba</option>
-                                </select>
-                            </div>
-                        </div>
+    @include('backend.main_cargo.cargo_bags.includes.modal_create_bag')
 
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="">Çıkış</label>
-                                <input type="text" class="form-control form-control-sm text-primary font-weight-bold"
-                                       readonly value="{{$departurePoint}}">
-                            </div>
-                        </div>
+    @include('backend.main_cargo.cargo_bags.includes.modal_bag_details')
 
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="">Varış</label>
-                                <input type="text" class="form-control form-control-sm text-primary font-weight-bold"
-                                       readonly value="{{$arrivalPoint}}">
-                            </div>
-                        </div>
+    @include('backend.main_cargo.cargo_bags.includes.modal_show_barcode')
 
-                    </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
-                    <button id="btnInsertBag" type="button" class="btn btn-primary">Oluştur
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Large modal => Modal Bag Details -->
-    <div class="modal fade bd-example-modal-lg" id="modalBagDetails" tabindex="-1" role="dialog"
-         aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalBagDetailHeader"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div style="overflow-y: auto; max-height: 75vh;" id="modalBodyBagDetails" class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div style="overflow-y: auto; max-height: 425px;" class="cont">
-                                <table style="white-space: nowrap;" class="table table-bordered table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Fatura No</th>
-                                        <th>Parça No</th>
-                                        <th>Kargo Tipi</th>
-                                        <th>Alıcı</th>
-                                        <th>Gönderici</th>
-                                        <th>Gönderici İl/İlçe</th>
-                                        <th>Yükleyen</th>
-                                        <th>Yükleme Zamanı</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="tbodyBagDetails"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div style="display: flex;align-items: center; justify-content:center" class="modal-footer">
-                    <div id="numberOfCargoesInBag" style="position: absolute; left: 20px"></div>
-                    <button id="btnRefreshBagDetails" class="btn btn-warning">Yenile</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Large modal => Modal Barcode -->
-    <div class="modal fade bd-example-modal-lg" id="ModalShowBarcode" tabindex="-1" role="dialog"
-         aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalGiveRolePermissionLabel">Barkod Detayları</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div style="overflow-x: hidden;min-height: 30vh; max-height: 60vh;" id="ModalBarcodes"
-                     class="modal-body">
-                    <div id="ContainerBarcodes"
-                         class="container">
-                        <div style="margin-top: -2px;" class="row barcode-row  ">
-                            <div class="col-12">
-                                <h5 class="font-weight-bold text-center barcode-slogan">Cumhuriyet Kargo Daima
-                                    Önde..</h5>
-                                <h2 class="font-weight-bold text-center  text-dark m-0 barcodeDepartureTC"> İST. AVRUPA
-                                    TRM. </h2>
-                            </div>
-
-                            <div class="col-12 p-0">
-                                <table style="min-height: 200px;" class="shipmentReceiverInfo">
-                                    <tr>
-                                        <td>
-                                            <h2 id="" class="text-dark font-weight-bold barcodeBagType text-center">
-                                                ÇUVAL</h2>
-                                        </td>
-                                        <td rowspan="3">
-                                            <div style="position:relative; left: 33px;" class="qrcodes"
-                                                 id="qrcode"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <h4 id="barcodeCreatedAt" class="text-dark text-center font-weight-bold">
-                                                10.11.2021 15:46</h4>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center font-weight-bold">
-                                            <span class="barcodeBagType">Çuval</span> REFERANS NO: <br> <span
-                                                id="barcodeTrackingNo">54568 78894 12357</span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <div class="col-12 text-right">
-                                <h3 class="font-weight-bold text-center text-dark barcodeArrivalTC">İST - AVRUPA
-                                    TRM.</h3>
-                            </div>
-
-                            <div style="height: 105px;" class="col-12 code39-container">
-                                <svg id="barcodeCode39" class="barcode"></svg>
-                            </div>
-                        </div>
-                        <div style="clear: both;" class="barcode-divider"></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <label id="modalBarcodeFooterLabel" style="float: left;width: 100%;"><b id="barcodeCount">1</b> Adet
-                        barkod hazırlandı.</label>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
-                    <button type="button" id="btnPrintBarcode" class="btn btn-primary">Yazdır</button>
-                </div>
-
-            </div>
-        </div>
-    </div>
 @endsection
