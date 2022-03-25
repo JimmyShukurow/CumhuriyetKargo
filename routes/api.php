@@ -14,6 +14,7 @@ use App\Http\Controllers\CKG_Mobile\CargoController;
 use App\Http\Controllers\CKG_Mobile\ExpeditionCargoMobileController;
 use App\Http\Controllers\CKG_Barcoder\CKGBarcoderController;
 use App\Http\Controllers\OurAppsController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes

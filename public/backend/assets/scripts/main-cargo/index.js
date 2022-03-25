@@ -581,6 +581,25 @@ function designBarcodes(elementStyle, className, departure, departure_tc, barcod
 }
 
 
+$('#btnPrintSelectedBarcodeWCKGBarcoder').click(function () {
+    let cargoesDataTable = $('#CargoesTable').DataTable();
+    let selectedItems = cargoesDataTable.rows({selected: true}).data();
+
+    if (selectedItems.length == 0) {
+        ToastMessage('error', 'Lütfen barkodu basılacak kargoları seçin!', 'Hata!')
+        return false;
+    }
+
+    let ids = "";
+    $.each(selectedItems, function (key, val) {
+        ids += val['id'] + ",";
+    });
+
+    console.log("ckg-barcoder:v=CreateMultipleBarcode&key=" + $(this).attr('crypted-data') + "[TESLA]" + ids)
+    window.location = "ckg-barcoder:v=CreateMultipleBarcode&key=" + $(this).attr('crypted-data') + "[TESLA]" + ids;
+
+});
+
 $('#btnPrintSelectedBarcode').click(function () {
 
     let cargoesDataTable = $('#CargoesTable').DataTable();

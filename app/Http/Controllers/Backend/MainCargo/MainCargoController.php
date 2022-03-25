@@ -45,6 +45,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpWord\TemplateProcessor;
 
@@ -92,8 +93,10 @@ class MainCargoController extends Controller
 
         $daily['total_desi'] = round($daily['total_desi'], 2);
 
+        $cryptedData = Crypt::encryptString(Auth::id());
+
         GeneralLog('Kargolar Ana Menü görüntülendi.');
-        return view('backend.main_cargo.main.index.index', compact(['data', 'daily']));
+        return view('backend.main_cargo.main.index.index', compact(['data', 'daily', 'cryptedData']));
     }
 
     public function newCargo()

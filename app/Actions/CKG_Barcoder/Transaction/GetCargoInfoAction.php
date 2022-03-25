@@ -18,12 +18,19 @@ class GetCargoInfoAction
 
     public function handle($request)
     {
+
+        if ($request->val == '')
+            return response()->json(['status' => 0, 'message' => 'No Val!']);
+
         $vals = explode('[TESLA]', $request->val);
+
 
         $id = Crypt::decryptString($vals[0]);
         $invoiceNumber = Crypt::decryptString($vals[1]);
 
         $user = User::find($vals[0]);
+        if ($user == null)
+            return response()->json(['status' => 0, 'message' => 'User not found!']);
 
         $cargo = Cargoes::where('invoice_number', $invoiceNumber)->first();
 
@@ -36,7 +43,7 @@ class GetCargoInfoAction
         $data['cargo']->tracking_no = TrackingNumberDesign($data['cargo']->tracking_no);
         $data['cargo']->distance = getDotter($data['cargo']->distance);
 
-//        $data['cargo']->created_at = dateFormatForJsonOutput($data['cargo']->created_at);
+        //$data['cargo']->created_at = dateFormatForJsonOutput($data['cargo']->created_at);
         $data['cargo']->crypte_invoice_no = Crypt::encryptString(Auth::id()) . "[TESLA]" . Crypt::encryptString($data['cargo']->invoice_number);
 
         $data['sender'] = DB::table('currents')

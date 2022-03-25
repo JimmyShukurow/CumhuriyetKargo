@@ -158,7 +158,7 @@ function cargoInfo(user) {
 
             $('#titleTrackingNo').text(cargo.tracking_no);
 
-            $('#printSomePieces').attr('crypted-data', cargo.crypte_invoice_no)
+            $('#printBarcodeAllPieces').attr('crypted-data', cargo.crypte_invoice_no)
 
             if (cargo.deleted_at != null) {
                 $('#titleTrackingNo').text($('#titleTrackingNo').text() + " ##SİLİNDİ##");
@@ -491,6 +491,6 @@ $(document).on('dblclick', '.cargo-report-serial-no', function () {
     getReportInfo($(this).attr('report-id'));
 });
 
-$(document).on('click', '#printSomePieces', function () {
+$(document).on('click', '#printBarcodeAllPieces', function () {
     window.location = "ckg-barcoder:" + $(this).attr('crypted-data');
 })

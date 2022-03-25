@@ -595,15 +595,23 @@
                                                     <div tabindex="-1" role="menu" aria-hidden="true"
                                                          class="dropdown-menu-hover-link dropdown-menu">
                                                         <h6 tabindex="-1" class="dropdown-header">Barkod Yazdır</h6>
-                                                        <button type="button" onclick="clicker('#btnCargoPrintBarcode')"
+                                                        <button style="display: none;" crypted-data=""
+                                                                id="printBarcodeAllPieces"></button>
+                                                        <button type="button"
+                                                                onclick="clicker('#printBarcodeAllPieces')"
                                                                 tabindex="0" class="dropdown-item">
                                                             <i class="dropdown-icon pe-7s-news-paper print-all-barcodes"></i>
                                                             <span>Tüm Parçaları Yazdır</span>
                                                         </button>
-                                                        <button style="display: none;" crypted-data="" id="printSomePieces"></button>
-                                                        <button onclick="clicker('#printSomePieces')"  type="button" tabindex="0" class="dropdown-item">
+                                                        @if(Auth::user()->role_id == 1)
+                                                            <button onclick="clicker('#btnCargoPrintBarcode')"
+                                                                    class="btn btn-primary btn-sm">Print
+                                                            </button>
+                                                        @endif
+                                                        <button onclick="" type="button"
+                                                                tabindex="0" class="dropdown-item">
                                                             <i class="dropdown-icon lnr-file-empty"></i>
-                                                            <span>Belirli Parçalı Yazdır (Özel)</span>
+                                                            <span>Belirli Parçaları Yazdır (Özel)</span>
                                                         </button>
                                                     </div>
                                                 </div>

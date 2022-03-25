@@ -39,10 +39,13 @@
                     </div>
 
                     <div class="p-0 col-lg-1 col-sm-4 col-xs-6">
-                        <button id="btnPrintSelectedBarcode"
+                        <button id="btnPrintSelectedBarcodeWCKGBarcoder" crypted-data="{{$cryptedData}}"
                                 class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-alternate">
                             <i class="lnr-printer text-alternate opacity-7 btn-icon-wrapper mb-2"> </i>
                             Yazdır
+                            @if(Auth::user()->role_id = 1)
+                                <a id="btnPrintSelectedBarcode" href="#">Print</a>
+                            @endif
                         </button>
                     </div>
 
@@ -166,7 +169,6 @@
                             </a>
                         </div>
                     </div>
-
 
 
                     <div class="p-0 col-lg-1 col-sm-4 col-xs-6">
