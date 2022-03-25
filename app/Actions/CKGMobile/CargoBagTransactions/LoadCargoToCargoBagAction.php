@@ -49,7 +49,7 @@ class LoadCargoToCargoBagAction
         } else {
 
             $cargo = Cargoes::where('tracking_no', $ctn[0])->where('confirm', '1')->first();
-            $cargoInBag = CargoBags::where('cargo_id', $cargo->id)->first();
+            $cargoInBag = CargoBagDetails::where('cargo_id', $cargo->id)->first();
             if ($cargoInBag) {
                 $cargoInBag->delete();
             }

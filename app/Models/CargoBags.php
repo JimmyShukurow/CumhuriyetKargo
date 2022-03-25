@@ -20,6 +20,11 @@ class CargoBags extends Model
         return "Torba & Çuval $eventName.";
     }
 
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+
     public function bagDetails()
     {
         return $this
@@ -29,11 +34,6 @@ class CargoBags extends Model
             ->wherePivotNull('unloaded_time');
     }
 
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:m:s',
-        'updated_at' => 'datetime:Y-m-d H:m:s',
-        'last_opening_date' => 'datetime:Y-m-d H:m:s',
-    ];
 
     public function bagLastOpener()
     {

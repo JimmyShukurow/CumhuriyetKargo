@@ -105,4 +105,9 @@ class Agencies extends Model
             ->join('transshipment_centers', 'tc_id', '=', 'transshipment_centers.id');
     }
 
+    public function localLocations()
+    {
+        return $this->hasMany(LocalLocation::class, 'agency_code');
+    }
+
 }
