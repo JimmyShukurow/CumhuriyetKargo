@@ -44,4 +44,9 @@ class CargoBags extends Model
     {
         return $this->hasMany(CargoBagDetails::class, 'bag_id', 'id');
     }
+
+    public function arrivalBranch()
+    {
+        return $this->morphTo('arrival_branch','arrival_branch_model','arrival_branch_id');
+    }
 }

@@ -116,6 +116,7 @@ class CargoBagsController extends Controller
                 'creator_user_id' => Auth::id(),
                 'arrival_branch_id' => $agency->tc->id,
                 'arrival_branch_type' => 'Aktarma',
+                'arrival_branch_model' => 'App\Models\Agencies',
                 'status' => '0',
             ]);
 
@@ -127,6 +128,7 @@ class CargoBagsController extends Controller
                 'creator_user_id' => Auth::id(),
                 'arrival_branch_id' => $request->arrivalBranchId,
                 'arrival_branch_type' => $request->arrivalBranchType,
+                'arrival_branch_model' => 'App\Models\TransshipmentCenters',
                 'status' => '0',
             ]);
         }
