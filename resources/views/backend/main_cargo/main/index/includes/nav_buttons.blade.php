@@ -43,7 +43,7 @@
                                 class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-alternate">
                             <i class="lnr-printer text-alternate opacity-7 btn-icon-wrapper mb-2"> </i>
                             Yazdır
-                            @if(Auth::user()->role_id = 1)
+                            @if(Auth::user()->role_id == "1")
                                 <a id="btnPrintSelectedBarcode" href="#">Print</a>
                             @endif
                         </button>

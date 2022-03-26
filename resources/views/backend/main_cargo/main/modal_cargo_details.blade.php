@@ -603,7 +603,7 @@
                                                             <i class="dropdown-icon pe-7s-news-paper print-all-barcodes"></i>
                                                             <span>Tüm Parçaları Yazdır</span>
                                                         </button>
-                                                        @if(Auth::user()->role_id == 1)
+                                                        @if(Auth::user()->role_id == "1")
                                                             <button onclick="clicker('#btnCargoPrintBarcode')"
                                                                     class="btn btn-primary btn-sm">Print
                                                             </button>
