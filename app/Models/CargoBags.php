@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use PhpParser\Builder\Class_;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -50,5 +51,18 @@ class CargoBags extends Model
         return $this->hasOne(Agencies::class,'id', 'arrival_branch_id');
     }
 
+    public function arrivalBranch()
+    {
+        return $this->morphTo('arrival_branch','arrival_branch_model','arrival_branch_id');
+    }
 
+    public function getArrivalBranchNameAttribute()
+    {
+        return $this->arrivalBranch ? ($this->arrivalBranch->agency_name . " ŞUBE" ?? $this->arrivalBranch->tc_name . " TRM.") : null;
+    }
+
+    public function creator()
+    {
+        return $this->hasOne(User::class, 'id', 'creator_user_id');
+    }
 }

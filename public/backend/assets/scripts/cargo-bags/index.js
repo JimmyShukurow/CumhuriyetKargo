@@ -6,7 +6,7 @@ $(document).ready(function () {
         pageLength: 25,
         lengthMenu: dtLengthMenu,
         order: [
-            8, 'desc'
+            10, 'desc'
         ],
         language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
@@ -48,6 +48,8 @@ $(document).ready(function () {
             {data: 'included_cargo_count', name: 'included_cargo_count'},
             {data: 'status', name: 'status'},
             {data: 'name_surname', name: 'name_surname'},
+            {data: 'departure_branch_name', name: 'departure_branch_name'},
+            {data: 'arrival_branch_name', name: 'arrival_branch_name'},
             {data: 'last_opener', name: 'last_opener'},
             {data: 'last_opening_date', name: 'last_opening_date'},
             {data: 'is_opened', name: 'is_opened'},
