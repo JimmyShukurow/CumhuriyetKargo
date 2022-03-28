@@ -19,7 +19,7 @@ class GetPriceForCustomersAction
         $cargoType = $request->cargoType;
         $currentCode = str_replace(' ', '', $request->gondericiCariKodu);
         $receiverCode = str_replace(' ', '', $request->aliciCariKodu);
-        $paymentType = $request->paymentType;
+        $paymentType = $request->odemeTipi;
 
 
         $current = Currents::where('current_code', $currentCode)->first();

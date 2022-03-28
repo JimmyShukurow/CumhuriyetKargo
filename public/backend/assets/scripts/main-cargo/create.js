@@ -1233,7 +1233,7 @@ function CalculateDesi(RealDesi, PartNumber, clickButton) {
             endPoint: $('#aliciIl').val(),
             desi: RealDesi,
             cargoType: CargoType,
-            paymentType: $('input[name="radioPaymentType"]:checked').val(),
+            odemeTipi: $('input[name="radioPaymentType"]:checked').val(),
             gondericiCariKodu: $('#gondericiCariKod').val(),
             aliciCariKodu: $('#aliciCariKod').val(),
             desiData: getFormData($('#formPartDesiContainer')),
