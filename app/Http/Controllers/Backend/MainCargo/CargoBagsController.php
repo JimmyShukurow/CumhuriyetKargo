@@ -122,19 +122,20 @@ class CargoBagsController extends Controller
                 'creator_user_id' => Auth::id(),
                 'arrival_branch_id' => $agency->tc->id,
                 'arrival_branch_type' => 'Aktarma',
-                'arrival_branch_model' => 'App\Models\Agencies',
+                'arrival_branch_model' => 'App\Models\TransshipmentCenters',
                 'status' => '0',
             ]);
 
         } else if (Auth::user()->user_type == 'Aktarma') {
 
+            $model = $request->arrivalBranchType == 'Acente' ? 'App\Models\Agencies' : 'App\Models\TransshipmentCenters';
             $createBag = CargoBags::create([
                 'type' => $request->bag_type,
                 'tracking_no' => CreateCargoBagTrackingNo(),
                 'creator_user_id' => Auth::id(),
                 'arrival_branch_id' => $request->arrivalBranchId,
                 'arrival_branch_type' => $request->arrivalBranchType,
-                'arrival_branch_model' => 'App\Models\TransshipmentCenters',
+                'arrival_branch_model' => $model,
                 'status' => '0',
             ]);
         }
