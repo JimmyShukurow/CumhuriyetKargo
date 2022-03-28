@@ -119,4 +119,12 @@ class Cargoes extends Model
         return $this->hasOne(CargoCollection::class, 'cargo_id', 'id');
     }
 
+    public function getArrivalBranchNameAttribute()
+    {
+        if ($this->arrival_agency_code != null) {
+            return $this->hasOne(Agencies::class, 'id', 'arrival_agency_code');
+        } elseif ($this->arrival_tc_code != null) {
+            return $this->hasOne(TransshipmentCenters::class, 'id', 'arrival_tc_code');
+        }
+    }
 }
