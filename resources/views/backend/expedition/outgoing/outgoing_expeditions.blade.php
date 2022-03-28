@@ -121,7 +121,7 @@
         <div class="card mb-3">
             <div class="card-body">
 
-                <table width="100%" id="OutGoingExpeditionsTable"
+                <table style="white-space: nowrap;" width="100%" id="OutGoingExpeditionsTable"
                        class="align-middle mb-0 table Table20Padding table-bordered table-striped table-hover NikolasDataTable">
                     <thead>
                     <tr>

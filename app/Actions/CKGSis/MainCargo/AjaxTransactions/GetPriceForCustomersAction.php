@@ -19,7 +19,8 @@ class GetPriceForCustomersAction
         $cargoType = $request->cargoType;
         $currentCode = str_replace(' ', '', $request->gondericiCariKodu);
         $receiverCode = str_replace(' ', '', $request->aliciCariKodu);
-        $paymenyType = $request->odemeTipi;
+        $paymentType = $request->paymentType;
+
 
         $current = Currents::where('current_code', $currentCode)->first();
         $receiver = Currents::where('current_code', $receiverCode)->first();
@@ -138,12 +139,13 @@ class GetPriceForCustomersAction
                     if ($currentCategory == 'Anlaşmalı' && $receiverCategory == 'Anlaşmalı') {
                         # ===> Ödeme Taraflı Cari Anlaşmalı Fiyat Standart Fiyat
 
+
                         # ===> Peşin Ödemeli Cari Hesap => PÖCH
-                        if ($paymenyType == 'PÖCH')
+                        if ($paymentType == 'PÖCH')
                             $currentPrice = CurrentPrices::where('current_code', $currentCode)->first();
 
                         # ===> Alıcı Ödemeli
-                        else if ($paymenyType == 'Alıcı Ödemeli')
+                        else if ($paymentType == 'Alıcı Ödemeli')
                             $currentPrice = CurrentPrices::where('current_code', $receiverCode)->first();
 
 

@@ -472,8 +472,6 @@ function cargoInfo(user) {
 
 
             $('#btnCargoPrintBarcode').attr('tracking-no', cargo.id);
-
-
         }
 
         $('#ModalCargoDetails').unblock();
