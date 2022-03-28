@@ -79,7 +79,7 @@
             <div class="card-body">
 
                 <table style="white-space: nowrap;" id="AgenciesTable"
-                       class="align-middle mb-0 table Table20Padding table-borderless table-striped table-hover NikolasDataTable">
+                       class="align-middle mb-0 table Table20Padding  table-borderless table-striped table-hover NikolasDataTable">
                     <thead>
                     <tr>
                         <th>Çuval Takip No</th>
@@ -128,7 +128,6 @@
     <script src="/backend/assets/scripts/JsBarcode.js"></script>
     <script src="/backend/assets/scripts/QrCode.min.js"></script>
     <script src="/backend/assets/scripts/cargo-bags/index.js"></script>
-
 @endsection
 
 @section('modals')

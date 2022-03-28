@@ -25,7 +25,7 @@ $(document).ready(function () {
                 }
             },
         ],
-        responsive: true,
+        responsive: false,
         processing: true,
         serverSide: true,
         ajax: {
@@ -57,7 +57,11 @@ $(document).ready(function () {
             {data: 'edit', name: 'edit'},
         ],
         scrollY: "400px",
+        scrollX: true,
     })
+
+
+    $('.dataTables_scrollBody').addClass('mostly-customized-scrollbar')
 })
 
 
