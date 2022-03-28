@@ -13,7 +13,7 @@ class GetExpeditionInfoAction
     {
         $expedition = Expedition::with(
             [
-                'car:id,plaka',
+                'car' => function($q) {$q->withTrashed();},
                 'user',
                 'movements.user.role',
                 'routes.branch',
