@@ -163,7 +163,7 @@ class ExpeditionController extends Controller
                 ->with('error', 'Sefer bulunmadı!');
 
         $expedition = $expedition->routes->filter(function ($key) use ($user) {
-            return $key->route_type == 1  && $key->branch_details == $user->branch;
+            return $key->branch_details == $user->branch;
         })->first();
         if ($expedition) {
             $buttonsIsactive = true;
