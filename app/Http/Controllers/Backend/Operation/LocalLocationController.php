@@ -180,7 +180,7 @@ class LocalLocationController extends Controller
 
 
         $locations = DB::table('local_locations')
-            ->select(['local_locations.*', 'agencies.agency_name'])
+            ->select(['local_locations.id', 'local_locations.city', 'local_locations.city', 'local_locations.district', 'local_locations.area_type', 'local_locations.neighborhood', 'local_locations.distance', 'agencies.agency_name'])
             ->join('agencies', 'agencies.id', '=', 'local_locations.agency_code')
             ->whereRaw($request->city ? "local_locations.`city`='" . $city->city_name . "'" : '1 > 0')
             ->whereRaw($request->district ? "local_locations.`district`='" . $district->district_name . "'" : '1 > 0')
@@ -194,10 +194,10 @@ class LocalLocationController extends Controller
                 return $location->area_type == 'AB' ? '<b class="text-primary">Ana Bölge</b>' : '<b class="text-alternate">Mobil Bölge</b>';
             })
             ->addColumn('remove', function ($location) {
-                return '<a style="text-decoration:underline;" class="text-danger font-weight-bold trash" from="location" id="' . $location->id . '" href="javascript:void(0)">Kaldır</a>';
+                return '<a class="text-danger cursor-pointer font-weight-bold trash" from="location" id="' . $location->id . '">Kaldır</a>';
             })
             ->addColumn('edit', function ($location) {
-                return '<a style="text-decoration:underline;" class="text-primary font-weight-bold edit-location" id="' . $location->id . '" href="javascript:void(0)">Düzenle</a>';
+                return '<a class="text-primary cursor-pointer font-weight-bold edit-location" id="' . $location->id . '" >Düzenle</a>';
             })
             ->rawColumns(['edit', 'remove', 'area_type'])
             ->make(true);
