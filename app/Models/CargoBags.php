@@ -53,12 +53,18 @@ class CargoBags extends Model
 
     public function arrivalBranch()
     {
-        return $this->morphTo('arrival_branch','arrival_branch_model','arrival_branch_id');
+        if ($this->arrival_branch_model) {
+            return $this->morphTo('arrival_branch','arrival_branch_model','arrival_branch_id');
+        }elseif ($this->arrival_branch_type == 'Aktarma'){
+            return $this->hasOne(TransshipmentCenters::class, 'id', 'arrival_branch_id');
+        } elseif ($this->arrival_branch_type == 'Acente') {
+            return $this->hasOne(Agencies::class, 'id', 'arrival_branch_id');
+        }
     }
 
     public function getArrivalBranchNameAttribute()
     {
-        return $this->arrivalBranch ? ($this->arrivalBranch->agency_name . " ŞUBE" ?? $this->arrivalBranch->tc_name . " TRM.") : null;
+        return $this->arrivalBranch ? ($this->arrivalBranch->agency_name ? $this->arrivalBranch->agency_name . " ŞUBE" : $this->arrivalBranch->tc_name . " TRM.") : null;
     }
 
     public function creator()
