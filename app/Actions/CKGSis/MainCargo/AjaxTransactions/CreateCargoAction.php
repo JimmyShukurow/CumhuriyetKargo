@@ -214,8 +214,9 @@ class CreateCargoAction
         $kdvPrice = round($kdvPrice, 2);
         $totalPrice = $totalPriceExceptKdv + $kdvPrice + $heavyLoadCarryingCost;
 
-//                return $totalPrice . ' ' . $request->genelToplam;
-        if ("$totalPrice" != "$request->genelToplam")
+//        return $totalPrice . ' ' . $request->genelToplam;
+//        return abs($totalPrice - $request->genelToplam);
+        if (abs($totalPrice - $request->genelToplam) > 0.02)
             return response()
                 ->json(['status' => -1, 'message' => 'Genel toplamlar eşleşmiyor, lütfen sistem destek ile iletişime geçin!'], 200);
 
