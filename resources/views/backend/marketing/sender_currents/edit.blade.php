@@ -3,6 +3,7 @@
 @push('css')
     <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
     <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
+    <link href="/backend/assets/css/multiselect-minifier.css" rel="stylesheet"/>
 @endpush
 
 @section('title', 'Gönderici Cari Düzenle')
@@ -565,9 +566,39 @@
                                         </select>
                                     </div>
                                 </div>
-
-
                             </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="">Türkiye Geneli Çıkış:</label>
+                                    <select name="departureForTurkeyGeneral" id="departureForTurkeyGeneral"
+                                            class="form-control form-control-sm">
+                                        <option
+                                            {{$current->departure_all_agencies == '0' ? 'selected' : '' }} value="0">
+                                            HAYIR
+                                        </option>
+                                        <option
+                                            {{$current->departure_all_agencies == '1' ? 'selected' : '' }} value="1">
+                                            EVET
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="">Çıkış yapılacak şubeler:</label>
+                                    <select style="width: 100%; display: none" id="departureAgencies" type="select"
+                                            multiple=""
+                                            class="custom-select">
+                                        @foreach($data['agencies'] as $key)
+                                            <option
+                                                {{$data['departure_agencies']->contains($key->id) ? 'selected' : ''}} value="{{$key->id}}">{{$key->agency_name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <input name="realDepartureAgencies" style="display: none;" type="text"
+                                           id="realDepartureAgencies">
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
@@ -592,6 +623,8 @@
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/marketing/sender-currents/create-edit.js"></script>
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/backend/assets/scripts/bootstrap-multiselect.js"></script>
+
     <script>
         $(document).ready(() => {
 

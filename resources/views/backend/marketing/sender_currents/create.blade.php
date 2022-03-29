@@ -4,7 +4,6 @@
     <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
     <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
     <link href="/backend/assets/css/multiselect-minifier.css" rel="stylesheet"/>
-
 @endpush
 
 @section('title', 'Gönderici Cari Oluştur')
@@ -580,23 +579,26 @@
 
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="">Türkiye Geneli Çıkış</label>
-                                    <select name="departureForTurkeyGeneral" id="departureForTurkeyGeneral" class="form-control form-control-sm">
+                                    <label for="">Türkiye Geneli Çıkış:</label>
+                                    <select name="departureForTurkeyGeneral" id="departureForTurkeyGeneral"
+                                            class="form-control form-control-sm">
                                         <option value="0">HAYIR</option>
                                         <option value="1">EVET</option>
                                     </select>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="">Çıkış yapılacak şubeler</label>
-                                    <select disabled="" style="width: 100%;" id="departureAgencies" type="select" multiple=""
+                                    <label for="">Çıkış yapılacak şubeler:</label>
+                                    <select style="width: 100%; display: none" id="departureAgencies" type="select"
+                                            multiple=""
                                             class="custom-select">
                                         @foreach($data['agencies'] as $key)
                                             <option value="{{$key->id}}">{{$key->agency_name}}</option>
                                         @endforeach
                                     </select>
+                                    <input name="realDepartureAgencies" style="display: none;" type="text"
+                                           id="realDepartureAgencies">
                                 </div>
-
                             </div>
 
 

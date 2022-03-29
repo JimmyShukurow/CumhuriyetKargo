@@ -174,28 +174,42 @@ $(document).ready(function () {
         enableFiltering: true,
         enableCaseInsensitiveFiltering: true,
         onSelectAll: function () {
-
+            getSelectedValuesFromMultiselect()
         },
         onDeselectAll: function () {
-
+            getSelectedValuesFromMultiselect()
         },
         widthSynchronizationMode: 'always',
         buttonWidth: '100%',
         buttonHeight: '10px',
         onChange: function (option, checked, select) {
-            // alert('Changed option ' + $(option).val() + '. Checked : ' + checked);
+            getSelectedValuesFromMultiselect()
         }
     });
+
+    $('#departureForTurkeyGeneral').trigger('change')
+
 });
+
+function getSelectedValuesFromMultiselect() {
+    brands = $('#departureAgencies option:selected');
+    selected = [];
+    $(brands).each(function (index, brand) {
+        selected.push([$(this).val()]);
+    });
+
+    $('#realDepartureAgencies').val(selected)
+}
 
 $('#departureForTurkeyGeneral').change(function () {
 
-    if ($(this).val() == '1') {
+    if ($(this).val() == '0') {
         $('#departureAgencies').prop('disabled', false)
         $('.multiselect.dropdown-toggle').prop('disabled', false)
         $('.multiselect.dropdown-toggle').removeClass('disabled')
 
     } else {
+        $("#departureAgencies").multiselect('clearSelection');
         $('.multiselect.dropdown-toggle').prop('disabled', true)
 
         $('.multiselect.dropdown-toggle').prop('disabled', true)
@@ -203,5 +217,6 @@ $('#departureForTurkeyGeneral').change(function () {
     }
 
 })
+
 
 
