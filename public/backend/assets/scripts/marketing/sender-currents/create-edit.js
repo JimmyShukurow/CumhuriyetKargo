@@ -163,3 +163,45 @@ $('#priceDraft').change(function () {
     });
 
 });
+
+$(document).ready(function () {
+    $('#departureAgencies').multiselect({
+        includeSelectAllOption: true,
+        selectAllName: 'select-all-name',
+        allSettled: true,
+        selectAllText: 'Tümünü Seç',
+        search: true,
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        onSelectAll: function () {
+
+        },
+        onDeselectAll: function () {
+
+        },
+        widthSynchronizationMode: 'always',
+        buttonWidth: '100%',
+        buttonHeight: '10px',
+        onChange: function (option, checked, select) {
+            // alert('Changed option ' + $(option).val() + '. Checked : ' + checked);
+        }
+    });
+});
+
+$('#departureForTurkeyGeneral').change(function () {
+
+    if ($(this).val() == '1') {
+        $('#departureAgencies').prop('disabled', false)
+        $('.multiselect.dropdown-toggle').prop('disabled', false)
+        $('.multiselect.dropdown-toggle').removeClass('disabled')
+
+    } else {
+        $('.multiselect.dropdown-toggle').prop('disabled', true)
+
+        $('.multiselect.dropdown-toggle').prop('disabled', true)
+        $('.multiselect.dropdown-toggle').addClass('disabled')
+    }
+
+})
+
+

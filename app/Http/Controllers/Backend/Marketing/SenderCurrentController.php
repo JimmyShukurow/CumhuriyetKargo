@@ -61,6 +61,7 @@ class SenderCurrentController extends Controller
     {
         $data['cities'] = Cities::all();
         $data['price_drafts'] = PriceDrafts::all();
+        $data['agencies'] = Agencies::orderBy('agency_name')->get();
         return view('backend.marketing.sender_currents.create', compact('data'));
     }
 
