@@ -3,6 +3,7 @@
 @push('css')
     <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
     <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
+    <link href="/backend/assets/css/multiselect-minifier.css" rel="stylesheet"/>
 @endpush
 
 @section('title', 'Gönderici Cari Oluştur')
@@ -574,11 +575,36 @@
                                         </select>
                                     </div>
                                 </div>
-
-
                             </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="">Türkiye Geneli Çıkış:</label>
+                                    <select name="departureForTurkeyGeneral" id="departureForTurkeyGeneral"
+                                            class="form-control form-control-sm">
+                                        <option value="0">HAYIR</option>
+                                        <option value="1">EVET</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="">Çıkış yapılacak şubeler:</label>
+                                    <select style="width: 100%; display: none" id="departureAgencies" type="select"
+                                            multiple=""
+                                            class="custom-select">
+                                        @foreach($data['agencies'] as $key)
+                                            <option value="{{$key->id}}">{{$key->agency_name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <input name="realDepartureAgencies" style="display: none;" type="text"
+                                           id="realDepartureAgencies">
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
+
 
                     <button type="submit" id="btnCreateCurrent" class="ladda-button mb-2 mr-2 btn btn-gradient-primary"
                             data-style="slide-right">
@@ -600,9 +626,11 @@
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/marketing/sender-currents/create-edit.js"></script>
-
+    <!-- Include the plugin's CSS and JS: -->
+    <script type="text/javascript" src="/backend/assets/scripts/bootstrap-multiselect.js"></script>
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
     <script>
+
         $(document).ready(() => {
 
             $("#currentForm").validate({
