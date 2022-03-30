@@ -42,17 +42,17 @@ class ExpeditionCargoMobileController extends Controller
 
         $cargo = Cargoes::where('tracking_no', $ctn[0])->first();
 
-        #check by agencies locallocations from route id
-        $route = ExpeditionRoute::find($request->route_id);
-        if ($route->branch_type == 'Acente') {
-            $check = CheckCargoRouteAgencyLocationMatchAction::run($route->branch, $cargo);
-            if (! $check) {
-                return [
-                    'status' => 0,
-                    'message' => 'Bu kargonun varış şubesi '. $cargo->arrival_branch_name .' ŞUBE olduğundan'. $route->branch_details .' ŞUBEYE yükleme yapamazsınız.!'
-                ];
-            }
-        }
+//        #check by agencies locallocations from route id
+//        $route = ExpeditionRoute::find($request->route_id);
+//        if ($route->branch_type == 'Acente') {
+//            $check = CheckCargoRouteAgencyLocationMatchAction::run($route->branch, $cargo);
+//            if (! $check) {
+//                return [
+//                    'status' => 0,
+//                    'message' => 'Bu kargonun varış şubesi '. $cargo->arrival_branch_name .' ŞUBE olduğundan'. $route->branch_details .' ŞUBEYE yükleme yapamazsınız.!'
+//                ];
+//            }
+//        }
 
         if ($cargo && ($cargo->cargo_type == 'Dosya' || $cargo->cargo_type == 'Mi'))
             return response()->json([
