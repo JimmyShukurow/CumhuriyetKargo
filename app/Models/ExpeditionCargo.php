@@ -36,4 +36,18 @@ class ExpeditionCargo extends Model
     {
         return $this->hasOne(User::class, 'id', 'deleted_user_id');
     }
+
+    public function CargoPartDetailsTotal($id)
+    {
+        return self::where('cargo_id', $this->cargo_id)
+            ->where('expedition_id', $id)
+            ->where('unloading_user_id', null)
+            ->where('unloading_at', null)
+            ->get()->count();
+    }
+
+    public function expedition()
+    {
+        return $this->belongsTo(Expedition::class, 'id', 'expedition_id');
+    }
 }

@@ -31,7 +31,7 @@
                             <thead>
                             <tr>
                                 <th>Fatura numarası</th>
-                                <th>Parça No</th>
+                                <th>Adet</th>
                                 <th>Kargo Tipi</th>
                                 <th>Alıcı</th>
                                 <th>Gönderici</th>
@@ -53,7 +53,7 @@
                                 @foreach($expedition->cargoes as $cargo)
                                     <tr>
                                         <td> {{ $cargo->cargo->invoice_number }} </td>
-                                        <td> {{ $cargo->part_no }} </td>
+                                        <td> {{ $cargo->CargoPartDetailsTotal($expedition->id) }} </td>
                                         <td> {{ $cargo->cargo->cargo_type }} </td>
                                         <td> {{ $cargo->cargo->receiver_name }} </td>
                                         <td> {{ $cargo->cargo->sender_name }} </td>
