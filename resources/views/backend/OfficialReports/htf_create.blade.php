@@ -411,7 +411,7 @@
                                 </thead>
                                 <tbody id="tbodyCargoPartDetails">
                                 <tr>
-                                    <td class="text-center" colspan="8">Burda hiç veri yok.</td>
+                                    <td class="text-center" colspan="9">Burda hiç veri yok.</td>
                                 </tr>
                                 </tbody>
                             </table>

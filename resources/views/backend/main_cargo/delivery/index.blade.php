@@ -13,7 +13,7 @@
             <div class="page-title-wrapper">
                 <div class="page-title-heading">
                     <div class="page-title-icon">
-                        <i class="fa fa-bus icon-gradient bg-amy-crisp">
+                        <i class="fas fa-check icon-gradient bg-amy-crisp">
                         </i>
                     </div>
                     <div>Teslimat Sayfası

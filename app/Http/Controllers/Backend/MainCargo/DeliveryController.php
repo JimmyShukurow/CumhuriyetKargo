@@ -18,7 +18,7 @@ class DeliveryController extends Controller
             ->get();
         $tc = TransshipmentCenters::all();
 
-        GeneralLog('Sefer oluştur modülü görüntülendi.');
+        GeneralLog('Teslimat sayfası görüntülendi.');
         return view('backend.main_cargo.delivery.index', compact(['branch', 'agencies', 'tc']));
     }
 }

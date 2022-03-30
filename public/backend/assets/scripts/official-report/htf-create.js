@@ -25,6 +25,7 @@ $('#tracking_no').keyup(delay(function (e) {
     $('#invoice_number').val('');
     getCargo();
 }, 1000));
+var partNiko = null
 
 function getCargo() {
 
@@ -86,8 +87,14 @@ function getCargo() {
 
             $('b#departure_branch').text(departure.city + "-" + departure.agency_name + " ŞUBE");
             $('b#departure_tc').text(departure_tc.tc_name + " TRM.");
-            $('b#arrival_branch').text(arrival.city + "-" + arrival.agency_name + " ŞUBE");
-            $('b#arrival_tc').text(arrival_tc.tc_name + " TRM.");
+
+            if (cargo.transporter == 'CK') {
+                $('b#arrival_branch').text(arrival.city + "-" + arrival.agency_name + " ŞUBE");
+                $('b#arrival_tc').text(arrival_tc.tc_name + " TRM.");
+            } else {
+                $('b#arrival_branch').text(cargo.transporter);
+                $('b#arrival_tc').text(cargo.transporter);
+            }
 
             if (cargo.number_of_pieces > 1) {
                 $('#pieces').val('Lütfen İlgili Parçaları Seçin!');
@@ -104,7 +111,6 @@ function getCargo() {
                 $('#textSelectedPieces').text("1 Parça Seçildi.");
                 piecesSelected = true;
             }
-
             $('b#cargo_type').text(cargo.cargo_type);
             $('b#number_of_pieces').text(cargo.number_of_pieces);
             $('b#desi').text(cargo.desi);
@@ -117,9 +123,10 @@ function getCargo() {
             if (part_details.length == 0)
                 $('#tbodyCargoPartDetails').html('<tr><td colspan="8" class="text-center">Burda hiç veri yok.</td></tr>');
             else {
+
                 $.each(part_details, function (key, val) {
 
-                    $('#tbodyCargoPartDetails').prepend(
+                    $('#tbodyCargoPartDetails').append(
                         '<tr>' +
                         '<th>\n' + '<input style="width: 20px; margin-left: 7px;" type="checkbox" id="' + val['part_no'] + '" class="cb-piece form-control">\n' + '</th>' +
                         '<td class="font-weight-bold text-success">' + cargo.cargo_type + '</td>' +
