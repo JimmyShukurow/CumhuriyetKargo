@@ -19,10 +19,11 @@ class CreateDeliveriesTable extends Migration
             $table->integer('user_id');
             $table->integer('agency_id');
             $table->string('description')->nullable();
-            $table->string('receiver_name_surname');
-            $table->string('receiver_tckn_vkn');
+            $table->string('receiver_name_surname')->nullable();
+            $table->string('receiver_tckn_vkn')->nullable();
             $table->string('degree_of_proximity')->nullable();
             $table->dateTime('delivery_date')->nullable();
+            $table->string('transfer_reason')->nullable();
             $table->string('status');
             $table->timestamps();
         });
