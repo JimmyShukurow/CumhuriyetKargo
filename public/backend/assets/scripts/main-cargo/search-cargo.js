@@ -16,7 +16,7 @@ $(document).ready(function () {
     oTable = $('.NikolasDataTable').DataTable({
         pageLength: 10,
         lengthMenu: dtLengthMenu,
-        order: [20, 'desc'],
+        order: [19, 'desc'],
         language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
 
@@ -25,14 +25,20 @@ $(document).ready(function () {
                 text: 'Yenile',
                 action: function (e, dt, node, config) {
                     dt.ajax.reload();
+                },
+                attr: {
+                    class: 'btn btn-success'
                 }
             },
             {
                 extend: 'colvis',
-                text: 'Sütun Görünüm'
+                text: 'Sütunlar',
+                attr: {
+                    class: 'btn btn-alternate'
+                }
             },
         ],
-        responsive: true,
+        responsive: false,
         processing: true,
         serverSide: true,
         ajax: {
@@ -68,7 +74,6 @@ $(document).ready(function () {
             }
         },
         columns: [
-            {data: 'free', name: 'free'},
             {data: 'invoice_number', name: 'invoice_number'},
             {data: 'tracking_no', name: 'tracking_no'},
             {data: 'agency_name', name: 'agency_name'},
@@ -90,6 +95,7 @@ $(document).ready(function () {
             {data: 'system', name: 'system'},
             {data: 'created_at', name: 'created_at'},
         ],
+        scrollX: true,
 
     });
 });
