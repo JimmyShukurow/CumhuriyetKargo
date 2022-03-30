@@ -29,7 +29,7 @@ var partNiko = null
 
 function getCargo() {
 
-    $('#tbodyCargoPartDetails').html('<tr><td colspan="9" class="text-center">Burda hiç veri yok.</td></tr>');
+    $('#tbodyCargoPartDetailsXX').html('<tr><td colspan="9" class="text-center">Burda hiç veri yok.</td></tr>');
 
     $('#rowCargoInfo').block({
         message: $('<div class="loader mx-auto">\n' +
@@ -119,14 +119,14 @@ function getCargo() {
 
 
             let countCargoPart = 0, cargoDesiCount = 0;
-            $('#tbodyCargoPartDetails').html('');
+            $('#tbodyCargoPartDetailsXX').html('');
             if (part_details.length == 0)
-                $('#tbodyCargoPartDetails').html('<tr><td colspan="8" class="text-center">Burda hiç veri yok.</td></tr>');
+                $('#tbodyCargoPartDetailsXX').html('<tr><td colspan="8" class="text-center">Burda hiç veri yok.</td></tr>');
             else {
 
                 $.each(part_details, function (key, val) {
 
-                    $('#tbodyCargoPartDetails').append(
+                    $('#tbodyCargoPartDetailsXX').append(
                         '<tr>' +
                         '<th>\n' + '<input style="width: 20px; margin-left: 7px;" type="checkbox" id="' + val['part_no'] + '" class="cb-piece form-control">\n' + '</th>' +
                         '<td class="font-weight-bold text-success">' + cargo.cargo_type + '</td>' +
@@ -143,7 +143,7 @@ function getCargo() {
                     cargoDesiCount = cargoDesiCount + parseInt(val['desi']);
                 });
 
-                $('#tbodyCargoPartDetails').prepend(
+                $('#tbodyCargoPartDetailsXX').prepend(
                     '<tr><td class="font-weight-bold text-center" colspan="9"> Toplam: <b class="text-primary">' + countCargoPart + ' Parça</b>, <b class="text-primary">' + cargoDesiCount + ' Desi</b>. </td></tr>'
                 );
             }

@@ -409,7 +409,7 @@
                                     <th>Hacim m<sup>3</sup></th>
                                 </tr>
                                 </thead>
-                                <tbody id="tbodyCargoPartDetails">
+                                <tbody id="tbodyCargoPartDetailsXX">
                                 <tr>
                                     <td class="text-center" colspan="9">Burda hiç veri yok.</td>
                                 </tr>
