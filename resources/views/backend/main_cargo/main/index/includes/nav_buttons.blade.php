@@ -24,7 +24,7 @@
 
                     <div class="p-0 col-lg-1 col-sm-4 col-xs-6">
                         <a class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger"
-                           href="javascript:void(0)">
+                           href="{{route('delivery.index')}}">
                             <i class="fas fa-check text-danger opacity-7 btn-icon-wrapper mb-2"> </i>
                             Teslimat
                         </a>
@@ -74,9 +74,7 @@
 
                             <a href="{{route('OfficialReport.createUTF')}}"
                                target="popup"
-                               onclick="window.open('','popup','width=700,height=700'); return false;">
-                                onclick="window.open('{{route('OfficialReport.createUTF')}}
-                                ','popup','width=700,height=700'); return false;">
+                               onclick="window.open('{{route('OfficialReport.createUTF')}}','popup','width=700,height=700'); return false;">
                                 <button type="button" tabindex="0" class="dropdown-item">
                                     <i class="dropdown-icon lnr-file-empty"></i>
                                     <span>UTF (Uygunsuzluk Tespit Tutanağı)</span>
@@ -139,7 +137,7 @@
                              class="dropdown-menu-hover-link dropdown-menu">
                             <h6 tabindex="-1" class="dropdown-header">Sefer İşlemleri</h6>
 
-                            <a href="javscript:void(0)" class="alert-not-yet">
+                            <a href="{{route('expedition.incoming')}}">
                                 <button type="button"
                                         tabindex="0" class="dropdown-item">
                                     <i class="dropdown-icon pe-7s-news-paper print-all-barcodes"></i>
@@ -147,21 +145,21 @@
                                 </button>
                             </a>
 
-                            <a href="javscript:void(0)" class="alert-not-yet">
+                            <a href="{{route('expedition.outGoing')}}">
                                 <button type="button" tabindex="0" class="dropdown-item">
                                     <i class="dropdown-icon lnr-file-empty"></i>
                                     <span>Giden Sefer</span>
                                 </button>
                             </a>
 
-                            <a href="javscript:void(0)" class="alert-not-yet">
+                            <a href="{{route('expedition.all')}}">
                                 <button type="button" tabindex="0" class="dropdown-item">
                                     <i class="dropdown-icon pe-7s-search"></i>
                                     <span>Sefer Sorgula</span>
                                 </button>
                             </a>
 
-                            <a href="javscript:void(0)" class="alert-not-yet">
+                            <a href="{{route('expedition.create')}}">
                                 <button type="button" tabindex="0" class="dropdown-item">
                                     <i class="dropdown-icon pe-7s-plus"></i>
                                     <span>Sefer Oluştur</span>
