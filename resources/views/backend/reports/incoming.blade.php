@@ -204,7 +204,6 @@
                        class="align-middle mb-0 table Table20Padding table-bordered table-striped table-hover NikolasDataTable">
                     <thead>
                     <tr>
-                        <th></th>
                         <th>Fatura No</th>
                         <th>KTNO</th>
                         <th>Oluş.Acente</th>
@@ -232,7 +231,6 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <th></th>
                         <th>Fatura No</th>
                         <th>KTNO</th>
                         <th>Oluş.Acente</th>

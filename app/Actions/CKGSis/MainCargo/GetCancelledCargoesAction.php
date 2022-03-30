@@ -124,7 +124,6 @@ class GetCancelledCargoesAction
             ->editColumn('status_for_human', function ($cargoes) {
                 return '<b class="text-success">' . $cargoes->status_for_human . '</b>';
             })
-            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
             ->addColumn('tracking_no', 'backend.main_cargo.search_cargo.columns.tracking_no')
             ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
             ->rawColumns(['tracking_no', 'invoice_number', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
