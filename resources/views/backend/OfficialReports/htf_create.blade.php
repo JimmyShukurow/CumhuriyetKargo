@@ -370,7 +370,7 @@
     @php $data = ['type' => 'create_htf']; @endphp
     @include('backend.main_cargo.main.modal_cargo_details')
 
-    <!-- Large modal => Modal Barcode -->
+    <!-- Large modal => Modal Part Details -->
     <div class="modal fade bd-example-modal-lg" id="ModalPartDetails" tabindex="-1" role="dialog"
          aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">

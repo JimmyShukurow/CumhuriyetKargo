@@ -25,178 +25,299 @@
             </div>
         </div>
 
-        <div style="max-width: 1200px;" class="main-card mb-3 card">
+        <div class="main-card mb-3 card">
             <div class="card-body">
-                @csrf
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group position-relative">
-                            <label for="plaque" class="font-weight-bold">Fatura NO:</label>
-                            <input id="plaque" type="text" class="form-control form-control-sm "
-                                   placeholder="Kargoya Fatura Numarasını Giriniz">
+                <h5 class="card-title">Teslimat Formu</h5>
+                <form id="HtfCreateForm" method="POST" action="{{ route('agency.InsertAgency') }}">
+                    @csrf
+                    <div class="form-row">
+                        <div class="col-lg-3 col-sm-6 col-xs-6">
+                            <div class="position-relative form-group">
+                                <label for="name_surname" class="">Fatura No:</label>
+                                <input name="name_surname" id="invoice_number"
+                                       data-inputmask="'mask': 'AA-999999'"
+                                       placeholder="__ ______"
+                                       type="text" value="{{ old('name_surname') }}"
+                                       class="form-control form-control-sm input-mask-trigger">
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-3 col-sm-6 col-xs-6">
+                            <div class="position-relative form-group">
+                                <label for="pieces" class="">İlgili Parçalar:</label>
+                                <div class="input-group">
+                                    <input type="text" id="pieces" readonly
+                                           class="form-control font-weight-bold form-control-sm">
+                                    <div class="input-group-append ">
+                                        <button type="button" id="piecesBtn" disabled class="btn btn-danger btn-sm">
+                                            Parçalar
+                                        </button>
+                                    </div>
+                                </div>
+                                <small class="text-success font-weight-bold">
+                                    <i id="textSelectedPieces"></i>
+                                </small>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                    <h5 class="card-title mt-2">Kargo Bilgileri</h5>
+                    <div class="divider"></div>
+                    <div id="rowCargoInfo" class="row">
+
+                        <div class="col-md-6 col-sm-6">
+                            <div class="form-group position-relative">
+                                <label class="font-weight-bold" for="sender_name">Fatura Numarası:</label>
+                                <h3><b class="cargo-information text-danger font-large-3" id="invoice_number">-</b></h3>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6 col-sm-6">
+                            <div class="form-group position-relative">
+                                <label class="font-weight-bold" for="sender_name">Kargo Takip Numarası:</label>
+                                <h3><b class="cargo-information text-primary" id="tracking_no">-</b></h3>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-sm-3">
+                            <div class="form-group position-relative">
+                                <label for="sender_name">Gönderici Adı:</label>
+                                <p><b class="cargo-information" id="sender_name">-</b></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-3">
+                            <div class="form-group position-relative">
+                                <label for="receiver_name">Alıcı Adı:</label>
+                                <p><b class="cargo-information" id="receiver_name">-</b></p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-sm-3">
+                            <div class="form-group position-relative">
+                                <label for="departure_branch">Çıkış Şube:</label>
+                                <p><b class="cargo-information" id="departure_branch">-</b></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-3">
+                            <div class="form-group position-relative">
+                                <label for="departure_tc">Çıkış TRM:</label>
+                                <p><b class="cargo-information" id="departure_tc">-</b></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-3">
+                            <div class="form-group position-relative">
+                                <label for="arrival_branch">Varış Şube:</label>
+                                <p><b class="cargo-information" id="arrival_branch">-</b></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-3">
+                            <div class="form-group position-relative">
+                                <label for="arrival_tc">Varış TRM:</label>
+                                <p><b class="cargo-information" id="arrival_tc">-</b></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-3">
+                            <div class="form-group position-relative">
+                                <label for="cargo_type">Kargo Tipi:</label>
+                                <p><b class="cargo-information" id="cargo_type">-</b></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-3">
+                            <div class="form-group position-relative">
+                                <label for="number_of_pieces">Parça Sayısı:</label>
+                                <p><b class="cargo-information" id="number_of_pieces">-</b></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-3">
+                            <div class="form-group position-relative">
+                                <label for="desi">Desi:</label>
+                                <p><b class="cargo-information" id="desi">-</b></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-3">
+                            <div class="form-group position-relative">
+                                <label for="status">Statü:</label>
+                                <p><b class="cargo-information" id="status">-</b></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-3">
+                            <div class="form-group position-relative">
+                                <label for="total_price">Toplam Ücret</label>
+                                <p><b class="cargo-information" id="total_price">-</b></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-3">
+                            <div class="form-group position-relative">
+                                <label for="cargo_info">Diğer Bilgiler:</label>
+                                <input disabled id="cargo_info" style="width: 100%;" type="button" class="btn btn-info"
+                                       value="Kargo Bilgileri">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5 class="card-title mt-2">Çıkış Birim</h5>
-                        <div class="divider"></div>
-                        <div id="departureBranchInfo" class="row">
-                            <div class="col-md-6 col-sm-6">
-                                <div class="form-group position-relative">
-                                    <label class="font-weight-bold" for="departureBranchType">Birim Tipi:</label>
-                                    <select disabled="" id="departureBranchType"
-                                            class="form-control form-control-sm">
+
+                    <h5 class="card-title mt-2">Teslimat Bilgileri</h5>
+                    <div class="divider"></div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group position-relative">
+                                <label for="detecting_unit">Birim:</label>
+                                <input type="text" id="detecting_unit" disabled
+                                       value="{{ $branch['city'] . ' - ' . $branch['name'] . ' ' . $branch['type']}}"
+                                       class="form-control font-weight-bold text-primary form-control-sm">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group position-relative">
+                                <label for="detecting_person">Düzenleyen:</label>
+                                <input type="text" disabled value="{{Auth::user()->name_surname}}"
+                                       id="detecting_person"
+                                       class="form-control font-weight-bold text-primary form-control-sm">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group position-relative">
+                                <label for="reported_unit">(Hata Yapan) Tutanak Tutulan Birim Tipi:</label>
+                                <select name="reported_unit_type" required class="form-control form-control-sm"
+                                        id="reported_unit_type">
+                                    <option value="">Seçiniz</option>
+                                    @foreach(ReportedUnitTypes() as $key)
+                                        <option value="{{$key}}">{{$key}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="column_fake_unit" class="col-md-3">
+                            <div class="form-group position-relative">
+                                <label for="select_reported_unit">Birim Seçin:</label>
+                                <select disabled name="select_reported_unit" class="form-control form-control-sm"
+                                        id="select_reported_unit">
+                                    <option value="">Seçiniz</option>
+                                    <option value="Çıkış Şube">Çıkış Şube</option>
+                                    <option value="Çıkış TRM.">Çıkış TRM.</option>
+                                    <option value="Varış Şube">Varış Şube</option>
+                                    <option value="Varış TRM.">Varış TRM.</option>
+                                    <option value="Diğer Şube">Diğer Şube</option>
+                                    <option value="Diğer TRM.">Diğer TRM.</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display: none;" id="column-agency" class="col-md-3">
+                            <div class="form-group position-relative">
+                                <label for="select_reported_agency">Şube Seçin:</label>
+                                <select style="width:100%;" disabled name="select_reported_agency"
+                                        class="form-control form-control-sm reported-units"
+                                        id="select_reported_agency">
+                                    <option value="">Seçiniz</option>
+                                    @foreach($agencies as $key)
                                         <option
-                                            {{Auth::user()->user_type == 'Aktarma' ? 'selected' :''}} value="Aktarma">
-                                            Aktarma
-                                        </option>
-                                        <option {{Auth::user()->user_type == 'Acente' ? 'selected="selected"' : ''}}
-                                                value="Acente">Acente
-                                        </option>
-                                    </select>
-                                </div>
+                                            value="{{$key->id}}">{{$key->agency_name . ' ŞUBE'}}</option>
+                                    @endforeach
+                                </select>
                             </div>
-
-                            @if(Auth::user()->user_type == 'Aktarma')
-                                <div class="col-md-6 col-sm-6">
-                                    <div class="form-group position-relative">
-                                        <label class="font-weight-bold" for="departureTc">Aktarma Seçin:</label>
-                                        <select disabled="" id="departureBranchType"
-                                                class="form-control form-control-sm">
-                                            <option value="">Seçiniz</option>
-                                            @foreach($tc as $key)
-                                                <option
-                                                    {{Auth::user()->tc_code == $key->id ? 'selected="selected"' : ''}}
-                                                    value="{{$key->id}}">{{$key->tc_name}} TRM.
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            @else
-                                <div class="col-md-6 col-sm-6">
-                                    <div class="form-group position-relative">
-                                        <label class="font-weight-bold" for="departureAgency">Acente Seçin:</label>
-                                        <select disabled="" id="departureBranchType"
-                                                class="form-control form-control-sm">
-                                            <option value="">Seçiniz</option>
-                                            @foreach($agencies as $key)
-                                                <option
-                                                    {{Auth::user()->agency_code == $key->id ? 'selected="selected"' : ''}} value="{{$key->id}}">{{$key->agency_name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            @endif
                         </div>
+
+                        <div style="display: none;" id="column-tc" class="col-md-3">
+                            <div class="form-group position-relative">
+                                <label for="select_reported_tc">Transfer Merkezi Seçin:</label>
+                                <select style="width:100%;" name="select_reported_tc" disabled
+                                        class="form-control form-control-sm reported-units"
+                                        id="select_reported_tc">
+                                    <option value="">Seçiniz</option>
+                                    @foreach($tc as $key)
+                                        <option value="{{$key->id}}">{{$key->tc_name . ' TRM.'}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <input style="display: none;" type="hidden" id="reported_unit_id">
+
+                        <div class="col-md-6">
+                            <div class="form-group position-relative">
+                                <label for="reported_unit">(Hata Yapan) Tutanak Tutulan Birim:</label>
+                                <input type="text" id="reported_unit" readonly required
+                                       value=""
+                                       class="form-control font-weight-bold text-danger form-control-sm">
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="col-md-6">
-                        <h5 class="card-title mt-2">Varış Birim</h5>
-                        <div class="divider"></div>
-                        <div id="rowCargoInfo" class="row">
-                            <div class="col-md-6 col-sm-6">
-                                <div class="form-group position-relative">
-                                    <label class="font-weight-bold" for="arrivalBranchType">Birim Tipi:</label>
-                                    <select name="" id="arrivalBranchType"
-                                            class="form-control form-control-sm">
-                                        <option value="Aktarma">Aktarma</option>
-                                        <option value="Acente">Acente</option>
-                                    </select>
+
+                    <h5 class="card-title mt-2">Hasar Nedeni</h5>
+                    <div class="divider"></div>
+
+                    <div class="row">
+                        @foreach($damage_types as $key)
+                            <div class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                <div class="custom-control custom-checkbox">
+                                    <input {{$key->status == '0' ? 'disabled' : ''}} type="checkbox"
+                                           class="custom-control-input cb-damges" damage-id="{{$key->id}}"
+                                           id="cb-damage-{{$key->id}}">
+                                    <label class="custom-control-label cursor-pointer unselectable"
+                                           for="cb-damage-{{$key->id}}">{{$key->damage_name}}</label>
                                 </div>
                             </div>
+                        @endforeach
 
-                            <div id="divArrivalTc" class="col-md-6 col-sm-6">
-                                <div class="form-group position-relative">
-                                    <label class="font-weight-bold" for="arrivalTc">Aktarma Seçin:</label>
-                                    <select name="" id="arrivalTc"
-                                            class="form-control form-control-sm">
-                                        <option value="">Seçiniz</option>
-                                        @foreach($tc as $key)
-                                            <option value="{{$key->id}}">{{$key->tc_name}} TRM.</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div style="display: none;" id="divArrivalAgency" class="col-md-6 col-sm-6">
-                                <div class="form-group position-relative">
-                                    <label class="font-weight-bold" for="arrivalAgency">Acente Seçin:</label>
-                                    <select style="width: 100%;" name="" id="arrivalAgency"
-                                            class="form-control agency-select form-control-sm">
-                                        <option value="">Seçiniz</option>
-                                        @foreach($agencies as $key)
-                                            <option value="{{$key->id}}">{{$key->agency_name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                        <div class="col-12 mt-2">
+                            <div class="form-group position-relative">
+                                <label for="damage_description">Açıklama</label>
+                                <textarea name="damage_description" id="damage_description" cols="30"
+                                          rows="2" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <h5 class="card-title text-center mt-2">Ara Duraklar</h5>
-                <div class="divider"></div>
+                    <h5 class="card-title mt-2">Yapılan İşlem</h5>
+                    <div class="divider"></div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <button id="DeleteAllRoutes" type="button" class="btn mb-2 btn-danger float-right">Tümünü
-                            Sil
-                        </button>
-                        <button id="AddRoutes" type="button" class="btn mb-2 mr-5 btn-primary float-right">Güzergah
-                            Ekle
-                        </button>
-                        <table class="table-hover Table30Padding table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>Sıra No</th>
-                                <th>Güzergah</th>
-                                <th>İşlem</th>
-                            </tr>
-                            </thead>
-                            <tbody id="tbodyExpeditionRoutes">
-                            <tr>
-                                <td colspan="3" class="text-danger text-center"><b>Ara durak yok.</b></td>
-                            </tr>
+                    <div class="row">
+                        @foreach($transactions as $key)
+                            <div class="col-lg-2 col-md-4 col-sm-4 col-6">
+                                <div class="custom-control custom-checkbox">
+                                    <input {{$key->status == '0' ? 'disabled' : ''}}  transaction-id="{{$key->id}}"
+                                           type="checkbox"
+                                           class="custom-control-input cb-transactions"
+                                           id="cb-transaction-{{$key->id}}">
+                                    <label class="custom-control-label cursor-pointer unselectable"
+                                           for="cb-transaction-{{$key->id}}">{{$key->transaction_name}}</label>
+                                </div>
+                            </div>
+                        @endforeach
 
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group position-relative">
-                            <label for="detecting_unit">Düzenleyen Birim:</label>
-                            <input type="text" id="detecting_unit" disabled
-                                   value="{{ $branch['city'] . ' - ' . $branch['name'] . ' ' . $branch['type']}}"
-                                   class="form-control font-weight-bold text-primary form-control-sm">
+                        <div class="col-12 mt-2">
+                            <div class="form-group position-relative">
+                                <label for="content_detection">İçerik Tespiti <small class="text-danger"><i>(Zorunlu
+                                            Alan)</i></small>:</label>
+                                <textarea name="content_detection" required id="content_detection" cols="30"
+                                          rows="2" class="form-control"></textarea>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <div class="form-group position-relative">
-                            <label for="detecting_person">Düzenleyen:</label>
-                            <input type="text" disabled value="{{Auth::user()->name_surname}}"
-                                   id="detecting_person"
-                                   class="form-control font-weight-bold text-primary form-control-sm">
-                        </div>
-                    </div>
 
-                    <div class="col-md-12">
-                        <div class="form-group position-relative">
-                            <label for="detecting_person">Açıklama:</label>
-                            <textarea class="form-control form-control-sm" id="description" cols="30" rows="3"
-                                      placeholder="Açıklama giriniz. (Opsiyonel)"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="btn btn-primary" id="btnCreateExpedition">Sefer Oluştur</button>
+                    <button type="submit" id="btnSubmitForm" class="ladda-button mb-2 mr-2 btn btn-gradient-primary"
+                            data-style="slide-right">
+                        <span class="ladda-label">HTF Oluştur</span>
+                        <span class="ladda-spinner"></span>
+                        <div class="ladda-progress" style="width: 0px;"></div>
+                    </button>
+                </form>
 
             </div>
         </div>
+
     </div>
 @endsection
 
@@ -204,9 +325,17 @@
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/expeditions/create.js"></script>
+
+    <script src="/backend/assets/scripts/main-cargo/delivery/index.js"></script>
+    <script>var typeOfJs = 'create_htf'; </script>
+    <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
 @endsection
 
 @section('modals')
-    @include('backend.expedition.create.sections.modal_add_routes')
+
+    @php $data = ['type' => 'create_htf']; @endphp
+    @include('backend.main_cargo.main.modal_cargo_details')
+
+    @include('backend.main_cargo.delivery.includes.modal_part_details')
 @endsection
 
