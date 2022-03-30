@@ -17,7 +17,7 @@ class GetExpeditionInfoAction
                 'user',
                 'movements.user.role',
                 'routes.branch',
-                'cargoes' => function($q){$q->with(['cargo', 'user'=>function($q){$q->with('role');}]);},
+                'cargoes' => function($q){$q->with(['cargo' => function($q){$q->withTrashed();}, 'user'=>function($q){$q->with('role');}]);},
                 'seals'
             ]
         )->where('id',$id)->first();
@@ -40,7 +40,7 @@ class GetExpeditionInfoAction
 
         $allCargoes = $expedition->allCargoes()->with(
             [
-                'cargo',
+                'cargo' => function($q){$q->withTrashed();},
                 'user'=>function($q){$q->with('role')->withTrashed();},
                 'unloadedUser'=>function($q){$q->with('role')->withTrashed();},
                 'deletedUser' =>function($q){$q->with('role')->withTrashed();},
