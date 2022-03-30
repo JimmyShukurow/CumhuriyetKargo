@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CKG_Mobile;
 
 use App\Actions\CKGMobile\Expedition\CargoExpeditionMovementAction;
+use App\Actions\CKGMobile\Expedition\CheckCargoRouteAgencyLocationMatchAction;
 use App\Actions\CKGMobile\Expedition\LoadCargoToExpeditionAction;
 use App\Actions\CKGMobile\Expedition\UnloadCargoFromExpedition;
 use App\Http\Controllers\Controller;
@@ -13,6 +14,7 @@ use App\Models\CargoBags;
 use App\Models\Cargoes;
 use App\Models\Expedition;
 use App\Models\ExpeditionCargo;
+use App\Models\ExpeditionRoute;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +38,21 @@ class ExpeditionCargoMobileController extends Controller
             ]);
         }
 
+
+
         $cargo = Cargoes::where('tracking_no', $ctn[0])->first();
+
+        #check by agencies locallocations from route id
+        $route = ExpeditionRoute::find($request->route_id);
+        if ($route->branch_type == 'Acente') {
+            $check = CheckCargoRouteAgencyLocationMatchAction::run($route->branch, $cargo);
+            if (! $check) {
+                return [
+                    'status' => 0,
+                    'message' => 'Bu kargonun varış şubesi '. $cargo->arrival_branch_name .' ŞUBE olduğundan'. $route->branch_details .' ŞUBEYE yükleme yapamazsınız.!'
+                ];
+            }
+        }
 
         if ($cargo && ($cargo->cargo_type == 'Dosya' || $cargo->cargo_type == 'Mi'))
             return response()->json([
