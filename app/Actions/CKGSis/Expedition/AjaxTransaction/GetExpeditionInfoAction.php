@@ -17,7 +17,7 @@ class GetExpeditionInfoAction
                 'user',
                 'movements.user.role',
                 'routes.branch',
-                'cargoes' => function($q){$q->with(['cargo' => function($q){$q->withTrashed();}, 'user'=>function($q){$q->with('role');}]);},
+                'cargoes' => function($q){$q->with(['cargo' => function($q){$q->withTrashed();}, 'user'=>function($q){$q->with('role');}])->groupBy('cargo_id');},
                 'seals'
             ]
         )->where('id',$id)->first();

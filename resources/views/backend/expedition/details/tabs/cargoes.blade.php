@@ -35,7 +35,8 @@
                                 <th>Kargo Tipi</th>
                                 <th>Alıcı</th>
                                 <th>Gönderici</th>
-                                <th>Varış İl/İlçe</th>
+                                <th>Çıkış Şube</th>
+                                <th>Varış Şube</th>
                                 <th>Kargo Statü</th>
                                 <th>Yükleyen</th>
                                 <th>Yükleme Tarihi</th>
@@ -56,7 +57,8 @@
                                         <td> {{ $cargo->cargo->cargo_type }} </td>
                                         <td> {{ $cargo->cargo->receiver_name }} </td>
                                         <td> {{ $cargo->cargo->sender_name }} </td>
-                                        <td class="font-weight-bold"> {{ $cargo->cargo->arrival_city .'/'. $cargo->cargo->arrival_district }}   </td>
+                                        <td class="font-weight-bold"> {{ $cargo->cargo->departure_branch_agency_name}}</td>
+                                        <td class="font-weight-bold"> {{ $cargo->cargo->arrival_branch_agency_name}}</td>
                                         <td> {{ $cargo->cargo->status }} </td>
                                         <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name }})
                                         </td>
@@ -81,7 +83,8 @@
                                 <th>Kargo Tipi</th>
                                 <th>Alıcı</th>
                                 <th>Gönderici</th>
-                                <th>Varış İl/İlçe</th>
+                                <th>Çıkış Şube</th>
+                                <th>Varış Şube</th>
                                 <th>Kargo Statü</th>
                                 <th>Yükleyen</th>
                                 <th>Yükleme Tarihi</th>
@@ -113,8 +116,8 @@
                                             <td> {{ $cargo->cargo->cargo_type }} </td>
                                             <td> {{ $cargo->cargo->receiver_name }} </td>
                                             <td> {{ $cargo->cargo->sender_name }} </td>
-                                            <td class="font-weight-bold"> {{ $cargo->cargo->arrival_city }}
-                                                /{{ $cargo->cargo->arrival_district }}   </td>
+                                            <td class="font-weight-bold"> {{ $cargo->cargo->departure_branch_agency_name }} </td>
+                                            <td class="font-weight-bold"> {{ $cargo->cargo->arrival_branch_agency_name }} </td>
                                             <td> {{ $cargo->cargo->status }} </td>
                                             <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name}}
                                                 )

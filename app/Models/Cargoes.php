@@ -125,4 +125,21 @@ class Cargoes extends Model
             return $this->hasOne(Agencies::class, 'id', 'arrival_agency_code');
         }
     }
+
+    public function departBranchAgency()
+    {
+        if ($this->departure_agency_code != null && $this->departure_agency_code != -1) {
+            return $this->hasOne(Agencies::class, 'id', 'departure_agency_code');
+        }
+    }
+
+    public function getArrivalBranchAgencyNameAttribute()
+    {
+        return $this->arrivalBranchAgency->agency_name . ' ŞUBE' ?? null;
+    }
+
+    public function getDepartureBranchAgencyNameAttribute()
+    {
+        return $this->departBranchAgency->agency_name . ' ŞUBE' ?? null;
+    }
 }
