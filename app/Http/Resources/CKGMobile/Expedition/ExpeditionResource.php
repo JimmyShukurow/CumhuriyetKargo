@@ -16,6 +16,8 @@ class ExpeditionResource extends JsonResource
         $arrival_branch = $this->routes->where('route_type', '-1')->first()->branch_type == 'Acente' ?
             $this->routes->where('route_type', '-1')->first()->branch->agency_name . ' ŞUBE' :
             $this->routes->where('route_type', '-1')->first()->branch->tc_name . ' TRM.';
+//        $inbetweens = $this->routes->where('route_type', 0)->all();
+        $inbetweens = $this->routes->where('route_type', 0)->map(function ($q){return $q->only(['id', 'expedition_id']);});
         return [
             'id' => $this->id,
             'plaque' => $this->car->plaka,
@@ -24,7 +26,7 @@ class ExpeditionResource extends JsonResource
             'departure_branch' => $departure_branch,
             'arrival_branch' => $arrival_branch,
             'cargo_count' => $this->cargoes()->count(),
-
+            'inbetweens' => $inbetweens,
         ];
     }
 }
