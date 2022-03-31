@@ -50,4 +50,9 @@ class ExpeditionCargo extends Model
     {
         return $this->belongsTo(Expedition::class, 'id', 'expedition_id');
     }
+
+    public function cargosLoadedRoute()
+    {
+        return $this->hasOne(ExpeditionRoute::class, 'id', 'expedition_route_id');
+    }
 }
