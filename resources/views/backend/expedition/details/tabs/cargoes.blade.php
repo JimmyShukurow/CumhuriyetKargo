@@ -30,7 +30,7 @@
                                class="TableNoPadding table table-bordered table-striped mt-3">
                             <thead>
                             <tr>
-                                <th>Fatura numarası</th>
+                                <th>Fatura No</th>
                                 <th>Adet</th>
                                 <th>Kargo Tipi</th>
                                 <th>Alıcı</th>
@@ -38,10 +38,10 @@
                                 <th>Desi</th>
                                 <th>Çıkış Şube</th>
                                 <th>Varış Şube</th>
-                                <th>Yükleyen Birim</th>
                                 <th>Yüklenen Birim</th>
                                 <th>Kargo Statü</th>
                                 <th>Gönderim Bedeli</th>
+                                <th>Yükleyen Birim</th>
                                 <th>Yükleyen</th>
                                 <th>Yükleme Tarihi</th>
                             </tr>
@@ -64,11 +64,11 @@
                                         <td> {{ $cargo->cargo->desi }} </td>
                                         <td class="font-weight-bold"> {{ $cargo->cargo->departure_branch_agency_name}}</td>
                                         <td class="font-weight-bold"> {{ $cargo->cargo->arrival_branch_agency_name}}</td>
-                                        <td> {{ $cargo->user->branch }} </td>
                                         <td> {{ $cargo->cargosLoadedRoute->branch_details ?? '' }} </td>
                                         <td> {{ $cargo->cargo->status }} </td>
                                         <td> {{ $cargo->cargo->total_price }} </td>
-                                        <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name }})</td>
+                                        <td> {{ $cargo->user->branch }} </td>
+                                        <td> {{ $cargo->user->name_surname }} </td>
                                         <td> {{ $cargo->cargo->created_at }} </td>
                                     </tr>
                                 @endforeach
@@ -81,11 +81,11 @@
                     <div
                         style="overflow-x: auto; white-space: nowrap;"
                         class="cont">
-                        <table style="white-space: nowrap" id="TableEmployees"
+                        <table width="100%" style="white-space: nowrap; width: 100%" id="TableEmployees"
                                class="TableNoPadding table table-bordered table-striped mt-3">
                             <thead>
                             <tr>
-                                <th>Fatura numarası</th>
+                                <th>Fatura No</th>
                                 <th>Parça No</th>
                                 <th>Kargo Tipi</th>
                                 <th>Alıcı</th>
