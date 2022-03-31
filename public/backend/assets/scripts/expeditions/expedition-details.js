@@ -102,6 +102,7 @@ function proceedEndingExpedition(detailID) {
 $('#TabExpeditionCargoes').click(function () {
     initGraphTable()
 
+
     setTimeout(function () {
         initGraphTable()
     }, 1)
@@ -112,6 +113,7 @@ tabTableInit = false;
 
 function initGraphTable() {
     if (tabTableInit == false) {
+
         tabTableInit = true;
         oTable = $('#TableCargoesInExpedition').DataTable({
             pageLength: 25,
@@ -130,6 +132,7 @@ function initGraphTable() {
             ],
             search: {"regex": true},
             scrollY: "400px",
+            scrollX: true,
         });
     } else {
         oTable.destroy()
