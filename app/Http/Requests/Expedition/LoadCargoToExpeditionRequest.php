@@ -19,6 +19,7 @@ class LoadCargoToExpeditionRequest extends FormRequest
         return [
             'expedition_id' => 'required|exists:expeditions,id',
             'ctn' => 'required',
+            'route_id' => 'required',
         ];
     }
     public function messages()

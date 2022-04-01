@@ -93,7 +93,10 @@
                                 <th>Çıkış Şube</th>
                                 <th>Varış Şube</th>
                                 <th>Kargo Statü</th>
+                                <th>Yüklenen Birim</th>
+                                <th>Yükleyen Birim</th>
                                 <th>Yükleyen</th>
+
                                 <th>Yükleme Tarihi</th>
                                 <th>İndiren Kullanıcı</th>
                                 <th>İndirilme Tarihi</th>
@@ -126,9 +129,10 @@
                                             <td class="font-weight-bold"> {{ $cargo->cargo->departure_branch_agency_name }} </td>
                                             <td class="font-weight-bold"> {{ $cargo->cargo->arrival_branch_agency_name }} </td>
                                             <td> {{ $cargo->cargo->status }} </td>
-                                            <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name}}
-                                                )
-                                            </td>
+                                            <td> {{ $cargo->cargosLoadedRoute->branch_details ?? '' }} </td>
+                                            <td> {{ $cargo->user->branch }} </td>
+                                            <td> {{ $cargo->user->name_surname }} </td>
+
                                             <td> {{ $cargo->cargo->created_at }} </td>
                                             <td>
                                                 {{ $cargo->unloadedUser ? $cargo->unloadedUser->name_surname . '(' .$cargo->unloadedUser->role->display_name . ')'  : ''  }}

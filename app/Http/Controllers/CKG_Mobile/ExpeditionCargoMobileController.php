@@ -60,13 +60,14 @@ class ExpeditionCargoMobileController extends Controller
                 ]);
             }
             $cargoes = $cargoBag->details()->get();
-            $cargoes->map(function ($cargo) use ($expedition) {
+            $cargoes->map(function ($cargo) use ($expedition, $validated) {
                 $user_id = Auth::id();
                 $fields = [];
                 $fields['expedition_id'] = $expedition->id;
                 $fields['cargo_id'] = $cargo->cargo->id;
                 $fields['part_no'] = $cargo->part_no;
                 $fields['user_id'] = $user_id;
+                $fields['expedition_route_id'] = $validated->route_id;
                 CargoExpeditionMovementAction::run($cargo->cargo->tracking_no, $cargo->cargo, $user_id, $cargo->part_no, rand(4, 10), 1, 'load_cargo_expedition', $expedition->car->plaka);
                 LoadCargoToExpeditionAction::run($fields);
 
@@ -99,6 +100,7 @@ class ExpeditionCargoMobileController extends Controller
         $fields['cargo_id'] = $cargo->id;
         $fields['part_no'] = $ctn[1];
         $fields['user_id'] = $user_id;
+        $fields['expedition_route_id'] = $validated['route_id'];
         CargoExpeditionMovementAction::run($ctn[0], $cargo, $user_id, $ctn[1], rand(4, 10), 1, 'load_cargo_expedition', $expedition->car->plaka);
 
         return LoadCargoToExpeditionAction::run($fields);
