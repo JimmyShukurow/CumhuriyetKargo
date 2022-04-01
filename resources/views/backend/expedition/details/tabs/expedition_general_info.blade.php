@@ -79,21 +79,21 @@
                     <td style="width: 180px;" class="static">Çıkış Birim:</td>
                     <td style="text-decoration: underline; cursor:pointer; color: #000;"
                         class="customer-detail unselectable font-weight-bold text-danger"
-                        id="expeditionDepartureBranch"> {{  $expedition->departure_branch  }}</td>
+                        id="expeditionDepartureBranch"> {{ $expedition->departure_branch->branch_details }} / {{ $expedition->departure_branch->id }}</td>
                 </tr>
                 @foreach($expedition->betweens as $between)
                     <tr>
                         <td class="static">{{ $loop->index + 1}} Güzergah</td>
                         <td id="expeditionArrivalBranch"
                             class="customer-detail unselectable font-weight-bold text-dark">
-                            {{ $between }}
+                            {{ $between->branch_details }} / {{  $between->id }}
                         </td>
                     </tr>
                 @endforeach
                 <tr>
                     <td class="static">Varış Birim:</td>
                     <td id="expeditionArrivalBranch" class="customer-detail unselectable font-weight-bold text-primary">
-                        {{ $expedition->arrival_branch }}
+                        {{ $expedition->arrival_branch->branch_details }} / {{ $expedition->arrival_branch->id }}
                     </td>
                 </tr>
                 </tbody>

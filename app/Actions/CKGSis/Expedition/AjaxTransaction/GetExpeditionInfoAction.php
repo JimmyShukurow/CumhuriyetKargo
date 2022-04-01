@@ -22,21 +22,10 @@ class GetExpeditionInfoAction
             ]
         )->where('id',$id)->first();
 
-        $departure_branch = $expedition->routes->where('route_type', '1')->first()->branch_type == 'Acente' ?
-            $expedition->routes->where('route_type', '1')->first()->branch->agency_name . ' ŞUBE' :
-            $expedition->routes->where('route_type', '1')->first()->branch->tc_name . ' TRM.';
+        $departure_branch = $expedition->routes->where('route_type', '1')->first();
+
 
         $between_branchs = $expedition->routes()->where('route_type',0)->orderBy('order')->get();
-        $between_branchs = $between_branchs->map(function ($item){
-            if ($item->branch_type == 'Acente') {
-                return $item->branch->agency_name . ' ŞUBE';
-            }
-            if ($item->branch_type == 'Aktarma') {
-                return $item->branch->tc_name . ' TRM.';
-            }
-        });
-
-
 
         $allCargoes = $expedition->allCargoes()->with(
             [
@@ -48,10 +37,7 @@ class GetExpeditionInfoAction
         )->get();
 
 
-        $arrival_branch = $expedition->routes->where('route_type', '-1')->first()->branch_type == 'Acente' ?
-            $expedition->routes->where('route_type', '-1')->first()->branch->agency_name . ' ŞUBE' :
-            $expedition->routes->where('route_type', '-1')->first()->branch->tc_name . ' TRM.';
-
+        $arrival_branch = $expedition->routes->where('route_type', '-1')->first();
 
         $data = getUserBranchInfoWithUserID($expedition->user_id);
         $expedition->branch = $data['name'] . ' ' . $data['type'];
