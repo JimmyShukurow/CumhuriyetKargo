@@ -1,32 +1,46 @@
 var oTable;
 
+
+
+
 $(document).ready(function () {
     oTable = $('.NikolasDataTable').DataTable({
         pageLength: 10,
         lengthMenu: dtLengthMenu,
-        order: [7, 'desc'],
+        order: [1, 'asc'],
         language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col"f>>rtip',
         buttons: [
-            'copy',
-            'pdf',
-            'csv',
-            'print',
             {
                 extend: 'excelHtml5',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 9]
                 },
-                title: "CK-Acenteler"
+                title: "CKG-Sis Acenteler " + currentDate,
+                attr: {
+                    class: 'btn btn-success',
+                }
             },
             {
                 text: 'Yenile',
                 action: function (e, dt, node, config) {
                     dt.ajax.reload();
+                },
+                attr: {
+                    class: 'btn btn-primary',
+                }
+            },
+            {
+                text: 'Filtreyi Temizle',
+                action: function (e, dt, node, config) {
+                    $('#search-form').trigger('reset');
+                },
+                attr: {
+                    class: 'btn btn-dark',
                 }
             }
         ],
-        responsive: true,
+        responsive: false,
         processing: true,
         serverSide: true,
         ajax: {
@@ -49,16 +63,18 @@ $(document).ready(function () {
             {data: 'city', name: 'city'},
             // {data: 'district', name: 'district'},
             {data: 'agency_name', name: 'agency_name'},
-            {data: 'regional_directorates', name: 'regional_directorates'},
             {data: 'tc_name', name: 'tc_name'},
             {data: 'name_surname', name: 'name_surname'},
             {data: 'phone', name: 'phone'},
             {data: 'phone2', name: 'phone2'},
+            {data: 'phone3', name: 'phone3'},
+            {data: 'operation_status', name: 'operation_status'},
             {data: 'maps_link', name: 'maps_link'},
             {data: 'agency_code', name: 'agency_code'},
             {data: 'edit', name: 'edit'},
         ],
-        scrollY: false
+        scrollY: false,
+        scrollX: true,
     });
 });
 
@@ -131,11 +147,11 @@ function agencyPost(agency_id) {
         $('#adress').html(response.agency[0].adress);
         $('#phone').html(response.agency[0].phone);
         $('#phone2').html(response.agency[0].phone2);
-        $('#trasfferCenter').html(response.agency[0].tc_agency_name);
+        $('td#transshipmentCenter').html(response.agency[0].tc_agency_name);
         $('#regionalDirectorate').html(response.agency[0].regional_directorates != null ? response.agency[0].regional_directorates + " BÖLGE MÜDÜRLÜĞÜ" : 'Ne var');
-        $('#status').html(response.agency.status == "1" ? "Aktif" : "Pasif");
+        $('td#status').html(response.agency[0].status == "1" ? '<b class="text-success">Aktif</b>' : '<b class="text-success">Pasif</b>');
         $('#agencyDevelopmentOfficer').html(response.agency[0].agency_development_officer);
-        $('#agencyCode').html(response.agency[0].agency_code);
+        $('td#agencyCode').html(response.agency[0].agency_code);
         $('#updatedDate').html(response.agency[0].updated_at);
 
         $('#tbodyEmployees').html('');

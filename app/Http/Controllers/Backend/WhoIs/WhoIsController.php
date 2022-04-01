@@ -145,11 +145,11 @@ class WhoIsController extends Controller
                 return 'agency-item-' . $agency->id;
             })
             //            ->addColumn('intro', 'Hi {{$name_surname}}')
-            ->addColumn('regional_directorates', function ($agency) {
-                return $agency->regional_directorates != '' ? "$agency->regional_directorates  B.M." : "";
-            })
             ->addColumn('tc_name', function ($agency) {
-                return $agency->tc_name != '' ? "$agency->tc_name  T.M." : "";
+                return $agency->tc_name != '' ? "$agency->tc_name  TRM." : "";
+            })
+            ->addColumn('operation_status', function ($agency) {
+                return $agency->operation_status == '1' ? '<b class="text-success">Aktif</b>' : '<b class="text-danger">Pasif</b>';
             })
             ->editColumn('phone', function ($key) {
                 if ($key->id == 1)
@@ -165,7 +165,7 @@ class WhoIsController extends Controller
             ->editColumn('created_at', function ($agency) {
                 return Carbon::parse($agency->created_at)->format('Y-m-d H:i:s');
             })
-            ->rawColumns(['maps_link', 'edit'])
+            ->rawColumns(['maps_link', 'edit', 'operation_status'])
             ->make(true);
     }
 

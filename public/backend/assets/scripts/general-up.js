@@ -494,3 +494,6 @@ whiteAnimation = {
         '                            </div>\n' +
         '                        </div>')
 }
+
+var currentDate = new Date()
+currentDate = currentDate.toLocaleDateString('en-US')

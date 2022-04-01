@@ -32,12 +32,12 @@
 
                         <div class="col-md-2">
                             <label for="agency">Acente Adı</label>
-                            <input type="text" class="form-control" name="agency" id="agencyName">
+                            <input type="text" class="form-control form-control-sm" name="agency" id="agencyName">
                         </div>
 
                         <div class="col-md-2">
                             <label for="city">İl</label>
-                            <select name="city" id="city" class="form-control">
+                            <select name="city" id="city" class="form-control form-control-sm">
                                 <option value="">Seçiniz</option>
                                 @foreach($data['cities'] as $key)
                                     <option
@@ -48,14 +48,14 @@
 
                         <div class="col-md-2">
                             <label for="district">İlçe</label>
-                            <select name="district" id="district" disabled class="form-control">
+                            <select name="district" id="district" disabled class="form-control form-control-sm">
                                 <option value="">İlçe Seçin</option>
                             </select>
                         </div>
 
                         <div class="col-md-2">
                             <label for="dependency_tc">Bağ. Old TRM.</label>
-                            <select name="dependency_tc" id="dependency_tc" class="form-control">
+                            <select name="dependency_tc" id="dependency_tc" class="form-control form-control-sm">
                                 <option value="">Seçiniz</option>
                                 @foreach($data['tc'] as $key)
                                     <option
@@ -67,17 +67,17 @@
                         <div class="col-md-2">
                             <label for="phone">Telefon</label>
                             <input name="phone" id="phone" data-inputmask="'mask': '(999) 999 99 99'"
-                                   placeholder="(___) ___ __ __" type="text" class="form-control input-mask-trigger">
+                                   placeholder="(___) ___ __ __" type="text" class="form-control input-mask-trigger form-control-sm">
                         </div>
 
                         <div class="col-md-2">
                             <label for="phone">Şube Kodu</label>
                             <input name="phone" id="agencyCode" data-inputmask="'mask': '9999'"
-                                   placeholder="____" type="text" class="form-control niko-filter input-mask-trigger">
+                                   placeholder="____" type="text" class="form-control niko-filter input-mask-trigger form-control-sm">
                         </div>
                     </div>
 
-                    <div class="row text-center mt-3">
+                    <div style="display: none;" class="row text-center mt-3">
                         <div class="col-md-12 text-center">
                             <button id="btn-submit" type="submit" class="btn btn-primary ">Ara</button>
                             <input type="reset" class="btn btn-secondary">
@@ -93,23 +93,24 @@
         <div class="card mb-3">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                        class="header-icon lnr-laptop-phone mr-3 text-muted opacity-6"> </i>Tüm Acenteler
+                        class="header-icon lnr-store mr-1 text-muted opacity-6"> </i>Tüm Acenteler
                 </div>
 
             </div>
             <div class="card-body">
 
-                <table id="AgenciesTable"
+                <table width="100%" style="white-space: nowrap;" id="AgenciesTable"
                        class="align-middle mb-0 table Table30Padding table-borderless table-striped NikolasDataTable">
                     <thead>
                     <tr>
                         <th>İl/İlçe</th>
                         <th>Acente Adı</th>
-                        <th>Bağ. Old. Bölge</th>
                         <th>Bağ. Old. Aktarma</th>
                         <th>Acente Sahibi</th>
                         <th>Telefon</th>
                         <th>Telefon 2</th>
+                        <th>Telefon 3</th>
+                        <th>Operasyon</th>
                         <th>Harita</th>
                         <th>Şube Kodu</th>
                         <th width="10" class="text-center"></th>
@@ -173,12 +174,12 @@
                                 <li class="list-group-item">
                                     <div class="widget-content pt-4 pb-4 pr-1 pl-1">
 
-                                        <div style="overflow-x: scroll" class="cont">
+                                        <div style="overflow-x: auto" class="cont">
                                             <table style="white-space: nowrap" id="AgencyCard"
                                                    class="TableNoPadding table table-bordered table-striped">
                                                 <thead>
                                                 <tr>
-                                                    <th class="text-center" colspan="2">Genel Merkez Acente</th>
+                                                    <th class="text-center" colspan="2">ŞUBE BİLGİLERİ</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -204,7 +205,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Bağlı Olduğu Aktarma</td>
-                                                    <td id="trasfferCenter"></td>
+                                                    <td id="transshipmentCenter"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="static">Bağlı Olduğu Bölge Müdürlüğü</td>
