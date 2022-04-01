@@ -49,7 +49,7 @@
                             <tbody id="tbodyExpedtionCargoes">
                             @if(count($expedition->cargoes) == 0)
                                 <tr>
-                                    <td class="text-center text-danger font-weight-bold" colspan="9">Burda hiç veri
+                                    <td class="text-center text-danger font-weight-bold" colspan="14">Burda hiç veri
                                         yok.
                                     </td>
                                 </tr>
