@@ -96,7 +96,6 @@
                                 <th>Yüklenen Birim</th>
                                 <th>Yükleyen Birim</th>
                                 <th>Yükleyen</th>
-
                                 <th>Yükleme Tarihi</th>
                                 <th>İndiren Kullanıcı</th>
                                 <th>İndirilme Tarihi</th>
@@ -108,7 +107,7 @@
                             <tr>
                             @if(count($expedition->allCargoes) == 0)
                                 <tr>
-                                    <td class="text-center text-danger font-weight-bold" colspan="13">Burda hiç veri
+                                    <td class="text-center text-danger font-weight-bold" colspan="16">Burda hiç veri
                                         yok.
                                     </td>
                                 </tr>
