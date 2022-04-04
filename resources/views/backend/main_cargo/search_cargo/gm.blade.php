@@ -199,7 +199,7 @@
 
                         <div class="col-md-3">
                             <label for="receiverDistrict">Alıcı İlçe:</label>
-                            <select id="receiverDistrict"
+                            <select disabled id="receiverDistrict"
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
                             </select>
@@ -242,14 +242,8 @@
 
                         <div class="col-md-3">
                             <label for="senderDistrict">Gönderici İlçe:</label>
-                            <select id="senderDistrict" multiple="multiple"
-                                    class="form-control form-control-sm niko-select-filter">
-                                <option value="">Seçiniz</option>
-                            </select>
-                            <select style="display: none;" id="multi-select-areas" multiple data-mdb-filter="true" multiple="multiple">
-                                <optgroup label="Bölge Müdürlükleri">
-
-                                </optgroup>
+                            <select disabled class="form-control form-control-sm" id="senderDistrict">
+                                <option value="">İlçe Seçin</option>
                             </select>
                         </div>
 
@@ -326,7 +320,7 @@
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
     <script src="/backend/assets/scripts/main-cargo/gm-search-cargo.js"></script>
-    <script>var typeOfJs = 'search_cargo'; </script>
+    <script>var typeOfJs = 'search_cargo_gm'; </script>
     <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
     <script src="/backend/assets/scripts/official-report/report-view.js"></script>
     <script src="/backend/assets/scripts/customers/customer-details.js"></script>
@@ -334,7 +328,7 @@
 
 
 @section('modals')
-    @php $data = ['type' => 'search_cargo']; @endphp
+    @php $data = ['type' => 'search_cargo_gm']; @endphp
     @include('backend.main_cargo.main.modal_cargo_details')
 
     @include('backend.OfficialReports.report_modal')

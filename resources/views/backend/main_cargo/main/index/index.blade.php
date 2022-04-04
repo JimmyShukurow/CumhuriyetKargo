@@ -4,15 +4,10 @@
     {{--    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>--}}
     <link rel="stylesheet" href="/backend/assets/css/app-main-block.css">
     <link rel="stylesheet" href="/backend/assets/css/ck-barcode.css">
-    <style>
-        table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child:before, table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child:before {
-            top: 6px;
-            left: 5px;
-        }
-    </style>
 @endpush
 
 @section('title', 'Ana Menü')
+
 @section('content')
     <div class="app-main__inner">
         <div class="tabs-animation">
@@ -31,7 +26,7 @@
     <script src="/backend/assets/scripts/delete-method.js"></script>
     <script src="/backend/assets/scripts/JsBarcode.js"></script>
     <script src="/backend/assets/scripts/QrCode.min.js"></script>
-    <script src="/backend/assets/scripts/main-cargo/index.js"></script>
+    <script src="/backend/assets/scripts/main-cargo/index.js?v=1.0.0"></script>
     <script>var typeOfJs = 'main_cargo'; </script>
     <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
     <script src="/backend/assets/scripts/official-report/report-view.js"></script>

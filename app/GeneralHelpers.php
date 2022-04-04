@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Actions\CKGSis\Layout\GetUserModuleAndSubModuleAction;
 use App\Models\User;
+use App\Models\CurrentDepartureAgency;
 
 function tr_strtoupper($text)
 {
@@ -538,8 +539,15 @@ function CurrentControl($currentCode)
 
         $agencyOfCurrent = Agencies::where('id', $current->agency)->withTrashed()->first();
 
-        if (Auth::user()->agency_code != $current->agency)
-            return $array = ['status' => -1, 'result' => $current->name . ' müşterisinin bağlı olduğu şube ' . $agencyOfCurrent->agency_name . ' ŞUBE olduğundan, bu cari şubenizde kullanılamaz.'];
+        $getDepartureAgenciesOfCurrent = CurrentDepartureAgency::where('current_id', $current->id)->get()->pluck('agency_id');
+        $getDepartureAgenciesOfCurrent = collect($getDepartureAgenciesOfCurrent);
+
+        if (Auth::user()->agency_code != $current->agency && $getDepartureAgenciesOfCurrent->contains(Auth::user()->agency_code) == false
+            && $current->departure_all_agencies != 1) {
+
+
+            return $array = ['status' => -1, 'result' => $current->name . ' müşterisinin bağlı olduğu şubeler arasında sizin şubeniz olmadığından, bu cari şubenizden kargo çıkaramaz.'];
+        }
 
     }
 

@@ -15,6 +15,7 @@ use App\Http\Requests\Marketing\SenderCurrentRequest;
 use App\Models\Agencies;
 use App\Models\Cargoes;
 use App\Models\Cities;
+use App\Models\CurrentDepartureAgency;
 use App\Models\CurrentPrices;
 use App\Models\Currents;
 use App\Models\Districts;
@@ -61,12 +62,14 @@ class SenderCurrentController extends Controller
     {
         $data['cities'] = Cities::all();
         $data['price_drafts'] = PriceDrafts::all();
+        $data['agencies'] = Agencies::orderBy('agency_name')->get();
         return view('backend.marketing.sender_currents.create', compact('data'));
     }
 
 
     public function store(Request $request)
     {
+
         $request->validate([
             'adSoyadFirma' => 'required',
             'acente' => ['required', new AgencyControl],
@@ -102,6 +105,8 @@ class SenderCurrentController extends Controller
             'priceDraft' => 'required',
             'cadde' => 'nullable',
             'sokak' => 'nullable',
+            'departureForTurkeyGeneral' => 'required',
+            'realDepartureForTurkeyGeneral' => 'nullable',
         ]);
 
         # => cadde sokak kontrolü
@@ -121,8 +126,8 @@ class SenderCurrentController extends Controller
                 ->exists();
         }
 
-            $neighborhood = Neighborhoods::with('district.city')->where('id', $request->mahalle)->first();
-            $dispatchDistrict = Districts::with('city')->where('id', $request->sevkIlce)->first();
+        $neighborhood = Neighborhoods::with('district.city')->where('id', $request->mahalle)->first();
+        $dispatchDistrict = Districts::with('city')->where('id', $request->sevkIlce)->first();
 
         DB::beginTransaction();
         try {
@@ -155,6 +160,7 @@ class SenderCurrentController extends Controller
                 'dispatch_adress' => tr_strtoupper($request->sevkAdres),
                 'status' => '1',
                 'agency' => $request->acente,
+                'departure_all_agencies' => $request->departureForTurkeyGeneral,
                 'bank_iban' => $request->iban,
                 'bank_owner_name' => tr_strtoupper($request->hesapSahibiTamIsim),
                 'discount' => getDoubleValue($request->iskonto),
@@ -196,6 +202,24 @@ class SenderCurrentController extends Controller
                 ->with('error', 'Cari fiyat kayıt işlemi esnasında bir hata oluştu!');
         }
 
+
+        if ($request->departureForTurkeyGeneral == '0') {
+            $departureAgencies = explode(',', $request->realDepartureAgencies);
+            foreach ($departureAgencies as $key) {
+                try {
+                    $create = CurrentDepartureAgency::create([
+                        'current_id' => $insert->id,
+                        'agency_id' => $key
+                    ]);
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    $request->flash();
+                    return back()
+                        ->with('error', 'Çıkış şubenin eklenmesi işlemi esnasında bir hata oluştu!');
+                }
+            }
+        }
+
         DB::commit();
         GeneralLog($current_code . " kodlu kusumsal cari oluşturuldu.");
         return back()->with('success', 'Cari oluşturuldu, Onay Bekliyor!');
@@ -230,6 +254,10 @@ class SenderCurrentController extends Controller
         $data['price_drafts'] = PriceDrafts::all();
 
         $agency = Agencies::find($current->agency);
+
+        $data['agencies'] = Agencies::orderBy('agency_name')->get();
+        $data['departure_agencies'] = CurrentDepartureAgency::where('current_id', $current->id)->get()->pluck('agency_id');
+        $data['departure_agencies'] = collect($data['departure_agencies']);
 
         return view('backend.marketing.sender_currents.edit', compact(['data', 'current', 'price', 'agency']));
     }
@@ -272,6 +300,8 @@ class SenderCurrentController extends Controller
             'priceDraft' => 'required',
             'cadde' => 'nullable',
             'sokak' => 'nullable',
+            'departureForTurkeyGeneral' => 'required',
+            'realDepartureForTurkeyGeneral' => 'nullable',
         ]);
 
         # => cadde sokak kontrolü
@@ -333,6 +363,7 @@ class SenderCurrentController extends Controller
                     'dispatch_adress' => tr_strtoupper($request->sevkAdres),
                     'status' => '1',
                     'agency' => $request->acente,
+                    'departure_all_agencies' => $request->departureForTurkeyGeneral,
                     'bank_iban' => $request->iban,
                     'bank_owner_name' => tr_strtoupper($request->hesapSahibiTamIsim),
                     'discount' => getDoubleValue($request->iskonto),
@@ -371,6 +402,30 @@ class SenderCurrentController extends Controller
             return back()
                 ->with('error', 'Cari fiyat kayıt işlemi esnasında bir hata oluştu!');
         }
+
+        if ($request->departureForTurkeyGeneral == '0') {
+
+            $delete = CurrentDepartureAgency::where('current_id', $id)->delete();
+
+
+            $departureAgencies = explode(',', $request->realDepartureAgencies);
+            foreach ($departureAgencies as $key) {
+                try {
+                    $create = CurrentDepartureAgency::create([
+                        'current_id' => $id,
+                        'agency_id' => $key
+                    ]);
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    $request->flash();
+                    return back()
+                        ->with('error', 'Çıkış şubenin eklenmesi işlemi esnasında bir hata oluştu!');
+                }
+            }
+        } else {
+            $delete = CurrentDepartureAgency::where('current_id', $id)->delete();
+        }
+
 
         DB::commit();
         GeneralLog($current_code . " kodlu kusumsal cari güncellendi.");

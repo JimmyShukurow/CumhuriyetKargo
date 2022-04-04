@@ -186,10 +186,23 @@ class CargoCancellationController extends Controller
                 ->where('id', $app->cargo_id)
                 ->first();
 
-            if ($app->confirm == '1')
+            if ($app->confirm == '1') {
                 $trResult = 'onaylandı';
-            else if ($app->confirm == '-1')
+
+                $updateCargo = Cargoes::where('id', $cargo->id)
+                    ->update([
+                        'status' => 'İPTAL EDİLDİ',
+                        'status_for_human' => 'FATURA İPTAL EDİLİ'
+                    ]);
+
+                InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), '1', 'Fatura iptal edildi.', 'FATURA İPTAL EDİLDİ', rand(0, 50), 2);
+
+            } else if ($app->confirm == '-1') {
                 $trResult = 'reddedildi';
+
+                InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), '1', 'Fatura iptal başvurusu redededildi.', 'FATURA İPTALİ REDDEDİLDİ', rand(0, 50), 2);
+
+            }
 
             if ($app->confirm != 0)
                 # Notification
@@ -225,19 +238,39 @@ class CargoCancellationController extends Controller
             ->where('id', $app->cargo_id)
             ->restore();
 
-        $appointment = CargoCancellationApplication::find($request->id)
-            ->update([
-                'confirm' => '-1',
-                'description' => '### KARGO GERİ YÜKLENDİ ###',
-                'confirming_user' => Auth::id(),
-            ]);
+        DB::beginTransaction();
+        try {
+            $appointment = CargoCancellationApplication::find($request->id)
+                ->update([
+                    'confirm' => '-1',
+                    'description' => '### KARGO GERİ YÜKLENDİ ###',
+                    'confirming_user' => Auth::id(),
+                ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()
+                ->json(['status' => -1, 'message' => 'İptal başvurusu güncellenirken hata oluştu!'], 200);
+        }
 
-        if ($statement)
+        try {
+            $updateCargo = Cargoes::where('id', $cargo->id)
+                ->update([
+                    'status' => 'İPTAL EDİLEN FATURA YENİDEN DÜZENLENDİ',
+                    'status_for_human' => 'İPTAL EDİLEN FATURA YENİDEN DÜZENLENDİ'
+                ]);
+
+            InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), '1', 'Kargo geri yüklendi.', 'YENİDEN DÜZENLENDİ', rand(0, 50), 2);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
             return response()
-                ->json(['status' => 1], 200);
-        else
-            return response()
-                ->json(['status' => -1], 200);
+                ->json(['status' => -1, 'message' => 'Kargo statüsü güncellenirken bir hata oluştu!'], 200);
+        }
+
+
+        DB::commit();
+        return response()
+            ->json(['status' => 1], 200);
 
         return $request->all();
     }

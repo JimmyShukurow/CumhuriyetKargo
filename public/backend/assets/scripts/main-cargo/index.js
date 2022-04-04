@@ -31,18 +31,21 @@ $(document).ready(function () {
         buttons: [
             {
                 extend: 'selectAll',
-                text: 'Tümünü Seç'
+                text: 'Tüm. Seç'
             },
             {
                 extend: 'selectNone',
-                text: 'Tümünü Bırak'
+                text: 'Tüm. Bırak'
             },
             {
                 extend: 'excelHtml5',
                 exportOptions: {
-                    columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+                    columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
                 },
-                title: "CK - Kesilen Kargolar"
+                title: "CK - Kesilen Kargolar",
+                attr: {
+                    class: 'btn btn-success'
+                }
             },
             {
                 text: 'Yenile',
@@ -51,6 +54,9 @@ $(document).ready(function () {
                 },
                 attr: {
                     id: 'datatableRefreshBtn'
+                },
+                attr: {
+                    class: 'btn btn-primary'
                 }
             },
             {
@@ -64,11 +70,14 @@ $(document).ready(function () {
                 },
                 attr: {
                     id: 'selectedExcelBtn'
-                }
+                },
             },
             {
                 extend: 'colvis',
-                text: 'Sütun Görünüm'
+                text: 'Sütunlar',
+                attr: {
+                    class: 'btn btn-alternate'
+                }
             },
         ],
         responsive: false,
@@ -151,6 +160,19 @@ $(document).ready(function () {
     // Local Storage Transaction END
 
     $('.dataTables_scrollBody').addClass('mostly-customized-scrollbar');
+
+    $('#tableCheckAll').click(function () {
+
+        if ($(this).prop('checked') == true) {
+            $('.buttons-select-all').trigger('click');
+        } else {
+            $('.buttons-select-none').trigger('click');
+        }
+    })
+
+    $('.buttons-select-all').hide();
+    $('.buttons-select-none').hide();
+
 
 });
 

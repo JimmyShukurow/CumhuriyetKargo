@@ -57,6 +57,9 @@ class MakeCargoCancellationApplicationAction
                 ], 200);
 
 
+        InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), '1', 'Kargo iptal başvurusu yapıldı. (Açıklama:' . $request->iptal_nedeni . ')', 'İPTAL SÜRECİNDE', rand(0, 50), 1);
+
+
         $insert = CargoCancellationApplication::create([
             'cargo_id' => $cargo->id,
             'user_id' => Auth::id(),

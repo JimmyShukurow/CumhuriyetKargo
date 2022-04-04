@@ -66,7 +66,6 @@ class GetSafeAction
             ->editColumn('receiver_name', function ($key) {
                 return \Illuminate\Support\Str::words($key->receiver_name, 3, '...');
             })
-            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
             ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
             ->rawColumns(['tracking_no', 'collection_description', 'collection_type_entered', 'sender_current_code', 'invoice_number', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);
