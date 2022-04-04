@@ -7,22 +7,16 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TransferCarsFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = TransferCars::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition()
     {
         return [
-            //
+            "car_type" => "Aktarma",
+            "marka" => "BMC 415 PRO",
+            "model" => "Sidan",
+            "model_yili" => "2000",
+            "plaka" => $this->faker->randomNumber(10),
+            "status" => 0
         ];
     }
 }
