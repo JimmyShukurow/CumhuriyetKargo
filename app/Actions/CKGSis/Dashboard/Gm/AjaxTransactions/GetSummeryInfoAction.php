@@ -107,14 +107,17 @@ class GetSummeryInfoAction
         $data['agencyCount'] = $tmpArray->pluck('agencyCount');
 
 
-        $agencies = Agencies::with(['relatedCargoes'=>function($q) use ($firstDate, $lastDate) {$q->whereBetween('created_at', [$firstDate, $lastDate]);}])->get();
+        $agencies = Agencies::with([
+            'relatedCargoes'=>function($q) use ($firstDate, $lastDate) {$q->whereBetween('created_at', [$firstDate, $lastDate]);},
+            'relatedUser',
+        ])->get();
         $agencies->map(function ($q) {
             $q->endorsement = round($q->relatedCargoes->sum('total_price'), 2);
             $q->cargo_count = $q->relatedCargoes->count();
             $q->cargo_cargo_count = $q->relatedCargoes->whereNotIn('cargo_type', ['Dosya', 'Mi'])->count();
             $q->cargo_desi_amount = round($q->relatedCargoes->sum('desi'), 2);
             $q->cargo_file_count = $q->relatedCargoes->whereIn('cargo_type', ['Dosya', 'Mi'])->count();
-            $q->personel_count = $q->personelCount();
+            $q->personel_count = $q->relatedUser()->count();
             $q->region = $q->region()->first()->name;
         });
         $data['agencies'] = $agencies->sortByDesc('endorsement')->values();

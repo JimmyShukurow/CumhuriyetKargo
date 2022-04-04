@@ -54,6 +54,12 @@ class Agencies extends Model
     {
         return $this->hasMany(Cargoes::class, 'departure_agency_code', 'id');
     }
+
+    public function relatedUser()
+    {
+        return $this->hasOne(User::class, 'agency_code', 'id');
+    }
+
     public function endorsementWithDate($firstDate, $lastDate)
     {
         return $this->hasMany(Cargoes::class, 'departure_agency_code', 'id')
