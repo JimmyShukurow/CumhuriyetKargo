@@ -24,41 +24,38 @@ class GetSummeryInfoAction
 
         $firstDate = substr($firstDate, 0, 10) . ' 00:00:00';
         $lastDate = substr($lastDate, 0, 10) . ' 23:59:59';
+        $allCargoes = Cargoes::all();
+        $cargoes = $allCargoes->whereBetween('created_at', [$firstDate, $lastDate]);
+        $cargoes->all();
 
+        $data['endorsementCurrentDate'] = $cargoes->sum('total_price');
 
-        $data['endorsementCurrentDate'] = Cargoes::all()
-            ->whereBetween('created_at', [$firstDate, $lastDate])
-            ->sum('total_price');
+        $data['totalCargosCurrentDate'] =$cargoes->count();
 
-        $data['totalCargosCurrentDate'] = Cargoes::all()
-            ->whereBetween('created_at', [$firstDate, $lastDate])
-            ->count();
+        $data['cargoCountCurrentDate'] = $cargoes->whereNotIn('cargo_type', ['Mi', 'Dosya'])->count();
 
-        $data['cargoCountCurrentDate'] = Cargoes::all()
-            ->whereBetween('created_at', [$firstDate, $lastDate])
-            ->whereNotIn('cargo_type', ['Mi', 'Dosya'])
-            ->count();
+        $data['fileCountCurrentDate'] =$cargoes->whereIn('cargo_type', ['Mi', 'Dosya'])->count();
 
-        $data['fileCountCurrentDate'] = Cargoes::all()
-            ->whereBetween('created_at', [$firstDate, $lastDate])
-            ->whereIn('cargo_type', ['Mi', 'Dosya'])
-            ->count();
+        $data['totalDesiCurrentDate'] = $cargoes->sum('desi');
 
-        $data['totalDesiCurrentDate'] = Cargoes::all()
-            ->whereBetween('created_at', [$firstDate, $lastDate])
-            ->sum('desi');
+        $data['endorsementAllTime'] = $allCargoes->sum('total_price');
 
-        $data['endorsementAllTime'] = Cargoes::all()
-            ->sum('total_price');
-
-        $data['inSafeAllTime'] = AgencyPayment::all()
-            ->sum('payment');
+        $data['inSafeAllTime'] = AgencyPayment::sum('payment');
 
         foreach ($data as $key => $val) {
             $data[$key] = getDotter($data[$key]);
         }
 
-        $rds = RegioanalDirectorates::all();
+        $rds = RegioanalDirectorates::with([
+            'districts'=> function($q) use ($firstDate, $lastDate) {
+                $q->with(['agencies' =>function($query) use ($firstDate, $lastDate) {
+                    $query->with(['relatedCargoes' =>function($cargo) use ($firstDate, $lastDate) {
+                        $cargo->whereBetween('created_at', [$firstDate, $lastDate]);}
+                ]);}
+                ])->whereHas('agencies');}
+
+        ])->get();
+
         $data['regions'] = $rds->pluck('name');
 
         $regionCargoCount = collect();
@@ -68,14 +65,14 @@ class GetSummeryInfoAction
         $tmpCollection = collect();
         $tmpSum = 0;
         $agencies = $rds->map(function ($q) use ($regionEndorsements, $tmpCollection, $firstDate, $lastDate, $tmpCollectionCargoCount) {
-            $districts = $q->districts()->with('agencies')->whereHas('agencies')->get();
+            $districts = $q->districts;
             $regionEndorsements = collect();
             $regionCargoCount = collect();
             $districts = $districts->map(function ($query) use ($regionEndorsements, $firstDate, $lastDate, $regionCargoCount) {
                 $agency = $query->agencies;
                 $agency = $agency->map(function ($keyAgency) use ($regionEndorsements, $firstDate, $lastDate, $regionCargoCount) {
-                    $regionEndorsements->push($keyAgency->endorsementWithDate($firstDate, $lastDate));
-                    $regionCargoCount->push($keyAgency->cargoCountWithDate($firstDate, $lastDate));
+                    $regionEndorsements->push($keyAgency->relatedCargoes->sum('total_price'));
+                    $regionCargoCount->push($keyAgency->relatedCargoes->count());
                     return $keyAgency->with('endorsement');
                 });
                 return count($agency);
@@ -110,18 +107,17 @@ class GetSummeryInfoAction
         $data['agencyCount'] = $tmpArray->pluck('agencyCount');
 
 
-        $agencies = Agencies::all();
-        $agencies->map(function ($q) use ($firstDate, $lastDate) {
-            $q->endorsement = round($q->endorsementWithDate($firstDate, $lastDate), 2);
-            $q->cargo_count = $q->cargoCountWithDate($firstDate, $lastDate);
-            $q->cargo_cargo_count = $q->cargoCargoCountWithDate($firstDate, $lastDate);
-            $q->cargo_desi_amount = round($q->cargoDsAmountWithDate($firstDate, $lastDate), 2);
-            $q->cargo_file_count = $q->cargoFileCountWithDate($firstDate, $lastDate);
+        $agencies = Agencies::with(['relatedCargoes'=>function($q) use ($firstDate, $lastDate) {$q->whereBetween('created_at', [$firstDate, $lastDate]);}])->get();
+        $agencies->map(function ($q) {
+            $q->endorsement = round($q->relatedCargoes->sum('total_price'), 2);
+            $q->cargo_count = $q->relatedCargoes->count();
+            $q->cargo_cargo_count = $q->relatedCargoes->whereNotIn('cargo_type', ['Dosya', 'Mi'])->count();
+            $q->cargo_desi_amount = round($q->relatedCargoes->sum('desi'), 2);
+            $q->cargo_file_count = $q->relatedCargoes->whereIn('cargo_type', ['Dosya', 'Mi'])->count();
             $q->personel_count = $q->personelCount();
             $q->region = $q->region()->first()->name;
         });
         $data['agencies'] = $agencies->sortByDesc('endorsement')->values();
-
 
         return $data;
     }
