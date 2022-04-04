@@ -5,6 +5,20 @@
 @push('css')
     <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
     <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
+
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -167,7 +181,7 @@
 
                     <div class="row mb-5">
                         <div class="col-md-6">
-                            <label for="">İşlem:</label>
+                            <label for="">İşlem: <small class="text-danger">*</small></label>
                             <select name="" class="form-control form-control-sm" id="transaction">
                                 <option value="Teslimat">Teslimat</option>
                                 <option value="İade">İade</option>
@@ -183,26 +197,37 @@
 
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="">Teslim Alan Ad Soyad/Firma:</label>
+                                <label for="">Teslim Alan Ad Soyad/Firma:<small class="text-danger">*</small></label>
                                 <input type="text" class="form-control form-control-sm">
                             </div>
                             <div class="col-md-3">
-                                <label for="">Teslim Alan TCKN/VKN:</label>
-                                <input type="number" maxlength="11" class="form-control number-arrow-none  number form-control-sm">
+                                <label for="">Teslim Alan TCKN/VKN:<small class="text-danger">*</small></label>
+                                <input style="-webkit-appearance: none;  margin: 0;" type="number" maxlength="11"
+                                       class="form-control number form-control-sm">
                             </div>
                             <div class="col-md-3">
-                                <label for="">Teslim Alan Yakınlık:</label>
-                                <input type="text" class="form-control form-control-sm">
+                                <label for="">Teslim Alan Yakınlık:<small class="text-danger">*</small></label>
+                                <input type="text" placeholder="Kendisi, Komşusu, Eşi, Çocuğu, Annesi-Babası, "
+                                       class="form-control form-control-sm">
                             </div>
 
                             <div class="col-md-3">
-                                <label for="">Teslimat Tarihi:</label>
+                                <label for="">Teslimat Tarihi:<small class="text-danger">*</small></label>
                                 <input type="date" value="{{date('Y-m-d')}}" class="form-control form-control-sm">
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="form-group position-relative">
+                                <label for="descriptionDelivery">Açıklama:<small class="text-danger">*</small></label>
+                                <textarea name="descriptionDelivery" id="descriptionDelivery" cols="30" rows="3"
+                                          class="form-control"
+                                          placeholder="Lütfen açıklama giriniz. (Zorunlu Alan)"></textarea>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group position-relative">
                                 <label for="detecting_unit">Birim:</label>
