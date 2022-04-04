@@ -84,7 +84,7 @@ class GetOutGoingExpeditionsAction
 
         return datatables()->of($rows)
             ->editColumn('description', function ($key) {
-                return '<span title="' . $key->description . '">' . Str::words($key->description, 6, '...') . '</span>';
+                return '<span title="' . $key->description . '">' . Str::words($key->description, 3, '...') . '</span>';
             })
             ->editColumn('plaka', function ($key) {
                 return $key->car->plaka;
