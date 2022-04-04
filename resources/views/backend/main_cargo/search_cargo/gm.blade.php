@@ -199,7 +199,7 @@
 
                         <div class="col-md-3">
                             <label for="receiverDistrict">Alıcı İlçe:</label>
-                            <select id="receiverDistrict"
+                            <select disabled id="receiverDistrict"
                                     class="form-control form-control-sm niko-select-filter">
                                 <option value="">Seçiniz</option>
                             </select>
@@ -242,15 +242,8 @@
 
                         <div class="col-md-3">
                             <label for="senderDistrict">Gönderici İlçe:</label>
-                            <select id="senderDistrict" multiple="multiple"
-                                    class="form-control form-control-sm niko-select-filter">
-                                <option value="">Seçiniz</option>
-                            </select>
-                            <select style="display: none;" id="multi-select-areas" multiple data-mdb-filter="true"
-                                    multiple="multiple">
-                                <optgroup label="Bölge Müdürlükleri">
-
-                                </optgroup>
+                            <select disabled class="form-control form-control-sm" id="senderDistrict">
+                                <option value="">İlçe Seçin</option>
                             </select>
                         </div>
 

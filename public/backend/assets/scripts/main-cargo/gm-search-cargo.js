@@ -153,27 +153,3 @@ $('#btnClearFilter').click(function () {
 var array = new Array();
 
 
-$(document).ready(function () {
-    $('#senderDistrict').multiselect({
-        includeSelectAllOption: true,
-        selectAllName: 'select-all-name',
-        allSettled: true,
-        selectAllText: 'Tümünü Seç',
-        onSelectAll: function () {
-            oTable.draw();
-            pageRowCount();
-        },
-        onDeselectAll: function () {
-            oTable.draw();
-            pageRowCount();
-        },
-        widthSynchronizationMode: 'always',
-        buttonWidth: '100%',
-        onChange: function (option, checked, select) {
-            // alert('Changed option ' + $(option).val() + '. Checked : ' + checked);
-            oTable.draw();
-            pageRowCount();
-        }
-    });
-
-});

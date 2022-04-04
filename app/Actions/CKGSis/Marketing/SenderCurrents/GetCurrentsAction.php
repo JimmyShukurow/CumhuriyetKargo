@@ -21,10 +21,15 @@ class GetCurrentsAction
         $category = $request->category != -1 ? $request->category : '';
         $confirmed = $request->confirmed;
 
+        $columns = [
+            'currents.id', 'currents.current_code', 'currents.name', 'currents.city', 'currents.created_at', 'currents.category',
+            'currents.district', 'currents.status', 'currents.confirmed', 'agencies.agency_name', 'users.name_surname'
+        ];
+
         $currents = DB::table('currents')
             ->join('agencies', 'currents.agency', '=', 'agencies.id')
             ->join('users', 'currents.created_by_user_id', '=', 'users.id')
-            ->select(['currents.*', 'agencies.agency_name', 'users.name_surname'])
+            ->select($columns)
             ->whereRaw($currentCode ? 'current_code=' . $currentCode : '1 > 0')
             ->whereRaw($agency ? 'agency=' . $agency : '1 > 0')
             ->whereRaw($creatorUser ? 'created_by_user_id=' . $creatorUser : '1 > 0')

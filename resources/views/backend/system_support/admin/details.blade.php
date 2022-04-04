@@ -221,7 +221,7 @@
                                                 <div id="editor">
                                                     <p>Merhaba,</p>
                                                     <p></p>
-                                                    <p>Soru ve problemleriniz için sizelere yardımcı olmaktan mutluluk
+                                                    <p>Soru ve problemleriniz için sizlere yardımcı olmaktan mutluluk
                                                         duyar, iyi çalışmalar
                                                         dilerim.</p>
                                                 </div>

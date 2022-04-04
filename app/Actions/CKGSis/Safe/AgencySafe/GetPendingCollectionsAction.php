@@ -40,7 +40,6 @@ class GetPendingCollectionsAction
             ->editColumn('created_at', function ($key) {
                 return date('d/m/Y', strtotime($key->created_at));
             })
-            ->addColumn('edit', 'backend.marketing.sender_currents.columns.edit')
             ->addColumn('invoice_number', 'backend.main_cargo.main.columns.invoice_number')
             ->rawColumns(['tracking_no', 'sender_current_code', 'invoice_number', 'agency_name', 'status_for_human', 'created_at', 'status', 'collection_fee', 'total_price', 'collectible', 'cargo_type', 'payment_type'])
             ->make(true);

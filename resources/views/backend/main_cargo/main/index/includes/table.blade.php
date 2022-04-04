@@ -204,7 +204,9 @@
                class="align-middle mb-0 table Table20Padding table-bordered table-striped table-hover NikolasDataTable">
             <thead>
             <tr>
-                <th class="check"></th>
+                <th class="check text-center">
+                    <input style="width: 50px; height: 17px;" id="tableCheckAll" class="cursor-pointer" type="checkbox">
+                </th>
                 <th>Fatura NO</th>
                 <th>KTNO</th>
                 <th>Gönderici Adı</th>
