@@ -550,7 +550,7 @@
 
                             </div>
 
-                            @if(@$data['type'] == 'main_cargo')
+                            @if(@$data['type'] == 'main_cargo' || @$data['type'] == 'search_cargo_gm')
                                 <li class="p-0 list-group-item">
                                     <div class="grid-menu grid-menu-2col">
                                         <div class="no-gutters row">
