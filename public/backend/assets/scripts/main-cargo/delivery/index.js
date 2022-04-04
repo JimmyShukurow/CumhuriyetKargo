@@ -12,19 +12,6 @@ $('#invoice_number').keyup(delay(function (e) {
     getCargo();
 }, 1000));
 
-$('#tracking_no').keyup(delay(function (e) {
-
-    let tracking_no = $(this).val().replaceAll('_', '').replaceAll(' ', '');
-
-    if (tracking_no == '')
-        return false;
-
-    if (tracking_no.length < 15)
-        return false;
-
-    $('#invoice_number').val('');
-    getCargo();
-}, 1000));
 var partNiko = null
 
 function getCargo() {
@@ -192,7 +179,6 @@ $(document).on('click', '#btnSelectPieces', function () {
 
     }
 
-
 });
 
 
@@ -209,255 +195,110 @@ function hideFakeColumn() {
     $('#select_reported_tc').prop('disabled', true);
 }
 
-$('#reported_unit_type').change(function () {
-
-    $('#reported_unit').val('');
-
-    if (general_cargo == null) {
-        $(this).val('');
-        ToastMessage('error', 'Önce kargonun fatura numarasını veya takip numarasını giriniz!', 'HATA!');
-        return false;
-    }
+$('#transaction').change(function () {
 
     switch ($(this).val()) {
-
-        case '':
-            hideFakeColumn();
+        case "Teslimat":
+            $('#descriptionDelivery').val('Teslim edilmiştir.')
             break;
 
-        case  'Çıkış Şube':
-            hideFakeColumn();
-            $('#reported_unit').val(general_cargo.departure.agency_name + " ŞUBE");
-            $('#reported_unit_id').val(general_cargo.cargo.departure_agency_code);
+        case "İade":
+            $('#descriptionDelivery').val('İade edilmiştir.')
             break;
 
-        case  'Çıkış TRM.':
-            hideFakeColumn();
-            $('#reported_unit').val(general_cargo.departure_tc.tc_name + " TRM.");
-            $('#reported_unit_id').val(general_cargo.cargo.departure_tc_code);
+        case "Devir":
+            $('#descriptionDelivery').val('Kargo Devredilmiştir.')
             break;
 
-        case  'Varış Şube':
-            hideFakeColumn();
-            $('#reported_unit').val(general_cargo.arrival.agency_name + " ŞUBE");
-            $('#reported_unit_id').val(general_cargo.cargo.arrival_agency_code);
+        case "Yönlendir":
+            $('#descriptionDelivery').val('Bu kargo yönlendirilmiştir.')
             break;
-
-        case  'Varış TRM.':
-            hideFakeColumn();
-            $('#reported_unit').val(general_cargo.arrival_tc.tc_name + " TRM.");
-            $('#reported_unit_id').val(general_cargo.cargo.arrival_tc_code);
-            break;
-
-        case 'Diğer Şube':
-            $('#reported_unit_id').val($('#select_reported_agency').val());
-            $('#column_fake_unit').hide();
-            $('#column-agency').show();
-            $('#select_reported_agency').prop('disabled', false);
-
-            $('#column-tc').hide();
-            $('#select_reported_tc').prop('disabled', true);
-            break;
-
-        case 'Diğer TRM.':
-            $('#reported_unit_id').val($('#select_reported_tc').val());
-            $('#column_fake_unit').hide();
-            $('#column-tc').show();
-            $('#select_reported_tc').prop('disabled', false);
-
-            $('#column-agency').hide();
-            $('#select_reported_agency').prop('disabled', true);
-            break;
-
-
-        default:
-            ToastMessage('error', 'Lütfen geçerli bir birim tipi seçin!', 'Hata!');
     }
+})
 
-});
+$('#btnSubmitForm').click(function () {
 
-$('.reported-units').change(function () {
-    $('#reported_unit_id').val($(this).val());
-});
-
-$(document).ready(function () {
-    $('#select_reported_agency').select2();
-    $('#select_reported_tc').select2();
-});
-
-$('#select_reported_agency').change(function () {
-    $('#reported_unit').val($("#select_reported_agency option:selected").text());
-});
-
-$('#select_reported_tc').change(function () {
-    $('#reported_unit').val($("#select_reported_tc option:selected").text());
-});
-
-
-function getDataDamages() {
-    let array = [];
-    $.each($('.cb-damges'), function (key, val) {
-        if (val.checked == true) {
-            array.push($('#' + val.id).attr('damage-id'));
-        }
-    });
-    return array;
-}
-
-function getDataTransactions() {
-    let array = [];
-    $.each($('.cb-transactions'), function (key, val) {
-        if (val.checked == true) {
-            array.push($('#' + val.id).attr('transaction-id'));
-        }
-    });
-    return array;
-}
-
-
-$("#HtfCreateForm").submit(function (e) {
-    e.preventDefault();
+    let urlForDelivery = "Delivery"
 
     if (general_cargo == null) {
-        ToastMessage('error', 'Önce kargonun fatura numarasını veya takip numarasını giriniz!');
+        ToastMessage('error', 'Lütfen kargo seçiniz!', 'Hata!')
         return false;
     }
 
-    if (piecesSelected == false) {
-        ToastMessage('error', 'Lütfen ilgili parçaları seçiniz!');
+    switch ($('#transaction').val()) {
+        case "Teslimat":
+
+            urlForDelivery = "Delivery";
+            if ($('#receiverNameSurnameCompany').val() == '') {
+                ToastMessage('error', 'Teslim alan ad soyad alanı zorunludur!', 'Hata!')
+                return false;
+            }
+
+            if ($('#receiverTCKN').val() == '') {
+                ToastMessage('error', 'Teslim alan TCKN alanı zorunludur!', 'Hata!')
+                return false;
+            }
+
+            if ($('#receiverProximity').val() == '') {
+                ToastMessage('error', 'Teslim alan yakınlık derecesi alanı zorunludur!', 'Hata!')
+                return false;
+            }
+
+            if ($('#deliveryDate').val() == '') {
+                ToastMessage('error', 'Teslimat tarihi alanı zorunludur!', 'Hata!')
+                return false;
+            }
+
+            break;
+    }
+
+
+    if ($('#descriptionDelivery').val() == '') {
+        ToastMessage('error', 'Açıklama alanı zorunludur!', 'Hata!')
         return false;
     }
 
-    if ($('#reported_unit_type').val() == '') {
-        ToastMessage('error', 'Tutanak tutulan birim tipi alanı zorunludur!');
-        return false;
-    }
 
-    if ($('#reported_unit').val() == '') {
-        ToastMessage('error', 'Tutanak tutulan birim alanı zorunludur!');
-        return false;
-    }
-
-    let damageStatus = true;
-    $.each($('.cb-damges'), function (key, val) {
-        if (val.checked == true) {
-            damageStatus = true;
-            return false;
-        } else
-            damageStatus = false;
-    });
-
-    if (!damageStatus) {
-        ToastMessage('error', 'Lütfen hasar nedeni kutucuklarından en az 1 tanesini seçiniz!');
-        return false;
-    }
-
-    let transactionStatus = true;
-    $.each($('.cb-transactions'), function (key, val) {
-        if (val.checked == true) {
-            transactionStatus = true;
-            return false;
-        } else
-            transactionStatus = false;
-    });
-
-    if (!transactionStatus) {
-        ToastMessage('error', 'Lütfen yapılan işlem kutucuklarından en az 1 tanesini seçiniz!');
-        return false;
-    }
-
-    if ($('#content_detection').val() == '') {
-        ToastMessage('error', 'Lütfen İçerik Tespiti alanını doldurunuz!');
-        return false;
-    }
-
-    let damageArray = getDataDamages();
-    let transactionArray = getDataTransactions();
-
-    $('.app-main__inner').block({
-        message: $('<div class="loader mx-auto">\n' +
-            '                            <div class="ball-grid-pulse">\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                                <div class="bg-white"></div>\n' +
-            '                            </div>\n' +
-            '                        </div>')
-    });
+    $('.main-card').block(whiteAnimation);
+    $('.blockUI.blockMsg.blockElement').css('width', '100%');
     $('.blockUI.blockMsg.blockElement').css('border', '0px');
     $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
-    $.ajax('/OfficialReport/CreateHTF', {
+
+    $.ajax('/Delivery/AjaxTransaction/' + urlForDelivery, {
         method: 'POST',
         data: {
             _token: token,
-            faturaNumarasi: general_cargo.cargo.invoice_number,
-            tutanakTutulanBirimTipi: $('#reported_unit_type').val(),
-            tutanakTutulanBirim: $('#reported_unit').val(),
-            icerikAciklamasi: $('#content_detection').val(),
-            hasarAciklamasi: $('#damage_description').val(),
-            hasarNedenleri: damageArray,
-            yapilanIslemler: transactionArray,
-            ilgiliParcalar: $('#pieces').val(),
-            tutanakTutulanBirimID: $('#reported_unit_id').val()
+            transaction: $('#transaction').val(),
+            receiverNameSurnameCompany: $('#receiverNameSurnameCompany').val(),
+            receiverTCKN: $('#receiverTCKN').val(),
+            receiverProximity: $('#receiverProximity').val(),
+            deliveryDate: $('#deliveryDate').val(),
+            cargoId: general_cargo.cargo.id,
+            descriptionDelivery: $('#descriptionDelivery').val(),
         }
     }).done(function (response) {
 
-        if (response.status == -1) {
-            $.each(response.errors, function (index, value) {
-                ToastMessage('error', value)
-            });
-            $('.app-main__inner').unblock();
-        } else if (response.status == 0) {
-            $('.app-main__inner').unblock();
-            ToastMessage('error', response.message)
-        } else if (response.status == 1) {
-            ToastMessage('success', response.message);
+        if (response.status == 1) {
 
-            $('.app-main__inner').block({
-                message: $('<div class="loader mx-auto">\n' +
-                    '                            <div class="ball-grid-pulse">\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                                <div class="bg-white"></div>\n' +
-                    '                            </div>\n' +
-                    '                        </div>')
-            });
-            $('.blockUI.blockMsg.blockElement').css('border', '0px');
-            $('.blockUI.blockMsg.blockElement').css('background-color', '');
-
-            setMessageToLS('İşlem Başarılı!', response.message, 'success');
-
+            setMessageToLS('İşlem Başarılı!', 'İşeminiz başarıyla gerçekleştrildi!', 'success');
             window.location.reload();
+
+        } else if (response.status == -1) {
+            ToastMessage('error', response.message, 'Hata!')
+            return false
+        } else if (response.status == 0) {
+            $.each(response.errors, function (index, value) {
+                ToastMessage('error', value, 'Hata!')
+            });
         }
 
-
     }).error(function (jqXHR, response) {
-        ajaxError(jqXHR.status);
-        $('.app-main__inner').unblock();
+        ajaxError(jqXHR.status, JSON.parse(jqXHR.responseText));
     }).always(function () {
-        // $('.app-main__inner').unblock();
+        $('.main-card').unblock();
     });
 
-});
 
-
-$('#cargo_info').click(function () {
-    cargoInfo($(this).attr('cargo_id'));
-});
-
-
-
-
+})
 

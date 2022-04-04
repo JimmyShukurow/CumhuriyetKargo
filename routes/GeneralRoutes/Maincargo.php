@@ -37,6 +37,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
     Route::group(['prefix' => 'Delivery', 'as' => 'delivery.'], function () {
         Route::get('', [DeliveryController::class, 'index'])->name('index');
+        Route::any('AjaxTransaction/{transaction}', [DeliveryController::class, 'ajaxTransaction']);
     });
 
 });
