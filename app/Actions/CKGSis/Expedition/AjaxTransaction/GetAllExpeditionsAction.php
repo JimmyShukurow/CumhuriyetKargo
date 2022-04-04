@@ -37,7 +37,6 @@ class GetAllExpeditionsAction
         $lastDate = substr($lastDate, 0, 10) . ' 23:59:59';
 
 
-
         $ids = User::withTrashed()->get()->pluck('id');
 
         $expeditionIDs = collect();
@@ -79,13 +78,13 @@ class GetAllExpeditionsAction
 
         return datatables()->of($rows)
             ->editColumn('description', function ($key) {
-                return '<span title="' . $key->description . '">' . Str::words($key->description, 6, '...') . '</span>';
+                return '<span title="' . $key->description . '">' . Str::words($key->description, 3, '...') . '</span>';
             })
             ->editColumn('plaka', function ($key) {
                 return $key->car->plaka;
             })
             ->editColumn('serial_no', function ($key) {
-                return '<a target="popup" onclick="window.open(\'/Expedition/Details/' . $key->id . '\',\'popup\',\'width=1500,height=1200\'); return false;" href="/Expedition/Details/' . $key->id . '"><b style="text-decoration: underline; cursor: pointer;"  class="expedition-details">' . CurrentCodeDesign($key->serial_no) . '</b></a>';
+                return '<a target="_blank"  href="/Expedition/Details/' . $key->id . '"><b style="text-decoration: underline; cursor: pointer;"  class="expedition-details">' . CurrentCodeDesign($key->serial_no) . '</b></a>';
 
             })
             ->editColumn('name_surname', function ($key) {

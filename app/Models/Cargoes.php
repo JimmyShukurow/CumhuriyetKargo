@@ -119,12 +119,27 @@ class Cargoes extends Model
         return $this->hasOne(CargoCollection::class, 'cargo_id', 'id');
     }
 
-    public function getArrivalBranchNameAttribute()
+    public function arrivalBranchAgency()
     {
-        if ($this->arrival_agency_code != null) {
+        if ($this->arrival_agency_code != null && $this->arrival_agency_code != -1) {
             return $this->hasOne(Agencies::class, 'id', 'arrival_agency_code');
-        } elseif ($this->arrival_tc_code != null) {
-            return $this->hasOne(TransshipmentCenters::class, 'id', 'arrival_tc_code');
         }
+    }
+
+    public function departBranchAgency()
+    {
+        if ($this->departure_agency_code != null && $this->departure_agency_code != -1) {
+            return $this->hasOne(Agencies::class, 'id', 'departure_agency_code');
+        }
+    }
+
+    public function getArrivalBranchAgencyNameAttribute()
+    {
+        return $this->arrivalBranchAgency->agency_name . ' ŞUBE' ?? null;
+    }
+
+    public function getDepartureBranchAgencyNameAttribute()
+    {
+        return $this->departBranchAgency->agency_name . ' ŞUBE' ?? null;
     }
 }

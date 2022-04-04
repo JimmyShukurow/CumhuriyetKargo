@@ -175,6 +175,7 @@ class ExpeditionController extends Controller
         $expedition->button = $button;
 
 
+
         return view('backend.expedition.details.details', ['expedition' => $expedition]);
     }
 

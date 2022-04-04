@@ -320,7 +320,7 @@
     <script src="/backend/assets/scripts/select2.js"></script>
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
     <script src="/backend/assets/scripts/main-cargo/gm-search-cargo.js"></script>
-    <script>var typeOfJs = 'search_cargo'; </script>
+    <script>var typeOfJs = 'search_cargo_gm'; </script>
     <script src="/backend/assets/scripts/main-cargo/cargo-details.js"></script>
     <script src="/backend/assets/scripts/official-report/report-view.js"></script>
     <script src="/backend/assets/scripts/customers/customer-details.js"></script>
@@ -328,7 +328,7 @@
 
 
 @section('modals')
-    @php $data = ['type' => 'search_cargo']; @endphp
+    @php $data = ['type' => 'search_cargo_gm']; @endphp
     @include('backend.main_cargo.main.modal_cargo_details')
 
     @include('backend.OfficialReports.report_modal')

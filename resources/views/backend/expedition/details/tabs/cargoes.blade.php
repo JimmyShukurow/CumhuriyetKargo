@@ -30,13 +30,18 @@
                                class="TableNoPadding table table-bordered table-striped mt-3">
                             <thead>
                             <tr>
-                                <th>Fatura numarası</th>
-                                <th>Parça No</th>
+                                <th>Fatura No</th>
+                                <th>Adet</th>
                                 <th>Kargo Tipi</th>
                                 <th>Alıcı</th>
                                 <th>Gönderici</th>
-                                <th>Varış İl/İlçe</th>
+                                <th>Desi</th>
+                                <th>Çıkış Şube</th>
+                                <th>Varış Şube</th>
+                                <th>Yüklenen Birim</th>
                                 <th>Kargo Statü</th>
+                                <th>Gönderim Bedeli</th>
+                                <th>Yükleyen Birim</th>
                                 <th>Yükleyen</th>
                                 <th>Yükleme Tarihi</th>
                             </tr>
@@ -44,7 +49,7 @@
                             <tbody id="tbodyExpedtionCargoes">
                             @if(count($expedition->cargoes) == 0)
                                 <tr>
-                                    <td class="text-center text-danger font-weight-bold" colspan="9">Burda hiç veri
+                                    <td class="text-center text-danger font-weight-bold" colspan="14">Burda hiç veri
                                         yok.
                                     </td>
                                 </tr>
@@ -52,14 +57,18 @@
                                 @foreach($expedition->cargoes as $cargo)
                                     <tr>
                                         <td> {{ $cargo->cargo->invoice_number }} </td>
-                                        <td> {{ $cargo->part_no }} </td>
+                                        <td> {{ $cargo->CargoPartDetailsTotal($expedition->id) }} </td>
                                         <td> {{ $cargo->cargo->cargo_type }} </td>
                                         <td> {{ $cargo->cargo->receiver_name }} </td>
                                         <td> {{ $cargo->cargo->sender_name }} </td>
-                                        <td class="font-weight-bold"> {{ $cargo->cargo->arrival_city .'/'. $cargo->cargo->arrival_district }}   </td>
+                                        <td> {{ $cargo->cargo->desi }} </td>
+                                        <td class="font-weight-bold"> {{ $cargo->cargo->departure_branch_agency_name}}</td>
+                                        <td class="font-weight-bold"> {{ $cargo->cargo->arrival_branch_agency_name}}</td>
+                                        <td> {{ $cargo->cargosLoadedRoute->branch_details ?? '' }} </td>
                                         <td> {{ $cargo->cargo->status }} </td>
-                                        <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name }})
-                                        </td>
+                                        <td> {{ $cargo->cargo->total_price }} </td>
+                                        <td> {{ $cargo->user->branch }} </td>
+                                        <td> {{ $cargo->user->name_surname }} </td>
                                         <td> {{ $cargo->cargo->created_at }} </td>
                                     </tr>
                                 @endforeach
@@ -72,17 +81,20 @@
                     <div
                         style="overflow-x: auto; white-space: nowrap;"
                         class="cont">
-                        <table style="white-space: nowrap" id="TableEmployees"
+                        <table width="100%" style="white-space: nowrap; width: 100%" id="TableEmployees"
                                class="TableNoPadding table table-bordered table-striped mt-3">
                             <thead>
                             <tr>
-                                <th>Fatura numarası</th>
+                                <th>Fatura No</th>
                                 <th>Parça No</th>
                                 <th>Kargo Tipi</th>
                                 <th>Alıcı</th>
                                 <th>Gönderici</th>
-                                <th>Varış İl/İlçe</th>
+                                <th>Çıkış Şube</th>
+                                <th>Varış Şube</th>
                                 <th>Kargo Statü</th>
+                                <th>Yüklenen Birim</th>
+                                <th>Yükleyen Birim</th>
                                 <th>Yükleyen</th>
                                 <th>Yükleme Tarihi</th>
                                 <th>İndiren Kullanıcı</th>
@@ -95,7 +107,7 @@
                             <tr>
                             @if(count($expedition->allCargoes) == 0)
                                 <tr>
-                                    <td class="text-center text-danger font-weight-bold" colspan="13">Burda hiç veri
+                                    <td class="text-center text-danger font-weight-bold" colspan="16">Burda hiç veri
                                         yok.
                                     </td>
                                 </tr>
@@ -113,12 +125,13 @@
                                             <td> {{ $cargo->cargo->cargo_type }} </td>
                                             <td> {{ $cargo->cargo->receiver_name }} </td>
                                             <td> {{ $cargo->cargo->sender_name }} </td>
-                                            <td class="font-weight-bold"> {{ $cargo->cargo->arrival_city }}
-                                                /{{ $cargo->cargo->arrival_district }}   </td>
+                                            <td class="font-weight-bold"> {{ $cargo->cargo->departure_branch_agency_name }} </td>
+                                            <td class="font-weight-bold"> {{ $cargo->cargo->arrival_branch_agency_name }} </td>
                                             <td> {{ $cargo->cargo->status }} </td>
-                                            <td> {{ $cargo->user->name_surname }} ({{ $cargo->user->role->display_name}}
-                                                )
-                                            </td>
+                                            <td> {{ $cargo->cargosLoadedRoute->branch_details ?? '' }} </td>
+                                            <td> {{ $cargo->user->branch }} </td>
+                                            <td> {{ $cargo->user->name_surname }} </td>
+
                                             <td> {{ $cargo->cargo->created_at }} </td>
                                             <td>
                                                 {{ $cargo->unloadedUser ? $cargo->unloadedUser->name_surname . '(' .$cargo->unloadedUser->role->display_name . ')'  : ''  }}
