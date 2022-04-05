@@ -159,7 +159,7 @@ class DeliveryAction
                 [
                     $receiver->name,
                     $cargo->tracking_no,
-                    tr_strtoupper($request->receiverNameSurnameCompany),
+                    tr_strtoupper($request->teslimAlanAdSoyad),
                     $request->receiverProximity,
                     $deliveryDate,
                 ], $smsContent->content);
@@ -180,7 +180,7 @@ class DeliveryAction
                 [
                     $receiver->name,
                     $cargo->tracking_no,
-                    tr_strtoupper($request->receiverNameSurnameCompany),
+                    tr_strtoupper($request->teslimAlanAdSoyad),
                     $request->receiverProximity,
                     $deliveryDate,
                 ], $smsContent->content);

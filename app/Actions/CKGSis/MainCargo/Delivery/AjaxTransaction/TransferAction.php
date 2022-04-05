@@ -2,6 +2,7 @@
 
 namespace App\Actions\CKGSis\MainCargo\Delivery\AjaxTransaction;
 
+use App\Models\Agencies;
 use App\Models\CargoAddServices;
 use App\Models\Cargoes;
 use App\Models\CargoPartDetails;
@@ -23,43 +24,32 @@ class TransferAction
 
     public function handle($request)
     {
-        $rules = [
-            'transaction' => 'required',
-            'teslimAlanAdSoyad' => ['required', new CurrentNameSurnameControlRule()],
-            'receiverTCKN' => 'required',
-            'receiverProximity' => 'required',
-            'deliveryDate' => 'required',
-            'cargoId' => 'required',
-            'descriptionDelivery' => 'required',
-            'selectedPieces' => 'nullable',
-        ];
+        $rules = ['transferReason' => 'required'];
 
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails())
             return ['status' => '0', 'errors' => $validator->getMessageBag()->toArray()];
 
-        $deliveryDate = Carbon::parse($request->deliveryDate)->format('d/m/Y H:m');
-        $deliveryDateSql = Carbon::parse($request->deliveryDate)->format('Y-m-d H:m:s');
-
-
         $cargo = Cargoes::find($request->cargoId);
 
         if ($cargo->number_of_pieces > 1 && $request->selectedPieces == 'Lütfen İlgili Parçaları Seçin!') {
-            return ['status' => -1, 'message' => 'Lütfen teslim edilecek parçaları seçiniz!'];
+            return ['status' => -1, 'message' => 'Lütfen devir edilecek parçaları seçiniz!'];
         }
 
         if ($cargo == null)
             return ['status' => -1, 'message' => 'Kargo bulunamadı!'];
 
         if ($cargo->transporter != 'CK')
-            return ['status' => -1, 'message' => 'Taşıyıcısı sadece Cumhuriyet Kargo olan kargolara teslimat girebilirsiniz!'];
+            return ['status' => -1, 'message' => 'Taşıyıcısı sadece Cumhuriyet Kargo olan kargolara devir girebilirsiniz!'];
 
         if (Auth::user()->agency_code != $cargo->arrival_agency_code)
-            return ['status' => -1, 'message' => 'Kargonun varış şubesi siz olmadığınızdan bu kargoya teslimat giremezsiniz!'];
+            return ['status' => -1, 'message' => 'Kargonun varış şubesi siz olmadığınızdan bu kargoya devir giremezsiniz!'];
 
 
         if ($cargo->status == 'TESLİM EDİLDİ')
             return ['status' => -1, 'message' => 'Bu kargo teslim edildiğinden işlem yapamazsınız!'];
+
+        $agency = Agencies::find(Auth::user()->agency_code);
 
         $selectedPieces = explode(',', $request->selectedPieces);
 
@@ -67,12 +57,12 @@ class TransferAction
 
             $getNotDeliveredPieces = CargoPartDetails::where('cargo_id', $cargo->id)->where('was_delivered', 0)->get()->count();
             if ($getNotDeliveredPieces == count($selectedPieces))
-                $status = "TESLİM EDİLDİ";
+                $status = "DEVİR EDİLDİ";
             else
-                $status = "PARÇALI TESLİM EDİLDİ";
+                $status = "PARÇALI DEVİR EDİLDİ";
 
         } else
-            $status = "TESLİM EDİLDİ";
+            $status = "DEVİR EDİLDİ";
 
 
         DB::beginTransaction();
@@ -82,38 +72,25 @@ class TransferAction
                 'user_id' => Auth::id(),
                 'agency_id' => Auth::user()->agency_code,
                 'description' => tr_strtoupper($request->descriptionDelivery),
-                'receiver_name_surname' => tr_strtoupper($request->teslimAlanAdSoyad),
-                'receiver_tckn_vkn' => $request->receiverTCKN,
-                'degree_of_proximity' => $request->receiverProximity,
+                'transfer_reason' => $request->transferReason,
                 'status' => $status,
-                'transaction_type' => 'TESLİMAT',
+                'transaction_type' => 'DEVİR',
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            return ['status' => -1, 'message' => 'Teslimat kaydı ensanısnda hata oluştu, lütfen daha sonra tekrar deneyin!'];
+            return ['status' => -1, 'message' => 'Devir kaydı ensanısnda hata oluştu, lütfen daha sonra tekrar deneyin!'];
         }
 
         try {
             foreach ($selectedPieces as $key) {
-
-                $cargoPart = CargoPartDetails::where('cargo_id', $cargo->id)
-                    ->where('part_no', $key)->first();
-
-                if ($cargoPart == null)
-                    throw new Exception('Parça bulunamadı!');
-
-                $cargoPart->was_delivered = 1;
-                $cargoPart->save();
-
                 $createPieceDelivery = DeliveryDetail::create([
                     'delivery_id' => $createDelivery->id, 'cargo_id' => $cargo->id, 'part_no' => $key
                 ]);
-
-                InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), $key, 'Kargo alıcısına teslim edildi.', $status, rand(0, 999), 1);
+                InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), $key, $agency->agency_name . ' ŞUBE kargoyu ' . $request->transferReason . ' nedeni ile devretti.', $status, rand(0, 999), 1);
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            return ['status' => -1, 'message' => 'Parçaların teslimat kaydı ensanısnda hata oluştu, lütfen daha sonra tekrar deneyin!', 'e' => $e->getMessage()];
+            return ['status' => -1, 'message' => 'Parçaların devri ensanısnda hata oluştu, lütfen daha sonra tekrar deneyin!'];
         }
 
         try {
@@ -122,17 +99,13 @@ class TransferAction
                     [
                         'status' => $status,
                         'status_for_human' => $status,
-                        'delivery_date' => $deliveryDateSql,
-                        'cargo_receiver_name' => tr_strtoupper($request->teslimAlanAdSoyad),
                     ]
                 );
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return ['status' => -1, 'message' => 'Teslimat kaydı ensanısnda hata oluştu, lütfen daha sonra tekrar deneyin!'];
+            return ['status' => -1, 'message' => 'Devir kaydı ensanısnda hata oluştu, lütfen daha sonra tekrar deneyin!'];
         }
-
-//        InsertCargoMovement($cargo->tracking_number, $cargo->id, Auth::id(), '')
 
         $current = Currents::find($cargo->sender_id);
         $receiver = Currents::find($cargo->receiver_id);
@@ -144,51 +117,45 @@ class TransferAction
             ->where('service_name', 'Alıcıya SMS')->first();
 
         if ($smstoCurrent != null) {
-            $smsContent = SmsContent::where('key', 'cargo_delivery_current')->first();
+            $smsContent = SmsContent::where('key', 'cargo_transfer_current')->first();
             $sms = str_replace(
                 [
                     '[name_surname]',
                     '[ctn]',
-                    '[receiver_name]',
-                    '[proximity]',
-                    '[delivery_date]',
+                    '[transfer_reason]',
+                    '[agency_name]',
                 ],
                 [
                     $receiver->name,
                     $cargo->tracking_no,
-                    tr_strtoupper($request->receiverNameSurnameCompany),
-                    $request->receiverProximity,
-                    $deliveryDate,
+                    $request->transferReason,
+                    $agency->agency_name,
                 ], $smsContent->content);
 
-            SendSMS($sms, CharacterCleaner($current->gsm), 'Teslimat', 'CUMHURIYETK', $cargo->tracking_no);
+            SendSMS($sms, CharacterCleaner($current->gsm), 'Devir', 'CUMHURIYETK', $cargo->tracking_no);
         }
 
-        if ($smstoReceiver != null) {
-            $smsContent = SmsContent::where('key', 'cargo_delivery_receiver')->first();
-            $sms = str_replace(
-                [
-                    '[name_surname]',
-                    '[ctn]',
-                    '[receiver_name]',
-                    '[proximity]',
-                    '[delivery_date]',
-                ],
-                [
-                    $receiver->name,
-                    $cargo->tracking_no,
-                    tr_strtoupper($request->receiverNameSurnameCompany),
-                    $request->receiverProximity,
-                    $deliveryDate,
-                ], $smsContent->content);
+        # Alıcıya her türlü sms gidiyor
+        $smsContent = SmsContent::where('key', 'cargo_transfer_receiver')->first();
+        $sms = str_replace(
+            [
+                '[name_surname]',
+                '[ctn]',
+                '[transfer_reason]',
+                '[agency_name]',
+            ],
+            [
+                $receiver->name,
+                $cargo->tracking_no,
+                tr_strtoupper($request->receiverNameSurnameCompany),
+                $request->receiverProximity,
+                $agency->agency_name,
+            ], $smsContent->content);
 
-            SendSMS($sms, CharacterCleaner($receiver->gsm), 'Teslimat', 'CUMHURIYETK', $cargo->tracking_no);
-        }
-
+        SendSMS($sms, CharacterCleaner($receiver->gsm), 'Devir', 'CUMHURIYETK', $cargo->tracking_no);
 
         DB::commit();
-
-        return ['status' => 1, 'message' => 'Teslimat başarıyla kaydedildi!'];
+        return ['status' => 1, 'message' => 'Devir başarıyla kaydedildi!'];
     }
 
 }

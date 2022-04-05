@@ -301,6 +301,7 @@ $('#btnSubmitForm').click(function () {
             deliveryDate: $('#deliveryDate').val(),
             cargoId: general_cargo.cargo.id,
             descriptionDelivery: $('#descriptionDelivery').val(),
+            transferReason: $('#transferReason').val(),
             selectedPieces: $('input#pieces').val()
         }
     }).done(function (response) {
