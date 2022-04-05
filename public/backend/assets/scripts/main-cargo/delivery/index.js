@@ -266,7 +266,14 @@ $('#btnSubmitForm').click(function () {
                 ToastMessage('error', 'Lütfen teslim edilen parçları seçiniz', 'Hata!')
                 return false;
             }
+            break;
 
+        case 'Devir':
+            urlForDelivery = "Transfer"
+            if ($('#transferReason').val() == '') {
+                ToastMessage('error', 'Devir nedeni alanı zorunludur!', 'Hata!')
+                return false
+            }
             break;
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\MainCargo;
 
 use App\Actions\CKGSis\MainCargo\Delivery\AjaxTransaction\DeliveryAction;
+use App\Actions\CKGSis\MainCargo\Delivery\AjaxTransaction\TransferAction;
 use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\ProximityDegree;
@@ -32,7 +33,7 @@ class DeliveryController extends Controller
         $transferReasons = TransferReason::all();
 
         GeneralLog('Teslimat sayfası görüntülendi.');
-        return view('backend.main_cargo.delivery.index', compact([ 'branch', 'proximity', 'transferReasons']));
+        return view('backend.main_cargo.delivery.index', compact(['branch', 'proximity', 'transferReasons']));
     }
 
     public function ajaxTransaction(Request $request, $transaction)
@@ -43,7 +44,7 @@ class DeliveryController extends Controller
                 break;
 
             case 'Transfer':
-
+                return TransferAction::run($request);
                 break;
 
             default:

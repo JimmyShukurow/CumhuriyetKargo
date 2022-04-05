@@ -54,7 +54,6 @@
                         </div>
                     </div>
 
-
                     <div class="col-lg-3 col-sm-6 col-xs-6">
                         <div class="position-relative form-group">
                             <label for="pieces" class="">İlgili Parçalar:</label>
@@ -71,11 +70,7 @@
                                 <i id="textSelectedPieces"></i>
                             </small>
                         </div>
-
-
                     </div>
-
-
                 </div>
 
                 <h5 class="card-title mt-2">Kargo Bilgileri</h5>
