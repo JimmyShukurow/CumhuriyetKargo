@@ -54,18 +54,27 @@ class DeliveryAction
         if ($cargo == null)
             return ['status' => -1, 'message' => 'Kargo bulunamadı!'];
 
-        if ($cargo->transporter != 'CK' || $cargo->departure_agency_code != Auth::user()->agency_code)
+        if ($cargo->transporter != 'CK')
             return ['status' => -1, 'message' => 'Taşıyıcısı sadece Cumhuriyet Kargo olan kargolara teslimat girebilirsiniz!'];
 
         if (Auth::user()->agency_code != $cargo->arrival_agency_code)
             return ['status' => -1, 'message' => 'Kargonun varış şubesi siz olmadığınızdan bu kargoya teslimat giremezsiniz!'];
 
 
+        if ($cargo->status == 'TESLİM EDİLDİ')
+            return ['status' => -1, 'message' => 'Bu kargo teslim edildiğinden işlem yapamazsınız!'];
+
         $selectedPieces = explode(',', $request->selectedPieces);
 
-        if ($cargo->number_of_pieces != count($selectedPieces))
-            $status = "PARÇALI TESLİM EDİLDİ";
-        else
+        if ($cargo->number_of_pieces != count($selectedPieces)) {
+
+            $getNotDeliveredPieces = CargoPartDetails::where('cargo_id', $cargo->id)->where('was_delivered', 0)->get()->count();
+            if ($getNotDeliveredPieces == count($selectedPieces))
+                $status = "TESLİM EDİLDİ";
+            else
+                $status = "PARÇALI TESLİM EDİLDİ";
+
+        } else
             $status = "TESLİM EDİLDİ";
 
 
@@ -102,7 +111,6 @@ class DeliveryAction
                 $createPieceDelivery = DeliveryDetail::create([
                     'delivery_id' => $createDelivery->id, 'cargo_id' => $cargo->id, 'part_no' => $key
                 ]);
-
 
                 InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), $key, 'Kargo alıcısına teslim edildi.', $status, rand(0, 999), 1);
             }
@@ -182,5 +190,7 @@ class DeliveryAction
 
 
         DB::commit();
+
+        return ['status' => 1, 'message' => 'Teslimat başarıyla kaydedildi!'];
     }
 }

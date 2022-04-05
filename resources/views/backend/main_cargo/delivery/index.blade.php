@@ -182,14 +182,14 @@
                         <label for="">İşlem: <small class="text-danger">*</small></label>
                         <select name="" class="form-control form-control-sm" id="transaction">
                             <option value="Teslimat">Teslimat</option>
-                            <option value="İade">İade</option>
+                            {{--<option value="İade">İade</option>--}}
                             <option value="Devir">Devir</option>
-                            <option value="Yönlendir">Yönlendir</option>
+                            {{--<option value="Yönlendir">Yönlendir</option>--}}
                         </select>
                     </div>
                 </div>
 
-                <div class="cont">
+                <div id="divDelivery" class="cont">
                     <h5 class="card-title">Alıcı Bilgileri</h5>
                     <div class="divider"></div>
 
@@ -220,6 +220,23 @@
                             <input id="deliveryDate" type="datetime-local" value="{{date('Y-m-d')}}T{{date('H:m')}}"
                                    max="{{date('Y-m-d')}}T{{date('H:m')}}"
                                    class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: none;" id="divTransfer">
+                    <h5 class="card-title">Devir</h5>
+                    <div class="divider"></div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="transferReason">Devir Nedeni:</label>
+                            <select name="transferReason" id="transferReason" class="form-control form-control-sm">
+                                <option value="">Seçiniz</option>
+                                @foreach($transferReasons as $key)
+                                    <option value="{{$key->reason}}">{{$key->reason}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>

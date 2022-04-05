@@ -330,7 +330,7 @@ function cargoInfo(user) {
 
             $('#tbodySentMessages').html('');
             if (sms.length == 0)
-                $('#tbodySentMessages').html('<tr><td colspan="5" class="text-center">Burda hiç veri yok.</td></tr>');
+                $('#tbodySentMessages').html('<tr><td colspan="6" class="text-center">Burda hiç veri yok.</td></tr>');
             else
                 $.each(sms, function (key, val) {
 

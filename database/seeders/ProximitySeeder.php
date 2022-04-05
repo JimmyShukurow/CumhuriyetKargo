@@ -18,6 +18,7 @@ class ProximitySeeder extends Seeder
         $array = [
             'Kendisi',
             'Komşusu',
+            'Eşi',
             'Akrabası',
             'Arkadaşı',
             'Kardeşi',

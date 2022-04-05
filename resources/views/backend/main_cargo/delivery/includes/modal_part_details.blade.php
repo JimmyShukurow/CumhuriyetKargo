@@ -35,11 +35,12 @@
                                 <th>KG</th>
                                 <th>Desi</th>
                                 <th>Hacim m<sup>3</sup></th>
+                                <th>Teslim Edildi</th>
                             </tr>
                             </thead>
                             <tbody id="tbodyCargoPartDetailsXX">
                             <tr>
-                                <td class="text-center" colspan="9">Burda hiç veri yok.</td>
+                                <td class="text-center" colspan="10">Burda hiç veri yok.</td>
                             </tr>
                             </tbody>
                         </table>

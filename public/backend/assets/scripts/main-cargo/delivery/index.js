@@ -108,14 +108,18 @@ function getCargo() {
             let countCargoPart = 0, cargoDesiCount = 0;
             $('#tbodyCargoPartDetailsXX').html('');
             if (part_details.length == 0)
-                $('#tbodyCargoPartDetailsXX').html('<tr><td colspan="8" class="text-center">Burda hiç veri yok.</td></tr>');
+                $('#tbodyCargoPartDetailsXX').html('<tr><td colspan="10" class="text-center">Burda hiç veri yok.</td></tr>');
             else {
 
                 $.each(part_details, function (key, val) {
 
+                    let wasDelivered = val['was_delivered'] == '1' ? '<b class="text-success">Evet</b>' : '<b class="text-dark">Hayır</b>';
+                    let bg = val['was_delivered'] == '1' ? 'bg-warning' : '';
+                    let disabled = val['was_delivered'] == '1' ? 'disabled' : '';
+
                     $('#tbodyCargoPartDetailsXX').append(
-                        '<tr>' +
-                        '<th>\n' + '<input style="width: 20px; margin-left: 7px;" type="checkbox" id="' + val['part_no'] + '" class="cb-piece form-control">\n' + '</th>' +
+                        '<tr class="' + bg + '">' +
+                        '<th>\n' + '<input ' + disabled + '  style="width: 20px; margin-left: 7px;" type="checkbox" id="' + val['part_no'] + '" class="cb-piece form-control">\n' + '</th>' +
                         '<td class="font-weight-bold text-success">' + cargo.cargo_type + '</td>' +
                         '<td class="font-weight-bold">' + val['part_no'] + '</td>' +
                         '<td class="">' + val['width'] + '</td>' +
@@ -124,6 +128,7 @@ function getCargo() {
                         '<td class="">' + val['weight'] + '</td>' +
                         '<td class="font-weight-bold text-primary">' + val['desi'] + '</td>' +
                         '<td class="text-alternate">' + val['cubic_meter_volume'] + '</td>' +
+                        '<td class="text-alternate">' + wasDelivered + '</td>' +
                         +'</tr>'
                     );
                     countCargoPart = countCargoPart + 1;
@@ -131,7 +136,7 @@ function getCargo() {
                 });
 
                 $('#tbodyCargoPartDetailsXX').prepend(
-                    '<tr><td class="font-weight-bold text-center" colspan="9"> Toplam: <b class="text-primary">' + countCargoPart + ' Parça</b>, <b class="text-primary">' + cargoDesiCount + ' Desi</b>. </td></tr>'
+                    '<tr><td class="font-weight-bold text-center" colspan="10"> Toplam: <b class="text-primary">' + countCargoPart + ' Parça</b>, <b class="text-primary">' + cargoDesiCount + ' Desi</b>. </td></tr>'
                 );
             }
 
@@ -204,6 +209,8 @@ $('#transaction').change(function () {
     switch ($(this).val()) {
         case "Teslimat":
             $('#descriptionDelivery').val('Teslim edilmiştir.')
+            $('#divDelivery').show();
+            $('#divTransfer').hide();
             break;
 
         case "İade":
@@ -212,6 +219,8 @@ $('#transaction').change(function () {
 
         case "Devir":
             $('#descriptionDelivery').val('Kargo Devredilmiştir.')
+            $('#divDelivery').hide();
+            $('#divTransfer').show();
             break;
 
         case "Yönlendir":
@@ -291,7 +300,7 @@ $('#btnSubmitForm').click(function () {
 
         if (response.status == 1) {
 
-            setMessageToLS('İşlem Başarılı!', 'İşeminiz başarıyla gerçekleştrildi!', 'success');
+            setMessageToLS('İşlem Başarılı!', response.message, 'success');
             window.location.reload();
 
         } else if (response.status == -1) {

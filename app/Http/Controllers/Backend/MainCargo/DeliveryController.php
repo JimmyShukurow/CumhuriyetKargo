@@ -6,6 +6,7 @@ use App\Actions\CKGSis\MainCargo\Delivery\AjaxTransaction\DeliveryAction;
 use App\Http\Controllers\Controller;
 use App\Models\Agencies;
 use App\Models\ProximityDegree;
+use App\Models\TransferReason;
 use App\Models\TransshipmentCenters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,11 +17,7 @@ class DeliveryController extends Controller
 {
     public function index()
     {
-        $damage_types = DB::table('htf_damage_types')->get();
-        $transactions = DB::table('htf_transactions_made')->get();
-
         $branch = [];
-        ## Get Branch Info
         if (Auth::user()->user_type == 'Acente') {
             $agency = Agencies::find(Auth::user()->agency_code);
             $branch = [
@@ -32,9 +29,10 @@ class DeliveryController extends Controller
         }
 
         $proximity = ProximityDegree::all();
+        $transferReasons = TransferReason::all();
 
         GeneralLog('Teslimat sayfası görüntülendi.');
-        return view('backend.main_cargo.delivery.index', compact(['damage_types', 'transactions', 'branch', 'proximity']));
+        return view('backend.main_cargo.delivery.index', compact([ 'branch', 'proximity', 'transferReasons']));
     }
 
     public function ajaxTransaction(Request $request, $transaction)
@@ -42,6 +40,10 @@ class DeliveryController extends Controller
         switch ($transaction) {
             case 'Delivery':
                 return DeliveryAction::run($request);
+                break;
+
+            case 'Transfer':
+
                 break;
 
             default:
