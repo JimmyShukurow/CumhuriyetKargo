@@ -340,7 +340,7 @@ function cargoInfo(user) {
                         '<tr>' +
                         '<td class="font-weight-bold">' + val['heading'] + '</td>' +
                         '<td class="font-weight-bold">' + val['subject'] + '</td>' +
-                        '<td style="white-space: initial;">' + val['sms_content'] + '</td>' +
+                        '<td style="white-space: initial; font-size: 0.8rem;">' + val['sms_content'] + '</td>' +
                         '<td>' + val['phone'] + '</td>' +
                         '<td class="font-weight-bold text-center">' + result + '</td>' +
                         '<td class="font-weight-bold text-center">' + val['created_at'] + '</td>' +
@@ -398,9 +398,11 @@ function cargoInfo(user) {
             let countCargoPart = 0, cargoDesiCount = 0;
             $('#tbodyCargoPartDetails').html('');
             if (part_details.length == 0)
-                $('#tbodyCargoPartDetails').html('<tr><td colspan="8" class="text-center">Burda hiç veri yok.</td></tr>');
+                $('#tbodyCargoPartDetails').html('<tr><td colspan="9" class="text-center">Burda hiç veri yok.</td></tr>');
             else {
                 $.each(part_details, function (key, val) {
+
+                    let wasDelivered = val['was_delivered'] == '1' ? '<b class="text-success">Evet</b>' : '<b class="text-dark">Hayır</b>';
 
                     $('#tbodyCargoPartDetails').prepend(
                         '<tr>' +
@@ -412,6 +414,7 @@ function cargoInfo(user) {
                         '<td class="">' + val['weight'] + '</td>' +
                         '<td class="font-weight-bold text-primary">' + val['desi'] + '</td>' +
                         '<td class="text-alternate">' + val['cubic_meter_volume'] + '</td>' +
+                        '<td class="text-alternate">' + wasDelivered + '</td>' +
                         +'</tr>'
                     );
                     countCargoPart = countCargoPart + 1;
@@ -419,7 +422,7 @@ function cargoInfo(user) {
                 });
 
                 $('#tbodyCargoPartDetails').prepend(
-                    '<tr><td class="font-weight-bold text-center" colspan="8"> Toplam: <b class="text-primary">' + countCargoPart + ' Parça</b>, <b class="text-primary">' + cargoDesiCount + ' Desi</b>. </td></tr>'
+                    '<tr><td class="font-weight-bold text-center" colspan="9"> Toplam: <b class="text-primary">' + countCargoPart + ' Parça</b>, <b class="text-primary">' + cargoDesiCount + ' Desi</b>. </td></tr>'
                 );
             }
 

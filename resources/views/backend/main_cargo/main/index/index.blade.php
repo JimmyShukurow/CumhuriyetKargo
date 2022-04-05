@@ -40,7 +40,7 @@
 
 @section('modals')
     @php $data = ['type' => 'main_cargo']; @endphp
-    @include('backend.main_cargo.main.modal_cargo_details')
+    @include('backend.main_cargo.cargo_details.modal_cargo_details')
     @include('backend.OfficialReports.report_modal')
     @include('backend.customers.agency.modal_customer_details')
 @endsection

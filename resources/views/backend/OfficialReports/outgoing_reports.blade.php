@@ -70,7 +70,7 @@
 
 
     @php $data = ['type' => 'outgoing_reports']; @endphp
-    @include('backend.main_cargo.main.modal_cargo_details')
+    @include('backend.main_cargo.cargo_details.modal_cargo_details')
 
     {{-- Standart Modal - Opinion --}}
     <div class="modal fade" id="modalOpinion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

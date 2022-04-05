@@ -206,7 +206,8 @@
                         </div>
                         <div class="col-md-3">
                             <label for="">Teslim Alan Yakınlık:<small class="text-danger">*</small></label>
-                            <select name="receiverProximity" id="receiverProximity" class="form-control form-control-sm">
+                            <select name="receiverProximity" id="receiverProximity"
+                                    class="form-control form-control-sm">
                                 @foreach($proximity as $key)
                                     <option value="{{$key->proximity}}">{{$key->proximity}}</option>
                                 @endforeach
@@ -216,7 +217,8 @@
 
                         <div class="col-md-3">
                             <label for="">Teslimat Zamanı:<small class="text-danger">*</small></label>
-                            <input id="deliveryDate" type="datetime-local" value="{{date('Y-m-d')}}T{{date('H:m')}}" max="{{date('Y-m-d')}}T{{date('H:m')}}"
+                            <input id="deliveryDate" type="datetime-local" value="{{date('Y-m-d')}}T{{date('H:m')}}"
+                                   max="{{date('Y-m-d')}}T{{date('H:m')}}"
                                    class="form-control form-control-sm">
                         </div>
                     </div>
@@ -274,7 +276,7 @@
 @section('modals')
 
     @php $data = ['type' => 'create_htf']; @endphp
-    @include('backend.main_cargo.main.modal_cargo_details')
+    @include('backend.main_cargo.cargo_details.modal_cargo_details')
 
     @include('backend.main_cargo.delivery.includes.modal_part_details')
 @endsection

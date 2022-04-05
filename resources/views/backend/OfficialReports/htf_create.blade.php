@@ -368,7 +368,7 @@
 @section('modals')
 
     @php $data = ['type' => 'create_htf']; @endphp
-    @include('backend.main_cargo.main.modal_cargo_details')
+    @include('backend.main_cargo.cargo_details.modal_cargo_details')
 
     <!-- Large modal => Modal Part Details -->
     <div class="modal fade bd-example-modal-lg" id="ModalPartDetails" tabindex="-1" role="dialog"

@@ -5,6 +5,7 @@ namespace App\Actions\CKGSis\MainCargo\Delivery\AjaxTransaction;
 use App\Models\Agencies;
 use App\Models\CargoAddServices;
 use App\Models\Cargoes;
+use App\Models\CargoPartDetails;
 use App\Models\Currents;
 use App\Models\Delivery;
 use App\Models\DeliveryDetail;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\Concerns\AsAction;
+use PHPUnit\Util\Exception;
 
 class DeliveryAction
 {
@@ -78,6 +80,7 @@ class DeliveryAction
                 'receiver_tckn_vkn' => $request->receiverTCKN,
                 'degree_of_proximity' => $request->receiverProximity,
                 'status' => $status,
+                'transaction_type' => 'TESLİMAT',
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -86,9 +89,20 @@ class DeliveryAction
 
         try {
             foreach ($selectedPieces as $key) {
+
+                $cargoPart = CargoPartDetails::where('cargo_id', $cargo->id)
+                    ->where('part_no', $key)->first();
+
+                if ($cargoPart == null)
+                    throw new Exception('Parça bulunamadı!');
+
+                $cargoPart->was_delivered = 1;
+                $cargoPart->save();
+
                 $createPieceDelivery = DeliveryDetail::create([
                     'delivery_id' => $createDelivery->id, 'cargo_id' => $cargo->id, 'part_no' => $key
                 ]);
+
 
                 InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), $key, 'Kargo alıcısına teslim edildi.', $status, rand(0, 999), 1);
             }

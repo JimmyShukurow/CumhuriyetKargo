@@ -131,6 +131,7 @@ class GetCargoInfoAction
                 'updated_at' => $key->updated_at,
                 'weight' => $key->weight,
                 'width' => $key->width,
+                'was_delivered' => $key->was_delivered,
                 'barcode_no' => crypteTrackingNo(str_replace(' ', '', $data['cargo']->tracking_no) . ' ' . $key->part_no)
             ];
 
