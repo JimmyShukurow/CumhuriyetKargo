@@ -8,7 +8,7 @@
     <div style="padding-top: 0;" class="card-body">
         <div
             style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
-            class="cont">
+            class="cont mostly-customized-scrollbar">
             <table style="white-space: nowrap;" id="TableEmployees"
                    class="Table30Padding table-bordered table-hover table table-striped mt-3">
                 <thead>
@@ -16,13 +16,14 @@
                     <th>Birim</th>
                     <th>Kullanıcı</th>
                     <th>Teslim Alan</th>
+                    <th>Yakınlık</th>
+                    <th>Teslim Edilen Parçalar</th>
+                    <th>Açıklama</th>
                     <th>Teslimat Tarihi</th>
-                    <th>Statü</th>
-                    <th>İşlem Türü</th>
-                    <th>Başvuru Kayıt Zamanı</th>
+                    <th>Kayıt Tarihi</th>
                 </tr>
                 </thead>
-                <tbody id="tbodyCargoCancellationApplications">
+                <tbody id="tbodyCargoDeliveries">
 
                 </tbody>
             </table>
@@ -40,7 +41,7 @@
     <div style="padding-top: 0;" class="card-body">
         <div
             style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
-            class="cont">
+            class="cont mostly-customized-scrollbar">
             <table style="white-space: nowrap;" id="TableEmployees"
                    class="Table30Padding table-bordered table-hover table table-striped mt-3">
                 <thead>
@@ -48,13 +49,13 @@
                     <th>Birim</th>
                     <th>Kullanıcı</th>
                     <th>Teslim Alan</th>
+                    <th>Yakınlık</th>
+                    <th>Teslim Edilen Parçalar</th>
                     <th>Teslimat Tarihi</th>
-                    <th>Statü</th>
-                    <th>İşlem Türü</th>
-                    <th>Başvuru Kayıt Zamanı</th>
+                    <th>Kayıt Tarihi</th>
                 </tr>
                 </thead>
-                <tbody id="tbodyCargoCancellationApplications">
+                <tbody id="tbodyCargoTransfers">
 
                 </tbody>
             </table>

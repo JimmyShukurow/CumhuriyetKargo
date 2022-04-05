@@ -5,6 +5,7 @@ namespace App\Actions\CKGSis\MainCargo\AjaxTransactions;
 use App\Models\Agencies;
 use App\Models\Cargoes;
 use App\Models\CargoMovements;
+use App\Models\Delivery;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -146,11 +147,22 @@ class GetCargoInfoAction
             ->whereRaw("( cargo_invoice_number ='" . $data['cargo']->invoice_number . "' or  description like '%" . $data['cargo']->invoice_number . "%')")
             ->get();
 
+
+        $data['deliveries'] = Delivery::with(['user.role', 'agency', 'deliveryParts'])
+            ->where('transaction_type', 'TESLİMAT')
+            ->where('cargo_id', $data['cargo']->id)
+            ->get();
+
+        foreach ($data['deliveries'] as $key) {
+            $format = Carbon::parse($key->created_at);
+            $key->created_time = $format->format('Y-m-d H:m:s');
+        }
+
+
         $data['status'] = 1;
 
         $data['bag_tracking_no'] = $data['cargo']->bagDetails->isNotEmpty() ? $data['cargo']->bagDetails()->first()->tracking_no : null;
 
-        return response()
-            ->json($data, 200);
+        return $data;
     }
 }

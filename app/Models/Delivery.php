@@ -32,4 +32,26 @@ class Delivery extends Model
         $eventName = getLocalEventName($eventName);
         return "Acente $eventName.";
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id')
+            ->select(['id', 'name_surname', 'role_id'])
+            ->withTrashed();
+    }
+
+    public function agency()
+    {
+        return $this->hasOne(Agencies::class, 'id', 'agency_id')
+            ->select(['id', 'agency_name', 'agency_code'])
+            ->withTrashed();
+    }
+
+    public function deliveryParts()
+    {
+        return $this->hasMany(DeliveryDetail::class, 'delivery_id', 'id')
+            ->select(['id', 'delivery_id', 'part_no']);
+    }
+
+
 }

@@ -5,6 +5,7 @@ namespace App\Actions\CKG_Barcoder\Transaction;
 use App\Models\Agencies;
 use App\Models\Cargoes;
 use App\Models\CargoMovements;
+use App\Models\Delivery;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -144,6 +145,8 @@ class GetCargoInfoAction
         $data['official_reports'] = DB::table('view_official_reports_general_info')
             ->whereRaw("( cargo_invoice_number ='" . $data['cargo']->invoice_number . "' or  description like '%" . $data['cargo']->invoice_number . "%')")
             ->get();
+
+
 
         $data['status'] = 1;
 

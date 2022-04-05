@@ -88,6 +88,7 @@ class DeliveryAction
                 'receiver_name_surname' => tr_strtoupper($request->teslimAlanAdSoyad),
                 'receiver_tckn_vkn' => $request->receiverTCKN,
                 'degree_of_proximity' => $request->receiverProximity,
+                'delivery_date' => $deliveryDateSql,
                 'status' => $status,
                 'transaction_type' => 'TESLİMAT',
             ]);

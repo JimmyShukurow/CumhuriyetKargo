@@ -140,21 +140,22 @@ function cargoInfo(user) {
             }, 350);
         } else if (response.status == 1) {
 
-            let cargo = response.cargo;
-            let sender = response.sender;
-            let receiver = response.receiver;
-            let creator = response.creator;
-            let departure = response.departure;
-            let departure_tc = response.departure_tc;
-            let arrival = response.arrival;
-            let arrival_tc = response.arrival_tc;
-            let sms = response.sms;
-            let add_services = response.add_services;
-            let movements = response.movements;
-            let movementsSecondary = response.movementsSecondary;
-            let cancellations = response.cancellation_applications;
-            let part_details = response.part_details;
-            let official_reports = response.official_reports;
+            let cargo = response.cargo
+            let sender = response.sender
+            let receiver = response.receiver
+            let creator = response.creator
+            let departure = response.departure
+            let departure_tc = response.departure_tc
+            let arrival = response.arrival
+            let arrival_tc = response.arrival_tc
+            let sms = response.sms
+            let add_services = response.add_services
+            let movements = response.movements
+            let movementsSecondary = response.movementsSecondary
+            let cancellations = response.cancellation_applications
+            let part_details = response.part_details
+            let official_reports = response.official_reports
+            let deliveries = response.deliveries
 
             $('#titleTrackingNo').text(cargo.tracking_no);
 
@@ -476,6 +477,37 @@ function cargoInfo(user) {
                         +'</tr>'
                     )
                 });
+            }
+
+            $('#tbodyCargoDeliveries').html('');
+            if (part_details.length == 0)
+                $('#tbodyCargoDeliveries').html('<tr><td colspan="7" class="text-center">Burda hiç veri yok.</td></tr>');
+            else {
+                $.each(deliveries, function (key, val) {
+
+                    longRelatedParts = ""
+                    $.each(val['delivery_parts'], function (key, val) {
+                        longRelatedParts += val['part_no'] + ", "
+                    })
+
+                    relatedParts = val['delivery_parts'].length > 5 ? val['delivery_parts'].length + " Adet Parça" : longRelatedParts;
+
+                    $('#tbodyCargoDeliveries').prepend(
+                        '<tr>' +
+                        '<td class="font-weight-bold">' + val['agency']['agency_name'] + ' ŞUBE</td>' +
+                        '<td>' + val['user']['name_surname'] + ' (' + val['user']['role']['display_name'] + ')</td>' +
+                        '<td>' + val['receiver_name_surname'] + '</td>' +
+                        '<td>' + val['degree_of_proximity'] + '</td>' +
+                        '<td title="' + longRelatedParts + '" style="text-decoration: underline; font-weight: bold; cursor: pointer;">' + relatedParts + '</td>' +
+                        '<td title="' + val['description'] + '">' + val['description'].substring(0, 40) + '</td>' +
+                        '<td>' + val['delivery_date'] + '</td>' +
+                        '<td class="font-weight-bold text-primary">' + val['created_time'] + '</td>' +
+                        +'</tr>'
+                    );
+                    countCargoPart = countCargoPart + 1;
+                    cargoDesiCount = cargoDesiCount + parseInt(val['desi']);
+                });
+
             }
 
 
