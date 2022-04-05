@@ -7,6 +7,7 @@ use App\Models\CargoAddServices;
 use App\Models\Cargoes;
 use App\Models\Currents;
 use App\Models\Delivery;
+use App\Models\DeliveryDetail;
 use App\Models\SmsContent;
 use App\Rules\CurrentNameControlRule;
 use App\Rules\NameSurname\CurrentNameSurnameControlRule;
@@ -39,6 +40,7 @@ class DeliveryAction
             return ['status' => '0', 'errors' => $validator->getMessageBag()->toArray()];
 
         $deliveryDate = Carbon::parse($request->deliveryDate)->format('d/m/Y H:m');
+        $deliveryDateSql = Carbon::parse($request->deliveryDate)->format('Y-m-d H:m:s');
 
 
         $cargo = Cargoes::find($request->cargoId);
@@ -58,14 +60,15 @@ class DeliveryAction
 
 
         $selectedPieces = explode(',', $request->selectedPieces);
-        if ($cargo->number_of_pieces != $selectedPieces)
+
+        if ($cargo->number_of_pieces != count($selectedPieces))
             $status = "PARÇALI TESLİM EDİLDİ";
         else
             $status = "TESLİM EDİLDİ";
 
+
         DB::beginTransaction();
         try {
-
             $createDelivery = Delivery::create([
                 'cargo_id' => $cargo->id,
                 'user_id' => Auth::id(),
@@ -74,11 +77,24 @@ class DeliveryAction
                 'receiver_name_surname' => tr_strtoupper($request->teslimAlanAdSoyad),
                 'receiver_tckn_vkn' => $request->receiverTCKN,
                 'degree_of_proximity' => $request->receiverProximity,
+                'status' => $status,
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
-            return ['status' => -1, 'message' => 'Teslimat kaydı ensanısnda hata oluştu, lütfen daha sonra tekrar deneyin!' . $e];
+            return ['status' => -1, 'message' => 'Teslimat kaydı ensanısnda hata oluştu, lütfen daha sonra tekrar deneyin!'];
+        }
+
+        try {
+            foreach ($selectedPieces as $key) {
+                $createPieceDelivery = DeliveryDetail::create([
+                    'delivery_id' => $createDelivery->id, 'cargo_id' => $cargo->id, 'part_no' => $key
+                ]);
+
+                InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), $key, 'Kargo alıcısına teslim edildi.', $status, rand(0, 999), 1);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ['status' => -1, 'message' => 'Parçaların teslimat kaydı ensanısnda hata oluştu, lütfen daha sonra tekrar deneyin!', 'e' => $e->getMessage()];
         }
 
         try {
@@ -87,7 +103,7 @@ class DeliveryAction
                     [
                         'status' => $status,
                         'status_for_human' => $status,
-                        'delivery_date' => $deliveryDate,
+                        'delivery_date' => $deliveryDateSql,
                         'cargo_receiver_name' => tr_strtoupper($request->teslimAlanAdSoyad),
                     ]
                 );
