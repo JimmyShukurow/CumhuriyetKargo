@@ -26,7 +26,7 @@
                         style="overflow-x: auto; white-space: nowrap;"
                         class="cont">
                         <table style="white-space: nowrap; width: 100% !important;" id="TableCargoesInExpedition"
-                               excelTitle="CKG-Sis TTİ / PLAKA:{{ $expedition->car->plaka }} SEFER NO: {{$expedition->serial_no}} {{$expedition->departure_branch}} - {{ $expedition->arrival_branch }} SEFERİ"
+                               excelTitle="CKG-Sis TTİ / PLAKA:{{ $expedition->car->plaka }} SEFER NO: {{$expedition->serial_no}}"
                                class="TableNoPadding table table-bordered table-striped mt-3">
                             <thead>
                             <tr>
