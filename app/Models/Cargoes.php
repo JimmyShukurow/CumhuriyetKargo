@@ -122,14 +122,14 @@ class Cargoes extends Model
     public function arrivalBranchAgency()
     {
         if ($this->arrival_agency_code != null && $this->arrival_agency_code != -1) {
-            return $this->hasOne(Agencies::class, 'id', 'arrival_agency_code');
+            return $this->hasOne(Agencies::class, 'id', 'arrival_agency_code')->withTrashed();
         }
     }
 
     public function departBranchAgency()
     {
         if ($this->departure_agency_code != null && $this->departure_agency_code != -1) {
-            return $this->hasOne(Agencies::class, 'id', 'departure_agency_code');
+            return $this->hasOne(Agencies::class, 'id', 'departure_agency_code')->withTrashed();
         }
     }
 
