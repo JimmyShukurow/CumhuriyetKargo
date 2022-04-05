@@ -135,11 +135,11 @@ class Cargoes extends Model
 
     public function getArrivalBranchAgencyNameAttribute()
     {
-        return $this->arrivalBranchAgency->agency_name . ' ŞUBE' ?? null;
+        return $this->arrivalBranchAgency ? $this->arrivalBranchAgency->agency_name . ' ŞUBE' : null;
     }
 
     public function getDepartureBranchAgencyNameAttribute()
     {
-        return $this->departBranchAgency->agency_name . ' ŞUBE' ?? null;
+        return $this->departBranchAgency ? $this->departBranchAgency->agency_name . ' ŞUBE' : null;
     }
 }
