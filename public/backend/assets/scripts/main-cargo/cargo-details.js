@@ -174,6 +174,7 @@ function cargoInfo(user) {
             $('#cancelAppTrackingNo').val(cargo.tracking_no);
 
             $('#titleCargoInvoiceNumber').text(cargo.invoice_number);
+            $('#titleCargoStatus').text(cargo.status);
             $('#senderTcknVkn').text(sender.tckn);
 
             $('#senderCurrentCode').text(sender.current_code);
@@ -220,6 +221,9 @@ function cargoInfo(user) {
             $('#collection_fee').text(cargo.collection_fee + "₺");
             $('#exitTransfer').text(departure_tc.city + " - " + departure_tc.tc_name + " TM");
             $('#exitBranch').text(departure.city + "/" + departure.district + " - " + departure.agency_name + " (" + departure.agency_code + ")");
+
+            $('#cargoDeliveryDate').text(cargo.delivery_date != null ? cargo.delivery_date : '')
+            $('#cargoReceiverName').text(cargo.cargo_receiver_name != null ? cargo.cargo_receiver_name : '')
 
 
             if (arrival_tc == null)

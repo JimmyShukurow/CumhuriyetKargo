@@ -253,6 +253,11 @@ $('#btnSubmitForm').click(function () {
                 return false;
             }
 
+            if ($('#pieces').val() == 'Lütfen İlgili Parçaları Seçin!' && general_cargo.cargo.number_of_pieces > 1) {
+                ToastMessage('error', 'Lütfen teslim edilen parçları seçiniz', 'Hata!')
+                return false;
+            }
+
             break;
     }
 
@@ -280,6 +285,7 @@ $('#btnSubmitForm').click(function () {
             deliveryDate: $('#deliveryDate').val(),
             cargoId: general_cargo.cargo.id,
             descriptionDelivery: $('#descriptionDelivery').val(),
+            selectedPieces: $('input#pieces').val()
         }
     }).done(function (response) {
 

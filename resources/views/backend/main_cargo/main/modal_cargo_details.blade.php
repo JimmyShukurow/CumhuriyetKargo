@@ -29,6 +29,8 @@
                                     <div>
                                         <h5 id="titleTrackingNo" class="menu-header-title">###</h5>
                                         <h6 id="titleCargoInvoiceNumber" class="menu-header-subtitle">###/###</h6>
+                                        <h5 id="titleCargoStatus"
+                                            class="menu-header-subtitle text-warning"></h5>
                                     </div>
                                 </div>
                             </div>
@@ -161,12 +163,16 @@
                                             </div>
 
                                             <div class="divider"></div>
-                                            <h3 class="text-dark text-center mb-4">Kargo Bilgileri</h3>
 
                                             <div class="row">
                                                 <div class="col-sm-6">
                                                     <table style="white-space: nowrap" id="AgencyCard"
                                                            class="TableNoPadding table table-bordered table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th class="text-center" colspan="2">Kargo Bilgileri - I</th>
+                                                        </tr>
+                                                        </thead>
                                                         <tbody>
                                                         <tr>
                                                             <td class="static">Kargo Takip No:</td>
@@ -202,10 +208,6 @@
                                                             <td id="paymentType"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="static">Taşıyan:</td>
-                                                            <td id="transporter"></td>
-                                                        </tr>
-                                                        <tr>
                                                             <td class="static">Sistem:</td>
                                                             <td id="system"></td>
                                                         </tr>
@@ -219,12 +221,22 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="static">Statü:</td>
-                                                            <td id="cargoStatus"></td>
+                                                            <td id="cargoStatus"
+                                                                class="font-weight-bold text-warning"></td>
                                                         </tr>
 
                                                         <tr>
                                                             <td class="static">İnsanlar İçin Statü:</td>
-                                                            <td id="cargoStatusForHumen"></td>
+                                                            <td id="cargoStatusForHumen"
+                                                                class="font-weight-bold text-primary"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Teslimat Tarihi:</td>
+                                                            <td id="cargoDeliveryDate"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="static">Teslim Edilen:</td>
+                                                            <td id="cargoReceiverName"></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="static">Kargo İçeriği:</td>
@@ -241,8 +253,17 @@
                                                 <div class="col-sm-6">
                                                     <table style="white-space: nowrap" id="AgencyCard"
                                                            class="TableNoPadding table table-bordered table-striped">
-
+                                                        <thead>
+                                                        <tr>
+                                                            <th class="text-center" colspan="2">Kargo Bilgileri - II
+                                                            </th>
+                                                        </tr>
+                                                        </thead>
                                                         <tbody>
+                                                        <tr>
+                                                            <td class="static">Taşıyan:</td>
+                                                            <td id="transporter"></td>
+                                                        </tr>
                                                         <tr>
                                                             <td class="static">Torbada mı:</td>
                                                             <td id="inBag"></td>

@@ -6,12 +6,14 @@ use App\Models\Agencies;
 use App\Models\CargoAddServices;
 use App\Models\Cargoes;
 use App\Models\Currents;
+use App\Models\Delivery;
 use App\Models\SmsContent;
 use App\Rules\CurrentNameControlRule;
 use App\Rules\NameSurname\CurrentNameSurnameControlRule;
 use Carbon\Carbon;
 use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -29,6 +31,7 @@ class DeliveryAction
             'deliveryDate' => 'required',
             'cargoId' => 'required',
             'descriptionDelivery' => 'required',
+            'selectedPieces' => 'nullable',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -39,6 +42,11 @@ class DeliveryAction
 
 
         $cargo = Cargoes::find($request->cargoId);
+
+        if ($cargo->number_of_pieces > 1 && $request->selectedPieces == 'Lütfen İlgili Parçaları Seçin!') {
+            return ['status' => -1, 'message' => 'Lütfen teslim edilecek parçaları seçiniz!'];
+        }
+
         if ($cargo == null)
             return ['status' => -1, 'message' => 'Kargo bulunamadı!'];
 
@@ -48,6 +56,48 @@ class DeliveryAction
         if (Auth::user()->agency_code != $cargo->arrival_agency_code)
             return ['status' => -1, 'message' => 'Kargonun varış şubesi siz olmadığınızdan bu kargoya teslimat giremezsiniz!'];
 
+
+        $selectedPieces = explode(',', $request->selectedPieces);
+        if ($cargo->number_of_pieces != $selectedPieces)
+            $status = "PARÇALI TESLİM EDİLDİ";
+        else
+            $status = "TESLİM EDİLDİ";
+
+        DB::beginTransaction();
+        try {
+
+            $createDelivery = Delivery::create([
+                'cargo_id' => $cargo->id,
+                'user_id' => Auth::id(),
+                'agency_id' => Auth::user()->agency_code,
+                'description' => tr_strtoupper($request->descriptionDelivery),
+                'receiver_name_surname' => tr_strtoupper($request->teslimAlanAdSoyad),
+                'receiver_tckn_vkn' => $request->receiverTCKN,
+                'degree_of_proximity' => $request->receiverProximity,
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ['status' => -1, 'message' => 'Teslimat kaydı ensanısnda hata oluştu, lütfen daha sonra tekrar deneyin!' . $e];
+        }
+
+        try {
+            $cargoUpdate = Cargoes::find($cargo->id)
+                ->update(
+                    [
+                        'status' => $status,
+                        'status_for_human' => $status,
+                        'delivery_date' => $deliveryDate,
+                        'cargo_receiver_name' => tr_strtoupper($request->teslimAlanAdSoyad),
+                    ]
+                );
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ['status' => -1, 'message' => 'Teslimat kaydı ensanısnda hata oluştu, lütfen daha sonra tekrar deneyin!'];
+        }
+
+//        InsertCargoMovement($cargo->tracking_number, $cargo->id, Auth::id(), '')
 
         $current = Currents::find($cargo->sender_id);
         $receiver = Currents::find($cargo->receiver_id);
@@ -101,6 +151,6 @@ class DeliveryAction
         }
 
 
-        return $request;
+        DB::commit();
     }
 }
