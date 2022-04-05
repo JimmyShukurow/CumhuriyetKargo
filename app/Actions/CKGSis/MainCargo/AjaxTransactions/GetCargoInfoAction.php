@@ -104,7 +104,7 @@ class GetCargoInfoAction
             ->first();
 
         $data['sms'] = DB::table('sent_sms')
-            ->select('id', 'heading', 'subject', 'phone', 'sms_content', 'result')
+            ->select('id', 'heading', 'subject', 'phone', 'sms_content', 'result', 'created_at')
             ->where('ctn', str_replace(' ', '', $data['cargo']->tracking_no))
             ->get();
 

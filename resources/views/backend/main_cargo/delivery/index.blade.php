@@ -215,8 +215,8 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label for="">Teslimat Tarihi:<small class="text-danger">*</small></label>
-                            <input id="deliveryDate" type="date" value="{{date('Y-m-d')}}"
+                            <label for="">Teslimat Zamanı:<small class="text-danger">*</small></label>
+                            <input id="deliveryDate" type="datetime-local" value="{{date('Y-m-d')}}T{{date('H:m')}}" max="{{date('Y-m-d')}}T{{date('H:m')}}"
                                    class="form-control form-control-sm">
                         </div>
                     </div>

@@ -449,6 +449,7 @@
                                                         <th>Mesaj İçeriği</th>
                                                         <th>Numara</th>
                                                         <th>Gönd. Durumu</th>
+                                                        <th>Kayıt Tarihi</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody id="tbodySentMessages">

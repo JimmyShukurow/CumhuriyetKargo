@@ -145,6 +145,10 @@ function getCargo() {
     });
 }
 
+$('#cargo_info').click(function () {
+    cargoInfo($(this).attr('cargo_id'));
+});
+
 $(document).ready(function () {
     $(".select-all-cb").click(function () {
         $('.cb-piece:input:checkbox:not(:disabled)').prop('checked', this.checked);
@@ -270,7 +274,7 @@ $('#btnSubmitForm').click(function () {
         data: {
             _token: token,
             transaction: $('#transaction').val(),
-            receiverNameSurnameCompany: $('#receiverNameSurnameCompany').val(),
+            teslimAlanAdSoyad: $('#receiverNameSurnameCompany').val(),
             receiverTCKN: $('#receiverTCKN').val(),
             receiverProximity: $('#receiverProximity').val(),
             deliveryDate: $('#deliveryDate').val(),

@@ -24,7 +24,7 @@
 
                     <div class="p-0 col-lg-1 col-sm-4 col-xs-6">
                         <a class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger"
-                           href="{{route('delivery.index')}}">
+                           href="{{route('delivery.index')}}" target="_blank">
                             <i class="fas fa-check text-danger opacity-7 btn-icon-wrapper mb-2"> </i>
                             Teslimat
                         </a>

@@ -339,6 +339,7 @@ function cargoInfo(user) {
                         '<td style="white-space: initial;">' + val['sms_content'] + '</td>' +
                         '<td>' + val['phone'] + '</td>' +
                         '<td class="font-weight-bold text-center">' + result + '</td>' +
+                        '<td class="font-weight-bold text-center">' + val['created_at'] + '</td>' +
                         +'</tr>'
                     )
                 });
