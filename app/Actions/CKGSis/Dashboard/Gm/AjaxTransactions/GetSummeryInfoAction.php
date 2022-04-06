@@ -15,26 +15,39 @@ class GetSummeryInfoAction
 
     public function handle($request)
     {
+
         $firstDate = Carbon::createFromDate($request->firstDate);
         $lastDate = Carbon::createFromDate($request->lastDate);
 
         $diff = $firstDate->diffInDays($lastDate);
-        if ($diff > 120)
-            return response()->json(['status' => 0, 'message' => 'Tarih aralığı max. 120 gün olabilir!'], 509);
+        if ($diff > 365)
+            return ['status' => 0, 'message' => 'Tarih aralığı max. 365 gün olabilir!'];
 
         $firstDate = substr($firstDate, 0, 10) . ' 00:00:00';
         $lastDate = substr($lastDate, 0, 10) . ' 23:59:59';
-        $allCargoes = Cargoes::all();
+
+        $cargoesColumns = [
+            'id',
+            'total_price',
+            'cargo_type',
+            'desi',
+            'total_price',
+            'created_at',
+        ];
+        $allCargoes = Cargoes::select($cargoesColumns)->get();
+
+
         $cargoes = $allCargoes->whereBetween('created_at', [$firstDate, $lastDate]);
         $cargoes->all();
 
+
         $data['endorsementCurrentDate'] = $cargoes->sum('total_price');
 
-        $data['totalCargosCurrentDate'] =$cargoes->count();
+        $data['totalCargosCurrentDate'] = $cargoes->count();
 
         $data['cargoCountCurrentDate'] = $cargoes->whereNotIn('cargo_type', ['Mi', 'Dosya'])->count();
 
-        $data['fileCountCurrentDate'] =$cargoes->whereIn('cargo_type', ['Mi', 'Dosya'])->count();
+        $data['fileCountCurrentDate'] = $cargoes->whereIn('cargo_type', ['Mi', 'Dosya'])->count();
 
         $data['totalDesiCurrentDate'] = $cargoes->sum('desi');
 
@@ -46,13 +59,17 @@ class GetSummeryInfoAction
             $data[$key] = getDotter($data[$key]);
         }
 
+
         $rds = RegioanalDirectorates::with([
-            'districts'=> function($q) use ($firstDate, $lastDate) {
-                $q->with(['agencies' =>function($query) use ($firstDate, $lastDate) {
-                    $query->with(['relatedCargoes' =>function($cargo) use ($firstDate, $lastDate) {
-                        $cargo->whereBetween('created_at', [$firstDate, $lastDate]);}
-                ]);}
-                ])->whereHas('agencies');}
+            'districts' => function ($q) use ($firstDate, $lastDate) {
+                $q->with(['agencies' => function ($query) use ($firstDate, $lastDate) {
+                    $query->with(['relatedCargoes' => function ($cargo) use ($firstDate, $lastDate) {
+                        $cargo->whereBetween('created_at', [$firstDate, $lastDate]);
+                    }
+                    ]);
+                }
+                ])->whereHas('agencies');
+            }
 
         ])->get();
 
@@ -108,7 +125,9 @@ class GetSummeryInfoAction
 
 
         $agencies = Agencies::with([
-            'relatedCargoes'=>function($q) use ($firstDate, $lastDate) {$q->whereBetween('created_at', [$firstDate, $lastDate]);},
+            'relatedCargoes' => function ($q) use ($firstDate, $lastDate) {
+                $q->whereBetween('created_at', [$firstDate, $lastDate]);
+            },
             'relatedUser',
         ])->get();
         $agencies->map(function ($q) {
@@ -122,6 +141,7 @@ class GetSummeryInfoAction
         });
         $data['agencies'] = $agencies->sortByDesc('endorsement')->values();
 
-        return $data;
+        return ['status' => 1, 'data' => $data];
+
     }
 }

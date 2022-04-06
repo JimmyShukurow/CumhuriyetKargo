@@ -60,6 +60,7 @@ function reloadDashboard() {
         }
     }).error(function (jqXHR, response) {
         ajaxError(jqXHR.status, JSON.parse(jqXHR.responseText))
+        $('.app-main__inner').unblock()
     }).always(function () {
         $('.app-main__inner').unblock()
     });

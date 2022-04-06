@@ -52,7 +52,15 @@ class Agencies extends Model
 
     public function relatedCargoes()
     {
-        return $this->hasMany(Cargoes::class, 'departure_agency_code', 'id');
+        return $this->hasMany(Cargoes::class, 'departure_agency_code', 'id')
+            ->select([
+                'id',
+                'total_price',
+                'cargo_type',
+                'desi',
+                'total_price',
+                'created_at',
+            ]);
     }
 
     public function relatedUser()
