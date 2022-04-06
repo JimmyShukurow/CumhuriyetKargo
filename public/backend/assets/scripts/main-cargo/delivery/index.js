@@ -289,6 +289,7 @@ $('#btnSubmitForm').click(function () {
     $('.blockUI.blockMsg.blockElement').css('border', '0px');
     $('.blockUI.blockMsg.blockElement').css('background-color', '');
 
+    $('#btnSubmitForm').prop('disabled', true)
 
     $.ajax('/Delivery/AjaxTransaction/' + urlForDelivery, {
         method: 'POST',
@@ -308,6 +309,10 @@ $('#btnSubmitForm').click(function () {
 
         if (response.status == 1) {
 
+
+            setTimeout(function () {
+                $('#btnSubmitForm').prop('disabled', true)
+            }, 50)
             setMessageToLS('İşlem Başarılı!', response.message, 'success');
             window.location.reload();
 
@@ -324,6 +329,7 @@ $('#btnSubmitForm').click(function () {
         ajaxError(jqXHR.status, JSON.parse(jqXHR.responseText));
     }).always(function () {
         $('.main-card').unblock();
+        $('#btnSubmitForm').prop('disabled', false)
     });
 
 
