@@ -1204,6 +1204,8 @@ function CalculateDesi(RealDesi, PartNumber, clickButton) {
         ToastMessage('error', 'Parça sayısı en az 1 olmalıdır!');
         return false;
     }
+    let currentCode = $('#gondericiCariKod').val();
+    let receiverCode = $('#aliciCariKod').val();
 
     $('#partQuantity').text(PartNumber);
     $('#labelDesi').text(RealDesi);
@@ -1229,15 +1231,24 @@ function CalculateDesi(RealDesi, PartNumber, clickButton) {
         method: 'POST',
         data: {
             _token: token,
-            startPoint: CurrentCity,
-            endPoint: $('#aliciIl').val(),
-            desi: RealDesi,
-            cargoType: CargoType,
+            gondericiCariKodu: currentCode,
+            aliciCariKodu: receiverCode,
             odemeTipi: $('input[name="radioPaymentType"]:checked').val(),
-            gondericiCariKodu: $('#gondericiCariKod').val(),
-            aliciCariKodu: $('#aliciCariKod').val(),
+            cargoType: $('#selectCargoType').val(),
+            desi: parseFloat($('#labelDesi').text()),
             desiData: getFormData($('#formPartDesiContainer')),
-            partQuantity: $('#partQuantity').text(),
+            parcaSayisi: $('#partQuantity').text(),
+
+            // _token: token,
+            // startPoint: CurrentCity,
+            // endPoint: $('#aliciIl').val(),
+            // desi: RealDesi,
+            // cargoType: CargoType,
+            // odemeTipi: $('input[name="radioPaymentType"]:checked').val(),
+            // gondericiCariKodu: $('#gondericiCariKod').val(),
+            // aliciCariKodu: $('#aliciCariKod').val(),
+            // desiData: getFormData($('#formPartDesiContainer')),
+            // partQuantity: $('#partQuantity').text(),
         }
     }).done(function (response) {
 

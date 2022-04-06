@@ -634,7 +634,7 @@
 
 @section('js')
     <script src="/backend/assets/scripts/jquery.validate.min.js"></script>
-    <script src="/backend/assets/scripts/main-cargo/create.js?v=1.0.0.0"></script>
+    <script src="/backend/assets/scripts/main-cargo/create.js?v=1.0.0.1"></script>
     <script src="/backend/assets/scripts/customers/create/create-sender.js"></script>
     <script src="/backend/assets/scripts/customers/create/create-receiver.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
