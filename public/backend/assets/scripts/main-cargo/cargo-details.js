@@ -156,6 +156,7 @@ function cargoInfo(user) {
             let part_details = response.part_details
             let official_reports = response.official_reports
             let deliveries = response.deliveries
+            let transfers = response.transfers
 
             $('#titleTrackingNo').text(cargo.tracking_no);
 
@@ -480,8 +481,8 @@ function cargoInfo(user) {
             }
 
             $('#tbodyCargoDeliveries').html('');
-            if (part_details.length == 0)
-                $('#tbodyCargoDeliveries').html('<tr><td colspan="7" class="text-center">Burda hiç veri yok.</td></tr>');
+            if (deliveries.length == 0)
+                $('#tbodyCargoDeliveries').html('<tr><td colspan="8" class="text-center">Burda hiç veri yok.</td></tr>');
             else {
                 $.each(deliveries, function (key, val) {
 
@@ -507,7 +508,34 @@ function cargoInfo(user) {
                     countCargoPart = countCargoPart + 1;
                     cargoDesiCount = cargoDesiCount + parseInt(val['desi']);
                 });
+            }
 
+            $('#tbodyCargoTransfers').html('');
+            if (transfers.length == 0)
+                $('#tbodyCargoTransfers').html('<tr><td colspan="6" class="text-center">Burda hiç veri yok.</td></tr>');
+            else {
+                $.each(transfers, function (key, val) {
+
+                    longRelatedParts = ""
+                    $.each(val['delivery_parts'], function (key, val) {
+                        longRelatedParts += val['part_no'] + ", "
+                    })
+
+                    relatedParts = val['delivery_parts'].length > 5 ? val['delivery_parts'].length + " Adet Parça" : longRelatedParts;
+
+                    $('#tbodyCargoTransfers').prepend(
+                        '<tr>' +
+                        '<td class="font-weight-bold">' + val['agency']['agency_name'] + ' ŞUBE</td>' +
+                        '<td>' + val['user']['name_surname'] + ' (' + val['user']['role']['display_name'] + ')</td>' +
+                        '<td title="' + longRelatedParts + '" style="text-decoration: underline; font-weight: bold; cursor: pointer;">' + relatedParts + '</td>' +
+                        '<td title="' + val['transfer_reason'] + '">' + val['transfer_reason'].substring(0, 40) + '</td>' +
+                        '<td title="' + val['description'] + '">' + val['description'].substring(0, 40) + '</td>' +
+                        '<td class="font-weight-bold text-primary">' + val['created_time'] + '</td>' +
+                        +'</tr>'
+                    );
+                    countCargoPart = countCargoPart + 1;
+                    cargoDesiCount = cargoDesiCount + parseInt(val['desi']);
+                });
             }
 
 

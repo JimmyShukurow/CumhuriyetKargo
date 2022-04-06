@@ -48,10 +48,9 @@
                 <tr>
                     <th>Birim</th>
                     <th>Kullanıcı</th>
-                    <th>Teslim Alan</th>
-                    <th>Yakınlık</th>
-                    <th>Teslim Edilen Parçalar</th>
-                    <th>Teslimat Tarihi</th>
+                    <th>Devir Edilen Parçalar</th>
+                    <th>Devir Nedeni</th>
+                    <th>Açıklama</th>
                     <th>Kayıt Tarihi</th>
                 </tr>
                 </thead>

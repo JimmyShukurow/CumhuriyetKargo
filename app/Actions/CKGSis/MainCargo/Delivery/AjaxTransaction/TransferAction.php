@@ -147,8 +147,7 @@ class TransferAction
             [
                 $receiver->name,
                 $cargo->tracking_no,
-                tr_strtoupper($request->receiverNameSurnameCompany),
-                $request->receiverProximity,
+                $request->transferReason,
                 $agency->agency_name,
             ], $smsContent->content);
 

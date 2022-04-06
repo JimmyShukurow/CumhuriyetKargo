@@ -158,6 +158,16 @@ class GetCargoInfoAction
             $key->created_time = $format->format('Y-m-d H:m:s');
         }
 
+        $data['transfers'] = Delivery::with(['user.role', 'agency', 'deliveryParts'])
+            ->where('transaction_type', 'DEVİR')
+            ->where('cargo_id', $data['cargo']->id)
+            ->get();
+
+        foreach ($data['transfers'] as $key) {
+            $format = Carbon::parse($key->created_at);
+            $key->created_time = $format->format('Y-m-d H:m:s');
+        }
+
 
         $data['status'] = 1;
 
