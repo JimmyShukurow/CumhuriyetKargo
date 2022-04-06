@@ -642,7 +642,6 @@
 @endsection
 
 @section('modals')
-
     @include('backend.main_cargo.main.create.includes.modals.modal_new_current')
 
     @include('backend.main_cargo.main.create.includes.modals.modal_new_receiver')
@@ -652,5 +651,4 @@
     @include('backend.main_cargo.main.create.includes.modals.modal_calc_desi')
 
     @include('backend.main_cargo.main.create.includes.modals.modal_add_row_quantity')
-
 @endsection
