@@ -95,7 +95,7 @@
 
                             </div>
 
-                            @if(@$data['type'] == 'main_cargo')
+                            @if(@$data['type'] == 'main_cargo' || @$data['type'] == 'search_cargo_gm')
                                 @include('backend.main_cargo.cargo_details.includes.buttons.buttons_main_cargo')
                             @endif
 
