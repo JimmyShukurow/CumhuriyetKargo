@@ -33,6 +33,7 @@ class GetSummeryInfoAction
             'desi',
             'total_price',
             'created_at',
+            'departure_agency_code',
         ];
         $allCargoes = Cargoes::select($cargoesColumns)->get();
 

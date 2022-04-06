@@ -60,6 +60,7 @@ class Agencies extends Model
                 'desi',
                 'total_price',
                 'created_at',
+                'departure_agency_code',
             ]);
     }
 
