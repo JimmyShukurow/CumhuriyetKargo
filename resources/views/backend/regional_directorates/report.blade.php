@@ -200,7 +200,8 @@
                                 <li class="nav-item">
 
                                     <a data-toggle="tab" href="#idle-districts" class="nav-link show active">
-                                        <div class="widget-number">Verilmeyen İlçeler</div>
+                                        <div style="font-size: 1.4rem;" class="widget-number">Bölgesi Olmayan İlçeler
+                                        </div>
                                         <div class="tab-subheading">
                                             <span class="pr-2 opactiy-6">
                                                 <i class="fa fa-comment-dots"></i>
@@ -210,7 +211,9 @@
                                 </li>
                                 <li class="nav-item">
                                     <a data-toggle="tab" href="#idle-agiencies-region" class="nav-link show">
-                                        <div class="widget-number">Verilmeyen Acenteler</div>
+                                        <div style="font-size: 1.4rem;" class="widget-number text-warning">Bölgesi
+                                            Olmayan Acenteler
+                                        </div>
                                         <div class="tab-subheading">Herhangi bir bölge müdürlüğüne bağlı olmayan
                                             acenteler
                                         </div>
@@ -218,7 +221,9 @@
                                 </li>
                                 <li class="nav-item">
                                     <a data-toggle="tab" href="#idle-agencies-tc" class="nav-link show">
-                                        <div class="widget-number text-danger">Aktarması Olmayan Acenteler</div>
+                                        <div style="font-size: 1.4rem;" class="widget-number text-danger">Aktarması
+                                            Olmayan Acenteler
+                                        </div>
                                         <div class="tab-subheading">
                                         <span class="pr-2 opactiy-6">
                                         <i class="fa fa-bullhorn"></i>
@@ -337,8 +342,17 @@
             <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
             <script src="/backend/assets/scripts/circle-progress.min.js"></script>
             <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
+            <script src="/backend/assets/scripts/regional-directorates/report.js"></script>
+
             <script>
 
+                let bagliIlceData = [];
+
+                @foreach($data['regions'] as $key)
+                bagliIlceData.push({{ $key->district_covered_quantity  }})
+                @endforeach
+
+                console.log(bagliIlceData)
                 var options = {
                     series: [{
                         data: [4, 3, 10, 9, 29, 19, 22]
@@ -410,19 +424,11 @@
                         series: [{
                             name: 'Bağlı İlçe',
                             type: 'column',
-                            data: [
-                                @foreach($data['regions'] as $key)
-                                    {{ $key->district_covered_quantity  }},
-                                @endforeach
-                            ]
+                            data: []
                         }, {
                             name: 'Bağlı Acente',
                             type: 'line',
-                            data: [
-                                @foreach($data['regions'] as $key)
-                                    {{ $key->agency_covered_quantity  }},
-                                @endforeach
-                            ]
+                            data: bagliIlceData
                         }],
 
                         labels: [
@@ -641,127 +647,4 @@
                 });
             </script>
 
-            <script>
-                $('.NikolasDataTable.IdleDistricts').DataTable({
-                    pageLength: 10,
-                    lengthMenu: dtLengthMenu,
-                    language: dtLanguage,
-                    dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col"f>>rtip',
-                    buttons: [
-                        'copy',
-                        'pdf',
-                        'csv',
-                        'print',
-                        {
-                            extend: 'excelHtml5',
-                            exportOptions: {
-                                columns: [0, 1, 2]
-                            },
-                            title: "CK-Bölgesi Olmayan İlçeler - {{date('d/m/Y H:i')}}"
-                        },
-                        {
-                            text: 'Yenile',
-                            action: function (e, dt, node, config) {
-                                dt.ajax.reload();
-                            }
-                        }
-                    ],
-                    responsive: false,
-                    processing: true,
-                    serverSide: true,
-                    ajax: '{!! route('rd.ListIdleDistricts') !!}',
-                    columnDefs: [
-                        {targets: [2], orderable: false}
-                    ],
-                    columns: [
-                        {data: 'city_name', name: 'city_name'},
-                        {data: 'district_name', name: 'district_name'},
-                        {data: 'delete', name: 'delete'}
-                    ],
-                    scrollY: false
-                });
-
-                $('.NikolasDataTable.IdleAgenciesRegion').DataTable({
-                    pageLength: 10,
-                    lengthMenu: dtLengthMenu,
-                    language: dtLanguage,
-                    dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col"f>>rtip',
-                    buttons: [
-                        'copy',
-                        'pdf',
-                        'csv',
-                        'print',
-                        {
-                            extend: 'excelHtml5',
-                            exportOptions: {
-                                columns: [0, 1, 2, 3, 4]
-                            },
-                            title: "CK-Bölge Müdürlüğüne Bağlı Olmayan Acenteler - {{date('d/m/Y H:i')}}"
-                        },
-                        {
-                            text: 'Yenile',
-                            action: function (e, dt, node, config) {
-                                dt.ajax.reload();
-                            }
-                        }
-                    ],
-                    responsive: false,
-                    processing: true,
-                    serverSide: true,
-                    ajax: '{!! route('rd.ListIdleAgenciesRegion') !!}',
-                    columnDefs: [
-                        {targets: [4], orderable: false}
-                    ],
-                    columns: [
-                        {data: 'city', name: 'city'},
-                        {data: 'district', name: 'district'},
-                        {data: 'district', name: 'district'},
-                        {data: 'name_surname', name: 'name_surname'},
-                        {data: 'delete', name: 'delete'}
-                    ],
-                    scrollY: false
-                });
-
-                $('.NikolasDataTable.IdleAgenciesTC').DataTable({
-                    pageLength: 10,
-                    lengthMenu: dtLengthMenu,
-                    language: dtLanguage,
-                    dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col"f>>rtip',
-                    buttons: [
-                        'copy',
-                        'pdf',
-                        'csv',
-                        'print',
-                        {
-                            extend: 'excelHtml5',
-                            exportOptions: {
-                                columns: [0, 1, 2, 3, 4]
-                            },
-                            title: "CK-Transfer Merkezine Bağlı Olmayan Acenteler - {{date('d/m/Y H:i')}}"
-                        },
-                        {
-                            text: 'Yenile',
-                            action: function (e, dt, node, config) {
-                                dt.ajax.reload();
-                            }
-                        }
-                    ],
-                    responsive: false,
-                    processing: true,
-                    serverSide: true,
-                    ajax: '{!! route('rd.ListIdleAgenciesTC') !!}',
-                    columnDefs: [
-                        {targets: [4], orderable: false}
-                    ],
-                    columns: [
-                        {data: 'city', name: 'city'},
-                        {data: 'district', name: 'district'},
-                        {data: 'district', name: 'district'},
-                        {data: 'name_surname', name: 'name_surname'},
-                        {data: 'delete', name: 'delete'}
-                    ],
-                    scrollY: false
-                });
-
-            </script>
 @endsection

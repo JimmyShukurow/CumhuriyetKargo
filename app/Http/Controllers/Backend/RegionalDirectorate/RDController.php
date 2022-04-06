@@ -248,10 +248,18 @@ class RDController extends Controller
 //        $data = DB::table('view_idle_districts')
 //            ->select(['city_name', 'district_name']);
 
-        $data = DB::select('call proc_idle_districts');
+
+//        $data = DB::select('call proc_idle_districts');
+        $data = Districts::with('city')
+            ->whereRaw('( SELECT Count(*) FROM regional_districts WHERE regional_districts.district_id = districts.id ) = 0')
+            ->get();
+
 
         return DataTables::of($data)
             ->addColumn('delete', '<a  class="text-danger">Boşta</a>')
+            ->editColumn('city_name', function ($key) {
+                return $key->city->city_name;
+            })
             ->addColumn('action', 'path.to.view')
             ->rawColumns(['delete', 'action'])
             ->make(true);

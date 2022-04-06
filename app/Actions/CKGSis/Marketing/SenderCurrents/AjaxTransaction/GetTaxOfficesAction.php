@@ -11,11 +11,11 @@ class GetTaxOfficesAction
 
     public function handle($request)
     {
-        $request->SearchTerm = tr_strtoupper(tr_strtolower(enCharacters(urlCharacters($request->SearchTerm))));
         $data = DB::table('tax_offices')
             ->where('office', 'like', '%' . $request->SearchTerm . '%')
-            ->limit(50)
             ->get(['id', 'office', 'city', 'district']);
-            return $jsonData = $data;
+
+
+        return $jsonData = $data;
     }
 }

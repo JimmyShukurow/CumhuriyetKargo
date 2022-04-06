@@ -27,7 +27,7 @@ $(document).ready(function () {
                 return {
                     results: $.map(data, function (item) {
                         return {
-                            text: item.office + " - " + item.city + "/" + item.district,
+                            text: item.office ,
                             id: item.office
                         }
                     })
