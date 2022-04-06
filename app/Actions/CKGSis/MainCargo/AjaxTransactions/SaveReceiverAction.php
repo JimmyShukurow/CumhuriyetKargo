@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\Concerns\AsAction;
+use App\Rules\NameSurname\CurrentNameControlRule;
 
 class SaveReceiverAction
 {
@@ -45,7 +46,7 @@ class SaveReceiverAction
                     'message' => 'Alıcı TCKN 11 haneli olmalıdır!'
                 ], 200);
 
-            $rules = ['ad' => 'required', 'soyad' => 'required'];
+            $rules = ['ad' => ['required', new CurrentNameControlRule()], 'soyad' => ['required', new CurrentNameControlRule()]];
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
                 return response()->json([

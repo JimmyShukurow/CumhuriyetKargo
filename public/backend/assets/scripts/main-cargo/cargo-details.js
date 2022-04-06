@@ -140,21 +140,23 @@ function cargoInfo(user) {
             }, 350);
         } else if (response.status == 1) {
 
-            let cargo = response.cargo;
-            let sender = response.sender;
-            let receiver = response.receiver;
-            let creator = response.creator;
-            let departure = response.departure;
-            let departure_tc = response.departure_tc;
-            let arrival = response.arrival;
-            let arrival_tc = response.arrival_tc;
-            let sms = response.sms;
-            let add_services = response.add_services;
-            let movements = response.movements;
-            let movementsSecondary = response.movementsSecondary;
-            let cancellations = response.cancellation_applications;
-            let part_details = response.part_details;
-            let official_reports = response.official_reports;
+            let cargo = response.cargo
+            let sender = response.sender
+            let receiver = response.receiver
+            let creator = response.creator
+            let departure = response.departure
+            let departure_tc = response.departure_tc
+            let arrival = response.arrival
+            let arrival_tc = response.arrival_tc
+            let sms = response.sms
+            let add_services = response.add_services
+            let movements = response.movements
+            let movementsSecondary = response.movementsSecondary
+            let cancellations = response.cancellation_applications
+            let part_details = response.part_details
+            let official_reports = response.official_reports
+            let deliveries = response.deliveries
+            let transfers = response.transfers
 
             $('#titleTrackingNo').text(cargo.tracking_no);
 
@@ -174,6 +176,7 @@ function cargoInfo(user) {
             $('#cancelAppTrackingNo').val(cargo.tracking_no);
 
             $('#titleCargoInvoiceNumber').text(cargo.invoice_number);
+            $('#titleCargoStatus').text(cargo.status);
             $('#senderTcknVkn').text(sender.tckn);
 
             $('#senderCurrentCode').text(sender.current_code);
@@ -220,6 +223,9 @@ function cargoInfo(user) {
             $('#collection_fee').text(cargo.collection_fee + "₺");
             $('#exitTransfer').text(departure_tc.city + " - " + departure_tc.tc_name + " TM");
             $('#exitBranch').text(departure.city + "/" + departure.district + " - " + departure.agency_name + " (" + departure.agency_code + ")");
+
+            $('#cargoDeliveryDate').text(cargo.delivery_date != null ? cargo.delivery_date : '')
+            $('#cargoReceiverName').text(cargo.cargo_receiver_name != null ? cargo.cargo_receiver_name : '')
 
 
             if (arrival_tc == null)
@@ -326,7 +332,7 @@ function cargoInfo(user) {
 
             $('#tbodySentMessages').html('');
             if (sms.length == 0)
-                $('#tbodySentMessages').html('<tr><td colspan="5" class="text-center">Burda hiç veri yok.</td></tr>');
+                $('#tbodySentMessages').html('<tr><td colspan="6" class="text-center">Burda hiç veri yok.</td></tr>');
             else
                 $.each(sms, function (key, val) {
 
@@ -336,9 +342,10 @@ function cargoInfo(user) {
                         '<tr>' +
                         '<td class="font-weight-bold">' + val['heading'] + '</td>' +
                         '<td class="font-weight-bold">' + val['subject'] + '</td>' +
-                        '<td style="white-space: initial;">' + val['sms_content'] + '</td>' +
+                        '<td style="white-space: initial; font-size: 0.8rem;">' + val['sms_content'] + '</td>' +
                         '<td>' + val['phone'] + '</td>' +
                         '<td class="font-weight-bold text-center">' + result + '</td>' +
+                        '<td class="font-weight-bold text-center">' + val['created_at'] + '</td>' +
                         +'</tr>'
                     )
                 });
@@ -393,9 +400,11 @@ function cargoInfo(user) {
             let countCargoPart = 0, cargoDesiCount = 0;
             $('#tbodyCargoPartDetails').html('');
             if (part_details.length == 0)
-                $('#tbodyCargoPartDetails').html('<tr><td colspan="8" class="text-center">Burda hiç veri yok.</td></tr>');
+                $('#tbodyCargoPartDetails').html('<tr><td colspan="9" class="text-center">Burda hiç veri yok.</td></tr>');
             else {
                 $.each(part_details, function (key, val) {
+
+                    let wasDelivered = val['was_delivered'] == '1' ? '<b class="text-success">Evet</b>' : '<b class="text-dark">Hayır</b>';
 
                     $('#tbodyCargoPartDetails').prepend(
                         '<tr>' +
@@ -407,6 +416,7 @@ function cargoInfo(user) {
                         '<td class="">' + val['weight'] + '</td>' +
                         '<td class="font-weight-bold text-primary">' + val['desi'] + '</td>' +
                         '<td class="text-alternate">' + val['cubic_meter_volume'] + '</td>' +
+                        '<td class="text-alternate">' + wasDelivered + '</td>' +
                         +'</tr>'
                     );
                     countCargoPart = countCargoPart + 1;
@@ -414,7 +424,7 @@ function cargoInfo(user) {
                 });
 
                 $('#tbodyCargoPartDetails').prepend(
-                    '<tr><td class="font-weight-bold text-center" colspan="8"> Toplam: <b class="text-primary">' + countCargoPart + ' Parça</b>, <b class="text-primary">' + cargoDesiCount + ' Desi</b>. </td></tr>'
+                    '<tr><td class="font-weight-bold text-center" colspan="9"> Toplam: <b class="text-primary">' + countCargoPart + ' Parça</b>, <b class="text-primary">' + cargoDesiCount + ' Desi</b>. </td></tr>'
                 );
             }
 
@@ -467,6 +477,64 @@ function cargoInfo(user) {
                         '<td class="font-weight-bold text-center">' + val['created_at'] + '</td>' +
                         +'</tr>'
                     )
+                });
+            }
+
+            $('#tbodyCargoDeliveries').html('');
+            if (deliveries.length == 0)
+                $('#tbodyCargoDeliveries').html('<tr><td colspan="8" class="text-center">Burda hiç veri yok.</td></tr>');
+            else {
+                $.each(deliveries, function (key, val) {
+
+                    longRelatedParts = ""
+                    $.each(val['delivery_parts'], function (key, val) {
+                        longRelatedParts += val['part_no'] + ", "
+                    })
+
+                    relatedParts = val['delivery_parts'].length > 5 ? val['delivery_parts'].length + " Adet Parça" : longRelatedParts;
+
+                    $('#tbodyCargoDeliveries').prepend(
+                        '<tr>' +
+                        '<td class="font-weight-bold">' + val['agency']['agency_name'] + ' ŞUBE</td>' +
+                        '<td>' + val['user']['name_surname'] + ' (' + val['user']['role']['display_name'] + ')</td>' +
+                        '<td>' + val['receiver_name_surname'] + '</td>' +
+                        '<td>' + val['degree_of_proximity'] + '</td>' +
+                        '<td title="' + longRelatedParts + '" style="text-decoration: underline; font-weight: bold; cursor: pointer;">' + relatedParts + '</td>' +
+                        '<td title="' + val['description'] + '">' + val['description'].substring(0, 40) + '</td>' +
+                        '<td>' + val['delivery_date'] + '</td>' +
+                        '<td class="font-weight-bold text-primary">' + val['created_time'] + '</td>' +
+                        +'</tr>'
+                    );
+                    countCargoPart = countCargoPart + 1;
+                    cargoDesiCount = cargoDesiCount + parseInt(val['desi']);
+                });
+            }
+
+            $('#tbodyCargoTransfers').html('');
+            if (transfers.length == 0)
+                $('#tbodyCargoTransfers').html('<tr><td colspan="6" class="text-center">Burda hiç veri yok.</td></tr>');
+            else {
+                $.each(transfers, function (key, val) {
+
+                    longRelatedParts = ""
+                    $.each(val['delivery_parts'], function (key, val) {
+                        longRelatedParts += val['part_no'] + ", "
+                    })
+
+                    relatedParts = val['delivery_parts'].length > 5 ? val['delivery_parts'].length + " Adet Parça" : longRelatedParts;
+
+                    $('#tbodyCargoTransfers').prepend(
+                        '<tr>' +
+                        '<td class="font-weight-bold">' + val['agency']['agency_name'] + ' ŞUBE</td>' +
+                        '<td>' + val['user']['name_surname'] + ' (' + val['user']['role']['display_name'] + ')</td>' +
+                        '<td title="' + longRelatedParts + '" style="text-decoration: underline; font-weight: bold; cursor: pointer;">' + relatedParts + '</td>' +
+                        '<td title="' + val['transfer_reason'] + '">' + val['transfer_reason'].substring(0, 40) + '</td>' +
+                        '<td title="' + val['description'] + '">' + val['description'].substring(0, 40) + '</td>' +
+                        '<td class="font-weight-bold text-primary">' + val['created_time'] + '</td>' +
+                        +'</tr>'
+                    );
+                    countCargoPart = countCargoPart + 1;
+                    cargoDesiCount = cargoDesiCount + parseInt(val['desi']);
                 });
             }
 

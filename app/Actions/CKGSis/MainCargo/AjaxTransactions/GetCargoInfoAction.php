@@ -5,6 +5,7 @@ namespace App\Actions\CKGSis\MainCargo\AjaxTransactions;
 use App\Models\Agencies;
 use App\Models\Cargoes;
 use App\Models\CargoMovements;
+use App\Models\Delivery;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,6 @@ class GetCargoInfoAction
     public function handle($request)
     {
         if ($request->invoice_number != null)
-
             $data['cargo'] = Cargoes::where('invoice_number', $request->invoice_number)
                 ->first();
         else if ($request->tracking_number != null)
@@ -104,7 +104,7 @@ class GetCargoInfoAction
             ->first();
 
         $data['sms'] = DB::table('sent_sms')
-            ->select('id', 'heading', 'subject', 'phone', 'sms_content', 'result')
+            ->select('id', 'heading', 'subject', 'phone', 'sms_content', 'result', 'created_at')
             ->where('ctn', str_replace(' ', '', $data['cargo']->tracking_no))
             ->get();
 
@@ -132,6 +132,7 @@ class GetCargoInfoAction
                 'updated_at' => $key->updated_at,
                 'weight' => $key->weight,
                 'width' => $key->width,
+                'was_delivered' => $key->was_delivered,
                 'barcode_no' => crypteTrackingNo(str_replace(' ', '', $data['cargo']->tracking_no) . ' ' . $key->part_no)
             ];
 
@@ -145,11 +146,32 @@ class GetCargoInfoAction
             ->whereRaw("( cargo_invoice_number ='" . $data['cargo']->invoice_number . "' or  description like '%" . $data['cargo']->invoice_number . "%')")
             ->get();
 
+
+        $data['deliveries'] = Delivery::with(['user.role', 'agency', 'deliveryParts'])
+            ->where('transaction_type', 'TESLİMAT')
+            ->where('cargo_id', $data['cargo']->id)
+            ->get();
+
+        foreach ($data['deliveries'] as $key) {
+            $format = Carbon::parse($key->created_at);
+            $key->created_time = $format->format('Y-m-d H:m:s');
+        }
+
+        $data['transfers'] = Delivery::with(['user.role', 'agency', 'deliveryParts'])
+            ->where('transaction_type', 'DEVİR')
+            ->where('cargo_id', $data['cargo']->id)
+            ->get();
+
+        foreach ($data['transfers'] as $key) {
+            $format = Carbon::parse($key->created_at);
+            $key->created_time = $format->format('Y-m-d H:m:s');
+        }
+
+
         $data['status'] = 1;
 
         $data['bag_tracking_no'] = $data['cargo']->bagDetails->isNotEmpty() ? $data['cargo']->bagDetails()->first()->tracking_no : null;
 
-        return response()
-            ->json($data, 200);
+        return $data;
     }
 }

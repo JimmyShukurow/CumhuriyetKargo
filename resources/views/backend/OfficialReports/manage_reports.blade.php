@@ -70,7 +70,7 @@
     @include('backend.OfficialReports.report_modal', $data)
 
     @php $data = ['type' => 'create_htf']; @endphp
-    @include('backend.main_cargo.main.modal_cargo_details')
+    @include('backend.main_cargo.cargo_details.modal_cargo_details')
 
 @endsection
 

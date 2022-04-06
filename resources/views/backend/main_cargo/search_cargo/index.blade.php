@@ -280,7 +280,7 @@
 
 @section('modals')
     @php $data = ['type' => 'search_cargo']; @endphp
-    @include('backend.main_cargo.main.modal_cargo_details')
+    @include('backend.main_cargo.cargo_details.modal_cargo_details')
 
     @include('backend.OfficialReports.report_modal')
 

@@ -241,15 +241,15 @@
                                 <input class="form-check-input radio-payment-type" checked type="radio"
                                        name="radioPaymentType" id="radioPaymentTypeGondericiOdemeli"
                                        value="Gönderici Ödemeli">
-                                <label class="form-check-label cursor-pointer" for="radioPaymentTypeGondericiOdemeli">Gönderici
-                                    Ödemeli</label>
+                                <label class="form-check-label cursor-pointer"
+                                       for="radioPaymentTypeGondericiOdemeli">GÖ</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input radio-payment-type" type="radio" name="radioPaymentType"
                                        id="radioPaymentTypeAliciOdemeli"
                                        value="Alıcı Ödemeli">
-                                <label class="form-check-label cursor-pointer" for="radioPaymentTypeAliciOdemeli">Alıcı
-                                    Ödemeli</label>
+                                <label class="form-check-label cursor-pointer"
+                                       for="radioPaymentTypeAliciOdemeli">AÖ</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input radio-payment-type" type="radio" name="radioPaymentType"

@@ -368,9 +368,9 @@
 @section('modals')
 
     @php $data = ['type' => 'create_htf']; @endphp
-    @include('backend.main_cargo.main.modal_cargo_details')
+    @include('backend.main_cargo.cargo_details.modal_cargo_details')
 
-    <!-- Large modal => Modal Barcode -->
+    <!-- Large modal => Modal Part Details -->
     <div class="modal fade bd-example-modal-lg" id="ModalPartDetails" tabindex="-1" role="dialog"
          aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -409,9 +409,9 @@
                                     <th>Hacim m<sup>3</sup></th>
                                 </tr>
                                 </thead>
-                                <tbody id="tbodyCargoPartDetails">
+                                <tbody id="tbodyCargoPartDetailsXX">
                                 <tr>
-                                    <td class="text-center" colspan="8">Burda hiç veri yok.</td>
+                                    <td class="text-center" colspan="9">Burda hiç veri yok.</td>
                                 </tr>
                                 </tbody>
                             </table>

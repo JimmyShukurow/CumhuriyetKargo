@@ -5,6 +5,7 @@ namespace App\Actions\CKG_Barcoder\Transaction;
 use App\Models\Agencies;
 use App\Models\Cargoes;
 use App\Models\CargoMovements;
+use App\Models\Delivery;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -102,7 +103,7 @@ class GetCargoInfoAction
             ->first();
 
         $data['sms'] = DB::table('sent_sms')
-            ->select('id', 'heading', 'subject', 'phone', 'sms_content', 'result')
+            ->select('id', 'heading', 'subject', 'phone', 'sms_content', 'result', 'created_at')
             ->where('ctn', str_replace(' ', '', $data['cargo']->tracking_no))
             ->get();
 
@@ -131,6 +132,7 @@ class GetCargoInfoAction
                 'updated_at' => $key->updated_at,
                 'weight' => $key->weight,
                 'width' => $key->width,
+                'was_delivered' => $key->was_delivered,
                 'barcode_no' => crypteTrackingNo(str_replace(' ', '', $data['cargo']->tracking_no) . ' ' . $key->part_no)
             ];
 
@@ -143,6 +145,8 @@ class GetCargoInfoAction
         $data['official_reports'] = DB::table('view_official_reports_general_info')
             ->whereRaw("( cargo_invoice_number ='" . $data['cargo']->invoice_number . "' or  description like '%" . $data['cargo']->invoice_number . "%')")
             ->get();
+
+
 
         $data['status'] = 1;
 

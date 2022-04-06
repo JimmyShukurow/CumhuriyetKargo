@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\MainCargo\MainCargoController;
+use App\Http\Controllers\Backend\MainCargo\DeliveryController;
 
 Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
     Route::group(['prefix' => 'MainCargo', 'as' => 'mainCargo.', 'middleware' => ['MainCargoMid']], function () {
-
 
         Route::get('NewCargo', [MainCargoController::class, 'newCargo'])->name('newCargo')
             ->middleware('PermissionOfCreateCargo');
@@ -33,4 +33,11 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
         Route::get('CalculateServiceFee', [MainCargoController::class, 'calculateServiceFee'])->name('calculateServiceFee');
     });
+
+
+    Route::group(['prefix' => 'Delivery', 'as' => 'delivery.'], function () {
+        Route::get('', [DeliveryController::class, 'index'])->name('index');
+        Route::any('AjaxTransaction/{transaction}', [DeliveryController::class, 'ajaxTransaction']);
+    });
+
 });
