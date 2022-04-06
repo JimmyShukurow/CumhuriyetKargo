@@ -3,17 +3,18 @@
      aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xxl">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ModalGiveRolePermissionLabel">Kargo Detayları</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div class="modal-header p-1">
+                <h5 style="width: 100%;" class="modal-title text-center" id="ModalGiveRolePermissionLabel">Kargo
+                    Detayları</h5>
+                <button type="button" class="close mr-1" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div style="overflow-y: auto;overflow-x: hidden; max-height: 75vh;" id="ModalBodyUserDetail"
-                 class="modal-body">
+            <div style="overflow-y: auto;overflow-x: hidden; max-height: 87vh; padding: 0;" id="ModalBodyUserDetail"
+                 class="modal-body mostly-customized-scrollbar">
 
                 {{-- CARD START --}}
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                     <div class="mb-3 profile-responsive card">
                         <div class="dropdown-menu-header">
                             <div class="dropdown-menu-header-inner bg-dark">
@@ -108,9 +109,6 @@
                     </div>
                 </div>
                 {{-- CARD END --}}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>

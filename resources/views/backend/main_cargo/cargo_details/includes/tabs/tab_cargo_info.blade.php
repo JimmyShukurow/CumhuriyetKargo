@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-sm-6">
-        <table style="white-space: nowrap" id="AgencyCard"
+        <table id="AgencyCard"
                class="TableNoPadding table table-bordered table-striped">
             <thead>
             <tr>

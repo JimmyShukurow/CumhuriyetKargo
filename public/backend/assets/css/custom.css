@@ -211,8 +211,8 @@ table.Table20Padding th, table.Table20Padding td {
 
 @media (min-width: 768px) {
     .modal-xxl {
-        width: 90%;
-        max-width: 1200px;
+        width: 100%;
+        max-width: 1600px;
     }
 }
 
