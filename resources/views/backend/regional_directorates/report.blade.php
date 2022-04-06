@@ -200,8 +200,7 @@
                                 <li class="nav-item">
 
                                     <a data-toggle="tab" href="#idle-districts" class="nav-link show active">
-                                        <div style="font-size: 1.4rem;" class="widget-number">Bölgesi Olmayan İlçeler
-                                        </div>
+                                        <div style="font-size: 1.4rem;" class="widget-number">Bölgesi Olmayan İlçeler</div>
                                         <div class="tab-subheading">
                                             <span class="pr-2 opactiy-6">
                                                 <i class="fa fa-comment-dots"></i>
@@ -211,9 +210,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a data-toggle="tab" href="#idle-agiencies-region" class="nav-link show">
-                                        <div style="font-size: 1.4rem;" class="widget-number text-warning">Bölgesi
-                                            Olmayan Acenteler
-                                        </div>
+                                        <div style="font-size: 1.4rem;" class="widget-number text-warning">Bölgesi Olmayan Acenteler</div>
                                         <div class="tab-subheading">Herhangi bir bölge müdürlüğüne bağlı olmayan
                                             acenteler
                                         </div>
@@ -221,9 +218,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a data-toggle="tab" href="#idle-agencies-tc" class="nav-link show">
-                                        <div style="font-size: 1.4rem;" class="widget-number text-danger">Aktarması
-                                            Olmayan Acenteler
-                                        </div>
+                                        <div style="font-size: 1.4rem;" class="widget-number text-danger">Aktarması Olmayan Acenteler</div>
                                         <div class="tab-subheading">
                                         <span class="pr-2 opactiy-6">
                                         <i class="fa fa-bullhorn"></i>
@@ -346,13 +341,6 @@
 
             <script>
 
-                let bagliIlceData = [];
-
-                @foreach($data['regions'] as $key)
-                bagliIlceData.push({{ $key->district_covered_quantity  }})
-                @endforeach
-
-                console.log(bagliIlceData)
                 var options = {
                     series: [{
                         data: [4, 3, 10, 9, 29, 19, 22]
@@ -424,11 +412,19 @@
                         series: [{
                             name: 'Bağlı İlçe',
                             type: 'column',
-                            data: []
+                            data: [
+                                @foreach($data['regions'] as $key)
+                                    {{ $key->district_covered_quantity  }},
+                                @endforeach
+                            ]
                         }, {
                             name: 'Bağlı Acente',
                             type: 'line',
-                            data: bagliIlceData
+                            data: [
+                                @foreach($data['regions'] as $key)
+                                    {{ $key->agency_covered_quantity  }},
+                                @endforeach
+                            ]
                         }],
 
                         labels: [
