@@ -147,48 +147,52 @@ class DeliveryAction
         $smstoReceiver = CargoAddServices::where('cargo_tracking_no', $cargo->tracking_no)
             ->where('service_name', 'Alıcıya SMS')->first();
 
-        if ($smstoCurrent != null) {
-            $smsContent = SmsContent::where('key', 'cargo_delivery_current')->first();
-            $sms = str_replace(
-                [
-                    '[name_surname]',
-                    '[ctn]',
-                    '[receiver_name]',
-                    '[proximity]',
-                    '[delivery_date]',
-                ],
-                [
-                    $receiver->name,
-                    $cargo->tracking_no,
-                    tr_strtoupper($request->teslimAlanAdSoyad),
-                    $request->receiverProximity,
-                    $deliveryDate,
-                ], $smsContent->content);
+        $hourDiff = Carbon::parse($deliveryDateSql)->diffInHours(Carbon::now());
 
-            SendSMS($sms, CharacterCleaner($current->gsm), 'Teslimat', 'CUMHURIYETK', $cargo->tracking_no);
+        if ($hourDiff < 24) {
+
+            if ($smstoCurrent != null) {
+                $smsContent = SmsContent::where('key', 'cargo_delivery_current')->first();
+                $sms = str_replace(
+                    [
+                        '[name_surname]',
+                        '[ctn]',
+                        '[receiver_name]',
+                        '[proximity]',
+                        '[delivery_date]',
+                    ],
+                    [
+                        $receiver->name,
+                        $cargo->tracking_no,
+                        tr_strtoupper($request->teslimAlanAdSoyad),
+                        $request->receiverProximity,
+                        $deliveryDate,
+                    ], $smsContent->content);
+
+                SendSMS($sms, CharacterCleaner($current->gsm), 'Teslimat', 'CUMHURIYETK', $cargo->tracking_no);
+            }
+
+            if ($smstoReceiver != null) {
+                $smsContent = SmsContent::where('key', 'cargo_delivery_receiver')->first();
+                $sms = str_replace(
+                    [
+                        '[name_surname]',
+                        '[ctn]',
+                        '[receiver_name]',
+                        '[proximity]',
+                        '[delivery_date]',
+                    ],
+                    [
+                        $receiver->name,
+                        $cargo->tracking_no,
+                        tr_strtoupper($request->teslimAlanAdSoyad),
+                        $request->receiverProximity,
+                        $deliveryDate,
+                    ], $smsContent->content);
+
+                SendSMS($sms, CharacterCleaner($receiver->gsm), 'Teslimat', 'CUMHURIYETK', $cargo->tracking_no);
+            }
         }
-
-        if ($smstoReceiver != null) {
-            $smsContent = SmsContent::where('key', 'cargo_delivery_receiver')->first();
-            $sms = str_replace(
-                [
-                    '[name_surname]',
-                    '[ctn]',
-                    '[receiver_name]',
-                    '[proximity]',
-                    '[delivery_date]',
-                ],
-                [
-                    $receiver->name,
-                    $cargo->tracking_no,
-                    tr_strtoupper($request->teslimAlanAdSoyad),
-                    $request->receiverProximity,
-                    $deliveryDate,
-                ], $smsContent->content);
-
-            SendSMS($sms, CharacterCleaner($receiver->gsm), 'Teslimat', 'CUMHURIYETK', $cargo->tracking_no);
-        }
-
 
         DB::commit();
 
