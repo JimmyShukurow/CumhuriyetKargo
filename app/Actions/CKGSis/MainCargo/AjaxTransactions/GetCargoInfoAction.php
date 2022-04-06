@@ -20,7 +20,6 @@ class GetCargoInfoAction
     public function handle($request)
     {
         if ($request->invoice_number != null)
-
             $data['cargo'] = Cargoes::where('invoice_number', $request->invoice_number)
                 ->first();
         else if ($request->tracking_number != null)
