@@ -212,7 +212,7 @@ function Decrypte4x($key)
 function SendSMS($text, $number, $subject = 'UNKNOWN', $heading = 'CUMHURIYETK', $ctn = '')
 {
 
-    if (env('APP_DEBUG') == false) {
+    if (env('APP_DEBUG') != false) {
         return true;
     } else {
 

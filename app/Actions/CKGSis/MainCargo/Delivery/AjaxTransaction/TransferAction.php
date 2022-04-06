@@ -93,6 +93,7 @@ class TransferAction
             return ['status' => -1, 'message' => 'Parçaların devri ensanısnda hata oluştu, lütfen daha sonra tekrar deneyin!'];
         }
 
+
         try {
             $cargoUpdate = Cargoes::find($cargo->id)
                 ->update(

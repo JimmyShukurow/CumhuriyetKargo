@@ -38,6 +38,8 @@ class DeliveryController extends Controller
 
     public function ajaxTransaction(Request $request, $transaction)
     {
+
+
         switch ($transaction) {
             case 'Delivery':
                 return DeliveryAction::run($request);
