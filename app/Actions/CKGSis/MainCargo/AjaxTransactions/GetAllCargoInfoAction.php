@@ -14,6 +14,11 @@ class GetAllCargoInfoAction
 
     public function handle($request)
     {
+
+        $data = GetCargoInfoAction::run($request);
+
+        return response()
+            ->json($data, 200);
         $data['cargo'] = DB::table('cargoes')
             ->where('id', $request->id)
             ->first();

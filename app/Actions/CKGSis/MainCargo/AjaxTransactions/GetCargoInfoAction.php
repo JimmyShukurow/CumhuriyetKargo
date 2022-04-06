@@ -19,14 +19,13 @@ class GetCargoInfoAction
 
     public function handle($request)
     {
-        if ($request->invoice_number != null)
-            $data['cargo'] = Cargoes::where('invoice_number', $request->invoice_number)
-                ->first();
-        else if ($request->tracking_number != null)
-            $data['cargo'] = Cargoes::where('tracking_no', str_replace(' ', '', $request->tracking_number))
-                ->first();
-        else
+        if ($request->has('invoice_number')) {
+            $data['cargo'] = Cargoes::where('invoice_number', $request->invoice_number)->first();
+        } else if ($request->has('tracking_number')) {
+            $data['cargo'] = Cargoes::where('tracking_no', str_replace(' ', '', $request->tracking_number))->withTrashed()->first();
+        } else {
             $data['cargo'] = Cargoes::find($request->id);
+        }
 
         if ($data['cargo'] == null)
             return response()

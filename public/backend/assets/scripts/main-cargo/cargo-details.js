@@ -17,7 +17,7 @@ $(document).on('dblclick', '.main-cargo-tracking_no', function () {
     detailsID = id;
     copyToClipBoard(tracking_no);
     SnackMessage('Takip numarası kopyalandı!', 'info', 'bl');
-    cargoInfo(id);
+    cargoInfo(id, $(this).attr('tracking-no'));
 });
 
 $(document).on('click', '.cargo-detail', function () {
@@ -90,7 +90,7 @@ $(document).on('click', '.btnMovementDetail', function () {
 
 });
 
-function cargoInfo(user) {
+function cargoInfo(user, tracking_number) {
 
     $('#ModalCargoDetails').modal();
 
@@ -126,7 +126,8 @@ function cargoInfo(user) {
         method: 'POST',
         data: {
             _token: token,
-            id: user
+            id: user,
+            tracking_number: tracking_number,
         },
         cache: false
     }).done(function (response) {
@@ -159,7 +160,7 @@ function cargoInfo(user) {
             let transfers = response.transfers
 
             $('#titleTrackingNo').text(cargo.tracking_no);
-
+            detailTrackingNo = cargo.tracking_no
             $('#printBarcodeAllPieces').attr('crypted-data', cargo.crypte_invoice_no)
 
             if (cargo.deleted_at != null) {

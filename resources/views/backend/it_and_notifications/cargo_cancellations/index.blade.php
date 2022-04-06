@@ -240,8 +240,10 @@
                                             </div>
 
                                             <div class="ml-auto">
-                                                <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
-                                                    <span class="text-primary font-weight-bold pl-2">Onay Bekleyenler</span>
+                                                <div
+                                                    class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
+                                                    <span
+                                                        class="text-primary font-weight-bold pl-2">Onay Bekleyenler</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -260,11 +262,13 @@
                                     <div class="widget-numbers mb-0 w-100">
                                         <div class="widget-chart-flex">
                                             <div class="fsize-4">
-                                                <small class="opacity-5"><i class="lnr-checkmark-circle text-success"></i></small>
+                                                <small class="opacity-5"><i
+                                                        class="lnr-checkmark-circle text-success"></i></small>
                                                 <span id="CountConfirmed">90</span>
                                             </div>
                                             <div class="ml-auto">
-                                                <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
+                                                <div
+                                                    class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
                                                     <span class="text-success font-weight-bold pl-2">Onaylananlar</span>
                                                 </div>
                                             </div>
@@ -284,11 +288,13 @@
                                     <div class="widget-numbers mb-0 w-100">
                                         <div class="widget-chart-flex">
                                             <div class="fsize-4">
-                                                <small class="opacity-5"><i class="lnr-cross-circle text-danger"></i></small>
+                                                <small class="opacity-5"><i
+                                                        class="lnr-cross-circle text-danger"></i></small>
                                                 <span id="CountRejected">46</span>
                                             </div>
                                             <div class="ml-auto">
-                                                <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
+                                                <div
+                                                    class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
                                                     <span class="text-danger font-weight-bold pl-2">Reddedilenler</span>
                                                 </div>
                                             </div>
@@ -312,7 +318,8 @@
                                                 <span id="AllApp">138</span>
                                             </div>
                                             <div class="ml-auto">
-                                                <div class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
+                                                <div
+                                                    class="widget-title ml-auto font-size-lg font-weight-normal text-muted">
                                                     <span class="text-info font-weight-bold pl-2">Tümü</span>
                                                 </div>
                                             </div>
@@ -536,7 +543,6 @@
             let id = $(this).prop('id');
             appointmentID = $(this).attr('appointment-id');
             detailsID = id;
-            cargoInfo(id);
         });
 
 
@@ -585,7 +591,7 @@
                     ToastMessage('success', 'Sonuç kaydedildi!', 'İşlem Başarılı!');
                     $('#ModalSetAppResult').modal('hide');
 
-                    cargoInfo(detailsID);
+                    cargoInfo(detailsID, detailTrackingNo);
                     oTable.ajax.reload();
                     pageRowCount();
 

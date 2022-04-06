@@ -203,11 +203,7 @@ class MainCargoController extends Controller
                 break;
 
             case 'GetPriceForCustomers':
-
                 return GetPriceForCustomersAction::run($request);
-
-                return response()
-                    ->json(GetPriceForCustomersAction::run($request), 200);
                 break;
 
             case 'CreateCargo':
@@ -219,8 +215,7 @@ class MainCargoController extends Controller
                 break;
 
             case 'DistributionControl':
-                return response()
-                    ->json(DistributionControlAction::run($request), 200);
+                return DistributionControlAction::run($request);
                 break;
 
             # INDEX TRANSACTION START
