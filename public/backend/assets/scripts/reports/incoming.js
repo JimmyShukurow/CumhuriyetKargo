@@ -21,6 +21,14 @@ $(document).ready(function () {
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
         buttons: [
             {
+                extend: 'excel',
+                text: 'Excel',
+                title: "CKG-Sis - " + $('.NikolasDataTable').attr('title-doc') + " GELEN KARGOLAR " + currentDate,
+                attr: {
+                    class: 'btn btn-success'
+                },
+            },
+            {
                 text: 'Yenile',
                 action: function (e, dt, node, config) {
                     dt.ajax.reload();
@@ -28,7 +36,7 @@ $(document).ready(function () {
                 attr: {
                     class: 'btn btn-primary'
                 }
-            }
+            },
         ],
         responsive: false,
         processing: true,
@@ -90,6 +98,9 @@ $(document).ready(function () {
         scrollX: true,
 
     });
+
+    $('.dataTables_scrollBody').addClass('mostly-customized-scrollbar');
+
 });
 
 function drawDT() {

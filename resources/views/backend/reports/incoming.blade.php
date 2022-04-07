@@ -35,7 +35,8 @@
         <div class="card mt-3">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                        class="header-icon pe-7s-box2 mr-3 text-muted opacity-6"> </i> CKG-Sis Gelen Kargo Sorgulama Ekranı
+                        class="header-icon pe-7s-box2 mr-3 text-muted opacity-6"> </i> CKG-Sis Gelen Kargo Sorgulama
+                    Ekranı
                 </div>
                 <div class="btn-actions-pane-right actions-icon-btn">
                     <div class="btn-group dropdown">
@@ -201,7 +202,8 @@
             <div class="card-body">
 
                 <table style="white-space: nowrap;" id="AgenciesTable"
-                       class="align-middle mb-0 table Table20Padding table-bordered table-striped table-hover NikolasDataTable">
+                       title-doc="{{Auth::user()->getBranchAttribute()}}"
+                       class="align-middle mb-0 table  Table20Padding table-bordered table-striped table-hover NikolasDataTable">
                     <thead>
                     <tr>
                         <th>Fatura No</th>

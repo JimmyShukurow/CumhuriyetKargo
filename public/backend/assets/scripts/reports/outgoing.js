@@ -19,8 +19,15 @@ $(document).ready(function () {
         order: [19, 'desc'],
         language: dtLanguage,
         dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
-
         buttons: [
+            {
+                extend: 'excel',
+                text: 'Excel',
+                title: "CKG-Sis - " + $('.NikolasDataTable').attr('title-doc') + " GİDEN KARGOLAR " + currentDate,
+                attr: {
+                    class: 'btn btn-success'
+                },
+            },
             {
                 text: 'Yenile',
                 action: function (e, dt, node, config) {

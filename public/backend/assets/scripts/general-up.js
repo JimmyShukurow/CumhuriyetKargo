@@ -496,5 +496,5 @@ whiteAnimation = {
 }
 
 var currentDate = new Date()
-currentDate = currentDate.toLocaleDateString('en-US')
+currentDate = currentDate.toLocaleDateString('tr-TR')
 detailTrackingNo = null

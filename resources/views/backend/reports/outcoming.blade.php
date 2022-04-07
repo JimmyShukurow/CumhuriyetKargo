@@ -200,7 +200,7 @@
         <div class="card mb-3">
             <div class="card-body">
 
-                <table style="white-space: nowrap;" id="AgenciesTable"
+                <table style="white-space: nowrap;" id="AgenciesTable" title-doc="{{Auth::user()->getBranchAttribute()}}"
                        class="align-middle mb-0 table Table20Padding table-bordered table-striped table-hover NikolasDataTable">
                     <thead>
                     <tr>
