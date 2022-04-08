@@ -113,7 +113,26 @@ class DeliveryAction
                     'delivery_id' => $createDelivery->id, 'cargo_id' => $cargo->id, 'part_no' => $key
                 ]);
 
-                InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), $key, 'Kargo alıcısına teslim edildi.', $status, rand(0, 999), 1);
+                # Get Movement Text
+                $info = DB::table('cargo_movement_contents')
+                    ->where('key', 'delivery_cargo')
+                    ->first();
+                $branch = getUserBranchInfo();
+
+                $infoText = str_replace(
+                    [
+                        '[branch]',
+                        '[receiver]',
+                        '[proximity]',
+                    ],
+                    [
+                        $branch['name'] . ' ' . $branch['type'],
+                        tr_strtoupper($request->teslimAlanAdSoyad),
+                        $request->receiverProximity,
+                    ], $info->content);
+
+
+                InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), $key, $infoText, $info->status, rand(0, 999), 1);
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -136,7 +155,6 @@ class DeliveryAction
             return ['status' => -1, 'message' => 'Teslimat kaydı ensanısnda hata oluştu, lütfen daha sonra tekrar deneyin!'];
         }
 
-//        InsertCargoMovement($cargo->tracking_number, $cargo->id, Auth::id(), '')
 
         $current = Currents::find($cargo->sender_id);
         $receiver = Currents::find($cargo->receiver_id);

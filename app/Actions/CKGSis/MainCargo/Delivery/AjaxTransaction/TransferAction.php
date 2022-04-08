@@ -86,7 +86,25 @@ class TransferAction
                 $createPieceDelivery = DeliveryDetail::create([
                     'delivery_id' => $createDelivery->id, 'cargo_id' => $cargo->id, 'part_no' => $key
                 ]);
-                InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), $key, $agency->agency_name . ' ŞUBE kargoyu ' . $request->transferReason . ' nedeni ile devretti.', $status, rand(0, 999), 1);
+
+                # Get Movement Text
+                $info = DB::table('cargo_movement_contents')
+                    ->where('key', 'transfer_cargo')
+                    ->first();
+                $branch = getUserBranchInfo();
+
+                $infoText = str_replace(
+                    [
+                        '[branch]',
+                        '[reason]'
+                    ],
+                    [
+                        $branch['name'] . ' ' . $branch['type'],
+                        $request->transferReason,
+                    ], $info->content);
+
+
+                InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), $key, $infoText, $info->status, rand(0, 999), 1);
             }
         } catch (\Exception $e) {
             DB::rollBack();

@@ -20,7 +20,7 @@
         <div class="tab-content">
             <div class="tab-pane active" id="tab-eg5-0" role="tabpanel">
                 <div
-                    style="overflow-x: auto; white-space: nowrap; max-height: 300px;"
+                    style="overflow-x: auto; white-space: nowrap; max-height: 500px;"
                     class="cont">
                     <table style="white-space: nowrap" id="TableEmployees"
                            class="Table30Padding table table-bordered table-striped mt-3">
