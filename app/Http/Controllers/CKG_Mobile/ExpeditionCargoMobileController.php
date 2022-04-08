@@ -38,6 +38,15 @@ class ExpeditionCargoMobileController extends Controller
             ]);
         }
 
+        $route_ids = $expedition->routes->pluck('id');
+
+
+        if (!$route_ids->contains($validated['route_id'])) {
+            return [
+                'status' => 0,
+                'message' => 'Güzergah bulunamadı!'
+            ];
+        }
 
 
         $cargo = Cargoes::where('tracking_no', $ctn[0])->first();
@@ -49,7 +58,7 @@ class ExpeditionCargoMobileController extends Controller
             if (! $check) {
                 return [
                     'status' => 0,
-                    'message' => 'Bu kargonun varış şubesi '. $cargo->arrivalBranchAgency->agency_name .' ŞUBE olduğundan'. $route->branch_details .'YE yükleme yapamazsınız.!'
+                    'message' => 'Bu kargonun varış şubesi '. $cargo->arrivalBranchAgency->agency_name .' ŞUBE olduğundan '. $route->branch_details .'YE yükleme yapamazsınız.!'
                 ];
             }
         }
