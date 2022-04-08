@@ -90,9 +90,11 @@
                                 <th>Kargo Tipi</th>
                                 <th>Alıcı</th>
                                 <th>Gönderici</th>
+                                <th>Desi</th>
                                 <th>Çıkış Şube</th>
                                 <th>Varış Şube</th>
                                 <th>Kargo Statü</th>
+                                <th>Gönderim Bedeli</th>
                                 <th>Yüklenen Birim</th>
                                 <th>Yükleyen Birim</th>
                                 <th>Yükleyen</th>
@@ -107,7 +109,7 @@
                             <tr>
                             @if(count($expedition->allCargoes) == 0)
                                 <tr>
-                                    <td class="text-center text-danger font-weight-bold" colspan="16">Burda hiç veri
+                                    <td class="text-center text-danger font-weight-bold" colspan="17">Burda hiç veri
                                         yok.
                                     </td>
                                 </tr>
@@ -125,9 +127,11 @@
                                             <td> {{ $cargo->cargo->cargo_type }} </td>
                                             <td> {{ $cargo->cargo->receiver_name }} </td>
                                             <td> {{ $cargo->cargo->sender_name }} </td>
+                                            <td> {{ $cargo->cargo->desi }} </td>
                                             <td class="font-weight-bold"> {{ $cargo->cargo->departure_branch_agency_name }} </td>
                                             <td class="font-weight-bold"> {{ $cargo->cargo->arrival_branch_agency_name }} </td>
                                             <td> {{ $cargo->cargo->status }} </td>
+                                            <td> {{ $cargo->cargo->total_price }} </td>
                                             <td> {{ $cargo->cargosLoadedRoute->branch_details ?? '' }} </td>
                                             <td> {{ $cargo->user->branch }} </td>
                                             <td> {{ $cargo->user->name_surname }} </td>
