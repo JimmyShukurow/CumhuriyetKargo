@@ -131,8 +131,8 @@ class DeliveryAction
                         $request->receiverProximity,
                     ], $info->content);
 
+                InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), $key, $infoText, $status, rand(0, 999), 1);
 
-                InsertCargoMovement($cargo->tracking_no, $cargo->id, Auth::id(), $key, $infoText, $info->status, rand(0, 999), 1);
             }
         } catch (\Exception $e) {
             DB::rollBack();
