@@ -38,21 +38,30 @@ class ExpeditionCargoMobileController extends Controller
             ]);
         }
 
+        $route_ids = $expedition->routes->pluck('id');
+
+
+        if (!$route_ids->contains($validated['route_id'])) {
+            return [
+                'status' => 0,
+                'message' => 'Güzergah bulunamadı!'
+            ];
+        }
 
 
         $cargo = Cargoes::where('tracking_no', $ctn[0])->first();
 
-//        #check by agencies locallocations from route id
-//        $route = ExpeditionRoute::find($request->route_id);
-//        if ($route->branch_type == 'Acente') {
-//            $check = CheckCargoRouteAgencyLocationMatchAction::run($route->branch, $cargo);
-//            if (! $check) {
-//                return [
-//                    'status' => 0,
-//                    'message' => 'Bu kargonun varış şubesi '. $cargo->arrival_branch_name .' ŞUBE olduğundan'. $route->branch_details .' ŞUBEYE yükleme yapamazsınız.!'
-//                ];
-//            }
-//        }
+        #check by agencies locallocations from route id
+        $route = ExpeditionRoute::find($request->route_id);
+        if ($route->branch_type == 'Acente') {
+            $check = CheckCargoRouteAgencyLocationMatchAction::run($route->branch, $cargo);
+            if (! $check) {
+                return [
+                    'status' => 0,
+                    'message' => 'Bu kargonun varış şubesi '. $cargo->arrivalBranchAgency->agency_name .' ŞUBE olduğundan '. $route->branch_details .'YE yükleme yapamazsınız.!'
+                ];
+            }
+        }
 
         if ($cargo && ($cargo->cargo_type == 'Dosya' || $cargo->cargo_type == 'Mi'))
             return response()->json([
@@ -77,7 +86,7 @@ class ExpeditionCargoMobileController extends Controller
                 $fields['cargo_id'] = $cargo->cargo->id;
                 $fields['part_no'] = $cargo->part_no;
                 $fields['user_id'] = $user_id;
-//                $fields['expedition_route_id'] = $validated->route_id;
+                $fields['expedition_route_id'] = $validated['route_id'];
                 CargoExpeditionMovementAction::run($cargo->cargo->tracking_no, $cargo->cargo, $user_id, $cargo->part_no, rand(4, 10), 1, 'load_cargo_expedition', $expedition->car->plaka);
                 LoadCargoToExpeditionAction::run($fields);
 
@@ -92,17 +101,17 @@ class ExpeditionCargoMobileController extends Controller
                 'message' => 'Bu kargonun taşımasını Cumhuriyet Kargo yapmadığından yükleme işlemi gerçekletiremezsiniz!',
             ]);
 
-//        #check by agencies locallocations from route id
-//        $route = ExpeditionRoute::find($request->route_id);
-//        if ($route->branch_type == 'Acente') {
-//            $check = CheckCargoRouteAgencyLocationMatchAction::run($route->branch, $cargo);
-//            if (! $check) {
-//                return [
-//                    'status' => 0,
-//                    'message' => 'Bu kargonun varış şubesi '. $cargo->arrivalBranchAgency->agency_name .' ŞUBE olduğundan '. $route->branch_details .'YE yükleme yapamazsınız.!'
-//                ];
-//            }
-//        }
+        #check by agencies locallocations from route id
+        $route = ExpeditionRoute::find($request->route_id);
+        if ($route->branch_type == 'Acente') {
+            $check = CheckCargoRouteAgencyLocationMatchAction::run($route->branch, $cargo);
+            if (! $check) {
+                return [
+                    'status' => 0,
+                    'message' => 'Bu kargonun varış şubesi '. $cargo->arrivalBranchAgency->agency_name .' ŞUBE olduğundan '. $route->branch_details .'YE yükleme yapamazsınız.!'
+                ];
+            }
+        }
 
 
         $user_id = Auth::id();
@@ -110,7 +119,7 @@ class ExpeditionCargoMobileController extends Controller
         $fields['cargo_id'] = $cargo->id;
         $fields['part_no'] = $ctn[1];
         $fields['user_id'] = $user_id;
-//        $fields['expedition_route_id'] = $validated['route_id'];
+        $fields['expedition_route_id'] = $validated['route_id'];
         CargoExpeditionMovementAction::run($ctn[0], $cargo, $user_id, $ctn[1], rand(4, 10), 1, 'load_cargo_expedition', $expedition->car->plaka);
 
         return LoadCargoToExpeditionAction::run($fields);
