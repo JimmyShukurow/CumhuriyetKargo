@@ -252,7 +252,7 @@ function DistributionControl(neighborhood = '') {
 
 
                     $('.partner-service-0').prop('disabled', false);
-                    $('.add-service-default-1').prop('checked', true);
+                    // $('.add-service-default-1').prop('checked', true);
 
                     clearAddServices();
                     surfAddServices();
@@ -1456,7 +1456,7 @@ function createCargo() {
             gondericiCariKodu: $('#gondericiCariKod').val(),
             aliciCariKodu: $('#aliciCariKod').val(),
             gonderiTuru: $('#selectCargoType').val(),
-            cargoType: CargoType,
+            cargoType: $('#selectCargoType').val(),
             odemeTipi: $('input[name="radioPaymentType"]:checked').val(),
             desi: $('#labelDesi').text(),
             parcaSayisi: $('#partQuantity').text(),
