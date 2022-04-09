@@ -118,7 +118,7 @@ function initGraphTable() {
         oTable = $('#TableCargoesInExpedition').DataTable({
             pageLength: 25,
             lengthMenu: dtLengthMenu,
-            order: [3, 'desc'],
+            order: [8, 'asc'],
             language: dtLanguage,
             dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>frtip',
             buttons: [

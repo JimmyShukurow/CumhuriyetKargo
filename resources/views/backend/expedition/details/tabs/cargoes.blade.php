@@ -69,7 +69,7 @@
                                         <td> {{ $cargo->cargo->total_price }} </td>
                                         <td> {{ $cargo->user->branch }} </td>
                                         <td> {{ $cargo->user->name_surname }} </td>
-                                        <td> {{ $cargo->cargo->created_at }} </td>
+                                        <td> {{ $cargo->created_at }} </td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -136,12 +136,12 @@
                                             <td> {{ $cargo->user->branch }} </td>
                                             <td> {{ $cargo->user->name_surname }} </td>
 
-                                            <td> {{ $cargo->cargo->created_at }} </td>
+                                            <td> {{ $cargo->created_at }} </td>
                                             <td>
-                                                {{ $cargo->unloadedUser ? $cargo->unloadedUser->name_surname . '(' .$cargo->unloadedUser->role->display_name . ')'  : ''  }}
+                                                {{ $cargo->unloadedUser ? $cargo->unloadedUser->name_surname . '(' .$cargo->unloadedUser->branch . ')'  : ''  }}
                                             </td>
                                             <td> {{ $cargo->unloading_at }} </td>
-                                            <td> {{ $cargo->deletedUser ? $cargo->deletedUser->name_surname. '(' . $cargo->deletedUser->role->display_name . ')' : ''}}</td>
+                                            <td> {{ $cargo->deletedUser ? $cargo->deletedUser->name_surname. '(' . $cargo->deletedUser->branch . ')' : ''}}</td>
                                             <td> {{ $cargo->deleted_at }} </td>
                                         </tr>
                                         @endforeach
