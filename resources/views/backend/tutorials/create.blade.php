@@ -13,7 +13,7 @@
             <div class="page-title-wrapper">
                 <div class="page-title-heading">
                     <div class="page-title-icon">
-                        <i class="metismenu-icon pe-7s-film icon-gradient bg-amy-crisp">
+                        <i class="metismenu-icon pe-7s-film icon-gradient bg-ck">
                         </i>
                     </div>
                     <div>Eğitim Oluştur
