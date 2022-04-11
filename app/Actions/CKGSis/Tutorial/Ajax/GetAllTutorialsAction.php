@@ -34,12 +34,16 @@ class GetAllTutorialsAction
         $category = $request->category;
         $tutor = $request->tutor;
         $description = $request->description;
-        $departureBranch = $request->departureBranch;
         $created_at = $request->created_at;
 
 
         $rows = Tutorial::query()
-            ->when($name, function($q){ return $q->where('name', 'like', '%'.$name.'%');})
+            ->when($name, function($q) use ($name) { return $q->where('name', 'like', '%'.$name.'%');})
+            ->when($category, function($q) use ($category) { return $q->where('category', 'like', '%'.$category.'%');})
+            ->when($tutor, function($q) use ($tutor) { return $q->where('tutor', 'like', '%'.$tutor.'%');})
+            ->when($description, function($q) use ($description) { return $q->where('description', 'like', '%'.$description.'%');})
+            ->when($created_at, function($q) use ($created_at) { return $q->where('name', $created_at);})
+
             ->get();
 
 

@@ -87,7 +87,7 @@
 
                         <div class="col-md-3">
                             <label for="created_at">Yükleme tarihi:</label>
-                            <input type="text" id="created_at"
+                            <input type="date" id="created_at"
                                    class="form-control niko-filter form-control-sm">
                         </div>
                     </div>
