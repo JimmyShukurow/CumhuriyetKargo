@@ -39,14 +39,11 @@ $(document).ready(function () {
         ajax: {
             url: '/Tutorials/Ajax/GetAllTutorials',
             data: function (d) {
-                d.firstDate = $('#filterStartDate').val()
-                d.lastDate = $('#filterFinishDate').val()
-                d.serialNo = $('#filterExpeditionSerialNo').val()
-                d.plaka = $('#filterPlaque').val()
-                d.departureBranch = $('#filterDepartureBranch').val()
-                d.arrivalBranch = $('#filterArrivalBranch').val()
-                d.creator = $('#filterCreatorUser').val()
-                d.doneStatus = $('#filterDoneStatus').val()
+                d.name = $('#videoName').val()
+                d.category = $('#category').val()
+                d.tutor = $('#tutor').val()
+                d.description = $('#description').val()
+                d.created_at = $('#created_at').val()
             },
             error: function (xhr, error, code) {
 
@@ -75,15 +72,16 @@ $(document).ready(function () {
             {data: 'category', name: 'category'},
             {data: 'embedded_link', name: 'embedded_link'},
             {data: 'tutor', name: 'tutor'},
+            {data: 'created_at', name: 'created_at'},
         ],
         scrollY: '500px',
         scrollX: true,
     })
 
     // Local Storage Transaction START
-    let cargoSuccees = localStorage.getItem('expedition-success');
+    let cargoSuccees = localStorage.getItem('tutorial-success');
     if (cargoSuccees) {
-        swal('İşlem Başarılı!', 'Sefer Oluşturuldu!', 'success');
+        swal('İşlem Başarılı!', 'Eğitim Oluşturuldu!', 'success');
         localStorage.clear();
     }
     // Local Storage Transaction END

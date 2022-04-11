@@ -25,7 +25,7 @@
                         </i>
                     </div>
                     <div> Eğitimler
-                        <div class="page-title-subheading">Bu modül üzerinden Cumhuriyet Kargo geneli tüm eğitimleri görüntüleyebilirsiniz.
+                        <div class="page-title-subheading"> Bu modül üzerinden Cumhuriyet Kargonun Kargo ve Operasyon Sistemleri için hazırlanmış olan eğitim videolarını izleyebilirsiniz. 
                         </div>
                     </div>
                 </div>
@@ -59,58 +59,36 @@
                 <form method="POST" id="search-form">
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="filterStartDate">İlk Tarih:</label>
-                            <input type="date" id="filterStartDate" value="{{ $firstDate }}"
+                            <label for="videoName">Video Adı:</label>
+                            <input type="text" id="videoName" 
                                    class="form-control form-control-sm  niko-select-filter">
                         </div>
 
                         <div class="col-md-3">
-                            <label for="filterFinishDate">Son Tarih:</label>
-                            <input type="date" id="filterFinishDate" value="{{ date('Y-m-d') }}"
+                            <label for="category">Kategorisi:</label>
+                            <input type="text" id="category" 
                                    class="form-control form-control-sm  niko-select-filter">
                         </div>
 
 
                         <div class="col-md-3">
-                            <label for="filterExpeditionSerialNo">Sefer No:</label>
-                            <input type="text" data-inputmask="'mask': '999 999 999'"
-                                   placeholder="___ ___ ___" type="text" id="filterExpeditionSerialNo"
-                                   class="form-control input-mask-trigger form-control-sm niko-filter">
+                            <label for="description">Açıklama:</label>
+                            <input type="text"  type="text" id="description"
+                                   class="form-control  form-control-sm niko-filter">
                         </div>
 
                         <div class="col-md-3">
                             <div class="position-relative form-group">
-                                <label for="filterPlaque" class="">Plaka:</label>
-                                <input type="text" id="filterPlaque"
+                                <label for="tutor" class="">Eğitmen:</label>
+                                <input type="text" id="tutor"
                                        class="form-control niko-filter form-control-sm">
                             </div>
                         </div>
 
                         <div class="col-md-3">
-                            <label for="filterDepartureBranch">Çıkış Birim:</label>
-                            <input type="text" id="filterDepartureBranch"
+                            <label for="created_at">Yükleme tarihi:</label>
+                            <input type="text" id="created_at"
                                    class="form-control niko-filter form-control-sm">
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="filterArrivalBranch">Varış Birim:</label>
-                            <input type="text" id="filterArrivalBranch"
-                                   class="form-control niko-filter form-control-sm">
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="filterCreatorUser">Oluşturan:</label>
-                            <input type="text" id="filterCreatorUser"
-                                   class="form-control niko-filter form-control-sm">
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="filterDoneStatus">Statü:</label>
-                            <select id="filterDoneStatus" class="form-control-sm form-control">
-                                <option value="">Seçiniz</option>
-                                <option value="0">Devam Ediyor</option>
-                                <option value="1">Bitti</option>
-                            </select>
                         </div>
                     </div>
                 </form>
@@ -128,6 +106,7 @@
                         <th>Ketgori</th>
                         <th>Link</th>
                         <th>Eğitmen</th>
+                        <th>Yükleme tarihi</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -139,6 +118,7 @@
                         <th>Ketgori</th>
                         <th>Link</th>
                         <th>Eğitmen</th>
+                        <th>Yükleme tarihi</th>
                     </tr>
                     </tfoot>
                 </table>

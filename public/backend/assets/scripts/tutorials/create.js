@@ -55,7 +55,7 @@ $('#btnCreateTutorial').click(function () {
         if (response.status == 1) {
             ToastMessage('success', response.message, 'İşlem Başarılı!')
 
-            localStorage.setItem('expedition-success', true);
+            localStorage.setItem('tutorial-success', true);
             setTimeout(function () {
                 location.href = "/Tutorials/tutorial"
             }, 100)

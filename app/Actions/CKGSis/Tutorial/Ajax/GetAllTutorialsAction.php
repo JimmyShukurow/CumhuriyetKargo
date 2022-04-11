@@ -29,29 +29,18 @@ class GetAllTutorialsAction
 
         $firstDate = Carbon::createFromDate($request->firstDate);
         $lastDate = Carbon::createFromDate($request->lastDate);
-        #$dateFilter = $request->dateFilter;
-        $dateFilter = 'true';
 
-        $plaka = $request->plaka;
-        $serialNo = $request->serialNo;
-        $creator = $request->creator;
-        $doneStatus = $request->doneStatus;
+        $name = $request->name;
+        $category = $request->category;
+        $tutor = $request->tutor;
+        $description = $request->description;
         $departureBranch = $request->departureBranch;
-        $arrivalBranch = $request->arrivalBranch;
-
-        if ($dateFilter == "true") {
-            $diff = $firstDate->diffInDays($lastDate);
-            if ($dateFilter) {
-                if ($diff >= 365) {
-                    return response()->json(['status' => 0, 'message' => 'Tarih aralığı max. 365 gün olabilir!'], 509);
-                }
-            }
-        }
-        $firstDate = substr($firstDate, 0, 10) . ' 00:00:00';
-        $lastDate = substr($lastDate, 0, 10) . ' 23:59:59';
+        $created_at = $request->created_at;
 
 
-        $rows = Tutorial::all();
+        $rows = Tutorial::query()
+            ->when($name, function($q){ return $q->where('name', 'like', '%'.$name.'%');})
+            ->get();
 
 
 
