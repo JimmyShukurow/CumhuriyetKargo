@@ -28,8 +28,10 @@ class TutorialController extends Controller
 
         $firstDate = Carbon::createFromDate(date('Y-m-d'))->addDay(-7)->format('Y-m-d');
 
+        $tutorials = Tutorial::all();
+
         GeneralLog('Eğitim sayfası görüntülendi');
-        return view('backend.tutorials.all_tutorials', compact(['data', 'unit', 'firstDate', 'agencies', 'tc']));
+        return view('backend.tutorials.all_tutorials', compact(['data', 'unit', 'firstDate', 'agencies', 'tc', 'tutorials']));
 
     }
     public function create()
@@ -47,6 +49,13 @@ class TutorialController extends Controller
     public function store(TutorialRequest $request)
     {
         $validated = $request->validated();
+
+        $index = strpos($validated['embedded_link'],'v=');
+
+        $code = substr($validated['embedded_link'], $index+2, 100);
+
+        $validated['embedded_link'] = 'https://www.youtube.com/embed/'.$code;
+        
         Tutorial::create($validated);
         return [
             'status' => 1,

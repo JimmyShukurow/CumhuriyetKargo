@@ -3,13 +3,15 @@
 @push('css')
     <link rel="stylesheet" href="/backend/assets/css/app-main-block.css">
     <style>
-        table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child:before, table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child:before {
+        table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>td:first-child:before,
+        table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th:first-child:before {
             top: 6px;
             left: 5px;
         }
+
     </style>
-    <link href="/backend/assets/css/select2.min.css" rel="stylesheet"/>
-    <link href="/backend/assets/css/select2-mini.css" rel="stylesheet"/>
+    <link href="/backend/assets/css/select2.min.css" rel="stylesheet" />
+    <link href="/backend/assets/css/select2-mini.css" rel="stylesheet" />
 @endpush
 
 @section('title', 'Eğitimler')
@@ -25,7 +27,8 @@
                         </i>
                     </div>
                     <div> Eğitimler
-                        <div class="page-title-subheading"> Bu modül üzerinden Cumhuriyet Kargonun Kargo ve Operasyon Sistemleri için hazırlanmış olan eğitim videolarını izleyebilirsiniz. 
+                        <div class="page-title-subheading"> Bu modül üzerinden Cumhuriyet Kargonun Kargo ve Operasyon
+                            Sistemleri için hazırlanmış olan eğitim videolarını izleyebilirsiniz.
                         </div>
                     </div>
                 </div>
@@ -40,11 +43,10 @@
                 </div>
                 <div class="btn-actions-pane-right actions-icon-btn">
                     <div class="btn-group dropdown">
-                        <button type="button" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false" class="btn-icon btn-icon-only btn btn-link"><i
-                                class="pe-7s-menu btn-icon-wrapper"></i></button>
+                        <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            class="btn-icon btn-icon-only btn btn-link"><i class="pe-7s-menu btn-icon-wrapper"></i></button>
                         <div tabindex="-1" role="menu" aria-hidden="true"
-                             class="dropdown-menu-right rm-pointers dropdown-menu-shadow dropdown-menu-hover-link dropdown-menu">
+                            class="dropdown-menu-right rm-pointers dropdown-menu-shadow dropdown-menu-hover-link dropdown-menu">
 
                             <div class="p-3 text-right">
                                 <button id="btnClearFilter" class="mr-2 btn-shadow btn-sm btn btn-link">Filtreyi
@@ -60,73 +62,54 @@
                     <div class="row">
                         <div class="col-md-3">
                             <label for="videoName">Video Adı:</label>
-                            <input type="text" id="videoName" 
-                                   class="form-control form-control-sm  niko-select-filter">
+                            <input type="text" id="videoName" class="form-control form-control-sm  niko-select-filter">
                         </div>
 
                         <div class="col-md-3">
                             <label for="category">Kategorisi:</label>
-                            <input type="text" id="category" 
-                                   class="form-control form-control-sm  niko-select-filter">
+                            <input type="text" id="category" class="form-control form-control-sm  niko-select-filter">
                         </div>
 
 
                         <div class="col-md-3">
                             <label for="description">Açıklama:</label>
-                            <input type="text"  type="text" id="description"
-                                   class="form-control  form-control-sm niko-filter">
+                            <input type="text" type="text" id="description"
+                                class="form-control  form-control-sm niko-filter">
                         </div>
 
                         <div class="col-md-3">
                             <div class="position-relative form-group">
                                 <label for="tutor" class="">Eğitmen:</label>
-                                <input type="text" id="tutor"
-                                       class="form-control niko-filter form-control-sm">
+                                <input type="text" id="tutor" class="form-control niko-filter form-control-sm">
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <label for="created_at">Yükleme tarihi:</label>
-                            <input type="date" id="created_at"
-                                   class="form-control niko-filter form-control-sm">
+                            <input type="date" id="created_at" class="form-control niko-filter form-control-sm">
                         </div>
                     </div>
                 </form>
             </div>
         </div>
 
-        <div class="card mb-3">
-            <div class="card-body">
-
-                <table style="white-space: nowrap;" width="100%" id="TutorialsTable"
-                       class="align-middle mb-0 table Table20Padding table-bordered table-striped table-hover NikolasDataTable">
-                    <thead>
-                    <tr>
-                        <th>Video Adı</th>
-                        <th>Ketgori</th>
-                        <th>Link</th>
-                        <th>Eğitmen</th>
-                        <th>Yükleme tarihi</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <th>Video Adı</th>
-                        <th>Ketgori</th>
-                        <th>Link</th>
-                        <th>Eğitmen</th>
-                        <th>Yükleme tarihi</th>
-                    </tr>
-                    </tfoot>
-                </table>
-
+        <div class="card mb-3 ">
+            <div class="card-body row">
+                @foreach ($tutorials as $tutorial)
+                    <div class="card col-md-3">
+                        <div class="card-header">Header</div>
+                        <iframe  src="{{ $tutorial->embedded_link}}"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                        <div class="card-body">{{ $tutorial->description }}</div>
+                        <div class="card-footer">Footer</div>
+                    </div>
+                @endforeach
             </div>
         </div>
 
-        {{--Statistics--}}
+        {{-- Statistics --}}
         <div>
         </div>
     </div>
