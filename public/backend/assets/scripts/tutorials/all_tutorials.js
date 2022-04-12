@@ -90,4 +90,8 @@ $(document).ready(function () {
         let src = $(this).children('iframe').attr('src');
         $('#modalVideoCard').attr('src', src);
     })
+  
+    $("#exampleModal").on("hidden.bs.modal",function(){
+        $('#modalVideoCard')[0].contentWindow.postMessage('{"event":"command","func":"' + 'stopVideo' + '","args":""}', '*');
+    });
 })
