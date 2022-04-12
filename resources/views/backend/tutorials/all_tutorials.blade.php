@@ -96,12 +96,11 @@
         <div class="card mb-3 ">
             <div class="card-body row">
                 @foreach ($tutorials as $tutorial)
-                    <div class="card col-md-3">
+                    <div class="card col-md-3" data-toggle="modal" data-target="#exampleModal">
                         <div class="card-header">Header</div>
-                        <iframe  src="{{ $tutorial->embedded_link}}"
-                            title="YouTube video player" frameborder="0"
+                        <iframe src="{{ $tutorial->embedded_link }}" title="YouTube video player" frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen></iframe>
+                            ></iframe>
                         <div class="card-body">{{ $tutorial->description }}</div>
                         <div class="card-footer">Footer</div>
                     </div>
@@ -121,3 +120,5 @@
     <script src="/backend/assets/scripts/city-districts-point.js"></script>
     <script src="/backend/assets/scripts/tutorials/all_tutorials.js"></script>
 @endsection
+
+@include('backend.tutorials.modal')
