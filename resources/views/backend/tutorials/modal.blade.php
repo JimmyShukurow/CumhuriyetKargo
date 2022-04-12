@@ -8,7 +8,7 @@
           </button>
         </div>
         <div class="modal-body">
-            <iframe src="{{ $tutorial->embedded_link }}" title="YouTube video player" frameborder="0"
+            <iframe id="modalVideoCard" src="{{ $tutorial->embedded_link }}" title="YouTube video player" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen></iframe>
         </div>

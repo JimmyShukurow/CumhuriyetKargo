@@ -85,4 +85,9 @@ $(document).ready(function () {
         localStorage.clear();
     }
     // Local Storage Transaction END
+
+    $('.videoCard').on('click', function(){
+        let src = $(this).children('iframe').attr('src');
+        $('#modalVideoCard').attr('src', src);
+    })
 })

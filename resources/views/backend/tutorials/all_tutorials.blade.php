@@ -96,10 +96,9 @@
         <div class="card mb-3 ">
             <div class="card-body row">
                 @foreach ($tutorials as $tutorial)
-                    <div class="card col-md-3" data-toggle="modal" data-target="#exampleModal">
+                    <div class="card col-md-3 videoCard" data-toggle="modal" data-target="#exampleModal">
                         <div class="card-header">Header</div>
-                        <iframe src="{{ $tutorial->embedded_link }}" title="YouTube video player" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        <iframe style="pointer-events: none;" src="{{$tutorial->embedded_link}}" title="YouTube video player" frameborder="0"
                             ></iframe>
                         <div class="card-body">{{ $tutorial->description }}</div>
                         <div class="card-footer">Footer</div>
