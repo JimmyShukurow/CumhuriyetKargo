@@ -100,8 +100,8 @@
         </div>
 
         <div class="card mb-3 ">
-            <div class="d-flex justify-content-center"><span class="btn btn-primary"> Yenile</span> </div>
-            <div class="card-body row">
+            <div class="d-flex justify-content-center" id="filterTutorials"><span class="btn btn-primary"> Yenile</span> </div>
+            <div class="card-body row" id="allVideos">
                 @foreach ($tutorials as $tutorial)
                     <div class="card col-md-3 videoCard" data-toggle="modal" data-target="#exampleModal" data-name="{{ $tutorial->name }}">
                         <div class="card-header" >{{ $tutorial->name }}</div>

@@ -1,81 +1,7 @@
 $(document).ready(function () {
-    tableOutGoingExpeditions = $('#TutorialsTable').DataTable({
-        pageLength: 250,
-        lengthMenu: dtLengthMenu,
-        order: [0,'desc'],
-        language: dtLanguage,
-        dom: '<"top"<"left-col"l><"center-col text-center"B><"right-col">>rtip',
-        select: {
-            style: 'multi',
-            selector: 'td:nth-child(0)'
-        },
-        buttons: [
-            {
-                text: 'Yenile',
-                action: function (e, dt, node, config) {
-                    dt.ajax.reload();
-                },
-                attr: {
-                    id: 'datatableRefreshBtn',
-                    class: 'btn btn-primary',
-                }
-            },
-            {
-                extend: 'excelHtml5',
-                attr: {class: 'btn btn-success'},
-                title: "CKG-Sis Acente Kasa Durumu"
-            },
-            {
-                text: 'Filtreyi Temizle',
-                attr: {class: 'btn btn-info'},
-                action: function (e, dt, node, config) {
-                    clearFilter();
-                },
-            },
-        ],
-        responsive: false,
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: '/Tutorials/Ajax/GetAllTutorials',
-            data: function (d) {
-                d.name = $('#videoName').val()
-                d.category = $('#category').val()
-                d.tutor = $('#tutor').val()
-                d.description = $('#description').val()
-                d.created_at = $('#created_at').val()
-            },
-            error: function (xhr, error, code) {
 
-                let response = JSON.parse(xhr.responseText);
-                if (response.status == 0) {
-                    ToastMessage('error', response.message, 'HATA!');
-                    return false;
-                }
-                ajaxError(code);
-                if (code == "Too Many Requests") {
-                    SnackMessage('Aşırı istekte bulundunuz, Lütfen bir süre sonra tekrar deneyin!', 'error', 'bl');
-                } else if (code == 590) {
-                    ToastMessage('error', 'Tarih aralığı max. 90 gün olabilir!', 'HATA!');
-                }
-            },
-            complete: function () {
-                SnackMessage('Tamamlandı!', 'info', 'bl')
-
-                if ($('#datatableRefreshBtn').prop('disabled') == true)
-                    $('#datatableRefreshBtn').prop('disabled', false)
-
-            }
-        },
-        columns: [
-            {data: 'name', name: 'video_name'},
-            {data: 'category', name: 'category'},
-            {data: 'embedded_link', name: 'embedded_link'},
-            {data: 'tutor', name: 'tutor'},
-            {data: 'created_at', name: 'created_at'},
-        ],
-        scrollY: '500px',
-        scrollX: true,
+    $('#filterTutorials').on('click', function () {
+        filterVideos();
     })
 
     // Local Storage Transaction START
@@ -86,16 +12,43 @@ $(document).ready(function () {
     }
     // Local Storage Transaction END
 
-    $('.videoCard').on('click', function(){
+    $('.videoCard').on('click', function () {
         let src = $(this).children('iframe').attr('src');
         let name = $(this).data('name')
         console.log(name);
         $('#modalVideoCard').attr('src', src);
         $('#exampleModalLabel').text(name);
     })
-  
-    $("#exampleModal").on("hidden.bs.modal",function(){
+
+    $("#exampleModal").on("hidden.bs.modal", function () {
         $('#modalVideoCard')[0].contentWindow.postMessage('{"event":"command","func":"' + 'stopVideo' + '","args":""}', '*');
     });
 
 })
+
+function filterVideos() {
+    $.post('/Tutorials/Ajax/GetAllTutorials',
+        {
+            _token: token,
+            name: $('#videoName').val(),
+            category: $('#category').val(),
+            tutor: $('#tutor').val(),
+            description: $('#description').val(),
+            start_date: $('#start_date').val(),
+            end_date: $('#end_date').val()
+        },
+        function (responce) {
+            let text = '';
+            const videos = responce.rows;
+            videos.forEach(element => {
+                text += '<div class="card col-md-3 videoCard" data-toggle="modal" data-target="#exampleModal" data-name="' + element.name + '"> \
+                <div class="card-header" >' + element.name + '</div><iframe style="pointer-events: none;" \
+                src="' + element.embedded_link + '" title="YouTube video player" frameborder="0"></iframe> \
+                <div class="card-body">' + element.description + '</div><div class="card-footer">' + element.tutor + '</div></div>';
+            });
+
+            $('#allVideos').html(text);
+
+        });
+}
+

@@ -34,7 +34,11 @@ class GetAllTutorialsAction
         $category = $request->category;
         $tutor = $request->tutor;
         $description = $request->description;
-        $created_at = $request->created_at;
+        $start_date = Carbon::createFromDate($request->start_date);
+        $end_date = Carbon::createFromDate($request->end_date);
+
+        $start_date = substr($start_date, 0, 10) . ' 00:00:00';
+        $end_date = substr($end_date, 0, 10) . ' 23:59:59';
 
 
         $rows = Tutorial::query()
@@ -42,15 +46,11 @@ class GetAllTutorialsAction
             ->when($category, function($q) use ($category) { return $q->where('category', 'like', '%'.$category.'%');})
             ->when($tutor, function($q) use ($tutor) { return $q->where('tutor', 'like', '%'.$tutor.'%');})
             ->when($description, function($q) use ($description) { return $q->where('description', 'like', '%'.$description.'%');})
-            ->when($created_at, function($q) use ($created_at) { return $q->where('name', $created_at);})
+            ->when($start_date, function($q) use ($start_date, $end_date) { return $q->whereBetween('created_at', [$start_date, $end_date]);})
 
             ->get();
 
-
-
-        return datatables()->of($rows)
-
-            ->make(true);
+            return ['status' => 1, 'rows'=>$rows];
     }
 
 

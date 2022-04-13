@@ -10,7 +10,7 @@ Route::group(['middleware' => ['CheckAuth', 'CheckStatus']], function () {
 
         Route::group(['Prefix' => 'Admin'], function () {
             Route::resource('tutorial', TutorialController::class);
-            Route::get('/Ajax/GetAllTutorials', GetAllTutorialsAction::class);
+            Route::post('/Ajax/GetAllTutorials', GetAllTutorialsAction::class);
         });
 
     });
