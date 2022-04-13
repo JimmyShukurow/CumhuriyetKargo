@@ -61,6 +61,16 @@
                 <form method="POST" id="search-form">
                     <div class="row">
                         <div class="col-md-3">
+                            <label for="start_date">İlk tarih:</label>
+                            <input type="date" id="start_date" value="{{\Carbon\Carbon::createFromDate(date('Y-m-d'))->subDay(7)->format('Y-m-d');}}" class="form-control niko-filter form-control-sm">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="end_date">Son tarih:</label>
+                            <input type="date" id="end_date" value="{{\Carbon\Carbon::createFromDate(date('Y-m-d'))->format('Y-m-d');}}" class="form-control niko-filter form-control-sm">
+                        </div>
+
+                        <div class="col-md-3">
                             <label for="videoName">Video Adı:</label>
                             <input type="text" id="videoName" class="form-control form-control-sm  niko-select-filter">
                         </div>
@@ -83,25 +93,22 @@
                                 <input type="text" id="tutor" class="form-control niko-filter form-control-sm">
                             </div>
                         </div>
-
-                        <div class="col-md-3">
-                            <label for="created_at">Yükleme tarihi:</label>
-                            <input type="date" id="created_at" class="form-control niko-filter form-control-sm">
-                        </div>
+                       
                     </div>
                 </form>
             </div>
         </div>
 
         <div class="card mb-3 ">
+            <div class="d-flex justify-content-center"><span class="btn btn-primary"> Yenile</span> </div>
             <div class="card-body row">
                 @foreach ($tutorials as $tutorial)
-                    <div class="card col-md-3 videoCard" data-toggle="modal" data-target="#exampleModal">
-                        <div class="card-header">Header</div>
+                    <div class="card col-md-3 videoCard" data-toggle="modal" data-target="#exampleModal" data-name="{{ $tutorial->name }}">
+                        <div class="card-header" >{{ $tutorial->name }}</div>
                         <iframe style="pointer-events: none;" src="{{$tutorial->embedded_link}}" title="YouTube video player" frameborder="0"
                             ></iframe>
                         <div class="card-body">{{ $tutorial->description }}</div>
-                        <div class="card-footer">Footer</div>
+                        <div class="card-footer">{{ $tutorial->tutor}}</div>
                     </div>
                 @endforeach
             </div>

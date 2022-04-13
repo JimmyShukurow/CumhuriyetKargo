@@ -88,10 +88,14 @@ $(document).ready(function () {
 
     $('.videoCard').on('click', function(){
         let src = $(this).children('iframe').attr('src');
+        let name = $(this).data('name')
+        console.log(name);
         $('#modalVideoCard').attr('src', src);
+        $('#exampleModalLabel').text(name);
     })
   
     $("#exampleModal").on("hidden.bs.modal",function(){
         $('#modalVideoCard')[0].contentWindow.postMessage('{"event":"command","func":"' + 'stopVideo' + '","args":""}', '*');
     });
+
 })

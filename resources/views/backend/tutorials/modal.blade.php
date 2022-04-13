@@ -2,19 +2,18 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+          <h5 class="modal-title" id="exampleModalLabel"></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-            <iframe id="modalVideoCard" src="{{ $tutorial->embedded_link }}" title="YouTube video player" frameborder="0"
+            <iframe style="width: 100%; height:315px;" id="modalVideoCard" src="{{ $tutorial->embedded_link }}" title="YouTube video player" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen></iframe>
         </div>
         <div class="modal-footer">
           <button type="button" id="stopVideo" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Send message</button>
         </div>
       </div>
     </div>
