@@ -109,6 +109,11 @@
                             ></iframe>
                         <div class="card-body">{{ $tutorial->description }}</div>
                         <div class="card-footer">{{ $tutorial->tutor}}</div>
+
+                        <div class="d-flex justify-content-between mb-2"  id={{ $tutorial->id}} >
+                            <span class="btn btn-success" class="editVideo"> Edit</span>
+                            <span class="btn btn-danger" class="deleteVideo"> Delete</span>
+                        </div>
                     </div>
                 @endforeach
             </div>

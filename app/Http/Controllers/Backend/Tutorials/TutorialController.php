@@ -77,6 +77,12 @@ class TutorialController extends Controller
 
     public function destroy($id)
     {
-        //
+        $tutorial = Tutorial::find($id);
+        $tutorial->delete();
+
+        return [
+            'status' => 1,
+            'message' => 'Eğitim silindi!'
+        ];
     }
 }

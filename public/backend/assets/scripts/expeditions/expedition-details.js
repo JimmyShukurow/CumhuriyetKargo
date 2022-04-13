@@ -93,7 +93,7 @@ function proceedEndingExpedition(detailID) {
         if (willDelete) {
             endExpedition(detailID);
         } else {
-            ToastMessage('info', 'Bitirme işlemi iptal edilidi.', 'Bilgi');
+            ToastMessage('info', 'Bitirme işlemi iptal edildi.', 'Bilgi');
         }
     });
 }
