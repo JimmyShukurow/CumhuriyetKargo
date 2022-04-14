@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Lorisleiva\Actions\Concerns\AsController;
 
-class GetAllTutorialsAction
+class FilterTutorialsAction
 {
     use AsAction;
     use AsController;
@@ -22,7 +22,10 @@ class GetAllTutorialsAction
     {
 
 
-        $name = $request->videoName;
+        $firstDate = Carbon::createFromDate($request->firstDate);
+        $lastDate = Carbon::createFromDate($request->lastDate);
+
+        $name = $request->name;
         $category = $request->category;
         $tutor = $request->tutor;
         $description = $request->description;
@@ -33,7 +36,7 @@ class GetAllTutorialsAction
         $end_date = substr($end_date, 0, 10) . ' 23:59:59';
 
 
-        $tutorials = Tutorial::query()
+        $rows = Tutorial::query()
             ->when($name, function($q) use ($name) { return $q->where('name', 'like', '%'.$name.'%');})
             ->when($category, function($q) use ($category) { return $q->where('category', 'like', '%'.$category.'%');})
             ->when($tutor, function($q) use ($tutor) { return $q->where('tutor', 'like', '%'.$tutor.'%');})
@@ -42,18 +45,7 @@ class GetAllTutorialsAction
 
             ->get();
 
-
-        return datatables()->of($tutorials)
-        ->editColumn('link', function ($key) {
-            return '<a href="' . $key->embedded_link . '" target="_blank">' . $key->embedded_link  . '</a>';
-        })
-        ->addColumn('edit', 'backend.tutorials.edit')
-
-        ->rawColumns(['link' , 'edit'])
-
-        ->make(true);
-
-        
+            return ['status' => 1, 'rows'=>$rows];
     }
 
 

@@ -1,8 +1,3 @@
-
-
-
-
-
 @extends('backend.layout')
 
 @push('css')
@@ -65,7 +60,15 @@
             <div class="card-body">
                 <form method="POST" id="search-form">
                     <div class="row">
-                       
+                        <div class="col-md-3">
+                            <label for="start_date">İlk tarih:</label>
+                            <input type="date" id="start_date" value="{{\Carbon\Carbon::createFromDate(date('Y-m-d'))->subDay(7)->format('Y-m-d');}}" class="form-control niko-filter form-control-sm">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="end_date">Son tarih:</label>
+                            <input type="date" id="end_date" value="{{\Carbon\Carbon::createFromDate(date('Y-m-d'))->format('Y-m-d');}}" class="form-control niko-filter form-control-sm">
+                        </div>
 
                         <div class="col-md-3">
                             <label for="videoName">Video Adı:</label>
@@ -90,58 +93,24 @@
                                 <input type="text" id="tutor" class="form-control niko-filter form-control-sm">
                             </div>
                         </div>
-
-                        <div class="col-md-3">
-                            <label for="start_date">İlk tarih:</label>
-                            <input type="date" id="start_date"
-                                value="{{ \Carbon\Carbon::createFromDate(date('Y-m-d'))->subDay(7)->format('Y-m-d') }}"
-                                class="form-control niko-filter form-control-sm">
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="end_date">Son tarih:</label>
-                            <input type="date" id="end_date"
-                                value="{{ \Carbon\Carbon::createFromDate(date('Y-m-d'))->format('Y-m-d') }}"
-                                class="form-control niko-filter form-control-sm">
-                        </div>
-
+                       
                     </div>
                 </form>
             </div>
         </div>
 
         <div class="card mb-3 ">
-            <div class="card-body" id="allVideos">
-                <table style="white-space: nowrap;" width="100%" id="AllTutorials"
-                    class="align-middle mb-0 table Table20Padding table-bordered table-striped table-hover NikolasDataTable">
-                    <thead>
-                        <tr>
-                            <th>Video adı</th>
-                            <th>Tanımı</th>
-                            <th>Kategori</th>
-                            <th>Link</th>
-                            <th>Eğitmen</th>
-                            <th>Oluşturulduğu tarih</th>
-                            <th>İşlem</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Video adı</th>
-                            <th>Tanımı</th>
-                            <th>Kategori</th>
-                            <th>Link</th>
-                            <th>Eğitmen</th>
-                            <th>Oluşturulduğu tarih</th>
-                            <th>İşlem</th>
-
-                        </tr>
-                    </tfoot>
-                </table>
+            <div  style="margin: auto" id="filterTutorials"><span class="btn btn-primary"> Yenile</span> </div>
+            <div class="card-body row" id="allVideos">
+                @foreach ($tutorials as $tutorial)
+                    <div class="card col-md-3 videoCard" data-toggle="modal" data-target="#exampleModal" data-name="{{ $tutorial->name }}" data-src="{{$tutorial->embedded_link}}">
+                        <div class="card-header" >{{ $tutorial->name }}</div>
+                        <iframe style="pointer-events: none;" src="{{$tutorial->embedded_link}}" title="YouTube video player" frameborder="0"
+                            ></iframe>
+                        <div class="card-body">{{ $tutorial->description }}</div>
+                        <div class="card-footer">{{ $tutorial->tutor}}</div>
+                    </div>
+                @endforeach
             </div>
         </div>
 
@@ -154,7 +123,8 @@
 @section('js')
     <script src="/backend/assets/scripts/NikoStyleDataTable.js"></script>
     <script src="/backend/assets/scripts/select2.js"></script>
-    <script src="/backend/assets/scripts/tutorials/all_tutorials.js"></script>
+    <script src="/backend/assets/scripts/city-districts-point.js"></script>
+    <script src="/backend/assets/scripts/tutorials/user_all_tutorials.js"></script>
 @endsection
 
 @include('backend.tutorials.modal')
