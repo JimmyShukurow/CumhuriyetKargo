@@ -58,7 +58,7 @@ class TutorialController extends Controller
         Tutorial::create($validated);
         return [
             'status' => 1,
-            'message' => 'Banzay'
+            'message' => 'Eğitim oluşturuldu!'
         ];
     }
 

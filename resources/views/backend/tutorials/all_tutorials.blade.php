@@ -103,17 +103,12 @@
             <div class="d-flex justify-content-center" id="filterTutorials"><span class="btn btn-primary"> Yenile</span> </div>
             <div class="card-body row" id="allVideos">
                 @foreach ($tutorials as $tutorial)
-                    <div class="card col-md-3 videoCard" data-toggle="modal" data-target="#exampleModal" data-name="{{ $tutorial->name }}">
+                    <div class="card col-md-3 videoCard" data-toggle="modal" data-target="#exampleModal" data-name="{{ $tutorial->name }}" data-src="{{$tutorial->embedded_link}}">
                         <div class="card-header" >{{ $tutorial->name }}</div>
                         <iframe style="pointer-events: none;" src="{{$tutorial->embedded_link}}" title="YouTube video player" frameborder="0"
                             ></iframe>
                         <div class="card-body">{{ $tutorial->description }}</div>
                         <div class="card-footer">{{ $tutorial->tutor}}</div>
-
-                        <div class="d-flex justify-content-between mb-2"  id={{ $tutorial->id}} >
-                            <span class="btn btn-success" class="editVideo"> Edit</span>
-                            <span class="btn btn-danger" class="deleteVideo"> Delete</span>
-                        </div>
                     </div>
                 @endforeach
             </div>
