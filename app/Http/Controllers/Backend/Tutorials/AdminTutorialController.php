@@ -57,13 +57,23 @@ class AdminTutorialController extends Controller
 
     public function show($id)
     {
-        //
+        $tutorial = Tutorial::find($id);
+
+        return view('backend.tutorial.edit',['tutorial' => $tutorial]);
     }
 
 
-    public function update(Request $request, $id)
+    public function update(TutorialRequest $request, $id)
     {
-        //
+        $tutorial = Tutorial::find($id);
+        $validated = $request->validated();
+        
+        $tutorial->update($validated);
+
+        return [
+            'status' => 1,
+            'message' => "Tamam",
+        ];
     }
 
 
@@ -83,5 +93,12 @@ class AdminTutorialController extends Controller
             'message' => 'Eğitim silinemedi!'
         ];
         
+    }
+
+    public function edit($id)
+    {
+        $tutorial = Tutorial::find($id);
+
+        return view('backend.tutorials.editTutorial',['tutorial' => $tutorial]);
     }
 }

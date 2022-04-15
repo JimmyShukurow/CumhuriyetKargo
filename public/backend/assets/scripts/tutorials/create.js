@@ -19,7 +19,7 @@ $('#btnCreateTutorial').on('click',function () {
     $('.blockUI.blockMsg.blockElement').css('border', '0px');
     $('.blockUI.blockMsg.blockElement').css('background-color', '');
     
-    $.ajax('/Tutorials/tutorial', {
+    $.ajax('/Tutorials/Admin/tutorial', {
         method: 'POST',
         data: {
             _token: token,
