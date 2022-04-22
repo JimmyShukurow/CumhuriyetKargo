@@ -4,8 +4,7 @@
 
 ## CKG-Sis
 
-CKG-Sis; Cumhuriyet Kargo'nun ana CRM projesidir. Cumhuriyet Kargo tarafından geliştirilmektedir ve tüm hakları
-Cumhuriyet Kargo A.Ş.ye aittir.
+CKG-Sis; Cumhuriyet Kargo'nun ana CRM projesidir. Cumhuriyet Kargo tarafından geliştirilmektedir.
 
 
 
