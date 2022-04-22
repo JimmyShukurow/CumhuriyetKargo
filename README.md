@@ -13,7 +13,7 @@ Cumhuriyet Kargo A.Ş.ye aittir.
 
 Kargo kesim modülü, personel kayıt ve yönetim, muhasebe, finans, operasyon ve sistem destek modüllerini barındırır.
 
-Proje 29 Mart 2021, Pazartesi 16:27'de NURULLAH GÜÇ tarafından oluşturulmuştur ve hala CKG-Team grubu ile geliştirilmeye devam edilmektedir.
+Proje Cemşit Şükürov tarafından oluşturulmuştur ve hala CKG-Team grubu ile geliştirilmeye devam edilmektedir.
 
 
 <a target="_blank" href="https://www.cumhuriyetkargo.com.tr">Cumhuriyet Kargo Kurumsal Web Sitesi</a>
