@@ -164,7 +164,6 @@ class UserController extends Controller
 
         return response()
             ->json($data, 200);
-
     }
 
     public function editUser($id)
@@ -227,7 +226,6 @@ class UserController extends Controller
                     'tc_code' => $tc,
                     'user_type' => $type
                 ]);
-
         } else {
 
             $request->validate([
@@ -253,7 +251,6 @@ class UserController extends Controller
                     'tc_code' => $tc,
                     'user_type' => $type
                 ]);
-
         }
 
 
@@ -377,7 +374,6 @@ class UserController extends Controller
 
                 return response()
                     ->json(['status' => 1], 200);
-
             } else
                 return response()->json([
                     'status' => '0',
@@ -436,7 +432,6 @@ class UserController extends Controller
                 'status' => 0,
                 'message' => "Bir hata oluştu, lütfen daha sonra tekrar deneyin!"
             ], 200);
-
     }
 
     public function virtualLogin($UserID, $Reason)
@@ -493,7 +488,6 @@ class UserController extends Controller
 
         $route = getUserFirstPage();
         return redirect()->intended(route($route))->with('success', 'Hoşgeldin ' . Auth::user()->name_surname);
-
     }
 
     public function getUserLogInfo(Request $request)
@@ -510,7 +504,5 @@ class UserController extends Controller
         $branch = getUserBranchInfoWithUserID($user->id);
 
         return response()->json(['status' => 1, 'user' => $user, 'branch' => $branch, 'log' => $log]);
-
     }
-
 }
